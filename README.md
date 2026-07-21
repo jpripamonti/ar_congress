@@ -17,7 +17,25 @@ text blocks, and (eventually) analysis.
   pending owner audit — see [SOURCES.md](SOURCES.md)).
 - Speakers resolved to persons (roster + authorities join): 99.95% of
   speech blocks carry a person_id with party/alliance and province.
-- Analysis: not started. Roadmap in [TODO.md](TODO.md).
+- First analysis: [notebooks/analysis.ipynb](notebooks/analysis.ipynb).
+  Roadmap in [TODO.md](TODO.md).
+
+## First results
+
+![Senate floor words by year and alliance lineage](figures/floor_words_by_year.png)
+
+- Senator floor speech collapsed six-fold from the 2020 remote-session
+  peak (1.35M words) to the 2023 election-year trough (0.21M), with only
+  a partial 2024 rebound.
+- The Frente de Todos / UP lineage held roughly half of floor words in
+  every year; La Libertad Avanza enters in 2024 with 7%.
+- The chamber got rowdier as it got quieter: recorded incidents per
+  10,000 floor words quadrupled 2020→2023 and stayed elevated — a
+  measurement only possible because stenographer events are preserved
+  and typed rather than deleted.
+
+Methodological caveats (sampling frame, alliance-vs-caucus, exclusions)
+are documented in the notebook.
 
 ## Layout
 

@@ -43,13 +43,23 @@ Owner-audit items carried forward:
 - [ ] Party/bloc caveat: historic roster gives electoral alliance, not caucus;
       caucus is only known for the sitting 72
 
-## Phase 3 — first analysis
+## Phase 3 — first analysis (done, July 2026)
 
-- [ ] One notebook: load the corpus, one real chart (e.g. speaking share by
-      bloc over time), result into README
-- [ ] Document the sampling frame: 52/90 sessions are ESPECIAL (COVID
-      remote-procedure era), 2020 has 32 sessions vs 12 in 2023, Asambleas
-      (President speaking) are not Senate debate
+- [x] notebooks/analysis.ipynb: floor words by year × alliance lineage
+      (stacked bars, validated palette), chamber-temperature event rates,
+      top speakers; headline chart + findings in README
+- [x] Sampling frame documented in the notebook (COVID-era ESPECIAL skew,
+      2020: 32 sessions vs 2023: 12, Asambleas excluded from floor-speech
+      analyses, alliance-lineage ≠ caucus)
+
+## Later
+
+- Caucus (bloque) mapping for departed senators (historic roster only has
+  electoral alliance) — needed before per-bloc claims harden
+- Pre-2020 extension: the archived listing has 1,814 sessions back to the
+  1990s; download.py already handles it via --years
+- Cámara de Diputados (second chamber)
+- Formal writeup / dataset publication (corpus is citable via SOURCES.md)
 
 ## Explicitly not building
 
