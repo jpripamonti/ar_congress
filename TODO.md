@@ -33,7 +33,7 @@ citable corpus.
       including the ilovepdf outlier); report boundary F1, attribution
       accuracy, event recall; per-session acceptance gates, quarantine
       failures instead of averaging over them
-- [ ] Choose a license; document source-data terms and citation
+- [ ] Document source-data terms and citation (code is MIT-licensed since Phase 1)
 
 ## Phase 3 — first analysis
 

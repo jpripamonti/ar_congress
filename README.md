@@ -38,4 +38,6 @@ DATA.md).
 Senado de la Nación Argentina, open-data portal
 (<https://www.senado.gob.ar/micrositios/DatosAbiertos/>).
 
-License for this repository: not yet chosen.
+Code in this repository is MIT-licensed (see [LICENSE](LICENSE)). The
+transcripts themselves are published by the Senate; their terms of use are
+documented separately as part of the corpus work.
