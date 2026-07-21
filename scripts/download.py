@@ -1,187 +1,232 @@
-import os
-import requests
+"""Download Argentine Senate stenographic transcripts (versiones
+taquigraficas) from the Senate open-data portal.
+
+Hardened rewrite of the Jan 2025 downloader:
+
+- Every run archives the raw session listing to data/raw/senado/listings/,
+  so "what did the portal say existed on date X" stays answerable and local
+  holdings can be diffed against it (--dry-run does exactly that).
+- Already-held sessions are recognized by (fecha, reunion) read from the
+  existing JSON sidecars — not by filename — so the Jan 2025 files keep
+  their names while new downloads use {date-iso}_r{reunion}_{TIPO}.pdf
+  (ASCII, sortable, collision-free: reunion is part of the session's URL).
+- PDFs stream to a .part file, are validated (%PDF magic, minimum size),
+  and are renamed into place atomically; a truncated or bogus download can
+  no longer masquerade as a finished one.
+- Sidecars now record sha256, size, download timestamp, and the archived
+  listing they came from.
+"""
+
+import argparse
+import hashlib
 import json
-from datetime import datetime
 import re
+import sys
 import time
-import pandas as pd
+import unicodedata
+from datetime import datetime, timezone
+from pathlib import Path
 
+import requests
 
-# Configuración para la pausa
-DOWNLOAD_DELAY = 5  # Pausa en segundos entre descargas
+REPO_ROOT = Path(__file__).resolve().parents[1]
+RAW_DIR = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
+LISTINGS_DIR = REPO_ROOT / "data" / "raw" / "senado" / "listings"
 
-
-# URLs base para el Senado
-SENADO_URL = "https://www.senado.gob.ar/micrositios/DatosAbiertos/ExportarListadoVersionesTac/json"
-OUTPUT_FOLDER_SENADO = "./data/raw/senado/taquigraficas/"  # Carpeta para Senado
-
-# Filtros configurables
-FILTER_YEARS = [2024, 2023, 2022, 2021, 2020]  # Lista de años que queremos descargar
-FILTER_SESSION_TYPES = None #["ORDINARIA"]  # Lista de tipos de sesión (o None para todos)
-
-# Configuración de reintentos
+LISTING_URL = "https://www.senado.gob.ar/micrositios/DatosAbiertos/ExportarListadoVersionesTac/json"
+DEFAULT_YEARS = [2020, 2021, 2022, 2023, 2024]
+DOWNLOAD_DELAY = 5  # seconds between downloads
 MAX_RETRIES = 3
+LISTING_TIMEOUT = 30
+PDF_TIMEOUT = (10, 60)  # (connect, read)
+MIN_PDF_BYTES = 10_000  # smallest real transcript so far is ~200 KB
 
-def fetch_taquigraficas_json(url):
-    """
-    Descarga el JSON desde la URL y valida su estructura.
-    """
+
+def fetch_listing():
+    """Fetch the session listing. Returns (rows, raw_text) or (None, None)."""
     try:
-        response = requests.get(url)
+        response = requests.get(LISTING_URL, timeout=LISTING_TIMEOUT)
         response.raise_for_status()
+        # The endpoint emits trailing commas; strip them before parsing.
+        cleaned = re.sub(r",\s*([\}\]])", r"\1", response.text)
+        data = json.loads(cleaned)
+    except (requests.RequestException, json.JSONDecodeError) as e:
+        print(f"Failed to fetch/parse the listing from {LISTING_URL}: {e}")
+        return None, None
 
-        # Eliminar posibles comas finales en el JSON
-        cleaned_text = re.sub(r",\s*([\}\]])", r"\1", response.text)
-
-        # Cargar el JSON
-        json_data = json.loads(cleaned_text)
-
-        # Validar la estructura esperada
-        if not isinstance(json_data, dict) or "table" not in json_data:
-            print("Estructura inesperada en el JSON descargado. Falta 'table'.")
-            return None
-        if "rows" not in json_data["table"] or not isinstance(json_data["table"]["rows"], list):
-            print("Estructura inesperada en el JSON descargado. Falta 'rows'.")
-            return None
-
-        return json_data
-
-    except requests.exceptions.RequestException as e:
-        print(f"Error al descargar el JSON desde {url}: {e}")
-        return None
-    except json.JSONDecodeError as e:
-        print(f"Error al procesar el JSON descargado: {e}")
-        return None
-
-def parse_taquigraficas(json_data):
-    """
-    Procesa el JSON y extrae las URLs de las versiones taquigráficas junto con los metadatos.
-    """
-    rows = json_data.get("table", {}).get("rows", [])
+    rows = data.get("table", {}).get("rows") if isinstance(data, dict) else None
     if not isinstance(rows, list):
-        print("El JSON no contiene una lista válida en 'table->rows'.")
-        return []
+        print("Unexpected listing structure: missing table.rows")
+        return None, None
+    return rows, response.text
 
-    taquigraficas = []
-    for row in rows:
-        try:
-            taquigraficas.append({
-                "fecha": row.get("FECHA DE SESION"),
-                "tipo": row.get("TIPO DE SESION"),
-                "sesion": row.get("NRO DE SESION"),
-                "reunion": row.get("NRO DE REUNION"),
-                "url": row.get("URL VESION TAQUIGRAFICA"),  # Asegúrate de corregir la clave si es necesario
-            })
-        except KeyError as e:
-            print(f"Falta una clave en el JSON: {e}")
-    return taquigraficas
 
-def filter_taquigraficas(taquigraficas, years=None, session_types=None):
-    """
-    Filtra las versiones taquigráficas por año y tipo de sesión.
-    """
+def parse_sessions(rows):
+    """Map raw listing rows to session dicts."""
+    return [
+        {
+            "fecha": row.get("FECHA DE SESION"),
+            "tipo": row.get("TIPO DE SESION"),
+            "sesion": row.get("NRO DE SESION"),
+            "reunion": row.get("NRO DE REUNION"),
+            "url": row.get("URL VESION TAQUIGRAFICA"),  # sic: portal field name
+        }
+        for row in rows
+    ]
+
+
+def filter_sessions(sessions, years, session_types):
+    """Filter sessions by year and (optionally) session type."""
     filtered = []
-    for item in taquigraficas:
+    for item in sessions:
         try:
-            # Extraer el año de la fecha
             year = datetime.strptime(item["fecha"], "%d-%m-%Y").year
-        except (ValueError, KeyError) as e:
-            print(f"Error al procesar la fecha '{item.get('fecha')}': {e}")
+        except (ValueError, TypeError):
+            print(f"Skipping row with unparseable fecha: {item!r}")
             continue
-        
-        # Filtrar por años
         if years and year not in years:
             continue
-        
-        # Filtrar por tipos de sesión (normalizar a mayúsculas)
-        if session_types and item.get("tipo", "").strip().upper() not in [stype.upper() for stype in session_types]:
+        if session_types and (item.get("tipo") or "").strip().upper() not in [t.upper() for t in session_types]:
             continue
-        
         filtered.append(item)
     return filtered
 
-def download_pdf_and_metadata(url, metadata, output_folder, retries=MAX_RETRIES):
-    """
-    Descarga un archivo PDF desde la URL proporcionada y guarda su metadata en un archivo JSON.
-    """
-    os.makedirs(output_folder, exist_ok=True)  # Asegura que la carpeta exista
 
-    # Verificar campos críticos
-    fecha = metadata.get("fecha")
-    tipo = metadata.get("tipo")
-    if not fecha or not tipo:
-        print(f"Metadata incompleta para la sesión: {metadata}")
-        return
+def session_key(fecha, reunion):
+    """Identity of a session: (fecha, reunion) — reunion is in the download URL."""
+    try:
+        reunion_norm = str(int(str(reunion).strip()))
+    except (TypeError, ValueError):
+        reunion_norm = str(reunion or "").strip()
+    return (str(fecha or "").strip(), reunion_norm)
 
-    # Formatear el nombre del archivo
-    filename_base = f"{fecha}_{tipo.replace(' ', '_')}"
-    pdf_path = os.path.join(output_folder, f"{filename_base}.pdf")
-    metadata_path = os.path.join(output_folder, f"{filename_base}.json")
-    
-    # Verificar si el archivo ya existe
-    if os.path.exists(pdf_path):
-        print(f"Archivo ya descargado: {pdf_path}. Saltando descarga.")
-        return  # Salir si ya existe
 
-    # Intentar la descarga con reintentos
-    for attempt in range(1, retries + 1):
+def held_sessions():
+    """Scan existing sidecars: session_key -> sidecar path."""
+    held = {}
+    for sidecar in RAW_DIR.glob("*.json"):
         try:
-            response = requests.get(url, stream=True, timeout=10)
-            response.raise_for_status()
-            with open(pdf_path, "wb") as pdf_file:
-                for chunk in response.iter_content(chunk_size=8192):
-                    pdf_file.write(chunk)
-            print(f"Descargado: {pdf_path}")
-            
-            # Guardar metadata
-            with open(metadata_path, "w") as metadata_file:
-                json.dump(metadata, metadata_file, indent=4)
-            print(f"Metadata guardada en {metadata_path}")
-            return  # Salir después de una descarga exitosa
-        except requests.exceptions.RequestException as e:
-            print(f"Error al descargar el PDF (Intento {attempt}/{retries}) para la sesión del {fecha} desde {url}: {e}")
-            if attempt == retries:
-                print(f"Descarga fallida tras {retries} intentos.")
-                
-def process_senado():
-    """
-    Procesa las versiones taquigráficas del Senado.
-    """
-    print("Procesando datos del Senado...")
-    json_data = fetch_taquigraficas_json(SENADO_URL)
-    if not json_data:
-        return
-
-    # Extraer y filtrar datos
-    taquigraficas = parse_taquigraficas(json_data)
-    filtered_taquigraficas = filter_taquigraficas(taquigraficas, FILTER_YEARS, FILTER_SESSION_TYPES)
-
-    for taquigrafica in filtered_taquigraficas:
-        url = taquigrafica.get("url")
-        if not url:
-            print(f"URL faltante para la sesión del {taquigrafica.get('fecha')}")
+            meta = json.loads(sidecar.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, OSError):
+            print(f"Warning: unreadable sidecar {sidecar.name}")
             continue
+        held[session_key(meta.get("fecha"), meta.get("reunion"))] = sidecar
+    return held
 
-        # Verificar si el archivo ya existe antes de la descarga
-        fecha = taquigrafica.get("fecha")
-        tipo = taquigrafica.get("tipo")
-        filename_base = f"{fecha}_{tipo.replace(' ', '_')}"
-        pdf_path = os.path.join(OUTPUT_FOLDER_SENADO, f"{filename_base}.pdf")
 
-        if os.path.exists(pdf_path):
-            print(f"Archivo ya descargado: {pdf_path}. Saltando descarga.")
-            continue
+def target_basename(session):
+    """New-scheme filename: {date-iso}_r{reunion}_{TIPO} (ASCII, sortable)."""
+    date_iso = datetime.strptime(session["fecha"], "%d-%m-%Y").date().isoformat()
+    _, reunion = session_key(session["fecha"], session["reunion"])
+    tipo = unicodedata.normalize("NFD", session["tipo"] or "SESION")
+    tipo = "".join(c for c in tipo if not unicodedata.combining(c))
+    tipo = re.sub(r"[^A-Za-z0-9]+", "_", tipo).strip("_").upper()
+    return f"{date_iso}_r{int(reunion):02d}_{tipo}" if reunion.isdigit() else f"{date_iso}_rxx_{tipo}"
 
-        # Descargar PDF y guardar metadata
-        download_pdf_and_metadata(url, taquigrafica, OUTPUT_FOLDER_SENADO)
 
-        # Pausar después de cada descarga efectiva
-        print(f"Pausa de {DOWNLOAD_DELAY} segundos antes de la próxima descarga...")
-        time.sleep(DOWNLOAD_DELAY)
-    
+def download_session(session, listing_name):
+    """Download one session PDF atomically + write its sidecar. True on success."""
+    basename = target_basename(session)
+    pdf_path = RAW_DIR / f"{basename}.pdf"
+    part_path = RAW_DIR / f"{basename}.pdf.part"
+    url = session["url"]
+
+    for attempt in range(1, MAX_RETRIES + 1):
+        try:
+            with requests.get(url, stream=True, timeout=PDF_TIMEOUT) as response:
+                response.raise_for_status()
+                first = b""
+                with part_path.open("wb") as f:
+                    for chunk in response.iter_content(chunk_size=8192):
+                        if not first and chunk:
+                            first = chunk
+                            if not first.startswith(b"%PDF"):
+                                raise ValueError(f"not a PDF (starts with {first[:8]!r})")
+                        f.write(chunk)
+
+            size = part_path.stat().st_size
+            if size < MIN_PDF_BYTES:
+                raise ValueError(f"suspiciously small download ({size} bytes)")
+
+            sha = hashlib.sha256(part_path.read_bytes()).hexdigest()
+            part_path.rename(pdf_path)  # atomic: only complete, validated files get .pdf
+
+            sidecar = dict(session)
+            sidecar.update({
+                "sha256": sha,
+                "size_bytes": size,
+                "downloaded_at_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+                "listing_file": listing_name,
+            })
+            (RAW_DIR / f"{basename}.json").write_text(
+                json.dumps(sidecar, indent=4, ensure_ascii=False), encoding="utf-8"
+            )
+            print(f"Downloaded: {pdf_path.name} ({size} bytes)")
+            return True
+
+        except (requests.RequestException, ValueError) as e:
+            part_path.unlink(missing_ok=True)
+            print(f"Attempt {attempt}/{MAX_RETRIES} failed for {session['fecha']} r{session['reunion']}: {e}")
+            if attempt < MAX_RETRIES:
+                time.sleep(2 ** attempt)
+
+    print(f"Giving up on {session['fecha']} r{session['reunion']} after {MAX_RETRIES} attempts.")
+    return False
+
 
 def main():
-    process_senado()
+    ap = argparse.ArgumentParser(description="Download Senate transcript PDFs from the open-data portal.")
+    ap.add_argument("--years", type=int, nargs="+", default=DEFAULT_YEARS,
+                    help=f"session years to include (default: {DEFAULT_YEARS})")
+    ap.add_argument("--types", nargs="+", help="session types to include (default: all)")
+    ap.add_argument("--dry-run", action="store_true",
+                    help="archive the listing and report missing sessions without downloading")
+    ap.add_argument("--delay", type=int, default=DOWNLOAD_DELAY,
+                    help=f"seconds between downloads (default: {DOWNLOAD_DELAY})")
+    args = ap.parse_args()
+
+    if not RAW_DIR.is_dir():
+        sys.exit(f"Raw data dir not found: {RAW_DIR} — is the data/ symlink in place? (see DATA.md)")
+
+    rows, raw_text = fetch_listing()
+    if rows is None:
+        sys.exit(1)
+
+    LISTINGS_DIR.mkdir(parents=True, exist_ok=True)
+    listing_name = f"listing_{datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')}.json"
+    (LISTINGS_DIR / listing_name).write_text(raw_text, encoding="utf-8")
+    print(f"Listing archived: {listing_name} ({len(rows)} rows)")
+
+    sessions = filter_sessions(parse_sessions(rows), args.years, args.types)
+    held = held_sessions()
+    missing = [s for s in sessions if session_key(s["fecha"], s["reunion"]) not in held]
+    listed_keys = {session_key(s["fecha"], s["reunion"]) for s in sessions}
+    extra_held = [k for k in held if k not in listed_keys]
+
+    print(f"Listed (after filters): {len(sessions)} | held locally: {len(held)} "
+          f"| missing: {len(missing)} | held-but-not-listed: {len(extra_held)}")
+
+    if not missing:
+        print("Nothing to download — local holdings cover the filtered listing.")
+        return
+
+    for s in missing:
+        print(f"  missing: {s['fecha']} r{s['reunion']} {s['tipo']}")
+
+    if args.dry_run:
+        print("Dry run — nothing downloaded.")
+        return
+
+    ok = 0
+    for s in missing:
+        if not s.get("url"):
+            print(f"  no URL for {s['fecha']} r{s['reunion']} — skipping")
+            continue
+        if download_session(s, listing_name):
+            ok += 1
+        time.sleep(args.delay)
+    print(f"Done: {ok}/{len(missing)} downloaded.")
+
 
 if __name__ == "__main__":
     main()
