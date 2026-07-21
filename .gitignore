@@ -9,5 +9,6 @@ __pycache__/
 .pytest_cache/
 .mypy_cache/
 .ipynb_checkpoints/
-data
+# OneDrive-linked data symlink at repo root only — NOT congreso_arg/data/ (source code)
+/data
 processing_stats.csv
