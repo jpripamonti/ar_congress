@@ -10,4 +10,5 @@ dependencies = [
     "pdfplumber==0.11.5",
     "pandas==2.2.3",
     "requests==2.32.3",
+    "pyarrow>=25.0.0",
 ]

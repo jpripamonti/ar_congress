@@ -1,7 +1,75 @@
-import os
-import pdfplumber
+"""Parse Argentine Senate stenographic transcript PDFs (versiones
+taquigraficas) into per-session block tables.
+
+Per-PDF pipeline (ported from the Jan 2025 test.py, behavior preserved
+except where noted): extract characters with pdfplumber -> classify font
+styles -> group characters into blocks by (font_style, size) -> reassign
+trailing hyphens to italic blocks -> keep blocks from the bold-12 "1."
+sumario marker on -> remove headers and empty blocks -> tag stenographer
+blocks -> assign chapters -> identify speakers -> clean speaker names ->
+consolidate consecutive same-speaker blocks.
+
+Deliberate changes vs. the Jan 2025 version:
+- Stenographer blocks (italic 12.0) are TAGGED (type="stenographer_note")
+  instead of deleted: they carry context (votes, timestamps, incidents),
+  and keeping them stops consolidation from fusing turns separated by an
+  event. (Implements the original TODO.md note.)
+- Output is persisted: one Parquet block table per session under
+  data/processed/senado/blocks/, a per-session log under logs/, and a
+  cumulative parse_stats.csv quality table.
+- A missing sumario marker is recorded as an error, not a silent
+  empty result.
+- Fixed a trailing-hyphen bug: a block ending in "- " kept its hyphen
+  AND prepended one to the next italic block.
+
+Heuristics are calibrated against pdfplumber 0.11.5 (see pyproject.toml).
+"""
+
+import argparse
+import contextlib
+import hashlib
+import json
 import re
+import sys
+import time
+from concurrent.futures import ProcessPoolExecutor, as_completed
+from datetime import datetime, timezone
+from pathlib import Path
+
 import pandas as pd
+import pdfplumber
+
+PARSER_VERSION = "0.2.0"
+
+REPO_ROOT = Path(__file__).resolve().parents[1]
+RAW_DIR = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
+OUT_DIR = REPO_ROOT / "data" / "processed" / "senado"
+MANIFEST_PATH = REPO_ROOT / "raw_data_manifest.csv"
+
+STATS_COLUMNS = [
+    "session_id",
+    "file_name",
+    "characters_extracted",
+    "blocks_generated",
+    "blocks_after_marker_filter",
+    "headers_removed",
+    "empty_blocks_removed",
+    "stenographer_blocks_tagged",
+    "chapters_detected",
+    "speech_blocks",
+    "stenographer_notes",
+    "other_blocks",
+    "rows_written",
+    "duration_s",
+    "parser_version",
+    "parsed_at",
+    "error",
+]
+
+
+# ---------------------------------------------------------------------------
+# Pipeline steps (Spanish docstrings kept verbatim from the Jan 2025 test.py)
+# ---------------------------------------------------------------------------
 
 def extract_all_characters(pdf_path, max_pages=None, verbose=False):
     """
@@ -10,7 +78,7 @@ def extract_all_characters(pdf_path, max_pages=None, verbose=False):
 
     Args:
         pdf_path (str): Ruta al archivo PDF.
-        max_pages (int or None): Número máximo de páginas a procesar. 
+        max_pages (int or None): Número máximo de páginas a procesar.
         Si es None, se procesan todas.
 
     Returns:
@@ -23,7 +91,6 @@ def extract_all_characters(pdf_path, max_pages=None, verbose=False):
         print(f"Procesando un total de {num_pages} páginas del PDF...") if verbose else None
 
         for i, page in enumerate(pdf.pages[:num_pages]):
-            page_characters = 0  # Contador para esta página
             for char in page.chars:
                 extracted_characters.append({
                     "text": char["text"],
@@ -31,7 +98,6 @@ def extract_all_characters(pdf_path, max_pages=None, verbose=False):
                     "size": round(char["size"], 1),
                     "page": i + 1  # Agregar número de página para referencia
                 })
-                page_characters += 1
 
     print(f"Extracción completa. Se extrajeron {len(extracted_characters)} caracteres en total.")
     return extracted_characters
@@ -52,16 +118,17 @@ def classify_font_styles(extracted_characters):
         font_name = char["font"].lower()  # Convertir a minúsculas para comparación
         if "bold" in font_name:
             char["font_style"] = "bold"
-        elif "italic" in font_name or "oblique" in font_name:  # Corregido
+        elif "italic" in font_name or "oblique" in font_name:
             char["font_style"] = "italic"
         else:
             char["font_style"] = "normal"
-    
+
     return extracted_characters
+
 
 def group_characters_into_text_blocks(extracted_characters, verbose=False):
     """
-    Agrupa caracteres en bloques de texto basados en tipo de letra, tamaño y fuente,
+    Agrupa caracteres en bloques de texto basados en tipo y tamaño de letra,
     rastreando todas las páginas que abarcan los caracteres.
 
     Args:
@@ -135,14 +202,16 @@ def reassign_hyphens_to_italic_blocks(text_blocks, verbose=False):
                 # Mover el guión al siguiente bloque
                 if verbose:
                     print(f"Reasignando guión de '{current_block['text']}' al inicio de '{next_block['text']}'")
-                current_block["text"] = current_block["text"].rstrip("-").strip()  # Quitar el guión del bloque actual
+                # Fix: strip antes de rstrip — antes, un guión seguido de
+                # espacios sobrevivía y además se duplicaba en el bloque cursivo
+                current_block["text"] = current_block["text"].strip().rstrip("-")
                 next_block["text"] = "-" + next_block["text"].strip()  # Añadir el guión al siguiente bloque
 
     return text_blocks
 
 
-def filter_blocks_by_marker(text_blocks, marker_text="1.", 
-                            marker_font="bold", 
+def filter_blocks_by_marker(text_blocks, marker_text="1.",
+                            marker_font="bold",
                             marker_size=12.0,
                             verbose=False):
     """
@@ -230,7 +299,7 @@ def remove_headers(blocks, verbose=False):
         # Eliminar fechas con número de página
         if (
             font_style == "normal" and
-            9.9 <= size <= 10.1  and
+            9.9 <= size <= 10.1 and
             re.match(r"^\d{1,2} .* Pág\. \d+ ?$", text)
         ):
             if verbose: print(f"Encabezado eliminado: {block}")
@@ -262,35 +331,31 @@ def remove_empty_blocks(blocks):
     print(f"Se eliminaron {removed_count} bloques vacíos. Quedan {len(non_empty_blocks)} bloques no vacíos.")
     return non_empty_blocks
 
-def remove_tachygrapher_blocks(blocks, verbose=False):
+
+def tag_stenographer_blocks(blocks, verbose=False):
     """
-    Elimina bloques de texto correspondientes a taquígrafos.
+    Etiqueta los bloques de taquígrafos (cursiva 12.0) con
+    type="stenographer_note" en lugar de eliminarlos (TODO original:
+    conservan información contextual — votaciones, horarios, incidentes —
+    y mantenerlos evita que la consolidación fusione turnos separados por
+    un evento).
 
     Args:
         blocks (list): Lista de bloques de texto.
 
     Returns:
-        list: Lista de bloques sin los textos de taquígrafos.
+        tuple: (lista de bloques, cantidad de bloques etiquetados)
     """
-    filtered_blocks = []
-    tachygrapher_count = 0
+    tagged_count = 0
 
     for block in blocks:
-        text = block["text"].strip()
-        font_style = block["font_style"]
-        size = block["size"]
+        if block["font_style"] == "italic" and block["size"] == 12.0:
+            block["type"] = "stenographer_note"
+            tagged_count += 1
+            if verbose: print(f"Bloque de taquígrafo etiquetado: {block['text'][:80]}")
 
-        # Identificar bloques de taquígrafos (guion inicial o entre paréntesis)
-        if font_style == "italic" and size == 12.0:
-            if verbose: print(f"Bloque de taquígrafo eliminado: {block}")
-            tachygrapher_count += 1
-            continue  # Saltar bloques de taquígrafos
-
-        filtered_blocks.append(block)
-
-    print(f"Eliminación completa. Se eliminaron {tachygrapher_count} bloques de taquígrafos.")
-    print(f"Cantidad de bloques restantes: {len(filtered_blocks)}.")
-    return filtered_blocks
+    print(f"Etiquetado completo. Se etiquetaron {tagged_count} bloques de taquígrafos.")
+    return blocks, tagged_count
 
 
 def assign_chapter_to_blocks(blocks, verbose=False):
@@ -315,7 +380,7 @@ def assign_chapter_to_blocks(blocks, verbose=False):
         text = block["text"].strip()
         font_style = block["font_style"]
         size = block["size"]
-        
+
         # Detectar si el bloque es un título de capítulo
         if re.match(r"^\d+\.\s", text) and font_style == "bold":
             if verbose: print(f"Título de capítulo detectado (antes de dividir): {block}")
@@ -366,11 +431,11 @@ def assign_chapter_to_blocks(blocks, verbose=False):
 def identify_speakers(blocks, verbose=False):
     """
     Identifica los bloques dichos por speakers y asigna los textos de los speakers.
-    No clasifica bloques de taquígrafos, ya que estos fueron eliminados previamente.
+    Los bloques de taquígrafos ya etiquetados pasan sin speaker.
 
     Args:
         blocks (list): Lista de bloques de texto.
-    
+
     Returns:
         list: Lista de bloques con el atributo "speaker" asignado.
     """
@@ -402,13 +467,16 @@ def identify_speakers(blocks, verbose=False):
     print(f"Identificación de speakers completa. Se anotaron {speaker_blocks_count} bloques con speakers.")
     return annotated_blocks
 
+
 def consolidate_speaker_blocks(blocks):
     """
     Consolida bloques consecutivos del mismo speaker en un único bloque.
-    
+    Un bloque sin speaker (p. ej. una nota de taquígrafo) corta la
+    consolidación, preservando los turnos separados por eventos.
+
     Args:
         blocks (list): Lista de bloques con atributos "text" y "speaker".
-    
+
     Returns:
         list: Lista de bloques consolidados.
     """
@@ -448,6 +516,7 @@ def consolidate_speaker_blocks(blocks):
     print(f"Consolidación completa. Se consolidaron {consolidated_count} bloques de texto.")
     return consolidated_blocks
 
+
 def clean_speaker_names(blocks, verbose=False):
     """
     Limpia los nombres de los speakers eliminando el punto y guión al final.
@@ -472,105 +541,224 @@ def clean_speaker_names(blocks, verbose=False):
     print(f"Limpieza completa. Se limpiaron {cleaned_speakers_count} nombres de speakers.")
     return blocks
 
-# Ruta a la carpeta con los PDFs
-pdf_folder = "data/raw/senado/taquigraficas"
 
-# Verbosidad configurada como variable en el flujo principal
-verbose = True
+# ---------------------------------------------------------------------------
+# Orchestration: per-session processing, persistence, stats
+# ---------------------------------------------------------------------------
 
-# Listar todos los PDFs en la carpeta
-pdf_files = [f for f in os.listdir(pdf_folder) if f.endswith(".pdf")][:1]  # Limitar a 1 archivo para pruebas
+def process_pdf(pdf_path, verbose=False):
+    """Run the full pipeline on one PDF. Returns (blocks, chapters, stats)."""
+    stats = {}
 
-print(f"Se encontraron {len(pdf_files)} archivos PDF en la carpeta: {pdf_folder}")
+    extracted = extract_all_characters(str(pdf_path), max_pages=None, verbose=verbose)
+    stats["characters_extracted"] = len(extracted)
 
-processing_stats = []  # Inicializar lista de estadísticas
+    extracted = classify_font_styles(extracted)
 
-for pdf_file in pdf_files:
-    pdf_path = os.path.join(pdf_folder, pdf_file)  # Construir ruta completa
-    stats = {"file_name": pdf_file}  # Diccionario para estadísticas
+    blocks = group_characters_into_text_blocks(extracted, verbose=verbose)
+    stats["blocks_generated"] = len(blocks)
+
+    blocks = filter_blocks_by_marker(blocks, verbose=verbose)
+    stats["blocks_after_marker_filter"] = len(blocks)
+    if not blocks:
+        stats["error"] = "marker_not_found"
+        return [], {}, stats
+
+    before = len(blocks)
+    blocks = remove_headers(blocks, verbose=verbose)
+    stats["headers_removed"] = before - len(blocks)
+
+    before = len(blocks)
+    blocks = remove_empty_blocks(blocks)
+    stats["empty_blocks_removed"] = before - len(blocks)
+
+    blocks, tagged = tag_stenographer_blocks(blocks, verbose=verbose)
+    stats["stenographer_blocks_tagged"] = tagged
+
+    blocks, chapters = assign_chapter_to_blocks(blocks, verbose=verbose)
+    stats["chapters_detected"] = len(chapters)
+
+    blocks = identify_speakers(blocks, verbose=verbose)
+    blocks = clean_speaker_names(blocks, verbose=verbose)
+    blocks = consolidate_speaker_blocks(blocks)
+
+    return blocks, chapters, stats
+
+
+def blocks_to_frame(blocks, chapters, meta):
+    """Map pipeline blocks to the schema-v1 rows of the session table."""
+    rows = []
+    for seq, block in enumerate(blocks):
+        speaker = block.get("speaker")
+        chapter = block.get("capítulo")
+        rows.append({
+            "session_id": meta["session_id"],
+            "session_date": meta["session_date"],
+            "session_type": meta["session_type"],
+            "sesion": meta["sesion"],
+            "reunion": meta["reunion"],
+            "seq": seq,
+            "type": block.get("type") or ("speech" if speaker else "other"),
+            "chapter": chapter,
+            "chapter_title": chapters.get(chapter) if chapter else None,
+            "speaker_raw": speaker,
+            "text": block["text"],
+            "pages": sorted(block["pages"]) if block.get("pages") else [],
+            "font_style": block.get("font_style"),
+            "size": block.get("size"),
+            "source_pdf": meta["source_pdf"],
+            "pdf_sha256": meta["pdf_sha256"],
+            "parser_version": PARSER_VERSION,
+        })
+    return pd.DataFrame(rows)
+
+
+def load_manifest():
+    """Index raw_data_manifest.csv by pdf filename (empty dict if absent)."""
+    if not MANIFEST_PATH.exists():
+        return {}
+    df = pd.read_csv(MANIFEST_PATH, dtype=str)
+    return {row["pdf_filename"]: row for _, row in df.iterrows()}
+
+
+def session_meta_for(pdf_path, manifest):
+    """Session identity/provenance from the manifest, else from the sidecar."""
+    row = manifest.get(pdf_path.name)
+    if row is not None:
+        date_iso = row["session_date_iso"]
+        tipo, sesion, reunion = row["tipo"], row["sesion"], row["reunion"]
+        sha = row["pdf_sha256"]
+    else:
+        sidecar = pdf_path.with_suffix(".json")
+        meta = json.loads(sidecar.read_text(encoding="utf-8")) if sidecar.exists() else {}
+        try:
+            date_iso = datetime.strptime(meta.get("fecha", ""), "%d-%m-%Y").date().isoformat()
+        except ValueError:
+            date_iso = ""
+        tipo = meta.get("tipo", "")
+        sesion = str(meta.get("sesion", "") or "")
+        reunion = str(meta.get("reunion", "") or "")
+        sha = hashlib.sha256(pdf_path.read_bytes()).hexdigest()
+
     try:
-        # Extraer caracteres
-        extracted_characters = extract_all_characters(pdf_path, max_pages=None, verbose=verbose)
-        stats["characters_extracted"] = len(extracted_characters)
+        reunion_tag = f"r{int(reunion):02d}"
+    except (TypeError, ValueError):
+        reunion_tag = "rxx"
+    session_id = f"{date_iso}_{reunion_tag}" if date_iso else pdf_path.stem
 
-        # Clasificar estilos de fuente
-        extracted_characters = classify_font_styles(extracted_characters)
+    return {
+        "session_id": session_id,
+        "session_date": date_iso,
+        "session_type": tipo,
+        "sesion": sesion,
+        "reunion": reunion,
+        "source_pdf": pdf_path.name,
+        "pdf_sha256": sha,
+    }
 
-        # Agrupar bloques
-        text_blocks = group_characters_into_text_blocks(extracted_characters, verbose=verbose)
-        stats["blocks_generated"] = len(text_blocks)
 
-        # Filtrar bloques por marcador
-        text_blocks = filter_blocks_by_marker(text_blocks, verbose=verbose)
-        stats["blocks_after_marker_filter"] = len(text_blocks)
+def parse_one(pdf_path_str, meta, verbose=False):
+    """Worker: parse one PDF, write its Parquet table and log, return stats."""
+    pdf_path = Path(pdf_path_str)
+    out_path = OUT_DIR / "blocks" / f"{meta['session_id']}.parquet"
+    log_path = OUT_DIR / "logs" / f"{meta['session_id']}.log"
+    stats = {"session_id": meta["session_id"], "file_name": pdf_path.name}
+    start = time.monotonic()
 
-        # Remover encabezados
-        blocks_before_headers = len(text_blocks)
-        text_blocks = remove_headers(text_blocks, verbose=verbose)
-        stats["headers_removed"] = blocks_before_headers - len(text_blocks)
+    try:
+        with log_path.open("w", encoding="utf-8") as log, contextlib.redirect_stdout(log):
+            blocks, chapters, run_stats = process_pdf(pdf_path, verbose=verbose)
+            stats.update(run_stats)
+            if blocks:
+                frame = blocks_to_frame(blocks, chapters, meta)
+                frame.to_parquet(out_path, index=False)
+                counts = frame["type"].value_counts()
+                stats["rows_written"] = len(frame)
+                stats["speech_blocks"] = int(counts.get("speech", 0))
+                stats["stenographer_notes"] = int(counts.get("stenographer_note", 0))
+                stats["other_blocks"] = int(counts.get("other", 0))
+    except Exception as e:  # per-file isolation: one bad PDF must not kill the run
+        stats["error"] = f"{type(e).__name__}: {e}"
 
-        # Eliminar bloques vacíos
-        blocks_before_empty_removal = len(text_blocks)
-        text_blocks = remove_empty_blocks(text_blocks)  # No requiere verbose
-        stats["empty_blocks_removed"] = blocks_before_empty_removal - len(text_blocks)
+    stats["duration_s"] = round(time.monotonic() - start, 1)
+    stats["parser_version"] = PARSER_VERSION
+    stats["parsed_at"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    return stats
 
-        # Eliminar bloques de taquígrafos
-        blocks_before_tachygrapher_removal = len(text_blocks)
-        text_blocks = remove_tachygrapher_blocks(text_blocks, verbose=verbose)
-        stats["tachygrapher_blocks_removed"] = blocks_before_tachygrapher_removal - len(text_blocks)
 
-        # Asignar capítulos
-        text_blocks, chapters = assign_chapter_to_blocks(text_blocks, verbose=verbose)
-        stats["chapters_detected"] = len(chapters)
+def write_stats(new_rows, stats_path):
+    """Merge this run's stats into parse_stats.csv (new rows win per file)."""
+    new = pd.DataFrame(new_rows)
+    if stats_path.exists():
+        old = pd.read_csv(stats_path)
+        if not new.empty:
+            old = old[~old["file_name"].isin(new["file_name"])]
+        new = pd.concat([old, new], ignore_index=True)
+    if new.empty:
+        return
+    for col in STATS_COLUMNS:
+        if col not in new.columns:
+            new[col] = None
+    new = new[STATS_COLUMNS].sort_values("file_name")
+    new.to_csv(stats_path, index=False)
 
-        # Identificar speakers
-        text_blocks = identify_speakers(text_blocks, verbose=verbose)
 
-        # Limpiar nombres de speakers
-        text_blocks = clean_speaker_names(text_blocks, verbose=verbose)
+def main():
+    ap = argparse.ArgumentParser(description="Parse Senate transcript PDFs into per-session Parquet block tables.")
+    ap.add_argument("--only", metavar="FILENAME", help="process a single PDF by filename")
+    ap.add_argument("--limit", type=int, help="process at most N PDFs")
+    ap.add_argument("--force", action="store_true", help="re-parse sessions whose output already exists")
+    ap.add_argument("--workers", type=int, default=6, help="parallel worker processes (default: 6)")
+    ap.add_argument("--verbose", action="store_true", help="verbose per-step output in the session logs")
+    args = ap.parse_args()
 
-        # Consolidar bloques
-        text_blocks = consolidate_speaker_blocks(text_blocks)
+    if not RAW_DIR.is_dir():
+        sys.exit(f"Raw data dir not found: {RAW_DIR} — is the data/ symlink in place? (see DATA.md)")
+    (OUT_DIR / "blocks").mkdir(parents=True, exist_ok=True)
+    (OUT_DIR / "logs").mkdir(parents=True, exist_ok=True)
 
-        # Contar bloques sin speaker
-        blocks_without_speaker = [block for block in text_blocks if "speaker" not in block or not block["speaker"]]
-        stats["blocks_without_speaker"] = len(blocks_without_speaker)
-        stats["final_blocks"] = len(text_blocks)
+    manifest = load_manifest()
+    pdfs = sorted(RAW_DIR.glob("*.pdf"))
+    if args.only:
+        pdfs = [p for p in pdfs if p.name == args.only]
+        if not pdfs:
+            sys.exit(f"No PDF named {args.only!r} in {RAW_DIR}")
+    if args.limit:
+        pdfs = pdfs[:args.limit]
 
-        # Agregar estadísticas a la lista
-        processing_stats.append(stats)
+    jobs, skipped = [], 0
+    for pdf in pdfs:
+        meta = session_meta_for(pdf, manifest)
+        if (OUT_DIR / "blocks" / f"{meta['session_id']}.parquet").exists() and not args.force:
+            skipped += 1
+            continue
+        jobs.append((pdf, meta))
 
-    except Exception as e:
-        stats["error"] = f"{type(e).__name__}: {e}"  # Registrar error detallado
-        processing_stats.append(stats)
+    print(f"{len(pdfs)} PDFs selected, {skipped} already parsed, {len(jobs)} to process "
+          f"(workers={args.workers}, parser {PARSER_VERSION})", flush=True)
 
-# Generar tabla final
-stats_df = pd.DataFrame(processing_stats)
+    new_rows = []
+    if jobs:
+        with ProcessPoolExecutor(max_workers=args.workers) as pool:
+            futures = {
+                pool.submit(parse_one, str(pdf), meta, args.verbose): meta["session_id"]
+                for pdf, meta in jobs
+            }
+            for i, fut in enumerate(as_completed(futures), 1):
+                stats = fut.result()
+                new_rows.append(stats)
+                flag = f"  ERROR: {stats['error']}" if stats.get("error") else ""
+                print(f"[{i}/{len(jobs)}] {stats['session_id']} "
+                      f"({stats.get('rows_written', 0)} rows, {stats['duration_s']}s){flag}", flush=True)
 
-# Ordenar columnas
-columns_order = [
-    "file_name",
-    "characters_extracted",
-    "blocks_generated",
-    "blocks_after_marker_filter",
-    "headers_removed",
-    "empty_blocks_removed",
-    "tachygrapher_blocks_removed",
-    "chapters_detected",
-    "blocks_without_speaker",
-    "final_blocks",
-    "error"
-]
+    stats_path = OUT_DIR / "parse_stats.csv"
+    write_stats(new_rows, stats_path)
 
-# Ensure all expected columns exist
-for col in columns_order:
-    if col not in stats_df.columns:
-        stats_df[col] = None
+    errors = [r for r in new_rows if r.get("error")]
+    print(f"\nDone: {len(new_rows)} parsed, {len(errors)} errors. Stats: {stats_path}")
+    for r in errors:
+        print(f"  {r['file_name']}: {r['error']}")
 
-# Reorder columns
-stats_df = stats_df[columns_order]
 
-# Imprimir y guardar la tabla
-print("\nEstadísticas de procesamiento:")
-print(stats_df.to_string(index=False))
-stats_df.to_csv("processing_stats.csv", index=False)
+if __name__ == "__main__":
+    main()
