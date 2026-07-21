@@ -48,7 +48,7 @@ from pathlib import Path
 import pandas as pd
 import pdfplumber
 
-PARSER_VERSION = "0.3.0"
+PARSER_VERSION = "0.3.1"
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
@@ -67,11 +67,12 @@ DGT_RE = re.compile(r"^Dirección General de Taquígrafos\b")
 
 # Ordered: first match wins. Applied lowercased.
 EVENT_SUBTYPES = [
-    ("timestamp", re.compile(r"^[–—-]?\s*(?:a las|son las)\s+\d")),
+    ("timestamp", re.compile(r"^[–—-]?\s*(?:a las|son las)\s+\d|^[–—-]?\s*en la ciudad aut")),
     ("vote", re.compile(r"votaci[oó]n|se vota|resulta[n]?\s+(?:aprobad|rechazad)|afirmativ|negativ|unanimidad|asentimiento")),
-    ("pause", re.compile(r"luego de unos instantes|cuarto intermedio|se reanuda")),
+    ("pause", re.compile(r"luego de (?:unos )?instantes|cuarto intermedio|se reanuda")),
     ("applause", re.compile(r"aplausos")),
-    ("incident", re.compile(r"manifestaciones|interrupci|abucheo|cánticos|contenido no inteligible|fuera del alcance del micrófono")),
+    ("laughter", re.compile(r"risas")),
+    ("incident", re.compile(r"manifestaciones|interrupci|abucheo|cánticos|murmullos|contenido no inteligible|fuera del alcance del micrófono")),
     ("stage", re.compile(r"ocupa la presidencia|ingresa|se retira|izamiento|entonaci|himno|arrían")),
 ]
 
@@ -362,6 +363,7 @@ def identify_speakers(blocks, body_size):
     """
     annotated = []
     current = None
+    turn_id = 0
     speech = 0
     for b in blocks:
         t = b["text"].strip()
@@ -371,6 +373,9 @@ def identify_speakers(blocks, body_size):
         if b["font_style"] == "bold" and b["size"] == body_size:
             if SPEAKER_RE.match(t):
                 current = t          # consumed: label block itself is not emitted
+                turn_id += 1         # a printed label opens a NEW turn; speech
+                                     # resuming after an event without a label
+                                     # stays in the same turn (ParlaMint-style)
             else:
                 b["type"] = "heading"
                 current = None
@@ -380,6 +385,7 @@ def identify_speakers(blocks, body_size):
             if current:
                 b["speaker"] = current
                 b["type"] = "speech"
+                b["turn_id"] = turn_id
                 speech += 1
             else:
                 b["type"] = "other"
@@ -431,7 +437,7 @@ def consolidate_speaker_blocks(blocks):
                 cur = None
             out.append(b)
             continue
-        if cur is not None and speaker == cur.get("speaker"):
+        if cur is not None and speaker == cur.get("speaker") and b.get("turn_id") == cur.get("turn_id"):
             cur["text"] += " " + b["text"]
             cur["pages"] = sorted(set(cur["pages"]) | set(b["pages"]))
         else:
@@ -513,6 +519,7 @@ def blocks_to_frame(blocks, chapters, meta):
             "seq": seq,
             "type": b.get("type") or ("speech" if speaker else "other"),
             "event_type": b.get("event_type"),
+            "turn_id": b.get("turn_id"),
             "chapter": chapter,
             "chapter_title": chapters.get(chapter) if chapter else None,
             "speaker_raw": speaker,
