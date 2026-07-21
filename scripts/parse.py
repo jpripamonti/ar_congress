@@ -1,26 +1,34 @@
 """Parse Argentine Senate stenographic transcript PDFs (versiones
 taquigraficas) into per-session block tables.
 
-Per-PDF pipeline (ported from the Jan 2025 test.py, behavior preserved
-except where noted): extract characters with pdfplumber -> classify font
-styles -> group characters into blocks by (font_style, size) -> reassign
-trailing hyphens to italic blocks -> keep blocks from the bold-12 "1."
-sumario marker on -> remove headers and empty blocks -> tag stenographer
-blocks -> assign chapters -> identify speakers -> clean speaker names ->
-consolidate consecutive same-speaker blocks.
+v0.3.0 pipeline (empirically recalibrated against the stratified profile of
+the corpus — see git history for the v0.2.0 heuristics it replaces):
 
-Deliberate changes vs. the Jan 2025 version:
-- Stenographer blocks (italic 12.0) are TAGGED (type="stenographer_note")
-  instead of deleted: they carry context (votes, timestamps, incidents),
-  and keeping them stops consolidation from fusing turns separated by an
-  event. (Implements the original TODO.md note.)
-- Output is persisted: one Parquet block table per session under
-  data/processed/senado/blocks/, a per-session log under logs/, and a
-  cumulative parse_stats.csv quality table.
-- A missing sumario marker is recorded as an error, not a silent
-  empty result.
-- Fixed a trailing-hyphen bug: a block ending in "- " kept its hyphen
-  AND prepended one to the next italic block.
+1. Extract characters with pdfplumber (text, font, size, page, y-position).
+2. Strip page headers POSITIONALLY: every page format 2020-2024 carries a
+   dateline containing "Pág. N" near the top (even the 2024 ArialNarrow
+   variant); all characters at or above that line are furniture.
+3. Classify font style from the subset-prefix-stripped family name.
+4. Calibrate body size per document (modal size of normal-style chars —
+   12.0 in every format sampled, but computed, not assumed).
+5. Group characters into blocks on (font family, style, size) change —
+   family in the key stops Times-Roman headings fusing with Helvetica
+   speaker labels.
+6. Cut front matter at the first opening event (dash-initial italic at
+   body size) or first speaker label; fall back to the old bold "1."
+   sumario marker. The 2024 "ÍNDICE" format has no bold marker at all.
+7. Classify blocks: furniture (non-body sizes: appendix, footnotes,
+   attendance lists), events (italic body-size, dash-initial or
+   parenthesized or event-verb) with subtypes, inline italics (merged
+   back into the surrounding speech instead of splitting turns),
+   chapter headings, speaker labels (GATED on ^Sr./Sra. — other bold
+   blocks become typed headings and reset the speaker instead of
+   becoming phantom speakers), speech, and unattributed "other".
+8. Consolidate consecutive same-speaker speech into turns; events and
+   headings break turns, inline italics are absorbed.
+
+Output per session: data/processed/senado/blocks/{session_id}.parquet,
+a log under logs/, and a merged parse_stats.csv row.
 
 Heuristics are calibrated against pdfplumber 0.11.5 (see pyproject.toml).
 """
@@ -32,6 +40,7 @@ import json
 import re
 import sys
 import time
+from collections import Counter
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from datetime import datetime, timezone
 from pathlib import Path
@@ -39,25 +48,50 @@ from pathlib import Path
 import pandas as pd
 import pdfplumber
 
-PARSER_VERSION = "0.2.0"
+PARSER_VERSION = "0.3.0"
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
 OUT_DIR = REPO_ROOT / "data" / "processed" / "senado"
 MANIFEST_PATH = REPO_ROOT / "raw_data_manifest.csv"
 
+SUBSET_RE = re.compile(r"^[A-Z]{6}\+")          # PDF font-subset prefixes: ABCDEF+ArialMT
+PAG_LINE_RE = re.compile(r"Pág\.\s*\d+")         # page-header dateline invariant
+SPEAKER_RE = re.compile(
+    r"^(?:(?:Sr|Sra|Srta|Sres)\.\s"                             # Sr. Mayans / Sra. Presidenta (…)
+    r"|(?:Varios señores|Varias señoras|Un señor|Una señora) senador)"  # anonymous/collective speakers
+)
+CHAPTER_RE = re.compile(r"^\d+\.\s?\S")
+EVENT_DASH_RE = re.compile(r"^[–—-]")
+DGT_RE = re.compile(r"^Dirección General de Taquígrafos\b")
+
+# Ordered: first match wins. Applied lowercased.
+EVENT_SUBTYPES = [
+    ("timestamp", re.compile(r"^[–—-]?\s*(?:a las|son las)\s+\d")),
+    ("vote", re.compile(r"votaci[oó]n|se vota|resulta[n]?\s+(?:aprobad|rechazad)|afirmativ|negativ|unanimidad|asentimiento")),
+    ("pause", re.compile(r"luego de unos instantes|cuarto intermedio|se reanuda")),
+    ("applause", re.compile(r"aplausos")),
+    ("incident", re.compile(r"manifestaciones|interrupci|abucheo|cánticos|contenido no inteligible|fuera del alcance del micrófono")),
+    ("stage", re.compile(r"ocupa la presidencia|ingresa|se retira|izamiento|entonaci|himno|arrían")),
+]
+
 STATS_COLUMNS = [
     "session_id",
     "file_name",
     "characters_extracted",
+    "header_chars_removed",
+    "footer_chars_removed",
+    "body_size",
     "blocks_generated",
-    "blocks_after_marker_filter",
-    "headers_removed",
+    "marker_mode",
+    "blocks_after_marker",
     "empty_blocks_removed",
-    "stenographer_blocks_tagged",
     "chapters_detected",
+    "events_tagged",
+    "inline_merged",
     "speech_blocks",
-    "stenographer_notes",
+    "heading_blocks",
+    "furniture_blocks",
     "other_blocks",
     "rows_written",
     "duration_s",
@@ -68,529 +102,408 @@ STATS_COLUMNS = [
 
 
 # ---------------------------------------------------------------------------
-# Pipeline steps (Spanish docstrings kept verbatim from the Jan 2025 test.py)
+# Character extraction and page-level cleanup
 # ---------------------------------------------------------------------------
 
-def extract_all_characters(pdf_path, max_pages=None, verbose=False):
+def extract_all_characters(pdf_path, max_pages=None):
+    """Extract every character with font family, style, size, page, and y.
+
+    Returns (chars, page_heights) — heights feed the footer strip.
     """
-    Extrae todos los caracteres de un PDF, incluyendo texto, tipo de letra y
-    tamaño, de todas las páginas especificadas.
-
-    Args:
-        pdf_path (str): Ruta al archivo PDF.
-        max_pages (int or None): Número máximo de páginas a procesar.
-        Si es None, se procesan todas.
-
-    Returns:
-        list: Lista de diccionarios con información de cada carácter extraído.
-    """
-    extracted_characters = []
-
+    chars = []
+    page_heights = {}
     with pdfplumber.open(pdf_path) as pdf:
-        num_pages = len(pdf.pages) if max_pages is None else min(max_pages, len(pdf.pages))
-        print(f"Procesando un total de {num_pages} páginas del PDF...") if verbose else None
-
-        for i, page in enumerate(pdf.pages[:num_pages]):
-            for char in page.chars:
-                extracted_characters.append({
-                    "text": char["text"],
-                    "font": char["fontname"],
-                    "size": round(char["size"], 1),
-                    "page": i + 1  # Agregar número de página para referencia
+        pages = pdf.pages if max_pages is None else pdf.pages[:max_pages]
+        for i, page in enumerate(pages):
+            page_heights[i + 1] = page.height
+            for c in page.chars:
+                family = SUBSET_RE.sub("", c["fontname"])
+                low = family.lower()
+                if "bold" in low:
+                    style = "bold"
+                elif "italic" in low or "oblique" in low:
+                    style = "italic"
+                else:
+                    style = "normal"
+                chars.append({
+                    "text": c["text"],
+                    "font": family,
+                    "font_style": style,
+                    "size": round(c["size"], 1),
+                    "page": i + 1,
+                    "top": c["top"],
                 })
+    print(f"Extracción completa. Se extrajeron {len(chars)} caracteres en total.")
+    return chars, page_heights
 
-    print(f"Extracción completa. Se extrajeron {len(extracted_characters)} caracteres en total.")
-    return extracted_characters
 
+def strip_page_headers(chars):
+    """Drop every char at or above the per-page "Pág. N" dateline.
 
-def classify_font_styles(extracted_characters):
+    The dateline (with the motto above it, where present) is the one
+    running-header invariant across all 2020-2024 formats. Pages without
+    a dateline (cover, plates) are left untouched — the front-matter cut
+    handles those at block level.
     """
-    Clasifica el tipo de letra de los caracteres extraídos en 'normal', 'bold' o 'italic'.
+    # line assembly per page, top band only
+    lines = {}
+    for c in chars:
+        if c["top"] < 150:
+            lines.setdefault((c["page"], round(c["top"] / 3)), []).append(c)
 
-    Args:
-        extracted_characters (list): Lista de caracteres extraídos, donde cada carácter
-                                     es un diccionario con el atributo 'font'.
+    cutoffs = {}
+    for (page, _), line_chars in sorted(lines.items()):
+        if page in cutoffs:
+            continue
+        text = "".join(ch["text"] for ch in line_chars)  # extraction order = reading order
+        if PAG_LINE_RE.search(text):
+            cutoffs[page] = max(ch["top"] for ch in line_chars) + 0.5
 
-    Returns:
-        list: Lista de caracteres con un atributo adicional 'font_style'.
+    kept = [c for c in chars if not (c["page"] in cutoffs and c["top"] <= cutoffs[c["page"]])]
+    removed = len(chars) - len(kept)
+    print(f"Encabezados de página eliminados: {removed} caracteres en {len(cutoffs)} páginas.")
+    return kept, removed
+
+
+def strip_page_footers(chars, page_heights):
+    """Drop the per-page "Dirección General de Taquígrafos" footer.
+
+    The 2024 format signs every page at the bottom (mixed styles: bold
+    "Taquígrafos" next to normal text), which otherwise becomes a
+    speaker-resetting heading on every page. Only lines in the bottom
+    band that actually mention Taquígrafos trigger a cut, so pages
+    without the footer are untouched.
     """
-    for char in extracted_characters:
-        font_name = char["font"].lower()  # Convertir a minúsculas para comparación
-        if "bold" in font_name:
-            char["font_style"] = "bold"
-        elif "italic" in font_name or "oblique" in font_name:
-            char["font_style"] = "italic"
+    lines = {}
+    for c in chars:
+        h = page_heights.get(c["page"], 842)
+        if c["top"] > h - 70:
+            lines.setdefault((c["page"], round(c["top"] / 3)), []).append(c)
+
+    cutoffs = {}
+    for (page, _), line_chars in sorted(lines.items()):
+        text = "".join(ch["text"] for ch in line_chars)
+        if "Taquígrafo" in text or "Direcci" in text:
+            y = min(ch["top"] for ch in line_chars) - 0.5
+            cutoffs[page] = min(cutoffs.get(page, y), y)
+
+    kept = [c for c in chars if not (c["page"] in cutoffs and c["top"] >= cutoffs[c["page"]])]
+    removed = len(chars) - len(kept)
+    print(f"Pies de página eliminados: {removed} caracteres en {len(cutoffs)} páginas.")
+    return kept, removed
+
+
+def body_size_candidates(chars):
+    """Candidate body sizes, most frequent normal-style size first.
+
+    Usually the modal size IS the body — but short Asambleas are dominated
+    by 10 pt attendance lists, so the caller tries candidates in order
+    until one yields a session opening.
+    """
+    counts = Counter(c["size"] for c in chars if c["font_style"] == "normal")
+    if not counts:
+        return [12.0]
+    total = sum(counts.values())
+    cands = [s for s, n in counts.most_common(3) if n >= 0.05 * total]
+    print(f"Candidatos a tamaño de cuerpo: {cands}")
+    return cands or [counts.most_common(1)[0][0]]
+
+
+# ---------------------------------------------------------------------------
+# Block construction
+# ---------------------------------------------------------------------------
+
+def group_characters_into_text_blocks(chars):
+    """Group consecutive chars into blocks; break on (style, size) change.
+
+    Font family is recorded but deliberately NOT in the break key: the
+    ilovepdf-recompressed files rewrite fonts mid-heading ("1." and its
+    title land in different families), which fragments chapter headings.
+    Heading/label fusion across families is handled by the double-space
+    split in assign_chapter_to_blocks instead.
+    """
+    blocks = []
+    cur = None
+    for c in chars:
+        if cur is None:
+            cur = {"text": c["text"], "font": c["font"], "font_style": c["font_style"],
+                   "size": c["size"], "pages": [c["page"]]}
+            continue
+        if (cur["font_style"], cur["size"]) != (c["font_style"], c["size"]):
+            blocks.append(cur)
+            cur = {"text": c["text"], "font": c["font"], "font_style": c["font_style"],
+                   "size": c["size"], "pages": [c["page"]]}
         else:
-            char["font_style"] = "normal"
+            cur["text"] += c["text"]
+            if c["page"] not in cur["pages"]:
+                cur["pages"].append(c["page"])
+    if cur is not None:
+        blocks.append(cur)
+    print(f"Agrupamiento completo. Se generaron {len(blocks)} bloques de texto.")
+    return reassign_hyphens_to_italic_blocks(blocks)
 
-    return extracted_characters
+
+def reassign_hyphens_to_italic_blocks(blocks):
+    """Mueve los guiones finales al inicio del siguiente bloque cursivo."""
+    for i in range(len(blocks) - 1):
+        cur, nxt = blocks[i], blocks[i + 1]
+        if cur["text"].strip().endswith("-") and nxt["font_style"] == "italic":
+            cur["text"] = cur["text"].strip().rstrip("-")
+            nxt["text"] = "-" + nxt["text"].strip()
+    return blocks
 
 
-def group_characters_into_text_blocks(extracted_characters, verbose=False):
+def cut_front_matter(blocks, body_size):
+    """Start the session at the first opening event or speaker label.
+
+    Sessions open with a dash-initial italic event ("–A las 15:02 ...",
+    "–En la Ciudad Autónoma ...") or directly with a chair label. This is
+    format-independent and also skips the sumario/índice listing, whose
+    chapter titles are re-detected from the body headings. Falls back to
+    the v0.2 bold "1." marker; returns ([], "none") when nothing matches.
     """
-    Agrupa caracteres en bloques de texto basados en tipo y tamaño de letra,
-    rastreando todas las páginas que abarcan los caracteres.
-
-    Args:
-        extracted_characters (list): Lista de caracteres extraídos, con sus atributos.
-
-    Returns:
-        list: Lista de bloques de texto, donde cada bloque es un diccionario con los atributos:
-              - "text": Texto concatenado.
-              - "font": Fuente original del bloque.
-              - "font_style": Tipo de letra del bloque.
-              - "size": Tamaño de letra del bloque.
-              - "pages": Lista de páginas únicas donde aparece el bloque.
-    """
-    text_blocks = []
-    current_block = {"text": "", "font": None, "font_style": None, "size": None, "pages": []}
-
-    if verbose: print("Iniciando el agrupamiento de caracteres en bloques de texto...")
-
-    for char in extracted_characters:
-        font = char["font"]
-        font_style = char["font_style"]
-        size = char["size"]
-        page = char["page"]
-        text = char["text"]
-
-        if not current_block["text"]:  # Inicializamos el bloque actual
-            current_block.update({"text": text, "font": font, "font_style": font_style, "size": size, "pages": [page]})
+    for i, b in enumerate(blocks):
+        t = b["text"].strip()
+        if b["size"] != body_size:
             continue
-
-        # Si el tipo o tamaño de letra cambia, almacenamos el bloque actual
-        if current_block["font_style"] != font_style or current_block["size"] != size:
-            text_blocks.append(current_block)
-            current_block = {"text": text, "font": font, "font_style": font_style, "size": size, "pages": [page]}
-        else:
-            current_block["text"] += text
-            if page not in current_block["pages"]:  # Aseguramos rastrear todas las páginas
-                current_block["pages"].append(page)
-
-    # Aseguramos guardar el último bloque
-    if current_block["text"]:
-        text_blocks.append(current_block)
-
-    if verbose:
-        print(f"Agrupamiento completo. Se generaron {len(text_blocks)} bloques de texto.")
-
-    # Reasignación de guiones
-    text_blocks = reassign_hyphens_to_italic_blocks(text_blocks, verbose=verbose)
-
-    return text_blocks
-
-
-def reassign_hyphens_to_italic_blocks(text_blocks, verbose=False):
-    """
-    Mueve los guiones finales al inicio del siguiente bloque cursivo, si corresponde.
-
-    Args:
-        text_blocks (list): Lista de bloques de texto agrupados.
-        verbose (bool): Imprime información adicional si es True.
-
-    Returns:
-        list: Lista de bloques con los guiones reasignados.
-    """
-    for i in range(len(text_blocks) - 1):
-        current_block = text_blocks[i]
-        next_block = text_blocks[i + 1]
-
-        # Verificar si el bloque actual termina con un guión
-        if current_block["text"].strip().endswith("-"):
-            # Verificar si el siguiente bloque es cursivo
-            if next_block["font_style"] == "italic":
-                # Mover el guión al siguiente bloque
-                if verbose:
-                    print(f"Reasignando guión de '{current_block['text']}' al inicio de '{next_block['text']}'")
-                # Fix: strip antes de rstrip — antes, un guión seguido de
-                # espacios sobrevivía y además se duplicaba en el bloque cursivo
-                current_block["text"] = current_block["text"].strip().rstrip("-")
-                next_block["text"] = "-" + next_block["text"].strip()  # Añadir el guión al siguiente bloque
-
-    return text_blocks
-
-
-def filter_blocks_by_marker(text_blocks, marker_text="1.",
-                            marker_font="bold",
-                            marker_size=12.0,
-                            verbose=False):
-    """
-    Filtra bloques de texto comenzando desde un marcador específico.
-
-    Args:
-        text_blocks (list): Lista de bloques de texto generados por group_characters_into_text_blocks.
-        marker_text (str): Texto del marcador que indica el inicio del análisis.
-        marker_font (str): Tipo de letra del marcador.
-        marker_size (float): Tamaño de letra del marcador.
-
-    Returns:
-        list: Lista de bloques de texto a partir del marcador, incluyendo el marcador.
-    """
-    marker_found = False
-    blocks_from_marker = []
-
-    if verbose: print(f"Buscando el marcador '{marker_text}' con fuente '{marker_font}' y tamaño {marker_size}...")
-
-    for block in text_blocks:
-        # Verificar si el bloque es el marcador
-        if not marker_found:
-            if (
-                block["text"].strip().startswith(marker_text) and
-                marker_font in block["font_style"] and
-                block["size"] == marker_size
-            ):
-                marker_found = True
-                blocks_from_marker.append(block)  # Incluir el bloque del marcador
-                print(f"Marcador encontrado en el bloque: {block}")
-            continue
-
-        # Una vez encontrado el marcador, añadir los bloques restantes
-        blocks_from_marker.append(block)
-
-    if not marker_found:
-        print("=== Advertencia: No se encontró el marcador ===")
-
-    print(f"Filtrado completo. Se seleccionaron {len(blocks_from_marker)} bloques a partir del marcador.")
-    return blocks_from_marker
-
-
-def remove_headers(blocks, verbose=False):
-    """
-    Filtra los bloques y elimina encabezados específicos, incluyendo:
-    - "Dirección General de Taquígrafos".
-    - Bloques que comienzan y terminan con “ y ”.
-    - Fechas con número de página (e.g., "13 de abril de 2023 Pág. X").
-
-    Args:
-        blocks (list): Lista de bloques de texto.
-
-    Returns:
-        list: Lista de bloques sin los encabezados.
-    """
-    blocks_without_headers = []
-    removed_headers_count = 0
-
-    for block in blocks:
-        text = block["text"].strip()
-        font_style = block["font_style"]
-        size = block["size"]
-
-        # Eliminar encabezados específicos
-        if (
-            text in ["Dirección General de Taquígrafos", "Dirección General de Taquígrafos "] and
-            font_style == "italic" and
-            size == 12.0
-        ):
-            if verbose: print(f"Encabezado eliminado: {block}")
-            removed_headers_count += 1
-            continue
-
-        # Eliminar encabezados entre comillas especiales
-        if (
-            text.startswith("“") and
-            text.endswith("”") and
-            font_style == "normal" and
-            size == 10.0
-        ):
-            if verbose: print(f"Encabezado eliminado: {block}")
-            removed_headers_count += 1
-            continue
-
-        # Eliminar fechas con número de página
-        if (
-            font_style == "normal" and
-            9.9 <= size <= 10.1 and
-            re.match(r"^\d{1,2} .* Pág\. \d+ ?$", text)
-        ):
-            if verbose: print(f"Encabezado eliminado: {block}")
-            removed_headers_count += 1
-            continue
-
-        # Mantener bloques no encabezados
-        blocks_without_headers.append(block)
-
-    print(f"Eliminación de encabezados completa. Se eliminaron {removed_headers_count} encabezados.")
-    print(f"Cantidad de bloques restantes: {len(blocks_without_headers)}.")
-    return blocks_without_headers
+        if b["font_style"] == "italic" and EVENT_DASH_RE.match(t):
+            return blocks[i:], "opening_event"
+        if b["font_style"] == "bold" and SPEAKER_RE.match(t):
+            return blocks[i:], "first_speaker"
+    for i, b in enumerate(blocks):
+        if b["font_style"] == "bold" and b["size"] == body_size and b["text"].strip().startswith("1."):
+            return blocks[i:], "numbered_marker"
+    print("=== Advertencia: no se encontró el inicio de la sesión ===")
+    return [], "none"
 
 
 def remove_empty_blocks(blocks):
+    """Elimina los bloques vacíos o de solo espacios."""
+    kept = [b for b in blocks if b["text"].strip()]
+    removed = len(blocks) - len(kept)
+    print(f"Se eliminaron {removed} bloques vacíos. Quedan {len(kept)} bloques.")
+    return kept, removed
+
+
+# ---------------------------------------------------------------------------
+# Block classification
+# ---------------------------------------------------------------------------
+
+def classify_event(text):
+    """Subtype an event text; first matching pattern wins."""
+    low = text.lower()
+    for subtype, pattern in EVENT_SUBTYPES:
+        if pattern.search(low):
+            return subtype
+    return "unspecified"
+
+
+def classify_blocks(blocks, body_size):
+    """Assign preliminary types: furniture, event (+subtype), inline.
+
+    Bold blocks are left for the chapter/speaker passes; normal body-size
+    blocks are speech candidates resolved in identify_speakers.
     """
-    Elimina los bloques de texto vacíos o que contienen solo espacios en blanco.
-
-    Args:
-        blocks (list): Lista de bloques de texto.
-
-    Returns:
-        list: Lista de bloques no vacíos.
-    """
-    initial_count = len(blocks)
-    non_empty_blocks = [block for block in blocks if block["text"].strip()]
-    removed_count = initial_count - len(non_empty_blocks)
-
-    print(f"Se eliminaron {removed_count} bloques vacíos. Quedan {len(non_empty_blocks)} bloques no vacíos.")
-    return non_empty_blocks
-
-
-def tag_stenographer_blocks(blocks, verbose=False):
-    """
-    Etiqueta los bloques de taquígrafos (cursiva 12.0) con
-    type="stenographer_note" en lugar de eliminarlos (TODO original:
-    conservan información contextual — votaciones, horarios, incidentes —
-    y mantenerlos evita que la consolidación fusione turnos separados por
-    un evento).
-
-    Args:
-        blocks (list): Lista de bloques de texto.
-
-    Returns:
-        tuple: (lista de bloques, cantidad de bloques etiquetados)
-    """
-    tagged_count = 0
-
-    for block in blocks:
-        if block["font_style"] == "italic" and block["size"] == 12.0:
-            block["type"] = "stenographer_note"
-            tagged_count += 1
-            if verbose: print(f"Bloque de taquígrafo etiquetado: {block['text'][:80]}")
-
-    print(f"Etiquetado completo. Se etiquetaron {tagged_count} bloques de taquígrafos.")
-    return blocks, tagged_count
-
-
-def assign_chapter_to_blocks(blocks, verbose=False):
-    """
-    Identifica y divide bloques de capítulos, luego asigna un número de capítulo
-    a cada bloque y guarda los títulos de los capítulos en una estructura separada.
-
-    Args:
-        blocks (list): Lista de bloques de texto.
-
-    Returns:
-        tuple: (lista de bloques actualizada, diccionario de capítulos)
-               - blocks_with_chapters: Bloques con el capítulo asignado.
-               - chapters: Diccionario con números de capítulo como claves y títulos como valores.
-    """
-    chapters = {}  # Diccionario para almacenar los títulos de capítulos
-    current_chapter = None
-    blocks_with_chapters = []
-    chapter_count = 0
-
-    for block in blocks:
-        text = block["text"].strip()
-        font_style = block["font_style"]
-        size = block["size"]
-
-        # Detectar si el bloque es un título de capítulo
-        if re.match(r"^\d+\.\s", text) and font_style == "bold":
-            if verbose: print(f"Título de capítulo detectado (antes de dividir): {block}")
-
-            # Dividir el bloque por espacios dobles si es necesario
-            if "  " in text:
-                if verbose: print("Bloque de capítulo contiene espacios dobles. Dividiendo...")
-                parts = text.split("  ")
-                for i, part in enumerate(parts):
-                    if part.strip():
-                        new_block = {
-                            "text": part.strip(),
-                            "font_style": font_style,
-                            "size": size,
-                            "pages": block["pages"]
-                        }
-                        if verbose: print(f"Nuevo bloque creado: {new_block}")
-
-                        # Procesar la primera parte como título del capítulo
-                        if i == 0:
-                            chapter_number = part.split('.')[0]  # Extraer el número del capítulo
-                            chapters[chapter_number] = part.strip()
-                            current_chapter = chapter_number
-                            chapter_count += 1
-                            if verbose: print(f"Capítulo asignado: {chapter_number} -> {part.strip()}")
-                        else:
-                            # Procesar las partes restantes como bloques normales
-                            new_block["capítulo"] = current_chapter
-                            blocks_with_chapters.append(new_block)
-            else:
-                # Bloque sin espacios dobles, procesar como título de capítulo directamente
-                chapter_number = text.split('.')[0]  # Extraer el número del capítulo
-                chapters[chapter_number] = text
-                current_chapter = chapter_number
-                chapter_count += 1
-                if verbose: print(f"Capítulo asignado: {chapter_number} -> {text}")
-            continue  # No incluir títulos de capítulo en la salida final
-
-        # Asignar el capítulo actual al bloque
-        block["capítulo"] = current_chapter
-        blocks_with_chapters.append(block)
-
-    print(f"Asignación de capítulos completa. Se detectaron {chapter_count} capítulos.")
-    print(f"Cantidad de bloques con capítulos asignados: {len(blocks_with_chapters)}.")
-    return blocks_with_chapters, chapters
-
-
-def identify_speakers(blocks, verbose=False):
-    """
-    Identifica los bloques dichos por speakers y asigna los textos de los speakers.
-    Los bloques de taquígrafos ya etiquetados pasan sin speaker.
-
-    Args:
-        blocks (list): Lista de bloques de texto.
-
-    Returns:
-        list: Lista de bloques con el atributo "speaker" asignado.
-    """
-    annotated_blocks = []
-    current_speaker = None  # Para rastrear el speaker actual
-    speaker_blocks_count = 0
-
-    for block in blocks:
-        text = block["text"].strip()
-        font_style = block["font_style"]
-        size = block["size"]
-
-        # Caso 1: Identificar nombres de speakers (negrita)
-        if font_style == "bold" and size == 12.0:
-            current_speaker = text  # Actualizamos el speaker actual
-            if verbose: print(f"Speaker identificado: {current_speaker}")
-            continue  # No incluimos este bloque en la salida final
-
-        # Caso 2: Asignar texto al speaker actual
-        if font_style == "normal" and size == 12.0 and current_speaker:
-            block["speaker"] = current_speaker  # Asignar texto al último speaker identificado
-            annotated_blocks.append(block)
-            speaker_blocks_count += 1
+    events = 0
+    for b in blocks:
+        t = b["text"].strip()
+        if DGT_RE.match(t):
+            b["type"] = "furniture"      # "Dirección General de Taquígrafos" backstop
             continue
+        if b["size"] != body_size:
+            b["type"] = "furniture"      # appendix, footnotes, attendance lists, plates
+            continue
+        if b["font_style"] == "italic":
+            # verb-pattern path requires sentence shape, so a lone italicized
+            # word like "votación" stays inline instead of becoming an event
+            sentence_like = t[:1].isupper() and (len(t) > 15 or t.endswith("."))
+            if EVENT_DASH_RE.match(t) or t.startswith("(") or \
+                    (sentence_like and classify_event(t) != "unspecified"):
+                b["type"] = "event"
+                b["event_type"] = classify_event(t)
+                events += 1
+            else:
+                b["type"] = "inline"     # italicized fragment inside speech
+    print(f"Clasificación: {events} eventos etiquetados.")
+    return blocks, events
 
-        # Caso 3: Bloques sin speaker definido
-        annotated_blocks.append(block)
 
-    print(f"Identificación de speakers completa. Se anotaron {speaker_blocks_count} bloques con speakers.")
-    return annotated_blocks
+def assign_chapter_to_blocks(blocks, body_size):
+    """Detect bold body-size "N. Título" headings; assign chapters to blocks."""
+    chapters = {}
+    current = None
+    out = []
+    for b in blocks:
+        t = b["text"].strip()
+        if (b.get("type") is None and b["font_style"] == "bold" and b["size"] == body_size
+                and CHAPTER_RE.match(t)):
+            # split fused "N. Título  Sra. Presidenta..." blocks on double spaces
+            parts = [p.strip() for p in t.split("  ") if p.strip()] if "  " in t else [t]
+            num = parts[0].split(".")[0]
+            chapters[num] = parts[0]
+            current = num
+            for extra in parts[1:]:
+                nb = {"text": extra, "font": b.get("font"), "font_style": b["font_style"],
+                      "size": b["size"], "pages": b["pages"], "capítulo": current}
+                out.append(nb)
+            continue
+        b["capítulo"] = current
+        out.append(b)
+    print(f"Asignación de capítulos completa. Se detectaron {len(chapters)} capítulos.")
+    return out, chapters
+
+
+def identify_speakers(blocks, body_size):
+    """Attribute speech to speakers; gate labels on ^Sr./Sra. patterns.
+
+    Bold body-size blocks that are NOT speaker labels become typed
+    headings and RESET the current speaker (they mark section changes:
+    INSERCIONES, Actas, signature) instead of becoming phantom speakers.
+    """
+    annotated = []
+    current = None
+    speech = 0
+    for b in blocks:
+        t = b["text"].strip()
+        if b.get("type") in ("furniture", "event", "inline"):
+            annotated.append(b)
+            continue
+        if b["font_style"] == "bold" and b["size"] == body_size:
+            if SPEAKER_RE.match(t):
+                current = t          # consumed: label block itself is not emitted
+            else:
+                b["type"] = "heading"
+                current = None
+                annotated.append(b)
+            continue
+        if b["font_style"] == "normal" and b["size"] == body_size:
+            if current:
+                b["speaker"] = current
+                b["type"] = "speech"
+                speech += 1
+            else:
+                b["type"] = "other"
+            annotated.append(b)
+            continue
+        b.setdefault("type", "other")
+        annotated.append(b)
+    print(f"Identificación de speakers completa. Se anotaron {speech} bloques con speakers.")
+    return annotated
+
+
+def clean_speaker_names(blocks):
+    """Elimina el ".-" final de los nombres de speakers."""
+    cleaned = 0
+    for b in blocks:
+        if b.get("speaker"):
+            new = re.sub(r"\.\-$", "", b["speaker"]).strip()
+            if new != b["speaker"]:
+                b["speaker"] = new
+                cleaned += 1
+    print(f"Limpieza completa. Se limpiaron {cleaned} nombres de speakers.")
+    return blocks
 
 
 def consolidate_speaker_blocks(blocks):
+    """Merge consecutive same-speaker speech into turns.
+
+    Inline italics are absorbed into the running turn (they are content,
+    not events); events, headings, furniture, and unattributed blocks
+    break the turn.
     """
-    Consolida bloques consecutivos del mismo speaker en un único bloque.
-    Un bloque sin speaker (p. ej. una nota de taquígrafo) corta la
-    consolidación, preservando los turnos separados por eventos.
-
-    Args:
-        blocks (list): Lista de bloques con atributos "text" y "speaker".
-
-    Returns:
-        list: Lista de bloques consolidados.
-    """
-    consolidated_blocks = []
-    current_block = None
-    consolidated_count = 0
-
-    for block in blocks:
-        # Obtener el speaker de forma segura
-        block_speaker = block.get("speaker")
-
-        # Caso 1: Si es un bloque sin speaker, guardar directamente
-        if not block_speaker:
-            if current_block:
-                consolidated_blocks.append(current_block)
-                current_block = None
-            consolidated_blocks.append(block)
+    out = []
+    cur = None
+    inline_merged = 0
+    for b in blocks:
+        if b.get("type") == "inline":
+            if cur is not None:
+                cur["text"] += " " + b["text"].strip()
+                cur["pages"] = sorted(set(cur["pages"]) | set(b["pages"]))
+                inline_merged += 1
+            else:
+                b["type"] = "inline_italic"   # orphan: no active turn to join
+                out.append(b)
             continue
-
-        # Caso 2: Consolida bloques consecutivos del mismo speaker
-        if current_block and block_speaker == current_block.get("speaker"):
-            # Concatenar texto y combinar páginas
-            current_block["text"] += " " + block["text"]
-            current_block["pages"] = list(set(current_block["pages"] + block["pages"]))
+        speaker = b.get("speaker")
+        if not speaker:
+            if cur is not None:
+                out.append(cur)
+                cur = None
+            out.append(b)
+            continue
+        if cur is not None and speaker == cur.get("speaker"):
+            cur["text"] += " " + b["text"]
+            cur["pages"] = sorted(set(cur["pages"]) | set(b["pages"]))
         else:
-            # Si cambia el speaker, guardar el bloque actual y comenzar uno nuevo
-            if current_block:
-                consolidated_blocks.append(current_block)
-                consolidated_count += 1
-            current_block = block
-
-    # Añadir el último bloque si existe
-    if current_block:
-        consolidated_blocks.append(current_block)
-        consolidated_count += 1
-
-    print(f"Consolidación completa. Se consolidaron {consolidated_count} bloques de texto.")
-    return consolidated_blocks
-
-
-def clean_speaker_names(blocks, verbose=False):
-    """
-    Limpia los nombres de los speakers eliminando el punto y guión al final.
-
-    Args:
-        blocks (list): Lista de bloques con atributos "speaker".
-
-    Returns:
-        list: Lista de bloques con nombres de speakers corregidos.
-    """
-    cleaned_speakers_count = 0
-
-    for block in blocks:
-        if "speaker" in block and block["speaker"]:
-            original_speaker = block["speaker"]
-            # Eliminar ".-" al final del nombre del speaker
-            block["speaker"] = re.sub(r"\.\-$", "", block["speaker"]).strip()
-            if original_speaker != block["speaker"]:
-                if verbose: print(f"Speaker limpiado: '{original_speaker}' -> '{block['speaker']}'")
-                cleaned_speakers_count += 1
-
-    print(f"Limpieza completa. Se limpiaron {cleaned_speakers_count} nombres de speakers.")
-    return blocks
+            if cur is not None:
+                out.append(cur)
+            cur = b
+    if cur is not None:
+        out.append(cur)
+    print(f"Consolidación completa: {len(out)} bloques finales, {inline_merged} cursivas absorbidas.")
+    return out, inline_merged
 
 
 # ---------------------------------------------------------------------------
 # Orchestration: per-session processing, persistence, stats
 # ---------------------------------------------------------------------------
 
-def process_pdf(pdf_path, verbose=False):
+def process_pdf(pdf_path):
     """Run the full pipeline on one PDF. Returns (blocks, chapters, stats)."""
     stats = {}
 
-    extracted = extract_all_characters(str(pdf_path), max_pages=None, verbose=verbose)
-    stats["characters_extracted"] = len(extracted)
+    chars, page_heights = extract_all_characters(str(pdf_path))
+    stats["characters_extracted"] = len(chars)
 
-    extracted = classify_font_styles(extracted)
+    chars, removed = strip_page_headers(chars)
+    stats["header_chars_removed"] = removed
 
-    blocks = group_characters_into_text_blocks(extracted, verbose=verbose)
+    chars, removed = strip_page_footers(chars, page_heights)
+    stats["footer_chars_removed"] = removed
+
+    blocks = group_characters_into_text_blocks(chars)
     stats["blocks_generated"] = len(blocks)
 
-    blocks = filter_blocks_by_marker(blocks, verbose=verbose)
-    stats["blocks_after_marker_filter"] = len(blocks)
+    # try body-size candidates until one yields a session opening
+    body_size, marker_mode, cut_blocks = None, "none", []
+    for cand in body_size_candidates(chars):
+        cut_blocks, marker_mode = cut_front_matter(blocks, cand)
+        if marker_mode != "none":
+            body_size = cand
+            break
+    if body_size is None:
+        body_size = body_size_candidates(chars)[0]
+    blocks = cut_blocks
+    stats["body_size"] = body_size
+    stats["marker_mode"] = marker_mode
+    stats["blocks_after_marker"] = len(blocks)
     if not blocks:
-        stats["error"] = "marker_not_found"
+        stats["error"] = "no_opening_found"
         return [], {}, stats
 
-    before = len(blocks)
-    blocks = remove_headers(blocks, verbose=verbose)
-    stats["headers_removed"] = before - len(blocks)
+    blocks, empty_removed = remove_empty_blocks(blocks)
+    stats["empty_blocks_removed"] = empty_removed
 
-    before = len(blocks)
-    blocks = remove_empty_blocks(blocks)
-    stats["empty_blocks_removed"] = before - len(blocks)
+    blocks, events = classify_blocks(blocks, body_size)
+    stats["events_tagged"] = events
 
-    blocks, tagged = tag_stenographer_blocks(blocks, verbose=verbose)
-    stats["stenographer_blocks_tagged"] = tagged
-
-    blocks, chapters = assign_chapter_to_blocks(blocks, verbose=verbose)
+    blocks, chapters = assign_chapter_to_blocks(blocks, body_size)
     stats["chapters_detected"] = len(chapters)
 
-    blocks = identify_speakers(blocks, verbose=verbose)
-    blocks = clean_speaker_names(blocks, verbose=verbose)
-    blocks = consolidate_speaker_blocks(blocks)
+    blocks = identify_speakers(blocks, body_size)
+    blocks = clean_speaker_names(blocks)
+    blocks, inline_merged = consolidate_speaker_blocks(blocks)
+    stats["inline_merged"] = inline_merged
 
     return blocks, chapters, stats
 
 
 def blocks_to_frame(blocks, chapters, meta):
-    """Map pipeline blocks to the schema-v1 rows of the session table."""
+    """Map pipeline blocks to the schema rows of the session table."""
     rows = []
-    for seq, block in enumerate(blocks):
-        speaker = block.get("speaker")
-        chapter = block.get("capítulo")
+    for seq, b in enumerate(blocks):
+        speaker = b.get("speaker")
+        chapter = b.get("capítulo")
         rows.append({
             "session_id": meta["session_id"],
             "session_date": meta["session_date"],
@@ -598,14 +511,16 @@ def blocks_to_frame(blocks, chapters, meta):
             "sesion": meta["sesion"],
             "reunion": meta["reunion"],
             "seq": seq,
-            "type": block.get("type") or ("speech" if speaker else "other"),
+            "type": b.get("type") or ("speech" if speaker else "other"),
+            "event_type": b.get("event_type"),
             "chapter": chapter,
             "chapter_title": chapters.get(chapter) if chapter else None,
             "speaker_raw": speaker,
-            "text": block["text"],
-            "pages": sorted(block["pages"]) if block.get("pages") else [],
-            "font_style": block.get("font_style"),
-            "size": block.get("size"),
+            "text": b["text"],
+            "pages": sorted(b["pages"]) if b.get("pages") else [],
+            "font": b.get("font"),
+            "font_style": b.get("font_style"),
+            "size": b.get("size"),
             "source_pdf": meta["source_pdf"],
             "pdf_sha256": meta["pdf_sha256"],
             "parser_version": PARSER_VERSION,
@@ -657,7 +572,7 @@ def session_meta_for(pdf_path, manifest):
     }
 
 
-def parse_one(pdf_path_str, meta, verbose=False):
+def parse_one(pdf_path_str, meta):
     """Worker: parse one PDF, write its Parquet table and log, return stats."""
     pdf_path = Path(pdf_path_str)
     out_path = OUT_DIR / "blocks" / f"{meta['session_id']}.parquet"
@@ -667,7 +582,7 @@ def parse_one(pdf_path_str, meta, verbose=False):
 
     try:
         with log_path.open("w", encoding="utf-8") as log, contextlib.redirect_stdout(log):
-            blocks, chapters, run_stats = process_pdf(pdf_path, verbose=verbose)
+            blocks, chapters, run_stats = process_pdf(pdf_path)
             stats.update(run_stats)
             if blocks:
                 frame = blocks_to_frame(blocks, chapters, meta)
@@ -675,7 +590,8 @@ def parse_one(pdf_path_str, meta, verbose=False):
                 counts = frame["type"].value_counts()
                 stats["rows_written"] = len(frame)
                 stats["speech_blocks"] = int(counts.get("speech", 0))
-                stats["stenographer_notes"] = int(counts.get("stenographer_note", 0))
+                stats["heading_blocks"] = int(counts.get("heading", 0))
+                stats["furniture_blocks"] = int(counts.get("furniture", 0))
                 stats["other_blocks"] = int(counts.get("other", 0))
     except Exception as e:  # per-file isolation: one bad PDF must not kill the run
         stats["error"] = f"{type(e).__name__}: {e}"
@@ -709,7 +625,6 @@ def main():
     ap.add_argument("--limit", type=int, help="process at most N PDFs")
     ap.add_argument("--force", action="store_true", help="re-parse sessions whose output already exists")
     ap.add_argument("--workers", type=int, default=6, help="parallel worker processes (default: 6)")
-    ap.add_argument("--verbose", action="store_true", help="verbose per-step output in the session logs")
     args = ap.parse_args()
 
     if not RAW_DIR.is_dir():
@@ -741,7 +656,7 @@ def main():
     if jobs:
         with ProcessPoolExecutor(max_workers=args.workers) as pool:
             futures = {
-                pool.submit(parse_one, str(pdf), meta, args.verbose): meta["session_id"]
+                pool.submit(parse_one, str(pdf), meta): meta["session_id"]
                 for pdf, meta in jobs
             }
             for i, fut in enumerate(as_completed(futures), 1):
