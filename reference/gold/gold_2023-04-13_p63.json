@@ -1,0 +1,15 @@
+{
+  "pdf": "13-04-2023_ORDINARIA.pdf",
+  "page": 63,
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {"speaker_label": "Sra. Presidenta (Ledesma Abdala).-",
+     "first_words": "Gracias, senadora. Senador Juez, tiene la palabra."},
+    {"speaker_label": "Sr. Juez.-",
+     "first_words": "Lo mío es muy breve, señora presidenta."}
+  ],
+  "events": [],
+  "headings": [],
+  "furniture_seen": ["header motto: \"1983/2023 – 40 Años de Democracia\"", "dateline: 13 de abril de 2023 / Sesión ordinaria / Pág. 63", "footer: Dirección General de Taquígrafos"],
+  "notes": "Page opens mid-utterance continuing senadora Vega's speech from page 62 (\"...pudiera ser tratado en la / Cámara de Diputados, junto a un grupo de padres...\")."
+}

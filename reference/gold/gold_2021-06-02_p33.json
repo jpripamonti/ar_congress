@@ -1,0 +1,15 @@
+{
+  "pdf": "02-06-2021_ESPECIAL.pdf",
+  "page": 33,
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {"speaker_label": "Sr. Presidente (Closs).-",
+     "first_words": "Gracias, señor senador. Tiene la palabra el"},
+    {"speaker_label": "Sr. Parrilli.-",
+     "first_words": "Gracias, presidente. Quiero plantear dos o tres"}
+  ],
+  "events": [],
+  "headings": [],
+  "furniture_seen": ["header motto: \"2021 – Año de Homenaje al Premio Nobel de Medicina Dr. César Milstein\"", "dateline: 2 de junio de 2021 / Sesión especial / Pág. 33", "footer: Dirección General de Taquígrafos"],
+  "notes": "Page opens mid-sentence continuing the previous speaker's speech from page 32 (\"...Y trabajar en / negro significa que no pague el IVA...\")."
+}

@@ -1,0 +1,28 @@
+{
+  "pdf": "30-06-2022_ORDINARIA.pdf",
+  "page": 58,
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {"speaker_label": "Sr. Lousteau.-",
+     "first_words": "Ahí voy. En el año 2015, la"},
+    {"speaker_label": "Sra. Presidenta (Ledesma Abdala).-",
+     "first_words": "Disculpe. Vaya cerrando, por favor, senador."},
+    {"speaker_label": "Sr. Lousteau.-",
+     "first_words": "¿Qué?"},
+    {"speaker_label": "Sra. Presidenta (Ledesma Abdala).-",
+     "first_words": "Que vaya cerrando. Tiene veinte minutos."},
+    {"speaker_label": "Sr. Lousteau.-",
+     "first_words": "Ya cierro. Hubo excesos de todo tipo…"},
+    {"speaker_label": "Sr. Petcoff Naidenoff.-",
+     "first_words": "…es nuestro cierre y el senador Lousteau"},
+    {"speaker_label": "Sr. Lousteau.-",
+     "first_words": "144.000 sentencias y la litigiosidad bajó a"}
+  ],
+  "events": [
+    "–Contenido no inteligible.",
+    "–Contenido no inteligible."
+  ],
+  "headings": [],
+  "furniture_seen": ["header motto: \"2022 - Las Malvinas son argentinas\"", "dateline: 30 de junio de 2022 / Sesión ordinaria / Pág. 58", "footer: Dirección General de Taquígrafos"],
+  "notes": "Page opens mid-utterance continuing senator Lousteau's speech from page 57 (\"...devolverles la plata a las / provincias\\\".\"). His running speech is interrupted twice by unintelligible-audio events; Sr. Petcoff Naidenoff's turn itself begins with an ellipsis (…) because its start was unintelligible."
+}

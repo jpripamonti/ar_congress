@@ -1,0 +1,20 @@
+{
+  "pdf": "29-10-2020_ORDINARIA.pdf",
+  "page": 102,
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {"speaker_label": "Sra. Elías de Perez.-", "first_words": "Por lo tanto, esto significa que las"},
+    {"speaker_label": "Sr. Presidente (Closs).-", "first_words": "Gracias, señora senadora. Tiene la palabra"},
+    {"speaker_label": "Sr. Snopek.-", "first_words": "Gracias, señor presidente."}
+  ],
+  "events": [
+    "–Contenido no inteligible."
+  ],
+  "headings": [],
+  "furniture_seen": [
+    "top motto: “2020 - Año del General Manuel Belgrano”",
+    "dateline: 29 de octubre de 2020 | Sesión ordinaria | Pág. 102",
+    "footer: Dirección General de Taquígrafos"
+  ],
+  "notes": "Page opens inside Sra. Elías de Perez's ongoing speech continued from p. 101 ('Me alegro de que hayan extendido los plazos...'). Her speech trails off ('...las recomendaciones de las...'), the italic event '–Contenido no inteligible.' interrupts (audio dropout), and her bold label then reopens the same speaker's turn — so the first labeled utterance on the page is a resumption by the speaker who was already talking. 'Perez' in her label is printed without an accent."
+}

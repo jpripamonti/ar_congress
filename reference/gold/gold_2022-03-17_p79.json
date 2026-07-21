@@ -1,0 +1,15 @@
+{
+  "pdf": "17-03-2022_ESPECIAL.pdf",
+  "page": 79,
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {"speaker_label": "Sra. Presidenta (Ledesma Abdala).-",
+     "first_words": "Gracias, senadora. Tiene la palabra, senador Yedlin."},
+    {"speaker_label": "Sr. Yedlin.-",
+     "first_words": "Muchas gracias, señora presidenta. Hoy estamos aquí"}
+  ],
+  "events": [],
+  "headings": [],
+  "furniture_seen": ["header motto: \"2022 - Las Malvinas son argentinas\"", "dateline: 17 de marzo de 2022 / Sesión especial / Pág. 79", "no footer line in this format"],
+  "notes": "Page opens mid-utterance: continues a senator's speech from page 78 (\"A ustedes, compañeros –lástima que son pocos hoy...\"). The senator's speech ends mid-page (\"...no está en la lista de nuestros valores. Gracias.\") before the Presidenta's turn."
+}

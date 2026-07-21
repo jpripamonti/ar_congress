@@ -1,0 +1,23 @@
+{
+  "pdf": "22-08-2024_ESPECIAL.pdf",
+  "page": 14,
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {"speaker_label": "Sr. Presidente (Abdala).-",
+     "first_words": "Gracias, senador Atauche. Senadora Terenzi."},
+    {"speaker_label": "Sra. Terenzi.-",
+     "first_words": "Gracias, señor presidente. Seré muy breve."},
+    {"speaker_label": "Sr. Presidente (Abdala).-",
+     "first_words": "Gracias, senadora Terenzi. A continuación, pasamos a"},
+    {"speaker_label": "Sr. Romero.-",
+     "first_words": "Es para aclarar, señor presidente, que la preferencia"},
+    {"speaker_label": "Sr. Presidente (Abdala).-",
+     "first_words": "Perfecto, senador Romero. Antes de votar, vamos"},
+    {"speaker_label": "Sr. Secretario (Giustinian).-",
+     "first_words": "Los expedientes que se incluyen en la preferencia"}
+  ],
+  "events": [],
+  "headings": [],
+  "furniture_seen": ["header: dateline \"22 de agosto de 2024  Sesión pública especial  Pág. 14\" (no motto, 2024 format)", "footer: \"Dirección General de Taquígrafos\""],
+  "notes": "Page opens mid-utterance continuing Sr. Atauche's speech from page 13. Page ends mid-utterance: Sr. Secretario (Giustinian) is enumerating expedientes and continues onto page 15."
+}

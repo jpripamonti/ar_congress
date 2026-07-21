@@ -1,0 +1,19 @@
+{
+  "pdf": "13-05-2020_ESPECIAL.pdf",
+  "page": 54,
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {"speaker_label": "Sra. Presidenta (Fernández de Kirchner).-", "first_words": "Le quedan veinte segundos, senadora."},
+    {"speaker_label": "Sra. Rodríguez Machado.-", "first_words": "Ahora, cuando muere la fuente de empleo"},
+    {"speaker_label": "Sra. Presidenta (Fernández de Kirchner).-", "first_words": "Gracias, señora senadora. Tiene la palabra"},
+    {"speaker_label": "Sr. Parrilli.-", "first_words": "Muchas gracias, señora presidenta."}
+  ],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [
+    "top motto: “2020 - Año del General Manuel Belgrano”",
+    "dateline: 13 de mayo de 2020 | Sesión especial | Pág. 54",
+    "footer: Dirección General de Taquígrafos"
+  ],
+  "notes": "Page opens mid-sentence inside Sra. Rodríguez Machado's speech continued from p. 53 ('...estas normas antidespido, que / están llenas de buenas intenciones...'). Bold speaker labels are printed with wide letter-spacing. No italic stenographer lines on this page."
+}

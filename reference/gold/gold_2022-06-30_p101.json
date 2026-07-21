@@ -1,0 +1,17 @@
+{
+  "pdf": "30-06-2022_ORDINARIA.pdf",
+  "page": 101,
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {"speaker_label": "Sra. Presidenta (Ledesma Abdala).-",
+     "first_words": "Gracias senador. Tiene la palabra senador Fiad."},
+    {"speaker_label": "Sr. Fiad.-",
+     "first_words": "Muchas gracias, presidenta. Sin duda, adelanto"}
+  ],
+  "events": [
+    "(Aplausos.)"
+  ],
+  "headings": [],
+  "furniture_seen": ["header motto: \"2022 - Las Malvinas son argentinas\"", "dateline: 30 de junio de 2022 / Sesión ordinaria / Pág. 101", "footer: Dirección General de Taquígrafos"],
+  "notes": "Page opens mid-utterance with the closing line of the previous speaker's speech from page 100 (\"Muchas gracias, señora presidenta.\"). The only stenographer notation is \"(Aplausos.)\" printed inline in italics within that closing line, not as a standalone dash-prefixed line. Note the Presidenta's first sentence reads \"Gracias senador.\" with no comma."
+}

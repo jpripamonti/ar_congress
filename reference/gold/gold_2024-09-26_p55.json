@@ -1,0 +1,15 @@
+{
+  "pdf": "26-09-2024_ORDINARIA.pdf",
+  "page": 55,
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {"speaker_label": "Sra. Presidente (Villarruel).-",
+     "first_words": "Gracias, senador Paoltroni. Tiene el uso de"},
+    {"speaker_label": "Sra. González.-",
+     "first_words": "Muy buenas tardes, señora presidenta. Pertenezco a la"}
+  ],
+  "events": [],
+  "headings": [],
+  "furniture_seen": ["header: dateline \"26 de septiembre de 2024  Sesión ordinaria  Pág. 55\" (no motto, 2024 format)", "footer: \"Dirección General de Taquígrafos\""],
+  "notes": "Page opens mid-utterance continuing Sr. Paoltroni's speech from page 54. Presiding-officer label is printed \"Sra. Presidente (Villarruel).-\" (masculine \"Presidente\" with \"Sra.\"), transcribed as seen. Page ends mid-utterance: Sra. González's speech continues onto page 56."
+}

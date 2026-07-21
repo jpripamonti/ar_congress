@@ -1,0 +1,37 @@
+{
+  "pdf": "26-09-2024_ORDINARIA.pdf",
+  "page": 31,
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {"speaker_label": "Sr. Romero.-",
+     "first_words": "Presidente."},
+    {"speaker_label": "Sr. Presidente (Abdala).-",
+     "first_words": "Tiene la palabra el senador Romero."},
+    {"speaker_label": "Sr. Romero.-",
+     "first_words": "No me estoy refiriendo a la señora senadora"},
+    {"speaker_label": "Sr. Presidente (Abdala).-",
+     "first_words": "Gracias, senador Romero. Se pone a consideración"},
+    {"speaker_label": "Sra. Tagliaferri.-",
+     "first_words": "No hay quórum."},
+    {"speaker_label": "Sr. Presidente (Abdala).-",
+     "first_words": "Perdón, perdón. El tema del quórum es"},
+    {"speaker_label": "Sr. Presidente (Abdala).-",
+     "first_words": "Ahora, sí hay quórum. Se pone a"},
+    {"speaker_label": "Sr. Presidente (Abdala).-",
+     "first_words": "Aprobada con dictamen."},
+    {"speaker_label": "Sr. Presidente (Abdala).-",
+     "first_words": "A continuación, tiene la palabra la senadora Terenzi"},
+    {"speaker_label": "Sra. Terenzi.-",
+     "first_words": "Muchas gracias, presidente. En mi intervención anterior,"}
+  ],
+  "events": [
+    "–Manifestaciones simultáneas.",
+    "–Luego de unos instantes:",
+    "–Se practica la votación a mano alzada."
+  ],
+  "headings": [
+    "19. Aclaración de los números de expediente de varias mociones de preferencia"
+  ],
+  "furniture_seen": ["header: dateline \"26 de septiembre de 2024  Sesión ordinaria  Pág. 31\" (no motto, 2024 format)", "footer: \"Dirección General de Taquígrafos\""],
+  "notes": "Page opens mid-utterance continuing Sra. Giménez's speech from page 30. The \"Sra. Terenzi.-\" label appears with a slight leading indent/space before it. Heading 19 is a numbered bold section heading."
+}

@@ -1,0 +1,25 @@
+{
+  "pdf": "12-07-2023_EN_MINORÍA.pdf",
+  "page": 10,
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {"speaker_label": "Sra. Presidenta (Ledesma Abdala).-",
+     "first_words": "Senador Rodríguez Saá, el senador Mayans le pide"},
+    {"speaker_label": "Sr. Rodríguez Saá.-",
+     "first_words": "Sí, cómo no."},
+    {"speaker_label": "Sra. Presidenta (Ledesma Abdala).-",
+     "first_words": "Para una interrupción, tiene la palabra senador Mayans."},
+    {"speaker_label": "Sr. Mayans.-",
+     "first_words": "Gracias. Simplemente, quiero destacar el espíritu de trabajo"},
+    {"speaker_label": "Sr. Rodríguez Saá.-",
+     "first_words": "Gracias. Finalizo. La patria se construye trabajando."},
+    {"speaker_label": "Sra. Presidenta (Ledesma Abdala).-",
+     "first_words": "Gracias, senador. Tiene la palabra senador Yedlin."},
+    {"speaker_label": "Sr. Yedlin.-",
+     "first_words": "Muchas gracias, señora presidenta. La verdad es que"}
+  ],
+  "events": [],
+  "headings": [],
+  "furniture_seen": ["header: motto \"1983/2023 – 40 Años de Democracia\" and dateline \"12 de julio de 2023  Sesión en minoría  Pág. 10\"", "footer: \"Dirección General de Taquígrafos\""],
+  "notes": "Page opens mid-utterance continuing Sr. Rodríguez Saá's speech from page 9 (page 9 ends mid-sentence \"...las cuestiones partidarias. Para\")."
+}

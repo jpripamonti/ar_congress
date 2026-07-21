@@ -1,0 +1,17 @@
+{
+  "pdf": "24-02-2021_EXTRAORDINARIA.pdf",
+  "page": 99,
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {"speaker_label": "Sra. Presidenta (Ledesma Abdala).-", "first_words": "Muchas gracias, senador. Por favor, les pido"},
+    {"speaker_label": "Sr. Parrilli.-", "first_words": "Gracias, presidenta, voy a tratar de"}
+  ],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [
+    "top motto: “2021 – Año de Homenaje al Premio Nobel de Medicina Dr. César Milstein”",
+    "dateline: 24 de febrero de 2021 | Sesión extraordinaria | Pág. 99",
+    "footer: Dirección General de Taquígrafos"
+  ],
+  "notes": "Page opens inside Sr. Rodríguez Saá's speech continued from p. 98 (new paragraph 'Entonces, me parece que esto es un hecho...', closing with 'Gracias, señora presidenta.' before the presiding officer's label). Bold speaker labels printed with wide letter-spacing. No italic stenographer lines or headings on this page."
+}

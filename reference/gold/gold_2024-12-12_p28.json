@@ -1,0 +1,15 @@
+{
+  "pdf": "12-12-2024_ESPECIAL.pdf",
+  "page": 28,
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {"speaker_label": "Sr. Presidente (Abdala).-",
+     "first_words": "Gracias, senadora María Inés Pilatti. A continuación,"},
+    {"speaker_label": "Sra. López, María Florencia.-",
+     "first_words": "Muchas gracias, señor presidente. Lo mío es"}
+  ],
+  "events": [],
+  "headings": [],
+  "furniture_seen": ["header: dateline \"12 de diciembre de 2024  Sesión pública especial  Pág. 28\" (no motto, 2024 format)", "footer: \"Dirección General de Taquígrafos\""],
+  "notes": "Page opens mid-utterance continuing senadora Pilatti's speech from page 27. Unusual speaker label format with an internal comma: \"Sra. López, María Florencia.-\" (surname first, then given names), transcribed exactly. Page ends mid-utterance: Sra. López's speech continues onto page 29."
+}
