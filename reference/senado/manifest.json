@@ -1,0 +1,39 @@
+{
+    "datasets": {
+        "senadores_actuales.json": {
+            "file": "senadores_actuales.json",
+            "source_url": "https://www.senado.gob.ar/micrositios/DatosAbiertos/ExportarListadoSenadores/json",
+            "fetched_at_utc": "2026-07-21T20:47:55+00:00",
+            "sha256": "a1418865386a6fda232cb28963456099deffeee7032eebe24cc50efb759dd916",
+            "size_bytes": 58729,
+            "row_count": 72
+        },
+        "senadores_historico.json": {
+            "file": "senadores_historico.json",
+            "source_url": "https://www.senado.gob.ar/micrositios/DatosAbiertos/ExportarListadoSenadoresHistorico/json",
+            "fetched_at_utc": "2026-07-21T20:48:07+00:00",
+            "sha256": "e98c27b55ddc23ac1edccf591653c619dd87c3f02a2496e4886164836cf5aa7f",
+            "size_bytes": 959819,
+            "row_count": 1380
+        }
+    },
+    "manual": {
+        "authorities_manual.csv": {
+            "file": "authorities_manual.csv",
+            "assembled_at_utc": "2026-07-21T20:51:30+00:00",
+            "sha256": "296d856045571058ae3f3ebbddda9e7c5ccf1c950150e64318275b9df2105e56",
+            "size_bytes": 8811,
+            "row_count": 28,
+            "note": "Senate authorities 2020-2024 (presidencia, presidencia provisional, vicepresidencias, secretarias, prosecretarias) plus national-executive officers observed as speakers. No open-data endpoint exists for authorities; compiled from the designation/ratification passages of the held stenographic transcripts (source_url per row) and senado.gob.ar/autoridades."
+        }
+    },
+    "reuse_terms": {
+        "finding": "The Senate open-data portal (https://www.senado.gob.ar/micrositios/DatosAbiertos/) publishes no dataset license or terms-of-use page; datos.gob.ar does not carry these datasets. The Senate transparency office page (https://www.senado.gob.ar/micrositios/oficinatransparencia) cites Ley 27.275 (plus Decretos 206/17 and 780/24) as its marco normativo.",
+        "ley_27275_url": "https://servicios.infoleg.gob.ar/infolegInternet/anexos/265000-269999/265949/norma.htm",
+        "operative_quotes": [
+            "Art. 1 (Apertura): 'la información debe ser accesible en formatos electrónicos abiertos, que faciliten su procesamiento por medios automáticos que permitan su reutilización o su redistribución por parte de terceros'",
+            "Art. 1 (Gratuidad): 'el acceso a la información debe ser gratuito'",
+            "Art. 32 (Transparencia activa): '...procurando remover toda barrera que obstaculice o dificulte su reutilización por parte de terceros'"
+        ]
+    }
+}
