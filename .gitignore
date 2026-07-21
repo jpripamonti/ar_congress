@@ -1,0 +1,13 @@
+.DS_Store
+.env
+.env.*
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ipynb_checkpoints/
+data
+processing_stats.csv

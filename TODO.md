@@ -1,0 +1,1 @@
+ # Preprocesamiento. En lugar de eliminar todas las intervenciones de los taquígrafos identificarlas ya que pueden tener información contextual relevante por ejemplo cada vez que hay alguna pelea que no se traduce o una gresca que no se traduce en palabras o intercambios orales
