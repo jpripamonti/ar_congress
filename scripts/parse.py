@@ -48,7 +48,7 @@ from pathlib import Path
 import pandas as pd
 import pdfplumber
 
-PARSER_VERSION = "0.4.4"
+PARSER_VERSION = "0.4.5"
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
@@ -597,11 +597,17 @@ def identify_speakers(blocks, body_size):
 
 
 def clean_speaker_names(blocks):
-    """Elimina el ".-" final de los nombres de speakers."""
+    """Drop the terminator printed after a speaker label.
+
+    The formats spell it differently by year (".-", ". —", ".–", " . —"),
+    and it separates the name from the words rather than belonging to the
+    name — carrying it into the label would make "Sr. Pichetto. —" and
+    "Sr. Pichetto" two different people downstream.
+    """
     cleaned = 0
     for b in blocks:
         if b.get("speaker"):
-            new = re.sub(r"\.\-$", "", b["speaker"]).strip()
+            new = re.sub(r"[\s.\-–—−:]+$", "", b["speaker"]).strip()
             if new != b["speaker"]:
                 b["speaker"] = new
                 cleaned += 1

@@ -30,10 +30,15 @@ text blocks, and (eventually) analysis.
   boundary+attribution F1 = 1.00 (124 of 125 annotated turns), event
   recall = 0.90, no speech leaking onto contents pages (gold set pending
   owner audit — see [SOURCES.md](SOURCES.md)).
-- Speakers resolved to persons (roster + authorities join) for 2020–2024:
-  99.95% of speech blocks carry a person_id with party/alliance and
-  province. The 2000–2019 sessions still need the officers table extended
-  backwards before the same join runs over them.
+- Speakers resolved to persons (roster + authorities join): 99.9% of
+  2020–2024 speech blocks carry a person identifier with party/alliance and
+  province, but only 55–59% in each earlier five-year block. The shortfall
+  is almost entirely one thing: before about 2016 the chair is labelled by
+  office alone — "Sr. Presidente", no surname — which is 42,000 blocks. The
+  page does not say who was in the chair at that moment, and the sitting's
+  cover page names two or more presiding officers in 282 of the 559
+  sessions, so the answer is not recoverable from the transcript alone.
+  Nothing is guessed: those blocks carry the office, not a person.
 - First analysis: [notebooks/analysis.ipynb](notebooks/analysis.ipynb).
   Roadmap in [TODO.md](TODO.md).
 
