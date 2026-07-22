@@ -1,0 +1,15 @@
+{
+  "pdf": "2010-06-02_r11_INFORMATIVA_ESPECIAL.pdf",
+  "page": 31,
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {"speaker_label": "Sr. Presidente (Pampuro). –", "first_words": "Tiene la palabra el senador Cabanchik."},
+    {"speaker_label": "Sr. Cabanchik. –", "first_words": "Señor jefe de Gabinete de Ministros: quiero pedir precisión y ampliación"}
+  ],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [
+    "dateline: 2 de junio de 2010 | Sesión especial | Pág. 31"
+  ],
+  "notes": "Cabinet-chief report session. Terminators here are en-dashes, not the em-dashes of the ordinary sittings, and the chair label is split across styles: bold 'Sr. Presidente', normal '(Pampuro)', bold '. –'. Page opens mid-answer from the cabinet chief."
+}

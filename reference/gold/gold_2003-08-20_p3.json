@@ -1,0 +1,24 @@
+{
+  "pdf": "2003-08-20_r18_TRIBUNAL_DE_JUICIO_POLITICO.pdf",
+  "page": 3,
+  "opens_mid_utterance": false,
+  "utterance_starts": [
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Por Secretaría se dará lectura del proyecto de resolución."},
+    {"speaker_label": "Sr. Secretario (Estrada). —", "first_words": "(Lee:)"},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "En consideración. Se requieren dos tercios de los votos"},
+    {"speaker_label": "Sr. Baglini. —", "first_words": "Pido la palabra."},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Tiene la palabra el señor senador Baglini."},
+    {"speaker_label": "Sr. Baglini. —", "first_words": "Señor presidente: por Mesa de Entradas he presentado hoy la nota"},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Se va a votar si la Cámara acepta la excusación del senador Baglini."},
+    {"speaker_label": "Sra. Negre de Alonso. —", "first_words": "Pido la palabra."},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Tiene la palabra la señora senadora Negre de Alonso."},
+    {"speaker_label": "Sra. Negre de Alonso. —", "first_words": "Señor presidente: la excusación que formula el senador Baglini"}
+  ],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [
+    "inserted document reference line: Expediente S. 1791/03",
+    "no dateline and no footer on this page — this format prints neither"
+  ],
+  "notes": "Impeachment-tribunal sitting: short exchanges, so the page carries ten printed labels. The chair is labelled without a parenthetical surname throughout. Two article numbers in Baglini's speech print as unmapped glyphs — the font has no Unicode mapping for the ordinal sign, so the text reads 'artículos 1(cid:47) y 2(cid:47)'. This page is the reason the parser keeps such blocks rather than dropping them: the surrounding words are real."
+}

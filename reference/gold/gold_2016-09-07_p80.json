@@ -1,0 +1,17 @@
+{
+  "pdf": "2016-09-07_r13_ORDINARIA.pdf",
+  "page": 80,
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {"speaker_label": "Sra. Presidente.-", "first_words": "Gracias a usted, senador Pais. Tiene la palabra la señora senadora Negre de Alonso."},
+    {"speaker_label": "Sra. Negre de Alonso.-", "first_words": "Gracias, presidenta. Kofi Annan, exsecretario general de Naciones Unidas"}
+  ],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [
+    "top motto: “2016 - Año del Bicentenario de la Declaración de la Independencia Nacional”",
+    "dateline: 7 de septiembre de 2016 | Sesión ordinaria | Pág. 80",
+    "footer: Dirección General de Taquígrafos"
+  ],
+  "notes": "Debate on the freedom-of-information bill. The page closes mid-sentence. Court cases are named in curly quotes inside the speech and must not be read as stenographer lines or headings."
+}

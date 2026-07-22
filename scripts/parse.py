@@ -48,7 +48,7 @@ from pathlib import Path
 import pandas as pd
 import pdfplumber
 
-PARSER_VERSION = "0.4.3"
+PARSER_VERSION = "0.4.4"
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
@@ -71,6 +71,11 @@ EVENT_DASH_RE = re.compile(r"^[–—−-]")
 # punctuation becoming a heading that resets the running speaker.
 BOLD_JUNK_RE = re.compile(r'^[\s.:;,\-–—−…"“”«»ºª°()]+$')
 PAREN_ONLY_RE = re.compile(r"^\([^()]{1,60}\)$")
+# "(Estrada). — Por Secretaría…": the parenthetical belongs to the label,
+# the terminator is punctuation, and only what follows is speech.
+PAREN_HEAD_RE = re.compile(r"^\s*(\([^()]{1,60}\))\s*\.?\s*[–—−-]?\s*")
+# a turn's first words are printed after the label's ". —" terminator
+TURN_LEAD_RE = re.compile(r"^\s*\.?\s*[–—−-]\s*")
 LABEL_CLOSED_RE = re.compile(r"[–—−(]")  # label already carries its own paren/terminator
 LABEL_SPLIT_RE = re.compile(r"\s(?=(?:Sr|Sra|Srta|Sres)\.\s)")  # fused "TÍTULO Sr. X" headings
 # 2006-2009 files drop the space at line joins ("…Fiscalía N°3Sr. Presidente"),
@@ -502,6 +507,7 @@ def identify_speakers(blocks, body_size):
     annotated = []
     current = None
     turn_id = 0
+    open_turn = None   # turn whose first speech block has already been seen
     speech = 0
     paren_labels = {}  # "(Name)" seen inside a full label -> that full label
     i = 0
@@ -526,9 +532,13 @@ def identify_speakers(blocks, body_size):
                     nxt = blocks[i]
                     if (nxt.get("type") is None and nxt["font_style"] == "normal"
                             and nxt["size"] == body_size
-                            and PAREN_ONLY_RE.match(nxt["text"].strip())):
-                        label = f"{t} {nxt['text'].strip()}"
-                        i += 1
+                            and (m := PAREN_HEAD_RE.match(nxt["text"]))):
+                        label = f"{t} {m.group(1)}"
+                        rest = nxt["text"][m.end():]
+                        if rest.strip():
+                            nxt["text"] = rest
+                        else:
+                            i += 1  # the block was only the parenthetical
                 elif t.endswith("(") and i < len(blocks):
                     # reversed shatter: bold "Sr. Presidente (" + normal
                     # "Pampuro). – speech…" — pull the name into the label
@@ -566,6 +576,12 @@ def identify_speakers(blocks, body_size):
             continue
         if b["font_style"] == "normal" and b["size"] == body_size:
             if current:
+                if turn_id != open_turn:
+                    # the ". —" that closes the label is printed in its own
+                    # style run, so it lands at the head of the first speech
+                    # block of the turn; it is punctuation, not words spoken
+                    b["text"] = TURN_LEAD_RE.sub("", b["text"], count=1)
+                    open_turn = turn_id
                 b["speaker"] = current
                 b["type"] = "speech"
                 b["turn_id"] = turn_id

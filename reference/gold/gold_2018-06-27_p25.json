@@ -1,0 +1,21 @@
+{
+  "pdf": "2018-06-27_r07_ORDINARIA.pdf",
+  "page": 25,
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {"speaker_label": "Sra. Presidente.-", "first_words": "Gracias, senador. Me está pidiendo la palabra el senador Pichetto."},
+    {"speaker_label": "Sr. Pichetto.-", "first_words": "Sí, presidenta. Yo considero que el Senado es una institución honorable"},
+    {"speaker_label": "Sra. Presidente.-", "first_words": "Senador Fuentes."},
+    {"speaker_label": "Sr. Fuentes.-", "first_words": "Vamos a acompañar la propuesta efectuada."},
+    {"speaker_label": "Sra. Presidente.-", "first_words": "Senadora Itúrrez."},
+    {"speaker_label": "Sra. Itúrrez de Cappellini.-", "first_words": "Yo quiero dejar sentada la posición del bloque Frente Cívico por Santiago"}
+  ],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [
+    "top motto: “2018- Año del Centenario de la Reforma Universitaria”",
+    "dateline: 27 de junio de 2018 | Sesión ordinaria | Pág. 25",
+    "footer: Dirección General de Taquígrafos"
+  ],
+  "notes": "Committee-referral debate. The chair addresses each senator by name in a one-line turn of her own, so short chair turns alternate with senators' replies. Two dashes inside Pinedo's speech are horizontal-bar characters used as parenthetical marks mid-sentence ('despacho─obviamente'), not stenographer lines. The last label is 'Itúrrez de Cappellini' although the chair says only 'Itúrrez'."
+}

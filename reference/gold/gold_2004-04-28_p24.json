@@ -1,0 +1,33 @@
+{
+  "pdf": "2004-04-28_r08_ORDINARIA.pdf",
+  "page": 24,
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Si hay acuerdo, vamos a someter a votación el dictamen en general"},
+    {"speaker_label": "Sr. Secretario. —", "first_words": "Se registraron 51 votos por la afirmativa, ninguno por la negativa"},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Queda sancionado el proyecto de ley por unanimidad."},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Corresponde considerar el dictamen de la Comisión de Agricultura, Ganadería y Pesca"},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "En consideración en general."},
+    {"speaker_label": "Sr. Secretario. —", "first_words": "Se registraron 53 votos por la afirmativa, ninguno por la negativa"},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Queda sancionado el proyecto de ley. Se comunicará a la Honorable Cámara"},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Corresponde considerar el dictamen de la Comisión de Asuntos Administrativos"},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "En consideración."}
+  ],
+  "events": [
+    "— Se practica la votación por medios electrónicos.",
+    "— El resultado de la votación surge del Acta N° 2",
+    "— El texto es el siguiente:",
+    "— Se practica la votación por medios electrónicos.",
+    "— El resultado de la votación surge del Acta N° 3",
+    "— El texto es el siguiente:"
+  ],
+  "headings": [
+    "24 Orden del Día Nro. 108 — Régimen de promoción, fomento y desarrollo de la producción, comercialización e industrialización del cordero patagónico",
+    "25 Orden del Día N° 91 — Transferencia de un inmueble a la Municipalidad de Villa Giardino, Córdoba"
+  ],
+  "furniture_seen": [
+    "dateline: 28 de abril de 2004 | Versión provisional - Sesión ordinaria | Pág. 24",
+    "inserted document titles printed after each 'El texto es el siguiente:' (Orden del Día Nº 108, Orden del Día Nº 91)"
+  ],
+  "notes": "A dense procedural page: nine printed labels, six stenographer lines, two section headings. The section number sits alone on its own line above the title rather than inline with it, which is the pre-2010 heading convention. The chair label carries no parenthetical surname in this session."
+}

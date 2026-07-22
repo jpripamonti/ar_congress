@@ -1,0 +1,15 @@
+{
+  "pdf": "2008-05-14_r07_ORDINARIA.pdf",
+  "page": 22,
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Tiene la palabra la senadora Escudero."},
+    {"speaker_label": "Sra. Escudero. —", "first_words": "No voy a hacer uso de la palabra, señor presidente."}
+  ],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [
+    "dateline: 14 de mayo de 2008 | Versión provisional - Sesión ordinaria | Pág. 22"
+  ],
+  "notes": "Almost the whole page is one continuous speech on judicial substitutions, carried over from p. 21 and running to the two labels at the foot. The speech contains quoted material in curly quotes, which must not be read as stenographer lines."
+}

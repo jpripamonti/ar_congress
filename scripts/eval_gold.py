@@ -34,11 +34,17 @@ OUT_PATH = REPO_ROOT / "data" / "processed" / "senado" / "gold_eval.csv"
 
 
 def norm_label(s):
-    """Normalize a speaker label for comparison."""
+    """Normalize a speaker label for comparison.
+
+    The terminator printed after a label (".-", ". —", " –") is punctuation
+    that separates the name from the words, not part of the name, and the
+    formats spell it differently from year to year. Strip it from both the
+    annotation and the parser output so the comparison is about who spoke.
+    """
     s = unicodedata.normalize("NFC", s or "")
-    s = re.sub(r"\.\-\s*$", "", s.strip())
-    s = re.sub(r"\s+", " ", s)
-    return s.rstrip(".").casefold()
+    s = re.sub(r"\s+", " ", s.strip())
+    s = re.sub(r"[\s.\-–—−:]+$", "", s)
+    return s.casefold()
 
 
 def norm_event(s):

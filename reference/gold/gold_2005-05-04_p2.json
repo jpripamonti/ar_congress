@@ -1,0 +1,15 @@
+{
+  "pdf": "2005-05-04_r12_TRIBUNAL_DE_JUICIO_POLITICO.pdf",
+  "page": 2,
+  "opens_mid_utterance": false,
+  "utterance_starts": [],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [
+    "dateline: 4 de mayo de 2005 | Versión provisional - Sesión en tribunal | Pág. 2",
+    "SUMARIO",
+    "1. Juramento",
+    "2. Traslado de la acusación"
+  ],
+  "notes": "Front-matter contents page of a four-page impeachment-tribunal sitting: the whole page is the table of contents. No speech at all — anything the parser attributes to a speaker here is a false positive."
+}

@@ -1,0 +1,30 @@
+{
+  "pdf": "2016-03-09_r02_ORDINARIA.pdf",
+  "page": 9,
+  "opens_mid_utterance": false,
+  "utterance_starts": [
+    {"speaker_label": "Sr. Presidente (Zamora).-", "first_words": "Tiene la palabra el señor senador Pichetto."},
+    {"speaker_label": "Sr. Pichetto.-", "first_words": "Señor presidente: va de hecho que, indudablemente, en los proyectos"},
+    {"speaker_label": "Sr. Presidente (Zamora).-", "first_words": "Se va a votar la delegación en la Presidencia."},
+    {"speaker_label": "Sr. Presidente (Zamora).-", "first_words": "Aprobado. Le pido al senador Pinedo que me reemplace en la Presidencia."},
+    {"speaker_label": "Sr. Presidente (Pinedo).-", "first_words": "De conformidad con lo dispuesto por el artículo 187 del reglamento"},
+    {"speaker_label": "Sra. Fellner.-", "first_words": "Pido la palabra."},
+    {"speaker_label": "Sr. Presidente (Pinedo).-", "first_words": "Tiene la palabra la señora senadora por Jujuy."},
+    {"speaker_label": "Sra. Fellner.-", "first_words": "Señor presidente: quería plantear y presentar una cuestión de privilegio"}
+  ],
+  "events": [
+    "- Se practica la votación.",
+    "- Ocupa la Presidencia el señor presidente provisional del H. Senado, senador D. Federico Pinedo."
+  ],
+  "headings": [
+    "6. Asuntos entrados",
+    "7. Cuestión de privilegio planteada por la señora senadora Fellner (S.-439/16.)"
+  ],
+  "furniture_seen": [
+    "top motto: “2016 - Año del Bicentenario de la Declaración de la Independencia Nacional”",
+    "dateline: 9 de marzo de 2016 | Sesión ordinaria | Pág. 9",
+    "footnotes: 5 Ver el Apéndice. / 6 Ver el Apéndice. / 7 Ver el Apéndice.",
+    "footer: Dirección General de Taquígrafos"
+  ],
+  "notes": "The chair changes hands mid-page, so the same office appears under two surnames. Footnote markers are printed glued to the end of the sentence ('Aprobado.5', 'pertinentes.6') and must not be read as part of the words. The second stenographer line wraps across two printed lines."
+}

@@ -1,0 +1,15 @@
+{
+  "pdf": "2003-11-05_r30_ORDINARIA.pdf",
+  "page": 26,
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {"speaker_label": "Sr. Presidente (Baglini). —", "first_words": "Tiene la palabra el señor senador Morales."},
+    {"speaker_label": "Sr. Morales. —", "first_words": "Señor presidente: en primer lugar, señalo que el Frente Cívico Jujeño"}
+  ],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [
+    "dateline: 5 de noviembre de 2003 | Sesión ordinaria | Pág. 26"
+  ],
+  "notes": "Page opens mid-speech, continued from p. 25 (mortgage-debt trust fund). The chair label carries the surname in parentheses printed as a separate style run; the em-dash terminator is a third run. No stenographer event lines and no section headings on this page. No footer."
+}

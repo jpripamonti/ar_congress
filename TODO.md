@@ -94,9 +94,11 @@ Owner chose to widen coverage before publishing.
       mostly an inserted document rather than floor debate.
 - [ ] Extend the authorities table back to 2000 and re-run speaker → person
       resolution over the whole span
-- [ ] Add gold-annotated pages per era; re-run the evaluation. The current
-      gold set is drawn only from 2020–2024, so the 1.00 scores say nothing
-      about the older layouts.
+- [x] Add gold-annotated pages per era; re-run the evaluation. 12 pages
+      added (two per era back to 2003), and they immediately earned their
+      keep: the modern-only set scored 1.00 while the widened set scored
+      0.91 and exposed two real defects, fixed in parser 0.4.4. Back to
+      F1 = 1.00 (124/125 turns) on 36 pages spanning 2003–2024.
 - [ ] Regenerate the provenance manifest so it covers all 559 sessions
 
 ## Later

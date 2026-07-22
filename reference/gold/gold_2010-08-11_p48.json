@@ -1,0 +1,12 @@
+{
+  "pdf": "2010-08-11_r15_ORDINARIA.pdf",
+  "page": 48,
+  "opens_mid_utterance": true,
+  "utterance_starts": [],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [
+    "dateline: 1 1 de agosto de 2010 | Versión Provisional | Pág. 48 (the day number is printed with a space inside it)"
+  ],
+  "notes": "A whole page of uninterrupted speech on the national statistics institute, opening and closing mid-utterance. No label, no stenographer line, no heading: the correct parser output is speech attributed to the speaker carried in from p. 47, and any turn STARTING on this page is a false positive."
+}

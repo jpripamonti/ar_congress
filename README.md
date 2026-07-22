@@ -24,9 +24,10 @@ text blocks, and (eventually) analysis.
   blocks, and nine sessions account for most of it: sittings whose record
   is mostly an inserted document (two impeachment dossiers, a printed bill
   text, a list of judicial appointments) rather than floor debate. Gold-set
-  evaluation on 24 stratified pages: utterance boundary+attribution
-  F1 = 1.00, event recall = 1.00 (gold set pending owner audit and drawn
-  only from 2020–2024 — see [SOURCES.md](SOURCES.md)).
+  evaluation on 36 stratified pages spanning 2003–2024: utterance
+  boundary+attribution F1 = 1.00 (124 of 125 annotated turns), event
+  recall = 0.90, no speech leaking onto contents pages (gold set pending
+  owner audit — see [SOURCES.md](SOURCES.md)).
 - Speakers resolved to persons (roster + authorities join) for 2020–2024:
   99.95% of speech blocks carry a person_id with party/alliance and
   province. The 2000–2019 sessions still need the officers table extended

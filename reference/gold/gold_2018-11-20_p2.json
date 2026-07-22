@@ -1,0 +1,17 @@
+{
+  "pdf": "2018-11-20_r18_ESPECIAL_EN_MINORIA.pdf",
+  "page": 2,
+  "opens_mid_utterance": false,
+  "utterance_starts": [],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [
+    "top motto: “2018- Año del Centenario de la Reforma Universitaria”",
+    "dateline: 20 de noviembre de 2018 | Sesión especial en minoría | Pág. 2",
+    "SUMARIO",
+    "1. Manifestaciones en minoría.",
+    "2. Apéndice. - Convocatoria a sesión especial.",
+    "footer: Dirección General de Taquígrafos"
+  ],
+  "notes": "Contents page of a six-page sitting that never reached quorum. No speech: anything the parser attributes to a speaker here is a false positive. This is the session that shows the highest unattributed-text share in the whole corpus, purely because it is so short — three unattributed blocks out of eight."
+}

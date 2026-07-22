@@ -39,9 +39,26 @@ the session date and the per-session source URL from the manifest.
 
 ## Gold evaluation set
 
-[reference/gold/](reference/gold/) holds 24 stratified page annotations
-(12 sessions × 2 pages; every year 2020–2024, all major session types and
-known-hard formats). They were produced by machine-assisted careful reading
-of the rendered pages and are **pending owner verification**. Known
-convention notes: parenthesized italic applause is an event for the parser;
-one annotator recorded it as inline text (documented in the JSON notes).
+[reference/gold/](reference/gold/) holds 36 stratified page annotations
+covering 2003–2024: the original 24 (12 sessions × 2 pages, every year
+2020–2024, all major session types and known-hard formats) plus 12 added
+when the corpus was extended backwards — two pages from each of the eras
+2000–2003, 2004–2006, 2007–2009, 2010–2013, 2014–2016 and 2017–2019, with
+the sessions drawn at random and the page taken from the middle of each
+document. They were produced by machine-assisted careful reading of the
+rendered pages and are **pending owner verification**.
+
+Widening the set mattered. On the modern-only pages the parser scored a
+perfect 1.00, which turned out to say nothing about the older layouts:
+the first run over the added pages scored 0.91 and exposed two real
+defects, both fixed in parser 0.4.4 — the punctuation that closes a
+speaker label was being prepended to the speaker's first words throughout
+the pre-2010 files, and a parenthetical surname was landing in the speech
+instead of the label.
+
+Known convention notes: parenthesized italic applause is an event for the
+parser; one annotator recorded it as inline text. One annotated turn is
+knowingly missed — in the August 2003 impeachment sitting the secretary's
+label opens a turn whose entire content is the stage direction "(Lee:)"
+before an inserted document, so the parser records the stage direction and
+no turn. All such notes live in the JSON files themselves.

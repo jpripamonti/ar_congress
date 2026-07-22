@@ -1,0 +1,38 @@
+{
+  "pdf": "2007-05-02_r06_ORDINARIA.pdf",
+  "page": 9,
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Las dos cuestiones de privilegio pasan a la Comisión de Asuntos Constitucionales."},
+    {"speaker_label": "Sr. López Arias. —", "first_words": "El propio autor de la cuestión de privilegio pidió que pase a comisión."},
+    {"speaker_label": "Sr. Fernández. —", "first_words": "Señor presidente: el senador Martínez planteó una cuestión de privilegio"},
+    {"speaker_label": "Sr. Sanz. —", "first_words": "Queremos debatirlas ahora."},
+    {"speaker_label": "Sr. López Arias. —", "first_words": "El senador pidió que pase a comisión."},
+    {"speaker_label": "Sr. Morales. —", "first_words": "Hagamos el tratamiento ahora."},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Escuchemos al senador Fernández."},
+    {"speaker_label": "Sr. Fernández. —", "first_words": "Yo planteé otra cuestión de privilegio para que pase a la Comisión"},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Vamos a votar la autorización..."},
+    {"speaker_label": "Sr. Morales. —", "first_words": "¡Debatamos porque acusan al radicalismo!"},
+    {"speaker_label": "Sr. Sanz. —", "first_words": "Que se vote mi moción de orden: artículo 140."},
+    {"speaker_label": "Sr. Pichetto. —", "first_words": "Presidente: las dos cuestiones de privilegio tienen que ir a la Comisión"},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Obviamente."},
+    {"speaker_label": "Sr. Pichetto. —", "first_words": "Acá no vamos a votar nada porque no corresponde..."},
+    {"speaker_label": "Sr. Sanz. —", "first_words": "¿Cómo que no?"},
+    {"speaker_label": "Sr. Pichetto. —", "first_words": "No, no corresponde, presidente de bloque."},
+    {"speaker_label": "Sr. Morales. —", "first_words": "¡Queremos debatir el hecho porque queremos desligar a la Unión Cívica Radical"},
+    {"speaker_label": "Sr. Pichetto. —", "first_words": "Nadie dijo absolutamente nada de la Unión Cívica Radical."},
+    {"speaker_label": "Sr. Martínez. —", "first_words": "El ministro del Interior..."},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Adelante, senador."},
+    {"speaker_label": "Sr. Sanz. —", "first_words": "Cuando la cuestión de privilegio pasa a la Comisión de Asuntos Constitucionales"},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Tiene la palabra el señor senador Pichetto."},
+    {"speaker_label": "Sr. Pichetto. —", "first_words": "Se trata de dos cuestiones de privilegio que tienen que ir a la Comisión"},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Tiene la palabra la señora senadora Negre de Alonso."},
+    {"speaker_label": "Sr. Negre de Alonso. —", "first_words": "Señor presidente: acoto que llama poderosísimamente la atención"}
+  ],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [
+    "dateline: 2 de mayo de 2007 | Versión provisional - Sesión ordinaria | Pág. 9"
+  ],
+  "notes": "The densest page in the widened gold set: twenty-five printed labels, a heated crossfire of one-line interjections. Two traps here. The last label reads 'Sr. Negre de Alonso' although the senator is a woman and is addressed as 'señora senadora' in the line above — a typographical error in the source, recorded verbatim. And Sanz's long speech continues past a paragraph break ('No es un capricho mío...') with no new label, so that paragraph is not a new turn."
+}
