@@ -48,7 +48,7 @@ from pathlib import Path
 import pandas as pd
 import pdfplumber
 
-PARSER_VERSION = "0.3.1"
+PARSER_VERSION = "0.4.0"
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
@@ -61,8 +61,21 @@ SPEAKER_RE = re.compile(
     r"^(?:(?:Sr|Sra|Srta|Sres)\.\s"                             # Sr. Mayans / Sra. Presidenta (…)
     r"|(?:Varios señores|Varias señoras|Un señor|Una señora) senador)"  # anonymous/collective speakers
 )
-CHAPTER_RE = re.compile(r"^\d+\.\s?\S")
-EVENT_DASH_RE = re.compile(r"^[–—-]")
+# "1. Título" (2014+) or dotless "1 TÍTULO" (2000–2013 layouts)
+CHAPTER_RE = re.compile(r"^\d+(?:\.\s?\S|\s+[A-ZÁÉÍÓÚÜÑ])")
+EVENT_DASH_RE = re.compile(r"^[–—−-]")
+
+# 2000–2013 layouts split the chair label across styles:
+#   bold "Sr. Presidente" + normal "(Pampuro)" + bold ". –"
+# The shards need reassembly (identify_speakers) instead of the bold
+# punctuation becoming a heading that resets the running speaker.
+BOLD_JUNK_RE = re.compile(r'^[\s.:;,\-–—−…"“”«»ºª°()]+$')
+PAREN_ONLY_RE = re.compile(r"^\([^()]{1,60}\)$")
+LABEL_CLOSED_RE = re.compile(r"[–—−(]")  # label already carries its own paren/terminator
+LABEL_SPLIT_RE = re.compile(r"\s(?=(?:Sr|Sra|Srta|Sres)\.\s)")  # fused "TÍTULO Sr. X" headings
+LABEL_FRAGMENT_RE = re.compile(r"^[.\s]*(?:Sr|Sra|Srta|Sres)$")  # shattered label: reset, not heading
+LEAD_JUNK_RE = re.compile(r'^[\s.:;,\-–—−…"“”«»]+')  # bold-glued tail of the previous sentence
+PAREN_LABEL_RE = re.compile(r"^\(([^()]{1,60})\)[\s.\-–—−:]*$")  # bare "(Rojkés de Alperovich).-" chair label
 DGT_RE = re.compile(r"^Dirección General de Taquígrafos\b")
 
 # Ordered: first match wins. Applied lowercased.
@@ -84,12 +97,14 @@ STATS_COLUMNS = [
     "footer_chars_removed",
     "body_size",
     "blocks_generated",
+    "micro_islands_merged",
     "marker_mode",
     "blocks_after_marker",
     "empty_blocks_removed",
     "chapters_detected",
     "events_tagged",
     "inline_merged",
+    "appendix_demoted",
     "speech_blocks",
     "heading_blocks",
     "furniture_blocks",
@@ -254,6 +269,39 @@ def reassign_hyphens_to_italic_blocks(blocks):
     return blocks
 
 
+def smooth_micro_islands(blocks):
+    """Weld letterless micro-blocks back into their neighbors.
+
+    2000–2013 PDFs flip style on single characters ("29º", stray dots),
+    splitting one sentence into three blocks; a bold island then acts as a
+    phantom heading that resets speaker attribution. Absorb the island into
+    the preceding block and, when the following block resumes the preceding
+    block's style, rejoin that continuation too.
+    """
+    out = []
+    merged = 0
+    resume_key = None
+    for b in blocks:
+        t = b["text"].strip()
+        if out and t and len(t) <= 2 and not any(ch.isalpha() for ch in t) \
+                and b["size"] == out[-1]["size"]:
+            out[-1]["text"] += b["text"]
+            out[-1]["pages"] = sorted(set(out[-1]["pages"]) | set(b["pages"]))
+            resume_key = (out[-1]["font_style"], out[-1]["size"])
+            merged += 1
+            continue
+        if resume_key is not None and (b["font_style"], b["size"]) == resume_key:
+            out[-1]["text"] += b["text"]
+            out[-1]["pages"] = sorted(set(out[-1]["pages"]) | set(b["pages"]))
+            resume_key = None
+            continue
+        resume_key = None
+        out.append(b)
+    if merged:
+        print(f"Suavizado: {merged} micro-islas de estilo fusionadas.")
+    return out, merged
+
+
 def cut_front_matter(blocks, body_size):
     """Start the session at the first opening event or speaker label.
 
@@ -335,12 +383,24 @@ def assign_chapter_to_blocks(blocks, body_size):
     current = None
     out = []
     for b in blocks:
-        t = b["text"].strip()
+        t = LEAD_JUNK_RE.sub("", b["text"].strip())
         if (b.get("type") is None and b["font_style"] == "bold" and b["size"] == body_size
                 and CHAPTER_RE.match(t)):
             # split fused "N. Título  Sra. Presidenta..." blocks on double spaces
             parts = [p.strip() for p in t.split("  ") if p.strip()] if "  " in t else [t]
-            num = parts[0].split(".")[0]
+            # 2000–2013 fuses with single spaces: cut a trailing speaker label
+            # off each part so it can open its own turn downstream
+            fission = []
+            for p in parts:
+                last = None
+                for last in LABEL_SPLIT_RE.finditer(p):
+                    pass
+                if last and SPEAKER_RE.match(p[last.end():]):
+                    fission += [p[:last.start()].strip(), p[last.end():].strip()]
+                else:
+                    fission.append(p)
+            parts = [p for p in fission if p]
+            num = re.match(r"\d+", parts[0]).group()
             chapters[num] = parts[0]
             current = num
             for extra in parts[1:]:
@@ -365,17 +425,62 @@ def identify_speakers(blocks, body_size):
     current = None
     turn_id = 0
     speech = 0
-    for b in blocks:
+    paren_labels = {}  # "(Name)" seen inside a full label -> that full label
+    i = 0
+    while i < len(blocks):
+        b = blocks[i]
+        i += 1
         t = b["text"].strip()
         if b.get("type") in ("furniture", "event", "inline"):
             annotated.append(b)
             continue
         if b["font_style"] == "bold" and b["size"] == body_size:
+            if BOLD_JUNK_RE.match(t):
+                continue             # punctuation shard of a split label — not a
+                                     # heading; must not reset the running speaker
+            t = LEAD_JUNK_RE.sub("", t)  # previous sentence's bold-glued period
             if SPEAKER_RE.match(t):
-                current = t          # consumed: label block itself is not emitted
+                label = t
+                # 2000–2013 chair labels: the parenthetical is a separate
+                # normal-style block ("Sr. Presidente" + "(Pampuro)") — absorb
+                # it into the label it belongs to
+                if not LABEL_CLOSED_RE.search(t) and i < len(blocks):
+                    nxt = blocks[i]
+                    if (nxt.get("type") is None and nxt["font_style"] == "normal"
+                            and nxt["size"] == body_size
+                            and PAREN_ONLY_RE.match(nxt["text"].strip())):
+                        label = f"{t} {nxt['text'].strip()}"
+                        i += 1
+                elif t.endswith("(") and i < len(blocks):
+                    # reversed shatter: bold "Sr. Presidente (" + normal
+                    # "Pampuro). – speech…" — pull the name into the label
+                    nxt = blocks[i]
+                    if (nxt.get("type") is None and nxt["font_style"] == "normal"
+                            and nxt["size"] == body_size):
+                        m = re.match(r"\s*([^()]{1,60}\))", nxt["text"])
+                        if m:
+                            label = t + m.group(1)
+                            rest = LEAD_JUNK_RE.sub("", nxt["text"][m.end():].lstrip())
+                            if rest:
+                                nxt["text"] = rest
+                            else:
+                                i += 1  # nothing left of that block
+                current = label      # consumed: label blocks are not emitted
                 turn_id += 1         # a printed label opens a NEW turn; speech
                                      # resuming after an event without a label
                                      # stays in the same turn (ParlaMint-style)
+                pm = re.search(r"\(([^()]{1,60})\)", label)
+                if pm:
+                    paren_labels[pm.group(1).strip()] = label
+            elif (pm := PAREN_LABEL_RE.match(t)) and pm.group(1).strip() in paren_labels:
+                # 2013-era convention: repeated chair turns carry only the
+                # bare parenthetical — reuse the full label it belongs to
+                current = paren_labels[pm.group(1).strip()]
+                turn_id += 1
+            elif LABEL_FRAGMENT_RE.match(t):
+                current = None       # shattered label: attribution is lost from
+                b["type"] = "other"  # here — honest debris, not a phantom heading
+                annotated.append(b)
             else:
                 b["type"] = "heading"
                 current = None
@@ -454,6 +559,29 @@ def consolidate_speaker_blocks(blocks):
 # Orchestration: per-session processing, persistence, stats
 # ---------------------------------------------------------------------------
 
+SESSION_CLOSE_RE = re.compile(r"queda levantada la sesión|se levanta la sesión", re.IGNORECASE)
+
+
+def demote_appendix_debris(blocks):
+    """After the final session-close formula, unattributed body-size text is
+    appendix material (inserted documents, signature block): furniture, not
+    debris. Older layouts print appendices at body size; modern ones use
+    smaller type and are already furniture by size."""
+    last = None
+    for idx, b in enumerate(blocks):
+        if b.get("type") in ("speech", "event", "other") and SESSION_CLOSE_RE.search(b["text"]):
+            last = idx
+    demoted = 0
+    if last is not None:
+        for b in blocks[last + 1:]:
+            if b.get("type") == "other":
+                b["type"] = "furniture"
+                demoted += 1
+    if demoted:
+        print(f"Apéndice: {demoted} bloques sin atribuir demovidos a furniture tras el cierre.")
+    return blocks, demoted
+
+
 def process_pdf(pdf_path):
     """Run the full pipeline on one PDF. Returns (blocks, chapters, stats)."""
     stats = {}
@@ -468,7 +596,9 @@ def process_pdf(pdf_path):
     stats["footer_chars_removed"] = removed
 
     blocks = group_characters_into_text_blocks(chars)
+    blocks, islands = smooth_micro_islands(blocks)
     stats["blocks_generated"] = len(blocks)
+    stats["micro_islands_merged"] = islands
 
     # try body-size candidates until one yields a session opening
     body_size, marker_mode, cut_blocks = None, "none", []
@@ -500,6 +630,9 @@ def process_pdf(pdf_path):
     blocks = clean_speaker_names(blocks)
     blocks, inline_merged = consolidate_speaker_blocks(blocks)
     stats["inline_merged"] = inline_merged
+
+    blocks, demoted = demote_appendix_debris(blocks)
+    stats["appendix_demoted"] = demoted
 
     return blocks, chapters, stats
 

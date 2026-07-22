@@ -6,21 +6,30 @@ text blocks, and (eventually) analysis.
 
 ## Status (July 2026)
 
-- 90 sessions (2020–2024) downloaded — verified complete against the live
-  listing — with a provenance manifest
+- 309 sessions (2010–2024) downloaded. The 2020–2024 slice was verified
+  complete against the live listing and has a provenance manifest
   ([raw_data_manifest.csv](raw_data_manifest.csv): sha256, source URLs,
-  download timestamps).
-- Corpus parsed (parser 0.3.1): ~22,000 speaker-attributed speech turns,
-  ~5,900 typed stenographer events, per-session Parquet under
-  `data/processed/senado/`. Gold-set evaluation on 24 stratified pages:
-  utterance boundary+attribution F1 = 1.00, event recall = 1.00 (gold set
-  pending owner audit — see [SOURCES.md](SOURCES.md)).
-- Speakers resolved to persons (roster + authorities join): 99.95% of
-  speech blocks carry a person_id with party/alliance and province.
+  download timestamps); the manifest for the 2010–2019 additions is still
+  to be regenerated. The Senate portal lists sessions back to 1983, but it
+  serves no file older than 2000, so 2000 is the hard floor for this corpus.
+- Corpus parsed (parser 0.4.0), no failures: ~83,700 speaker-attributed
+  speech blocks and ~16,000 typed stenographer events, as per-session
+  Parquet under `data/processed/senado/`. Text the parser cannot attribute
+  to a speaker is down to 507 blocks in 130,000 rows. Gold-set evaluation on
+  24 stratified pages: utterance boundary+attribution F1 = 1.00, event
+  recall = 1.00 (gold set pending owner audit — see
+  [SOURCES.md](SOURCES.md)).
+- Speakers resolved to persons (roster + authorities join) for 2020–2024:
+  99.95% of speech blocks carry a person_id with party/alliance and
+  province. The 2010–2019 sessions still need the officers table extended
+  backwards before the same join runs over them.
 - First analysis: [notebooks/analysis.ipynb](notebooks/analysis.ipynb).
   Roadmap in [TODO.md](TODO.md).
 
 ## First results
+
+These cover 2020–2024 only; the earlier sessions are parsed but not yet
+joined to person records.
 
 ![Senate floor words by year and alliance lineage](figures/floor_words_by_year.png)
 

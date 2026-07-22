@@ -52,18 +52,48 @@ Owner-audit items carried forward:
       2020: 32 sessions vs 2023: 12, Asambleas excluded from floor-speech
       analyses, alliance-lineage ≠ caucus)
 
+## Phase 4 — backward extension (in progress, July 2026 — parser 0.4.0)
+
+Owner chose to widen coverage before publishing.
+
+- [x] Feasibility probe across 1983–2019. **The portal lists 1,814 sessions
+      back to 1983 and every row carries a download URL, but nothing before
+      2000 is actually served** — 10 of 10 sampled requests across 1983–1999
+      return a 404 or an HTML error page. The real extension universe is
+      2000–2019 = 669 sessions. Every file from 2000 on is a true text PDF,
+      so no OCR is needed anywhere, and the 12-point body-text invariant
+      holds across the whole span.
+- [x] Ingest 2010–2019 (219 sessions). Corpus is now **309 sessions,
+      2010–2024**, 0 parse errors.
+- [x] Parser 0.4.0 — the 2000–2013 layout family. Those years shatter a
+      single speaker label across style runs (bold "Sr. Presidente" +
+      normal "(Pampuro)" + bold ". –"), and the leftover punctuation shard
+      used to be read as a section heading, which dropped the running
+      speaker and orphaned every following paragraph. Also: single-character
+      style flips (a lone "º" or period) that split one sentence into three
+      blocks; the 2013 convention of repeating only the bare parenthetical
+      "(Rojkés de Alperovich)" for later chair turns; the U+2212 minus sign
+      used as the em-dash in some years; and post-session appendix debris.
+      Two 2010–2013 sessions went from 45% and 68% unattributed text to 1%
+      each. Gold set unchanged: F1 = 1.00.
+- [ ] 2000–2009 (450 sessions): profile the layout and add era-specific
+      furniture rules — pre-2005 files have no "Pág. N" dateline for the
+      header strip to key on and no stenographer footer, so they currently
+      parse at 28–49% unattributed. Then ingest.
+- [ ] Extend the authorities table back to 2000 and re-run speaker → person
+      resolution over the whole span
+- [ ] Add gold-annotated pages per era; re-run the evaluation
+- [ ] Regenerate the provenance manifest and update the docs
+
 ## Later
 
 - Caucus (bloque) mapping for departed senators (historic roster only has
   electoral alliance) — needed before per-bloc claims harden
-- Pre-2020 extension: the archived listing has 1,814 sessions back to the
-  1990s; download.py already handles it via --years
 - Cámara de Diputados (second chamber)
 - Formal writeup / dataset publication (corpus is citable via SOURCES.md)
 
 ## Explicitly not building
 
 Packaging/PyPI, docs site, utils wrappers, test-file mirror, separate
-analysis modules before a notebook needs them. Diputados and pre-2020
-(the archived listing has 1,814 rows back to the 90s) wait until the Senate
-corpus is queryable end-to-end.
+analysis modules before a notebook needs them. Diputados waits until the
+Senate corpus is complete back to 2000.
