@@ -12,10 +12,12 @@ text blocks, and (eventually) analysis.
   sessions but no longer serves the files: 34 of 47 held for 2003, 4 of 47
   for 2002, 10 of 83 for 2001, 3 of 75 for 2000. Sessions are listed back
   to 1983, but nothing before 2000 is served at all, so 2000 is the hard
-  floor. The provenance manifest
-  ([raw_data_manifest.csv](raw_data_manifest.csv): sha256, source URLs,
-  download timestamps) still covers only the 2020–2024 slice and needs
-  regenerating for the rest.
+  floor. Every held session is in the provenance manifest
+  ([raw_data_manifest.csv](raw_data_manifest.csv): sha256 of the PDF and
+  its metadata sidecar, source URL, size, download time), regenerated from
+  the files on disk by `scripts/make_manifest.py`. The 90 sessions fetched
+  in January 2025 predate the download-timestamp field, so theirs is blank
+  rather than guessed.
 - Corpus parsed (parser 0.4.3): ~154,700 speaker-attributed speech blocks
   and ~28,000 typed stenographer events in 257,000 rows, as per-session
   Parquet under `data/processed/senado/`. One session fails to parse — a

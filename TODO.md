@@ -99,7 +99,8 @@ Owner chose to widen coverage before publishing.
       keep: the modern-only set scored 1.00 while the widened set scored
       0.91 and exposed two real defects, fixed in parser 0.4.4. Back to
       F1 = 1.00 (124/125 turns) on 36 pages spanning 2003–2024.
-- [ ] Regenerate the provenance manifest so it covers all 559 sessions
+- [x] Regenerate the provenance manifest — now 559 rows, rebuilt from the
+      files on disk by `scripts/make_manifest.py` instead of by hand
 
 ## Later
 
