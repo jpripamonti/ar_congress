@@ -209,6 +209,13 @@ def resolve_one(label, session_date, session_type, mandates, auth):
         elect = bool(re.search(r"\belect[oa]$", role))
         role = re.sub(r"\s+elect[oa]$", "", role)
         stem = role_stem(role)
+        if stem == "presidencia":
+            # The chamber's chair, named by office alone. Whoever is in the
+            # chair changes during a sitting, and the page does not say who
+            # it is, so no person is assigned: the office is all the source
+            # states. (A national office — "Presidente de la Nación", "Jefe
+            # de Gabinete" — has one holder on a date and resolves below.)
+            return {"match_status": "office_only", "role": role}
         grace = 300 if elect else 0     # "electo/a" labels precede the mandate
         hits = [a for a in auth if in_window(a, d, grace)
                 and (stem in a["role_stem"] or a["role_stem"] in stem)]

@@ -30,15 +30,18 @@ text blocks, and (eventually) analysis.
   boundary+attribution F1 = 1.00 (124 of 125 annotated turns), event
   recall = 0.90, no speech leaking onto contents pages (gold set pending
   owner audit — see [SOURCES.md](SOURCES.md)).
-- Speakers resolved to persons (roster + authorities join): 99.9% of
-  2020–2024 speech blocks carry a person identifier with party/alliance and
-  province, but only 55–59% in each earlier five-year block. The shortfall
-  is almost entirely one thing: before about 2016 the chair is labelled by
-  office alone — "Sr. Presidente", no surname — which is 42,000 blocks. The
-  page does not say who was in the chair at that moment, and the sitting's
-  cover page names two or more presiding officers in 282 of the 559
-  sessions, so the answer is not recoverable from the transcript alone.
-  Nothing is guessed: those blocks carry the office, not a person.
+- Speakers resolved to persons (roster + authorities join): 63% of all
+  speech blocks name a person, with party/alliance and province — 99.9% of
+  the 2020–2024 sessions, less further back.
+- A further 28% are the chair speaking, labelled by office alone
+  ("Sr. Presidente", no surname), which is how the transcripts printed it
+  before about 2016. **These are deliberately left without a person.** The
+  chair changes hands during a sitting and the page does not say who holds
+  it, so any name would be a guess; the sitting's own cover page names two
+  or more presiding officers in 282 of the 559 sessions. They are marked as
+  office-known-person-unstated, distinct from the 9% that are genuine
+  lookup failures — mostly the chamber's secretaries, who are named in the
+  transcripts but not yet in the officers table.
 - First analysis: [notebooks/analysis.ipynb](notebooks/analysis.ipynb).
   Roadmap in [TODO.md](TODO.md).
 

@@ -92,8 +92,18 @@ Owner chose to widen coverage before publishing.
       rows, median 0.2–0.4% per session in the 2000s and 0.0% from 2010.
       Nine sessions sit above 10%, all of them sittings whose record is
       mostly an inserted document rather than floor debate.
-- [ ] Extend the authorities table back to 2000 and re-run speaker → person
-      resolution over the whole span
+- [x] Speaker → person resolution re-run over the whole span. 63% of speech
+      blocks name a person. The chair speaking under its bare office title
+      ("Sr. Presidente") — 28% of blocks — is recorded as office-known,
+      person-unstated **by decision, not by failure**: the chair rotates
+      within a sitting and the page never says who holds it, so naming one
+      would be inventing an attribution.
+- [ ] Close the remaining 9% of genuine lookup failures. Biggest single
+      item: the chamber's secretaries (Estrada, Tunessi, Borsani), who ARE
+      named in the transcripts but are missing from the officers table —
+      each sitting's cover page lists them, so the evidence is in hand.
+      Also 444 + 221 + 168 blocks from expert witnesses at the impeachment
+      trials, who are correctly out of scope and should be typed as such.
 - [x] Add gold-annotated pages per era; re-run the evaluation. 12 pages
       added (two per era back to 2003), and they immediately earned their
       keep: the modern-only set scored 1.00 while the widened set scored
