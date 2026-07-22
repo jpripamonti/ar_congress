@@ -48,7 +48,7 @@ from pathlib import Path
 import pandas as pd
 import pdfplumber
 
-PARSER_VERSION = "0.4.0"
+PARSER_VERSION = "0.4.2"
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
@@ -73,6 +73,9 @@ BOLD_JUNK_RE = re.compile(r'^[\s.:;,\-–—−…"“”«»ºª°()]+$')
 PAREN_ONLY_RE = re.compile(r"^\([^()]{1,60}\)$")
 LABEL_CLOSED_RE = re.compile(r"[–—−(]")  # label already carries its own paren/terminator
 LABEL_SPLIT_RE = re.compile(r"\s(?=(?:Sr|Sra|Srta|Sres)\.\s)")  # fused "TÍTULO Sr. X" headings
+# 2006-2009 files drop the space at line joins ("…Fiscalía N°3Sr. Presidente"),
+# so the label can be glued straight onto the heading with no separator.
+FUSED_LABEL_RE = re.compile(r"\s?(?=(?:Sr|Sra|Srta|Sres)\.\s)")
 LABEL_FRAGMENT_RE = re.compile(r"^[.\s]*(?:Sr|Sra|Srta|Sres)$")  # shattered label: reset, not heading
 LEAD_JUNK_RE = re.compile(r'^[\s.:;,\-–—−…"“”«»]+')  # bold-glued tail of the previous sentence
 PAREN_LABEL_RE = re.compile(r"^\(([^()]{1,60})\)[\s.\-–—−:]*$")  # bare "(Rojkés de Alperovich).-" chair label
@@ -102,6 +105,7 @@ STATS_COLUMNS = [
     "blocks_after_marker",
     "empty_blocks_removed",
     "chapters_detected",
+    "fused_labels_split",
     "events_tagged",
     "inline_merged",
     "appendix_demoted",
@@ -160,20 +164,48 @@ def strip_page_headers(chars):
     running-header invariant across all 2020-2024 formats. Pages without
     a dateline (cover, plates) are left untouched — the front-matter cut
     handles those at block level.
+
+    Appended plates (roll-call tallies, inserted documents) carry their own
+    running header instead of the dateline, so a second pass cuts any line
+    that repeats near the top of five or more pages AT THE SAME HEIGHT.
+    Fixed position is what separates a running header from a stock phrase
+    like "El texto es el siguiente:", which recurs but floats down the page.
     """
     # line assembly per page, top band only
     lines = {}
     for c in chars:
-        if c["top"] < 150:
+        if c["top"] < 200:
             lines.setdefault((c["page"], round(c["top"] / 3)), []).append(c)
 
-    cutoffs = {}
+    per_page = {}
     for (page, _), line_chars in sorted(lines.items()):
-        if page in cutoffs:
-            continue
         text = "".join(ch["text"] for ch in line_chars)  # extraction order = reading order
-        if PAG_LINE_RE.search(text):
-            cutoffs[page] = max(ch["top"] for ch in line_chars) + 0.5
+        if text.strip():  # blank spacer lines must not use up the first-3 window
+            per_page.setdefault(page, []).append((text, line_chars))
+
+    cutoffs = {}
+    for page, page_lines in per_page.items():
+        for text, line_chars in page_lines:
+            if PAG_LINE_RE.search(text):
+                cutoffs[page] = max(ch["top"] for ch in line_chars) + 0.5
+                break
+
+    repeats = Counter()
+    for page_lines in per_page.values():
+        for text, line_chars in page_lines:
+            key = re.sub(r"[\d\s]+", " ", text).strip()
+            if len(key) >= 20:
+                repeats[(key, round(line_chars[0]["top"] / 5))] += 1
+    running = {k for k, n in repeats.items() if n >= 5}
+    # (text, height) rather than text alone: a running header sits at a fixed
+    # height on every page, while a recurring stock phrase drifts.
+
+    for page, page_lines in per_page.items():
+        for text, line_chars in page_lines:
+            key = re.sub(r"[\d\s]+", " ", text).strip()
+            if (key, round(line_chars[0]["top"] / 5)) in running:
+                bottom = max(ch["top"] for ch in line_chars) + 0.5
+                cutoffs[page] = max(cutoffs.get(page, 0), bottom)
 
     kept = [c for c in chars if not (c["page"] in cutoffs and c["top"] <= cutoffs[c["page"]])]
     removed = len(chars) - len(kept)
@@ -189,6 +221,10 @@ def strip_page_footers(chars, page_heights):
     speaker-resetting heading on every page. Only lines in the bottom
     band that actually mention Taquígrafos trigger a cut, so pages
     without the footer are untouched.
+
+    A bottom-band line carrying no letters at all is a bare page number
+    ("- 1 -", "2") — the way the appended roll-call plates number their
+    own pages — and is cut on the same terms.
     """
     lines = {}
     for c in chars:
@@ -199,7 +235,8 @@ def strip_page_footers(chars, page_heights):
     cutoffs = {}
     for (page, _), line_chars in sorted(lines.items()):
         text = "".join(ch["text"] for ch in line_chars)
-        if "Taquígrafo" in text or "Direcci" in text:
+        page_number = text.strip() and not any(ch.isalpha() for ch in text)
+        if page_number or "Taquígrafo" in text or "Direcci" in text:
             y = min(ch["top"] for ch in line_chars) - 0.5
             cutoffs[page] = min(cutoffs.get(page, y), y)
 
@@ -274,8 +311,10 @@ def smooth_micro_islands(blocks):
 
     2000–2013 PDFs flip style on single characters ("29º", stray dots),
     splitting one sentence into three blocks; a bold island then acts as a
-    phantom heading that resets speaker attribution. Absorb the island into
-    the preceding block and, when the following block resumes the preceding
+    phantom heading that resets speaker attribution. A lone space between
+    two bold runs does the same damage — it is what breaks "Sr." away from
+    "Presidente" in the 2006–2009 files. Absorb the island into the
+    preceding block and, when the following block resumes the preceding
     block's style, rejoin that continuation too.
     """
     out = []
@@ -283,7 +322,7 @@ def smooth_micro_islands(blocks):
     resume_key = None
     for b in blocks:
         t = b["text"].strip()
-        if out and t and len(t) <= 2 and not any(ch.isalpha() for ch in t) \
+        if out and b["text"] and len(t) <= 2 and not any(ch.isalpha() for ch in t) \
                 and b["size"] == out[-1]["size"]:
             out[-1]["text"] += b["text"]
             out[-1]["pages"] = sorted(set(out[-1]["pages"]) | set(b["pages"]))
@@ -412,6 +451,38 @@ def assign_chapter_to_blocks(blocks, body_size):
         out.append(b)
     print(f"Asignación de capítulos completa. Se detectaron {len(chapters)} capítulos.")
     return out, chapters
+
+
+def split_fused_labels(blocks, body_size):
+    """Split a bold heading that has a speaker label glued onto its end.
+
+    The 2000-2009 layouts run an unnumbered section title straight into the
+    chair's label in one bold run — "…Comodoro Rivadavia, Chubut Sr.
+    Presidente" — separated by a single space. The chapter pass only splits
+    numbered titles, so without this the whole run reads as a heading, the
+    running speaker is dropped, and the paragraphs that follow are orphaned.
+    Blocks that already START with a label are left alone: there the label
+    is the block, and a later "Sr." belongs to the quoted text.
+    """
+    out = []
+    split = 0
+    for b in blocks:
+        t = b["text"].strip()
+        if (b.get("type") is None and b["font_style"] == "bold"
+                and b["size"] == body_size and not SPEAKER_RE.match(t)):
+            last = None
+            for m in FUSED_LABEL_RE.finditer(t):
+                if m.start() > 0:
+                    last = m
+            if last:
+                head, tail = t[:last.start()].strip(), t[last.end():].strip()
+                if head and tail:
+                    out.append({**b, "text": head})
+                    b = {**b, "text": tail}
+                    split += 1
+        out.append(b)
+    print(f"Encabezados fusionados con etiqueta separados: {split}.")
+    return out, split
 
 
 def identify_speakers(blocks, body_size):
@@ -625,6 +696,9 @@ def process_pdf(pdf_path):
 
     blocks, chapters = assign_chapter_to_blocks(blocks, body_size)
     stats["chapters_detected"] = len(chapters)
+
+    blocks, fused = split_fused_labels(blocks, body_size)
+    stats["fused_labels_split"] = fused
 
     blocks = identify_speakers(blocks, body_size)
     blocks = clean_speaker_names(blocks)
