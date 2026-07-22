@@ -6,22 +6,30 @@ text blocks, and (eventually) analysis.
 
 ## Status (July 2026)
 
-- 309 sessions (2010–2024) downloaded. The 2020–2024 slice was verified
-  complete against the live listing and has a provenance manifest
+- 559 session transcripts held, spanning 2000–2024. Coverage is complete
+  from 2004 onward — every session the portal lists for those years is
+  held. Before that it thins out fast, because the portal lists the
+  sessions but no longer serves the files: 34 of 47 held for 2003, 4 of 47
+  for 2002, 10 of 83 for 2001, 3 of 75 for 2000. Sessions are listed back
+  to 1983, but nothing before 2000 is served at all, so 2000 is the hard
+  floor. The provenance manifest
   ([raw_data_manifest.csv](raw_data_manifest.csv): sha256, source URLs,
-  download timestamps); the manifest for the 2010–2019 additions is still
-  to be regenerated. The Senate portal lists sessions back to 1983, but it
-  serves no file older than 2000, so 2000 is the hard floor for this corpus.
-- Corpus parsed (parser 0.4.0), no failures: ~83,700 speaker-attributed
-  speech blocks and ~16,000 typed stenographer events, as per-session
-  Parquet under `data/processed/senado/`. Text the parser cannot attribute
-  to a speaker is down to 507 blocks in 130,000 rows. Gold-set evaluation on
-  24 stratified pages: utterance boundary+attribution F1 = 1.00, event
-  recall = 1.00 (gold set pending owner audit — see
-  [SOURCES.md](SOURCES.md)).
+  download timestamps) still covers only the 2020–2024 slice and needs
+  regenerating for the rest.
+- Corpus parsed (parser 0.4.3): ~154,700 speaker-attributed speech blocks
+  and ~28,000 typed stenographer events in 257,000 rows, as per-session
+  Parquet under `data/processed/senado/`. One session fails to parse — a
+  November 2001 sitting that never reached quorum, so it has no session
+  opening to find. Text the parser cannot attribute to a speaker is 2,191
+  blocks, and nine sessions account for most of it: sittings whose record
+  is mostly an inserted document (two impeachment dossiers, a printed bill
+  text, a list of judicial appointments) rather than floor debate. Gold-set
+  evaluation on 24 stratified pages: utterance boundary+attribution
+  F1 = 1.00, event recall = 1.00 (gold set pending owner audit and drawn
+  only from 2020–2024 — see [SOURCES.md](SOURCES.md)).
 - Speakers resolved to persons (roster + authorities join) for 2020–2024:
   99.95% of speech blocks carry a person_id with party/alliance and
-  province. The 2010–2019 sessions still need the officers table extended
+  province. The 2000–2019 sessions still need the officers table extended
   backwards before the same join runs over them.
 - First analysis: [notebooks/analysis.ipynb](notebooks/analysis.ipynb).
   Roadmap in [TODO.md](TODO.md).

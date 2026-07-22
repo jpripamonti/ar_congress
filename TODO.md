@@ -76,14 +76,28 @@ Owner chose to widen coverage before publishing.
       used as the em-dash in some years; and post-session appendix debris.
       Two 2010–2013 sessions went from 45% and 68% unattributed text to 1%
       each. Gold set unchanged: F1 = 1.00.
-- [ ] 2000–2009 (450 sessions): profile the layout and add era-specific
-      furniture rules — pre-2005 files have no "Pág. N" dateline for the
-      header strip to key on and no stenographer footer, so they currently
-      parse at 28–49% unattributed. Then ingest.
+- [x] Ingest 2000–2009. 250 more sessions retrieved, 200 URLs dead — and
+      the dead ones cluster by year (72 in 2000, 72 in 2001, 43 in 2002,
+      13 in 2003, none from 2004 on). **The corpus is now complete from
+      2004 onward and partial for 2000–2003; that is a portal limit, not a
+      gap we can close.** Corpus: 559 sessions, 1 parse failure (a
+      November 2001 sitting with no quorum, hence no session opening).
+- [x] Parser 0.4.1–0.4.3 for the 2000–2009 layouts: section titles fused
+      onto chair labels (with and without a separating space), a lone
+      space breaking "Sr." from "Presidente", appended roll-call plates
+      with their own running header and page numbers (now cut by a general
+      rule — a line repeating at the SAME HEIGHT on five or more pages),
+      and decorative bullets in fonts with no character mapping.
+      Unattributed text across the whole span: 2,191 blocks in 257,000
+      rows, median 0.2–0.4% per session in the 2000s and 0.0% from 2010.
+      Nine sessions sit above 10%, all of them sittings whose record is
+      mostly an inserted document rather than floor debate.
 - [ ] Extend the authorities table back to 2000 and re-run speaker → person
       resolution over the whole span
-- [ ] Add gold-annotated pages per era; re-run the evaluation
-- [ ] Regenerate the provenance manifest and update the docs
+- [ ] Add gold-annotated pages per era; re-run the evaluation. The current
+      gold set is drawn only from 2020–2024, so the 1.00 scores say nothing
+      about the older layouts.
+- [ ] Regenerate the provenance manifest so it covers all 559 sessions
 
 ## Later
 

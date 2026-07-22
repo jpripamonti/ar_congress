@@ -48,7 +48,7 @@ from pathlib import Path
 import pandas as pd
 import pdfplumber
 
-PARSER_VERSION = "0.4.2"
+PARSER_VERSION = "0.4.3"
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
@@ -80,6 +80,7 @@ LABEL_FRAGMENT_RE = re.compile(r"^[.\s]*(?:Sr|Sra|Srta|Sres)$")  # shattered lab
 LEAD_JUNK_RE = re.compile(r'^[\s.:;,\-–—−…"“”«»]+')  # bold-glued tail of the previous sentence
 PAREN_LABEL_RE = re.compile(r"^\(([^()]{1,60})\)[\s.\-–—−:]*$")  # bare "(Rojkés de Alperovich).-" chair label
 DGT_RE = re.compile(r"^Dirección General de Taquígrafos\b")
+CID_RE = re.compile(r"\(cid:\d+\)")  # glyphs the PDF font maps to nothing
 
 # Ordered: first match wins. Applied lowercased.
 EVENT_SUBTYPES = [
@@ -366,8 +367,14 @@ def cut_front_matter(blocks, body_size):
 
 
 def remove_empty_blocks(blocks):
-    """Elimina los bloques vacíos o de solo espacios."""
-    kept = [b for b in blocks if b["text"].strip()]
+    """Drop blocks that are empty, whitespace, or only unmapped glyphs.
+
+    Fonts without a Unicode mapping extract as literal "(cid:47)" tokens.
+    Where that is ALL a block contains it is a decorative bullet, so the
+    block is dropped; a block that mixes them with real words is kept,
+    glyphs and all, so the extraction loss stays visible in the text.
+    """
+    kept = [b for b in blocks if CID_RE.sub("", b["text"]).strip()]
     removed = len(blocks) - len(kept)
     print(f"Se eliminaron {removed} bloques vacíos. Quedan {len(kept)} bloques.")
     return kept, removed
