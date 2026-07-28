@@ -36,12 +36,20 @@ citable corpus.
       appendix leakage 0 on 24 stratified pages
 - [x] SOURCES.md: terms (Ley 27.275), provenance, citation guidance
 
-Owner-audit items carried forward:
-- [ ] Verify the machine-assisted gold annotations (24 files, ~30 min read)
-- [ ] Verify cabinet-chief tenure dates in authorities_manual.csv (marked)
-- [ ] Decide the event convention for parenthesized applause (parser: event)
-- [ ] Party/bloc caveat: historic roster gives electoral alliance, not caucus;
-      caucus is only known for the sitting 72
+Owner-audit items, closed in Phase 5:
+- [x] Verify the machine-assisted gold annotations — `scripts/check_gold.py`
+      re-reads all 36 annotated pages against the source PDFs; 36 of 36 pass.
+      A second machine reading, not an independent human audit.
+- [x] Verify cabinet-chief tenure dates in authorities_manual.csv — each
+      cross-checked against official announcements of the swearing-in, and
+      against the sittings where the record names the officeholder. No row
+      rests on a Boletín Oficial decree, and the notes now say so.
+- [x] Decide the event convention for parenthesized applause — it stays an
+      event. Nobody utters "aplausos"; the note is the stenographer recording
+      what the chamber did. The parser was made consistent about it.
+- [x] Party/bloc caveat — the resolved-speaker column is now named
+      `party_or_alliance`, the resolver prints the caveat on every run, and
+      SOURCES.md explains where the two diverge.
 
 ## Phase 3 — first analysis (done, July 2026)
 
@@ -98,12 +106,7 @@ Owner chose to widen coverage before publishing.
       person-unstated **by decision, not by failure**: the chair rotates
       within a sitting and the page never says who holds it, so naming one
       would be inventing an attribution.
-- [ ] Close the remaining 9% of genuine lookup failures. Biggest single
-      item: the chamber's secretaries (Estrada, Tunessi, Borsani), who ARE
-      named in the transcripts but are missing from the officers table —
-      each sitting's cover page lists them, so the evidence is in hand.
-      Also 444 + 221 + 168 blocks from expert witnesses at the impeachment
-      trials, who are correctly out of scope and should be typed as such.
+- [x] Close the remaining 9% of genuine lookup failures — see Phase 5.
 - [x] Add gold-annotated pages per era; re-run the evaluation. 12 pages
       added (two per era back to 2003), and they immediately earned their
       keep: the modern-only set scored 1.00 while the widened set scored
@@ -112,12 +115,57 @@ Owner chose to widen coverage before publishing.
 - [x] Regenerate the provenance manifest — now 559 rows, rebuilt from the
       files on disk by `scripts/make_manifest.py` instead of by hand
 
+## Phase 5 — close the open items (done, July 2026 — parser 0.4.6)
+
+- [x] Parser 0.4.6 for the label debris the backward extension exposed.
+      One 2004 file draws its dashes, quotes and inverted question marks in
+      a subsetted Courier whose character map is wrong, so an em dash came
+      out as a literal "C" and swallowed each turn's opening words into the
+      speaker label; every glyph was read off its own contexts and mapped
+      back, guarded by a run-length test so the sittings that really do set
+      text in Courier are untouched. Also: labels where both brackets are
+      bold and the chair's surname sits in roman between them, speech glued
+      into the bold label after its terminator, and terminators drawn from a
+      symbol font with no Unicode mapping.
+- [x] Officers resolved from the sittings' own mastheads.
+      `scripts/extract_authorities.py` reads the masthead of all 559
+      sittings — who presided, who sat at the secretaries' table, with full
+      names — into `reference/senado/authorities_observed.csv`, and the
+      resolver folds those observations into tenure spans. This is what the
+      earlier note meant by "the evidence is in hand".
+- [x] National executive added to the hand-compiled table: presidents of the
+      Nation and cabinet chiefs back to 1999, each sourced to the sitting
+      where the record names them.
+- [x] Office families, so the record's looseness does not put the wrong
+      person behind the words. A prosecretario is called "Sr. Secretario"
+      and any presiding officer is called "Sr. Presidente", but a
+      prosecretario is never the chair — and "vicepresidencia de la Nación"
+      contains "presidencia de la Nación" letter for letter, which had the
+      Vice-President answering for the President's Asamblea speeches.
+- [x] Impeachment sittings: when the chamber sits as a court it hears the
+      accused, the prosecutors, counsel and expert witnesses. No roster of
+      this chamber covers them, so they are typed out of scope rather than
+      counted as failures.
+- [x] Result: genuine lookup failures fell from 9% of speech blocks to 0.1%
+      (217 blocks), and persons named rose from 63% to 70%. The residue is
+      invited outside speakers at public hearings, named by surname alone.
+- [x] Event subtypes widened to cover disorder however the stenographer
+      words it — senators talking over each other was the commonest form and
+      used to fall through untyped, which undercounted every incident rate.
+- [x] Analysis re-run over the whole 2000–2024 span; figures regenerated.
+
 ## Later
 
 - Caucus (bloque) mapping for departed senators (historic roster only has
-  electoral alliance) — needed before per-bloc claims harden
+  the ticket they were elected on) — needed before per-bloc claims harden.
+  The analysis now shows why: the provincial-alliance share of floor speech
+  falls from ~40% to ~13% after 2019 without senators changing sides.
 - Cámara de Diputados (second chamber)
 - Formal writeup / dataset publication (corpus is citable via SOURCES.md)
+- Optional: the 217 remaining unresolved blocks are invited outside speakers
+  at public hearings. Typing them would need the transcripts' own
+  introductions of each guest; worth it only if guest speech is ever a
+  research target.
 
 ## Explicitly not building
 

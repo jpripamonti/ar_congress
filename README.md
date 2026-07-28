@@ -2,7 +2,7 @@
 
 Corpus of Argentine Senate stenographic session transcripts ("versiones
 taquigráficas"): acquisition, parsing into structured speaker-attributed
-text blocks, and (eventually) analysis.
+text blocks, and analysis.
 
 ## Status (July 2026)
 
@@ -18,52 +18,61 @@ text blocks, and (eventually) analysis.
   the files on disk by `scripts/make_manifest.py`. The 90 sessions fetched
   in January 2025 predate the download-timestamp field, so theirs is blank
   rather than guessed.
-- Corpus parsed (parser 0.4.3): ~154,700 speaker-attributed speech blocks
-  and ~28,000 typed stenographer events in 257,000 rows, as per-session
+- Corpus parsed (parser 0.4.6): ~154,800 speaker-attributed speech blocks
+  and ~31,900 typed stenographer events in 257,800 rows, as per-session
   Parquet under `data/processed/senado/`. One session fails to parse — a
   November 2001 sitting that never reached quorum, so it has no session
-  opening to find. Text the parser cannot attribute to a speaker is 2,191
+  opening to find. Text the parser cannot attribute to a speaker is 2,136
   blocks, and nine sessions account for most of it: sittings whose record
   is mostly an inserted document (two impeachment dossiers, a printed bill
-  text, a list of judicial appointments) rather than floor debate. Gold-set
-  evaluation on 36 stratified pages spanning 2003–2024: utterance
+  text, a list of judicial appointments) rather than floor debate.
+- Gold-set evaluation on 36 stratified pages spanning 2003–2024: utterance
   boundary+attribution F1 = 1.00 (124 of 125 annotated turns), event
-  recall = 0.90, no speech leaking onto contents pages (gold set pending
-  owner audit — see [SOURCES.md](SOURCES.md)).
-- Speakers resolved to persons (roster + authorities join): 63% of all
-  speech blocks name a person, with party/alliance and province — 99.9% of
-  the 2020–2024 sessions, less further back.
-- A further 28% are the chair speaking, labelled by office alone
-  ("Sr. Presidente", no surname), which is how the transcripts printed it
-  before about 2016. **These are deliberately left without a person.** The
-  chair changes hands during a sitting and the page does not say who holds
-  it, so any name would be a guess; the sitting's own cover page names two
-  or more presiding officers in 282 of the 559 sessions. They are marked as
-  office-known-person-unstated, distinct from the 9% that are genuine
-  lookup failures — mostly the chamber's secretaries, who are named in the
-  transcripts but not yet in the officers table.
-- First analysis: [notebooks/analysis.ipynb](notebooks/analysis.ipynb).
+  precision 1.00 and recall 0.94, no speech leaking onto contents pages.
+  The annotations have themselves been checked back against the source
+  PDFs (`scripts/check_gold.py`, 36 of 36 pass) — a second machine reading,
+  not an independent human audit.
+- Speakers resolved to persons: **70% of all speech blocks name a person**,
+  with the ticket they were elected on and their province. A further 28% is
+  a chamber office speaking under its bare title ("Sr. Presidente", "Sr.
+  Secretario", no surname), which is how the transcripts printed it before
+  about 2016. **These are deliberately left without a person.** The chair
+  changes hands during a sitting and the page does not say who holds it, so
+  any name would be a guess; the sitting's own cover page names two or more
+  presiding officers in 282 of the 559 sessions. They are marked as
+  office-known-person-unstated. Another 1.3% is correctly out of scope —
+  parties and witnesses at the impeachment trials, deputies, foreign heads
+  of state, officials of other institutions. **Genuine lookup failures are
+  down to 0.1%** (217 blocks), nearly all of them invited outside speakers
+  at public hearings, named by surname alone.
+- Analysis over the whole span: [notebooks/analysis.ipynb](notebooks/analysis.ipynb).
   Roadmap in [TODO.md](TODO.md).
 
-## First results
+## Results
 
-These cover 2020–2024 only; the earlier sessions are parsed but not yet
-joined to person records.
+![Senate floor words by year and party family](figures/floor_words_by_year.png)
 
-![Senate floor words by year and alliance lineage](figures/floor_words_by_year.png)
+- The Peronist/Justicialist family has been the largest on the floor in
+  every fully held year, from 30% to 56% of floor words, median 48%, across
+  four changes of national government.
+- What moved is the labels everyone else ran under. Provincial and other
+  alliances held 36–46% of floor words from 2006 to 2016 and 13–15% from
+  2020 on, while the radical/Cambiemos family went the other way. Senators
+  did not all change sides — the tickets they were elected on consolidated
+  into two national coalitions.
+- The 2020–2023 collapse was mostly fewer sittings, not quieter ones. Floor
+  words fell 6.4-fold, which splits into a 3.9-fold fall in sittings held
+  (31 to 8) and only a 1.65-fold fall in words per sitting. By 2024 a
+  sitting was as long as ever; there were simply twelve of them.
+- The chamber has been getting steadily more disorderly since about 2013.
+  Recorded incidents per 10,000 floor words ran near 1 through the 2000s
+  and peaked at 12.3 in 2023 — roughly a tenfold rise, beginning well
+  before the remote sittings of 2020. This is a measurement only possible
+  because stenographer events are preserved and typed rather than deleted.
 
-- Senator floor speech collapsed six-fold from the 2020 remote-session
-  peak (1.35M words) to the 2023 election-year trough (0.21M), with only
-  a partial 2024 rebound.
-- The Frente de Todos / UP lineage held roughly half of floor words in
-  every year; La Libertad Avanza enters in 2024 with 7%.
-- The chamber got rowdier as it got quieter: recorded incidents per
-  10,000 floor words quadrupled 2020→2023 and stayed elevated — a
-  measurement only possible because stenographer events are preserved
-  and typed rather than deleted.
-
-Methodological caveats (sampling frame, alliance-vs-caucus, exclusions)
-are documented in the notebook.
+Methodological caveats (incomplete holdings before 2004, session-type mix,
+electoral labels rather than caucuses, chairs excluded) are documented in
+the notebook and in [SOURCES.md](SOURCES.md).
 
 ## Layout
 
@@ -74,12 +83,16 @@ are documented in the notebook.
   `parse_stats.csv` quality table.
 - `scripts/fetch_roster.py` — fetch senator roster datasets into
   `reference/senado/`.
+- `scripts/extract_authorities.py` — read each sitting's masthead into
+  `reference/senado/authorities_observed.csv`: who presided and who sat at
+  the secretaries' table, per sitting.
 - `scripts/resolve_speakers.py` — resolve speaker labels to persons
   (`data/processed/senado/speakers.parquet`).
 - `scripts/eval_gold.py` — score the parser against the gold annotations
   in `reference/gold/`.
-- `reference/` — versioned reference data: roster snapshots, hand-compiled
-  authorities table, gold evaluation set. Provenance: [SOURCES.md](SOURCES.md).
+- `scripts/check_gold.py` — check those annotations against the source PDFs.
+- `reference/` — versioned reference data: roster snapshots, authorities
+  tables, gold evaluation set. Provenance: [SOURCES.md](SOURCES.md).
 - `data/` — symlink to the OneDrive working copy; not in git (see
   [DATA.md](DATA.md)).
 
@@ -90,6 +103,10 @@ uv sync
 uv run scripts/parse.py --help
 uv run scripts/download.py --dry-run   # compare local holdings vs. the live listing
 ```
+
+The pipeline runs in this order: `download.py` → `parse.py` →
+`extract_authorities.py` → `resolve_speakers.py`, then `eval_gold.py` and
+`check_gold.py` to verify.
 
 On a new machine, re-create the `~/PARA/_working-data` symlink first (see
 DATA.md).

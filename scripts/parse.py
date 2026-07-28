@@ -48,7 +48,7 @@ from pathlib import Path
 import pandas as pd
 import pdfplumber
 
-PARSER_VERSION = "0.4.5"
+PARSER_VERSION = "0.4.6"
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
@@ -64,6 +64,11 @@ SPEAKER_RE = re.compile(
 # "1. Título" (2014+) or dotless "1 TÍTULO" (2000–2013 layouts)
 CHAPTER_RE = re.compile(r"^\d+(?:\.\s?\S|\s+[A-ZÁÉÍÓÚÜÑ])")
 EVENT_DASH_RE = re.compile(r"^[–—−-]")
+# Some sittings draw the dash from a symbol font with no Unicode mapping, so
+# it extracts as a private-use codepoint. No claim is made about what such a
+# codepoint means elsewhere in the text — only that, printed between a
+# speaker's name and their words, it is the label's terminator.
+PUA = r"-"
 
 # 2000–2013 layouts split the chair label across styles:
 #   bold "Sr. Presidente" + normal "(Pampuro)" + bold ". –"
@@ -75,7 +80,7 @@ PAREN_ONLY_RE = re.compile(r"^\([^()]{1,60}\)$")
 # the terminator is punctuation, and only what follows is speech.
 PAREN_HEAD_RE = re.compile(r"^\s*(\([^()]{1,60}\))\s*\.?\s*[–—−-]?\s*")
 # a turn's first words are printed after the label's ". —" terminator
-TURN_LEAD_RE = re.compile(r"^\s*\.?\s*[–—−-]\s*")
+TURN_LEAD_RE = re.compile(rf"^\s*\.?\s*[–—−\-{PUA}]\s*")
 LABEL_CLOSED_RE = re.compile(r"[–—−(]")  # label already carries its own paren/terminator
 LABEL_SPLIT_RE = re.compile(r"\s(?=(?:Sr|Sra|Srta|Sres)\.\s)")  # fused "TÍTULO Sr. X" headings
 # 2006-2009 files drop the space at line joins ("…Fiscalía N°3Sr. Presidente"),
@@ -86,16 +91,31 @@ LEAD_JUNK_RE = re.compile(r'^[\s.:;,\-–—−…"“”«»]+')  # bold-glued 
 PAREN_LABEL_RE = re.compile(r"^\(([^()]{1,60})\)[\s.\-–—−:]*$")  # bare "(Rojkés de Alperovich).-" chair label
 DGT_RE = re.compile(r"^Dirección General de Taquígrafos\b")
 CID_RE = re.compile(r"\(cid:\d+\)")  # glyphs the PDF font maps to nothing
+# A speaker label ends at ". —"; anything printed after it is already the
+# first words of the turn, bolded by accident ("Sr. Mayans. – ¡").
+LABEL_TERM_RE = re.compile(rf"\.\s*[–—−─{PUA}]\s*")
+COURIER_RE = re.compile(r"courier", re.I)
 
 # Ordered: first match wins. Applied lowercased.
 EVENT_SUBTYPES = [
-    ("timestamp", re.compile(r"^[–—-]?\s*(?:a las|son las)\s+\d|^[–—-]?\s*en la ciudad aut")),
+    ("timestamp", re.compile(r"^[–—-]?\s*(?:a las|son las)\s+\d"
+                             r"|^[–—-]?\s*en (?:la ciudad aut|buenos aires)")),
     ("vote", re.compile(r"votaci[oó]n|se vota|resulta[n]?\s+(?:aprobad|rechazad)|afirmativ|negativ|unanimidad|asentimiento")),
     ("pause", re.compile(r"luego de (?:unos )?instantes|cuarto intermedio|se reanuda")),
     ("applause", re.compile(r"aplausos")),
     ("laughter", re.compile(r"risas")),
-    ("incident", re.compile(r"manifestaciones|interrupci|abucheo|cánticos|murmullos|contenido no inteligible|fuera del alcance del micrófono")),
-    ("stage", re.compile(r"ocupa la presidencia|ingresa|se retira|izamiento|entonaci|himno|arrían")),
+    # Disorder in the chamber, however the stenographer words it. Senators
+    # talking over each other is the commonest form by far and used to fall
+    # through untyped, which undercounted every incident rate; the remote
+    # sittings of 2020-2021 add their own kind of disorder, a connection
+    # that drops out mid-speech.
+    ("incident", re.compile(r"manifestaciones|interrupci|abucheo|cánticos|murmullos"
+                            r"|contenido no inteligible|fuera del alcance del micrófono"
+                            r"|hablan a la vez|dialogan|interferencias"
+                            r"|no se alcanza[n]? a (?:percibir|o[ií]r|escuchar)"
+                            r"|se interrumpe la (?:transmisi|conexi)")),
+    ("stage", re.compile(r"ocupa la presidencia|ingresa|se retira|izamiento|entonaci|himno"
+                         r"|arrían|puestos de pie")),
 ]
 
 STATS_COLUMNS = [
@@ -112,6 +132,7 @@ STATS_COLUMNS = [
     "empty_blocks_removed",
     "chapters_detected",
     "fused_labels_split",
+    "label_spillover_split",
     "events_tagged",
     "inline_merged",
     "appendix_demoted",
@@ -159,8 +180,52 @@ def extract_all_characters(pdf_path, max_pages=None):
                     "page": i + 1,
                     "top": c["top"],
                 })
+    remapped = repair_symbol_font(chars)
     print(f"Extracción completa. Se extrajeron {len(chars)} caracteres en total.")
+    if remapped:
+        print(f"Se repararon {remapped} caracteres de una fuente de símbolos mal mapeada.")
     return chars, page_heights
+
+
+# What the mis-mapped symbol font actually draws. Every mapping was read off
+# the 2004-10-20 file's own contexts, and each is unambiguous there: "C"
+# appears only as the label terminator and event dash, "1" only after "N",
+# "(" and ")" only at the start of a word, "8" only after an already-accented
+# vowel (a leftover the accent had consumed, so it is dropped).
+SYMBOL_FONT_MAP = {"C": "—", "A": "“", "@": "”", ")": "¿", "(": "¡",
+                   "1": "°", "8": ""}
+
+
+def repair_symbol_font(chars):
+    """Undo a broken character map in a font used only for punctuation.
+
+    The 2004-10-20 file draws its dashes, quotes and inverted question
+    marks in a subsetted Courier whose character map is wrong, so an em
+    dash extracts as a literal "C" ("Sr. Presidente. C La sesión está
+    abierta"). That swallows the turn's opening words into the speaker
+    label and leaves the chair unidentifiable.
+
+    Other sittings do set real text in Courier — an inserted document in a
+    typewriter face — and must not be touched. The two uses are told apart
+    by run length: a font standing in for punctuation never draws more than
+    a couple of characters in a row, while body text runs for hundreds.
+    """
+    idx = [i for i, c in enumerate(chars) if COURIER_RE.search(c["font"])]
+    if not idx:
+        return 0
+    longest = run = 0
+    for a, b in zip(idx, idx[1:]):
+        run = run + 1 if b == a + 1 and chars[b]["text"].strip() else 0
+        longest = max(longest, run)
+    if longest > 3:
+        return 0                      # the font is carrying words, not symbols
+    fixed = 0
+    for i in idx:
+        repl = SYMBOL_FONT_MAP.get(chars[i]["text"])
+        if repl is not None:
+            chars[i]["text"] = repl
+            fixed += 1
+    return fixed
 
 
 def strip_page_headers(chars):
@@ -299,7 +364,7 @@ def group_characters_into_text_blocks(chars):
     if cur is not None:
         blocks.append(cur)
     print(f"Agrupamiento completo. Se generaron {len(blocks)} bloques de texto.")
-    return reassign_hyphens_to_italic_blocks(blocks)
+    return reassign_parens_to_italic_blocks(reassign_hyphens_to_italic_blocks(blocks))
 
 
 def reassign_hyphens_to_italic_blocks(blocks):
@@ -309,6 +374,50 @@ def reassign_hyphens_to_italic_blocks(blocks):
         if cur["text"].strip().endswith("-") and nxt["font_style"] == "italic":
             cur["text"] = cur["text"].strip().rstrip("-")
             nxt["text"] = "-" + nxt["text"].strip()
+    return blocks
+
+
+def reassign_parens_to_italic_blocks(blocks):
+    """Give a parenthesized stenographer note back its brackets.
+
+    Some formats italicize only the word and leave the brackets in the
+    surrounding roman text, so the run splits as "…demanden. (" + "Aplausos"
+    + ".) Invito al señor senador…". The middle block is then a lone
+    italicized word, which the classifier reads as emphasis inside speech
+    and merges back into the turn — and the applause is never recorded.
+    Moving the brackets into the italic block restores the note.
+    """
+    moved = 0
+    for i in range(1, len(blocks) - 1):
+        prev, cur, nxt = blocks[i - 1], blocks[i], blocks[i + 1]
+        text = cur["text"].strip()
+        if cur["font_style"] != "italic" or not text:
+            continue
+        lead = re.match(r"^[\s.]+(?=\()", cur["text"])
+        if lead and text.endswith(")"):
+            # the italic run swallowed the full stop that ends the previous
+            # sentence ("Patria" + ". (Aplausos.)"): give it back, so what
+            # remains is the note alone
+            prev["text"] = prev["text"].rstrip() + lead.group(0).strip()
+            cur["text"] = cur["text"][lead.end():]
+            text = cur["text"].strip()
+            moved += 1
+        if text.startswith("("):
+            continue
+        # Either bracket may have stayed in the roman text, or both.
+        take_open = "(" not in text and prev["text"].rstrip().endswith("(")
+        close = re.match(r"\s*\.?\s*\)", nxt["text"]) if ")" not in text else None
+        if not take_open:
+            continue
+        if not (close or text.endswith(")")):
+            continue
+        prev["text"] = prev["text"].rstrip()[:-1]
+        cur["text"] = "(" + text + (close.group(0).strip() if close else "")
+        if close:
+            nxt["text"] = nxt["text"][close.end():]
+        moved += 1
+    if moved:
+        print(f"Paréntesis devueltos a {moved} notas del taquígrafo.")
     return blocks
 
 
@@ -497,6 +606,42 @@ def split_fused_labels(blocks, body_size):
     return out, split
 
 
+def split_label_spillover(blocks, body_size):
+    """Give the turn back its first words when they were bolded with the label.
+
+    Some sittings carry the opening punctuation of the speech inside the
+    bold run that holds the label — "Sr. Mayans. – ¡" — because the
+    typesetter never closed the bold before "¡Sí!". Read whole, the label
+    becomes a speaker of its own and never matches a person. The label
+    ends at its ". —" terminator by convention, so whatever follows is
+    speech: it is split off into a normal-style block of its own and
+    picked up as the first words of the turn.
+    """
+    out = []
+    split = 0
+    for idx, b in enumerate(blocks):
+        t = b["text"].strip()
+        if (b.get("type") is None and b["font_style"] == "bold"
+                and b["size"] == body_size and SPEAKER_RE.match(t)):
+            m = LABEL_TERM_RE.search(t)
+            if m and (spill := t[m.end():].strip()):
+                nxt = blocks[idx + 1] if idx + 1 < len(blocks) else None
+                out.append({**b, "text": t[:m.end()]})
+                if (nxt is not None and nxt.get("type") is None
+                        and nxt["font_style"] == "normal" and nxt["size"] == body_size):
+                    # the spill opens the very next sentence ("¡" + "Sí!"):
+                    # rejoin without a separator, the typesetter had none
+                    nxt["text"] = spill + nxt["text"].lstrip()
+                    b = None
+                else:
+                    b = {**b, "text": spill, "font_style": "normal"}
+                split += 1
+        if b is not None:
+            out.append(b)
+    print(f"Etiquetas con texto hablado adherido separadas: {split}.")
+    return out, split
+
+
 def identify_speakers(blocks, body_size):
     """Attribute speech to speakers; gate labels on ^Sr./Sra. patterns.
 
@@ -553,6 +698,17 @@ def identify_speakers(blocks, body_size):
                                 nxt["text"] = rest
                             else:
                                 i += 1  # nothing left of that block
+                        elif (i + 1 < len(blocks)
+                                and re.fullmatch(r"[^()]{1,60}", nxt["text"].strip())
+                                and blocks[i + 1]["font_style"] == "bold"
+                                and blocks[i + 1]["size"] == body_size
+                                and blocks[i + 1]["text"].lstrip().startswith(")")):
+                            # both parens bold, the name normal between them:
+                            # bold "Sr. Presidente (" + normal "Yoma" + bold
+                            # "). — ". Without this the name reads as the first
+                            # word of the speech and the chair goes unnamed.
+                            label = t + nxt["text"].strip() + ")"
+                            i += 1
                 current = label      # consumed: label blocks are not emitted
                 turn_id += 1         # a printed label opens a NEW turn; speech
                                      # resuming after an event without a label
@@ -607,7 +763,7 @@ def clean_speaker_names(blocks):
     cleaned = 0
     for b in blocks:
         if b.get("speaker"):
-            new = re.sub(r"[\s.\-–—−:]+$", "", b["speaker"]).strip()
+            new = re.sub(rf"[\s.\-–—−─{PUA}:]+$", "", b["speaker"]).strip()
             if new != b["speaker"]:
                 b["speaker"] = new
                 cleaned += 1
@@ -728,6 +884,9 @@ def process_pdf(pdf_path):
 
     blocks, fused = split_fused_labels(blocks, body_size)
     stats["fused_labels_split"] = fused
+
+    blocks, spillover = split_label_spillover(blocks, body_size)
+    stats["label_spillover_split"] = spillover
 
     blocks = identify_speakers(blocks, body_size)
     blocks = clean_speaker_names(blocks)
