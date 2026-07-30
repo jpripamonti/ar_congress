@@ -59,6 +59,9 @@ FURNITURE = {
     "sitting header": re.compile(r"\d+[ªº°]\s*Reuni[óo]n\s*[-–]\s*\d+[ªº°]?\s*Sesi[óo]n"),
     "presiding-officer block": re.compile(r"Presidencia del se[ñn]or (?:vice)?presidente"),
     "attendance roll heading": re.compile(r"\bPRESENTES\b|\bAUSENTES\b"),
+    # printed at body size below the rule at the foot of the page, so nothing
+    # about its type or position distinguishes it from speech
+    "appendix-pointer footnote": re.compile(r"\bVer el Ap[eé]ndice\b"),
 }
 # A complete printed label — title, name, ". —" terminator — inside a turn.
 GLUED_LABEL = re.compile(r"(?<![A-Za-zÁÉÍÓÚÑ])(?:Sr|Sra|Srta)\.\s+[A-ZÁÉÍÓÚÑ][^.]{1,45}?\.\s*[–—−─]\s")

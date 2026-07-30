@@ -18,14 +18,15 @@ text blocks, and analysis.
   the files on disk by `scripts/make_manifest.py`. The 90 sessions fetched
   in January 2025 predate the download-timestamp field, so theirs is blank
   rather than guessed.
-- Corpus parsed (parser 0.4.6): ~154,800 speaker-attributed speech blocks
-  and ~31,900 typed stenographer events in 257,800 rows, as per-session
+- Corpus parsed (parser 0.4.8): 155,247 speaker-attributed speech blocks
+  and 31,923 typed stenographer events in 254,895 rows, as per-session
   Parquet under `data/processed/senado/`. One session fails to parse — a
   November 2001 sitting that never reached quorum, so it has no session
-  opening to find. Text the parser cannot attribute to a speaker is 2,136
-  blocks, and nine sessions account for most of it: sittings whose record
-  is mostly an inserted document (two impeachment dossiers, a printed bill
-  text, a list of judicial appointments) rather than floor debate.
+  opening to find. Text the parser cannot attribute to a speaker is 1,888
+  rows (0.7%), and a handful of sessions account for most of it: sittings
+  whose record is mostly an inserted document (two impeachment dossiers, a
+  printed bill text, a list of judicial appointments) rather than floor
+  debate.
 - Two layers of verification, because they answer different questions.
   **On a hand-annotated sample** — 36 stratified pages spanning 2003–2024 —
   utterance boundary+attribution F1 = 1.00 (124 of 125 turns), event
@@ -33,12 +34,16 @@ text blocks, and analysis.
   annotations have themselves been checked back against the source PDFs
   (`scripts/check_gold.py`, 36 of 36 pass) — a second machine reading, not an
   independent human audit. **On all 559 sessions** (`scripts/audit_parse.py`):
-  no turn carries a second speaker's label, one page's footer leaks into
-  speech, no text is written out twice, and a median 79.5% of each document's
-  printed text is kept (the rest — contents pages, attendance rolls,
-  appendices — is dropped by design). Two sittings of November 2001 are scans
-  with OCR text and should be excluded from any text analysis; the parser
-  flags them. Details and figures: [SOURCES.md](SOURCES.md).
+  no turn carries a second speaker's label, no label is absorbed by the section
+  title above it, one page's footer leaks into speech, no text is written out
+  twice, and a median 79.5% of each document's printed text is kept (the rest —
+  contents pages, attendance rolls, appendices — is dropped by design). Two
+  sittings of November 2001 are scans with OCR text and should be excluded from
+  any text analysis; the parser flags them. **On 50 pages read blind** — every
+  page rendered as an image and read by an agent that was never shown the
+  parser's answer, then compared — the two agree on who is speaking in
+  [50 of 50](reference/verification/blind_read_50.csv). Details and figures:
+  [SOURCES.md](SOURCES.md).
 - Speakers resolved to persons: **70% of all speech blocks name a person**,
   with the ticket they were elected on and their province. A further 28% is
   a chamber office speaking under its bare title ("Sr. Presidente", "Sr.
@@ -59,9 +64,11 @@ text blocks, and analysis.
 
 ![Senate floor words by year and party family](figures/floor_words_by_year.png)
 
-- The Peronist/Justicialist family has been the largest on the floor in
-  every fully held year, from 30% to 56% of floor words, median 48%, across
-  four changes of national government.
+- The Peronist/Justicialist family holds 30% to 56% of floor words in the
+  fully held years, median 48%, across four changes of national government.
+  It is the largest single family in 18 of those 21 years; in 2013, 2014 and
+  2015 the provincial-and-other bucket was larger, but that bucket is a
+  residual holding many separate alliances rather than one family.
 - What moved is the labels everyone else ran under. Provincial and other
   alliances held 36–46% of floor words from 2006 to 2016 and 13–15% from
   2020 on, while the radical/Cambiemos family went the other way. Senators
@@ -101,7 +108,10 @@ the notebook and in [SOURCES.md](SOURCES.md).
 - `scripts/audit_parse.py` — audit every session against its PDF: apparatus
   leaking into speech, undetected speaker changes, duplicated or invented
   text, coverage, scans. `--sample N` also writes a review sheet of N turns
-  for a human to check by eye.
+  to be checked by eye against the printed page.
+- `reference/verification/` — the blind read of those 50 pages: what the
+  parser said, what an independent reader saw on the page, and whether they
+  agree.
 - `reference/` — versioned reference data: roster snapshots, authorities
   tables, gold evaluation set. Provenance: [SOURCES.md](SOURCES.md).
 - `data/` — symlink to the OneDrive working copy; not in git (see

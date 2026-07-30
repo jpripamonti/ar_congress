@@ -175,10 +175,40 @@ the sample could not have reached.
 - [ ] Words run together at line joins ("reemplazala expresión") because the
       parser reads characters in stored order and loses the spaces the layout
       implies. Affects tokenisation and word counts, not attribution.
-- [ ] Owner: the audit cannot tell whether the RIGHT person is behind the
-      words, only that no rule was broken. `--sample N` writes a review sheet
-      (`data/processed/senado/review_sheet.csv`) of turns drawn across all 25
-      years, each with the PDF and page to open. 50 turns are waiting.
+
+## Phase 7 — read the pages blind (done, July 2026 — parser 0.4.8)
+
+The audit checks that no rule was broken; it cannot tell whether the RIGHT
+person is behind the words. So the 50 sampled turns were read independently:
+each page rendered as an image and given to an agent that was never told the
+parser's answer, asked only "who does this page say is speaking here?", and the
+two answers compared afterwards.
+
+- [x] 50 of 50 agree on the speaker; the quoted words were found on the page in
+      all 50; no reader saw page apparatus inside the paragraph.
+- [x] Earlier passes disagreed twice, and the reader was right both times.
+      First: the section title swallows the speaker label printed after it,
+      because the two share one bold run and the PDF drops the space between
+      them. 1,693 titles in 112 sessions had absorbed a label, stranding 314
+      turns, **55 of them credited to the wrong person**. Fixed in 0.4.7; the
+      only case left is inside a scan. The cut was tried against all 5,154
+      distinct titles first — every tail it carves off is a genuine label.
+      Second: the footnote pointing at the appendix read as speech — 809 turns
+      that were nothing else, and 340 more with its words dropped mid sentence.
+      Fixed in 0.4.8 by cutting the phrase like a header. A positional rule was
+      tried first and rejected: it cut real debate, because a superscript
+      reference can begin a line too.
+- [x] A third, milder case: the chair's surname stayed in the speech instead of
+      joining the label ("Sr. Presidente" + ". (Gioja). — …"), so 27 turns
+      recorded the chair as person-unstated where the page names them.
+- [x] Verdicts kept as evidence in
+      `reference/verification/blind_read_50.csv`.
+- [x] The audit now also checks for the appendix-pointer footnote, so this class
+      stays measured instead of being fixed and forgotten.
+- [ ] Still worth doing by hand: a blind machine read is a second machine
+      reading, independent of the parser's code path but not of machine
+      reading itself. `--sample N` regenerates the review sheet
+      (`data/processed/senado/review_sheet.csv`) for a human pass.
 
 ## Later
 

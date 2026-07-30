@@ -48,7 +48,7 @@ from pathlib import Path
 import pandas as pd
 import pdfplumber
 
-PARSER_VERSION = "0.4.6"
+PARSER_VERSION = "0.4.8"
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
@@ -78,11 +78,20 @@ BOLD_JUNK_RE = re.compile(r'^[\s.:;,\-–—−…"“”«»ºª°()]+$')
 PAREN_ONLY_RE = re.compile(r"^\([^()]{1,60}\)$")
 # "(Estrada). — Por Secretaría…": the parenthetical belongs to the label,
 # the terminator is punctuation, and only what follows is speech.
-PAREN_HEAD_RE = re.compile(r"^\s*(\([^()]{1,60}\))\s*\.?\s*[–—−-]?\s*")
+# The chair's surname opens the roman run that follows the bold "Sr. Presidente",
+# sometimes behind the label's own period — ". (Gioja). — Indudablemente…". Leave
+# that period in place and the surname stays in the speech, so the page names the
+# chair and the record still says the person is unstated.
+PAREN_HEAD_RE = re.compile(r"^[\s.]*(\([^()]{1,60}\))\s*\.?\s*[–—−-]?\s*")
 # a turn's first words are printed after the label's ". —" terminator
 TURN_LEAD_RE = re.compile(rf"^\s*\.?\s*[–—−\-{PUA}]\s*")
 LABEL_CLOSED_RE = re.compile(r"[–—−(]")  # label already carries its own paren/terminator
-LABEL_SPLIT_RE = re.compile(r"\s(?=(?:Sr|Sra|Srta|Sres)\.\s)")  # fused "TÍTULO Sr. X" headings
+# A numbered section title and the label of whoever speaks under it are set in
+# the same bold run, and the space between them is often the one the PDF drops
+# at a line join ("…bandera nacionalSr. Presidente"). Cut on either, and cap
+# the tail so a title that merely names a person cannot be mistaken for one.
+LABEL_SPLIT_RE = re.compile(r"\s?(?=(?:Sr|Sra|Srta|Sres)\.\s)")  # fused "TÍTULO Sr. X" headings
+MAX_LABEL_TAIL = 70
 # 2006-2009 files drop the space at line joins ("…Fiscalía N°3Sr. Presidente"),
 # so the label can be glued straight onto the heading with no separator.
 FUSED_LABEL_RE = re.compile(r"\s?(?=(?:Sr|Sra|Srta|Sres)\.\s)")
@@ -90,6 +99,15 @@ LABEL_FRAGMENT_RE = re.compile(r"^[.\s]*(?:Sr|Sra|Srta|Sres)$")  # shattered lab
 LEAD_JUNK_RE = re.compile(r'^[\s.:;,\-–—−…"“”«»]+')  # bold-glued tail of the previous sentence
 PAREN_LABEL_RE = re.compile(r"^\(([^()]{1,60})\)[\s.\-–—−:]*$")  # bare "(Rojkés de Alperovich).-" chair label
 DGT_RE = re.compile(r"^Dirección General de Taquígrafos\b")
+# The footnote that points at the appendix is printed at body size, below the
+# rule at the foot of the page, so neither the size test nor the positional
+# footer strip catches it and it reads as something a senator said. Its own
+# raised marker sometimes comes along. Position cannot separate a footnote from
+# speech here — a superscript reference can start a line too — so this is keyed
+# on the wording, which is boilerplate.
+# Capitalised as printed. It carries no content of its own — it says only "see
+# the appendix" — so it is cut like a header or footer rather than kept as a row.
+FOOTNOTE_TEXT_RE = re.compile(r"\s*(?:\d{1,3}\s*)?Ver el Ap[eé]ndice\.?\s*")
 CID_RE = re.compile(r"\(cid:\d+\)")  # glyphs the PDF font maps to nothing
 # A speaker label ends at ". —"; anything printed after it is already the
 # first words of the turn, bolded by accident ("Sr. Mayans. – ¡").
@@ -512,6 +530,26 @@ def cut_front_matter(blocks, body_size):
     return [], "none"
 
 
+def strip_footnote_text(blocks):
+    """Cut the appendix-pointer footnote out of the middle of a speech turn.
+
+    The footnote is set at body size in the body font, so where the characters
+    happen to be stored next to a speaker's, the grouping pass draws them into
+    the same block and the footnote reads as something the senator said — "…los
+    residuos Ver el Apéndice. de desecho…". Removing the phrase also repairs the
+    sentence it had been dropped into.
+    """
+    cut = 0
+    for b in blocks:
+        text, n = FOOTNOTE_TEXT_RE.subn(" ", b["text"])
+        if n:
+            b["text"] = re.sub(r"\s{2,}", " ", text)
+            cut += n
+    if cut:
+        print(f"Notas al pie del apéndice removidas del texto: {cut}.")
+    return blocks, cut
+
+
 def remove_empty_blocks(blocks):
     """Drop blocks that are empty, whitespace, or only unmapped glyphs.
 
@@ -570,10 +608,18 @@ def classify_blocks(blocks, body_size):
 
 
 def assign_chapter_to_blocks(blocks, body_size):
-    """Detect bold body-size "N. Título" headings; assign chapters to blocks."""
+    """Detect bold body-size "N. Título" headings; assign chapters to blocks.
+
+    A numbered title and the label of whoever speaks under it share one bold
+    run, so the label has to be cut off and re-emitted as its own block. Miss
+    that cut and the label vanishes into the title: the turn never opens, the
+    next speaker's words are added to the previous speaker's turn, and the
+    stranded "(Surname)" half of the label is left sitting in the speech.
+    """
     chapters = {}
     current = None
     out = []
+    label_cuts = 0
     for b in blocks:
         t = LEAD_JUNK_RE.sub("", b["text"].strip())
         if (b.get("type") is None and b["font_style"] == "bold" and b["size"] == body_size
@@ -587,8 +633,11 @@ def assign_chapter_to_blocks(blocks, body_size):
                 last = None
                 for last in LABEL_SPLIT_RE.finditer(p):
                     pass
-                if last and SPEAKER_RE.match(p[last.end():]):
-                    fission += [p[:last.start()].strip(), p[last.end():].strip()]
+                tail = p[last.end():] if last else ""
+                if (last and SPEAKER_RE.match(tail) and p[:last.start()].strip()
+                        and len(tail.strip()) <= MAX_LABEL_TAIL):
+                    fission += [p[:last.start()].strip(), tail.strip()]
+                    label_cuts += 1
                 else:
                     fission.append(p)
             parts = [p for p in fission if p]
@@ -602,8 +651,9 @@ def assign_chapter_to_blocks(blocks, body_size):
             continue
         b["capítulo"] = current
         out.append(b)
-    print(f"Asignación de capítulos completa. Se detectaron {len(chapters)} capítulos.")
-    return out, chapters
+    print(f"Asignación de capítulos completa. Se detectaron {len(chapters)} capítulos; "
+          f"{label_cuts} etiquetas de orador separadas del título.")
+    return out, chapters, label_cuts
 
 
 def split_fused_labels(blocks, body_size):
@@ -954,14 +1004,18 @@ def process_pdf(pdf_path):
         stats["error"] = "no_opening_found"
         return [], {}, stats
 
+    blocks, footnotes_cut = strip_footnote_text(blocks)
+    stats["footnotes_cut"] = footnotes_cut
+
     blocks, empty_removed = remove_empty_blocks(blocks)
     stats["empty_blocks_removed"] = empty_removed
 
     blocks, events = classify_blocks(blocks, body_size)
     stats["events_tagged"] = events
 
-    blocks, chapters = assign_chapter_to_blocks(blocks, body_size)
+    blocks, chapters, title_label_cuts = assign_chapter_to_blocks(blocks, body_size)
     stats["chapters_detected"] = len(chapters)
+    stats["title_labels_cut"] = title_label_cuts
 
     blocks, fused = split_fused_labels(blocks, body_size)
     stats["fused_labels_split"] = fused

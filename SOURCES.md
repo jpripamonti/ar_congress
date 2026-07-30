@@ -103,28 +103,79 @@ the corpus, drawn from 24 of 559 sittings. `scripts/audit_parse.py` covers the
 rest by checking, on every session, things that must never happen. Current
 results:
 
-- **Page apparatus inside a speech turn: 1 occurrence** in 154,875 turns (a
+- **Page apparatus inside a speech turn: 1 occurrence** in 155,247 turns (a
   footer line that landed mid-sentence in the 7 May 2014 sitting). Mastheads,
-  datelines, attendance rolls and section headers are otherwise absent from
-  speech, which is what the positional header and footer strips are for.
+  datelines, attendance rolls, section headers and the appendix-pointer footnote
+  are otherwise absent from speech, which is what the positional header and
+  footer strips are for.
+- **The footnote that points at the appendix: 0 occurrences.** It is printed at
+  body size in the body font, below the rule at the foot of the page, so neither
+  the size test nor the positional footer strip reached it: 809 turns were
+  nothing but that footnote, and its words had been drawn into 340 more, mid
+  sentence. Position cannot tell it from speech — a superscript reference can
+  begin a line too, and a rule keyed on position cut real debate when tried — so
+  parser 0.4.8 keys on the wording, which is boilerplate, and cuts it like a
+  header. Removing it also repairs the sentences it had been dropped into.
 - **A second speaker's label glued inside a turn: 0**, outside the two scanned
   sittings below. This is the error that matters most — it means a change of
   speaker went unnoticed and one senator was credited with another's words.
   The audit found 71 such cases when it was first written; the parser now
   recovers labels the typesetter set in roman instead of bold, which is what
   had caused them.
+- **A speaker label absorbed by the section title above it: 0** (1 left, in a
+  scan). A numbered title and the label of whoever speaks under it are set in
+  one bold run, and the space between them is often the one the PDF drops at a
+  line join — "…bandera nacionalSr. Presidente". Read as one long title, the
+  label vanishes, the turn never opens, and the next speaker's words are added
+  to the previous speaker's turn. 1,693 titles in 112 sessions carried a label
+  this way, stranding 314 turns; in 55 of those the swallowed label belonged to
+  a *different* speaker, so words really were credited to the wrong person.
+  Parser 0.4.7 cuts the title from the label whether or not a space survives.
+  The cut was tried against all 5,154 distinct titles in the corpus first: all
+  83 distinct tails it carves off are genuine speaker labels, none a false
+  positive.
 - **Text written out twice: 0 sessions.** No document yields more text than it
   prints.
-- **Blocks not findable in the source PDF: 21 sessions above 1%**, the worst
-  of them the two scans and the 20 October 2004 file whose mis-mapped symbol
-  font the parser deliberately repairs. Elsewhere the figure is under 3%, and
-  those are turns that span a seam the parser makes on purpose: it merges a
-  speaker's consecutive paragraphs and drops the section heading printed
-  between them.
+- **Blocks not findable in the source PDF: 0.32% on average**, 12 sessions above
+  1%, the worst of them the 20 October 2004 file whose mis-mapped symbol font the
+  parser deliberately repairs. Elsewhere the figure is under 3%, and those are
+  turns that span a seam the parser makes on purpose: it merges a speaker's
+  consecutive paragraphs and drops the section heading printed between them.
 - **Share of each document's printed text kept:** median 79.5%, quartiles 69%
   and 87%. The rest is dropped by design — contents pages, attendance rolls,
   appendices and inserted documents. The lowest figures are short sittings in
   minority that consist of little but a masthead and a roll.
+
+### Fifty pages read blind
+
+Everything above is the parser checked against itself or against invariants. It
+cannot answer the plainest question — is the right person behind the words? —
+because a rule can be applied perfectly to the wrong speaker. So the 50 turns
+`audit_parse.py --sample 50` draws across the 25 years were read independently:
+each page was rendered as an image, handed to an agent that was **never shown
+the parser's answer**, and asked only which printed label governs the quoted
+words. The two answers were compared afterwards, mechanically.
+
+The readings agree on the speaker in **50 of 50**, the quoted words were found on
+the page in all 50, and no reader saw page apparatus inside the paragraph. Two of
+the turns begin on one page under a label printed on the page before, and the
+reader confirmed the parser carried the speaker across the break correctly. The
+comparison is in
+[reference/verification/blind_read_50.csv](reference/verification/blind_read_50.csv):
+the parser's speaker, the label the reader transcribed from the page, and the
+reader's own notes and confidence.
+
+Earlier passes disagreed twice, and the reader was right both times. Those two
+disagreements are what exposed the two defects above — the section title that
+swallows the label after it, worth 55 misattributed turns corpus-wide, and the
+appendix-pointer footnote read as speech, worth 1,149 turns — neither of which
+any amount of re-reading the 36 annotated pages would have found.
+
+What this is not: an independent *human* audit. It is a second machine reading,
+independent of the parser's code path — it works from the rendered page, not from
+the PDF's character stream — but still a machine's reading. A shared misreading
+of what a page means remains possible, and the review sheet is regenerated for a
+human pass whenever `--sample N` is passed.
 
 ### Two sittings are scans, not text
 
