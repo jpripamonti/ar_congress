@@ -48,7 +48,7 @@ from pathlib import Path
 import pandas as pd
 import pdfplumber
 
-PARSER_VERSION = "0.4.8"
+PARSER_VERSION = "0.4.10"
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
@@ -108,6 +108,17 @@ DGT_RE = re.compile(r"^Dirección General de Taquígrafos\b")
 # Capitalised as printed. It carries no content of its own — it says only "see
 # the appendix" — so it is cut like a header or footer rather than kept as a row.
 FOOTNOTE_TEXT_RE = re.compile(r"\s*(?:\d{1,3}\s*)?Ver el Ap[eé]ndice\.?\s*")
+# the digital edition's link back to the contents page, printed after a turn
+SUMARIO_RE = re.compile(r"\s*\[\s*Volver al sumario\s*\]\s*", re.I)
+# characters from a font with no Unicode map land in the private-use area
+CID_UNMAPPED_RE = re.compile(r"[-]")
+# what is left of the "Pág. N" dateline once the unmapped letters are dropped
+PAGENUM_ONLY_RE = re.compile(r"^\s*[áa]?\s*\d{1,4}\s*$")
+WORD_CHAR_RE = re.compile(r"[0-9A-Za-zÁÉÍÓÚÜÑáéíóúüñ]")
+# the footnote's raised marker, or the number of the next section heading, left
+# stranded at the very end of a turn. A number somebody actually spoke is inside
+# the sentence, before its full stop, so it cannot match.
+TRAILING_MARKER_RE = re.compile(r"([.!?])\s*\d{1,3}\s*$")
 CID_RE = re.compile(r"\(cid:\d+\)")  # glyphs the PDF font maps to nothing
 # A speaker label ends at ". —"; anything printed after it is already the
 # first words of the turn, bolded by accident ("Sr. Mayans. – ¡").
@@ -156,9 +167,14 @@ STATS_COLUMNS = [
     "blocks_after_marker",
     "empty_blocks_removed",
     "chapters_detected",
+    "title_labels_cut",
     "fused_labels_split",
     "inline_labels_recovered",
     "label_spillover_split",
+    "apparatus_text_cut",
+    "contents_links_cut",
+    "footnote_markers_cut",
+    "wordless_turns_dropped",
     "events_tagged",
     "inline_merged",
     "appendix_demoted",
@@ -530,24 +546,70 @@ def cut_front_matter(blocks, body_size):
     return [], "none"
 
 
-def strip_footnote_text(blocks):
-    """Cut the appendix-pointer footnote out of the middle of a speech turn.
+def cut_apparatus_text(blocks):
+    """Cut printed apparatus out of the middle of a speech turn.
 
-    The footnote is set at body size in the body font, so where the characters
-    happen to be stored next to a speaker's, the grouping pass draws them into
-    the same block and the footnote reads as something the senator said — "…los
-    residuos Ver el Apéndice. de desecho…". Removing the phrase also repairs the
-    sentence it had been dropped into.
+    Three kinds reach the body text because they are set in the body font at
+    body size, so neither the size test nor the positional strips see them, and
+    the grouping pass draws them into whichever speaker's block sits next to
+    them in the stored character order:
+
+    * the footnote pointing at the appendix ("…los residuos Ver el Apéndice. de
+      desecho…"),
+    * the contents-page link the digital edition prints after a turn
+      ("Queda aprobado el plan de labor.[ Volver al sumario]"),
+    * the page dateline in a sitting whose font has no character map, where
+      "Pág. 5" extracts with only the accent and the digit intact and the strip
+      that keys on the printed dateline therefore cannot find it.
+
+    Removing them also repairs the sentence they had been dropped into.
     """
     cut = 0
     for b in blocks:
         text, n = FOOTNOTE_TEXT_RE.subn(" ", b["text"])
-        if n:
+        cut += n
+        if PAGENUM_ONLY_RE.match(CID_UNMAPPED_RE.sub("", text)):
+            text, cut = "", cut + 1
+        if text != b["text"]:
             b["text"] = re.sub(r"\s{2,}", " ", text)
-            cut += n
     if cut:
-        print(f"Notas al pie del apéndice removidas del texto: {cut}.")
+        print(f"Aparato de página removido del texto: {cut} fragmentos.")
     return blocks, cut
+
+
+def clean_final_speech(blocks):
+    """Last pass over the settled turns: cut the contents link, drop empty ones.
+
+    The contents-page link arrives split across two style runs — the bracket
+    ends one block and "Volver al sumario]" is the next — so it can only be cut
+    once the italic fragments have been merged back into the speech they
+    interrupt, which is here. Turns left carrying no word at all ("." or "—" or
+    "(") are shards of the style grouping, not utterances, and go with it.
+    Nothing here can change who is credited with what: the speakers are already
+    settled, so this only removes printed apparatus and empty rows.
+    """
+    links = markers = 0
+    for b in blocks:
+        text, n = SUMARIO_RE.subn(" ", b["text"])
+        if n:
+            text = re.sub(r"\s{2,}", " ", text).strip()
+            links += n
+        if b.get("type") == "speech":
+            # a bare number left at the very end of a turn is the footnote
+            # marker whose text was cut, or the number of the section heading
+            # printed next — never a figure anybody spoke
+            text, m = TRAILING_MARKER_RE.subn(r"\1", text)
+            markers += m
+        if text != b["text"]:
+            b["text"] = text
+    kept = [b for b in blocks
+            if b.get("type") != "speech" or WORD_CHAR_RE.search(b["text"])]
+    dropped = len(blocks) - len(kept)
+    if links or markers or dropped:
+        print(f"Enlaces al sumario removidos: {links}. "
+              f"Marcadores de nota al pie sueltos removidos: {markers}. "
+              f"Turnos sin ninguna palabra descartados: {dropped}.")
+    return kept, links, markers, dropped
 
 
 def remove_empty_blocks(blocks):
@@ -1004,8 +1066,8 @@ def process_pdf(pdf_path):
         stats["error"] = "no_opening_found"
         return [], {}, stats
 
-    blocks, footnotes_cut = strip_footnote_text(blocks)
-    stats["footnotes_cut"] = footnotes_cut
+    blocks, apparatus_cut = cut_apparatus_text(blocks)
+    stats["apparatus_text_cut"] = apparatus_cut
 
     blocks, empty_removed = remove_empty_blocks(blocks)
     stats["empty_blocks_removed"] = empty_removed
@@ -1033,6 +1095,11 @@ def process_pdf(pdf_path):
 
     blocks, demoted = demote_appendix_debris(blocks)
     stats["appendix_demoted"] = demoted
+
+    blocks, links, markers, wordless = clean_final_speech(blocks)
+    stats["contents_links_cut"] = links
+    stats["footnote_markers_cut"] = markers
+    stats["wordless_turns_dropped"] = wordless
 
     return blocks, chapters, stats
 

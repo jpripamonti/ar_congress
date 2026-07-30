@@ -176,33 +176,51 @@ the sample could not have reached.
       parser reads characters in stored order and loses the spaces the layout
       implies. Affects tokenisation and word counts, not attribution.
 
-## Phase 7 — read the pages blind (done, July 2026 — parser 0.4.8)
+## Phase 7 — read the pages blind (done, July 2026 — parser 0.4.10)
 
 The audit checks that no rule was broken; it cannot tell whether the RIGHT
-person is behind the words. So the 50 sampled turns were read independently:
-each page rendered as an image and given to an agent that was never told the
-parser's answer, asked only "who does this page say is speaking here?", and the
-two answers compared afterwards.
+person is behind the words. So sampled turns were read independently: each page
+rendered as an image and given to an agent that was never told the parser's
+answer, asked only "who does this page say is speaking here?", and the two
+answers compared afterwards. 50 pages first, then 300 spread across every year.
 
-- [x] 50 of 50 agree on the speaker; the quoted words were found on the page in
-      all 50; no reader saw page apparatus inside the paragraph.
-- [x] Earlier passes disagreed twice, and the reader was right both times.
-      First: the section title swallows the speaker label printed after it,
+- [x] 300 of 300 agree on the speaker; the quoted words were found on the page
+      in all 300; no reader saw page apparatus inside the paragraph. Two cases
+      the reader marked ambiguous were settled by comparing the printed order
+      of labels with the parser's own order, and both confirmed it.
+- [x] Earlier rounds disagreed, and the reader was right every time. Four
+      distinct defects, all fixed:
+      **(1)** the section title swallows the speaker label printed after it,
       because the two share one bold run and the PDF drops the space between
       them. 1,693 titles in 112 sessions had absorbed a label, stranding 314
       turns, **55 of them credited to the wrong person**. Fixed in 0.4.7; the
       only case left is inside a scan. The cut was tried against all 5,154
       distinct titles first — every tail it carves off is a genuine label.
-      Second: the footnote pointing at the appendix read as speech — 809 turns
+      **(2)** the footnote pointing at the appendix read as speech — 809 turns
       that were nothing else, and 340 more with its words dropped mid sentence.
       Fixed in 0.4.8 by cutting the phrase like a header. A positional rule was
       tried first and rejected: it cut real debate, because a superscript
       reference can begin a line too.
-- [x] A third, milder case: the chair's surname stayed in the speech instead of
+      **(3)** the page's own "Pág. N" line, in sessions whose typeface carries
+      no character map, survives extraction as an accent and a digit and so
+      slipped past the header filter, plus the digital edition's "Volver al
+      sumario" link and turns left holding no word at all. Fixed in 0.4.9.
+      **(4)** the raised footnote digit stranded at the end of a turn once the
+      footnote's words were cut. Fixed in 0.4.10.
+- [x] A milder case: the chair's surname stayed in the speech instead of
       joining the label ("Sr. Presidente" + ". (Gioja). — …"), so 27 turns
       recorded the chair as person-unstated where the page names them.
+- [x] Two flaws in the review method itself, both fixed, both worth recording
+      because they produced false disagreements rather than missing real ones.
+      The sheet now says **on which page each turn opens**: a long speech
+      carries no label on its later pages, so a reader shown only the quoted
+      page finds no speaker and cannot answer — six "disagreements" were only
+      that. And the sample is now drawn by the content of each turn instead of
+      by row number, so fixing the parser no longer reshuffles it: the old
+      draw moved 279 of 300 rows after one unrelated fix and threw away a
+      finished reading round; the new one moved 1.
 - [x] Verdicts kept as evidence in
-      `reference/verification/blind_read_50.csv`.
+      `reference/verification/blind_read_300.csv` (and `blind_read_50.csv`).
 - [x] The audit now also checks for the appendix-pointer footnote, so this class
       stays measured instead of being fixed and forgotten.
 - [ ] Still worth doing by hand: a blind machine read is a second machine

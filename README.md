@@ -18,12 +18,12 @@ text blocks, and analysis.
   the files on disk by `scripts/make_manifest.py`. The 90 sessions fetched
   in January 2025 predate the download-timestamp field, so theirs is blank
   rather than guessed.
-- Corpus parsed (parser 0.4.8): 155,247 speaker-attributed speech blocks
-  and 31,923 typed stenographer events in 254,895 rows, as per-session
+- Corpus parsed (parser 0.4.10): 152,577 speaker-attributed speech blocks
+  and 31,923 typed stenographer events in 242,238 rows, as per-session
   Parquet under `data/processed/senado/`. One session fails to parse — a
   November 2001 sitting that never reached quorum, so it has no session
-  opening to find. Text the parser cannot attribute to a speaker is 1,888
-  rows (0.7%), and a handful of sessions account for most of it: sittings
+  opening to find. Text the parser cannot attribute to a speaker is 1,884
+  rows (0.8%), and a handful of sessions account for most of it: sittings
   whose record is mostly an inserted document (two impeachment dossiers, a
   printed bill text, a list of judicial appointments) rather than floor
   debate.
@@ -39,10 +39,12 @@ text blocks, and analysis.
   twice, and a median 79.5% of each document's printed text is kept (the rest —
   contents pages, attendance rolls, appendices — is dropped by design). Two
   sittings of November 2001 are scans with OCR text and should be excluded from
-  any text analysis; the parser flags them. **On 50 pages read blind** — every
+  any text analysis; the parser flags them. **On 300 pages read blind** — every
   page rendered as an image and read by an agent that was never shown the
   parser's answer, then compared — the two agree on who is speaking in
-  [50 of 50](reference/verification/blind_read_50.csv). Details and figures:
+  [300 of 300](reference/verification/blind_read_300.csv), spread across every
+  year of the span. Earlier rounds of the same read are what exposed four of
+  the defects fixed in 0.4.7–0.4.10. Details and figures:
   [SOURCES.md](SOURCES.md).
 - Speakers resolved to persons: **70% of all speech blocks name a person**,
   with the ticket they were elected on and their province. A further 28% is
@@ -55,7 +57,7 @@ text blocks, and analysis.
   office-known-person-unstated. Another 1.3% is correctly out of scope —
   parties and witnesses at the impeachment trials, deputies, foreign heads
   of state, officials of other institutions. **Genuine lookup failures are
-  down to 0.1%** (217 blocks), nearly all of them invited outside speakers
+  down to 0.1%** (220 blocks), nearly all of them invited outside speakers
   at public hearings, named by surname alone.
 - Analysis over the whole span: [notebooks/analysis.ipynb](notebooks/analysis.ipynb).
   Roadmap in [TODO.md](TODO.md).
@@ -109,9 +111,9 @@ the notebook and in [SOURCES.md](SOURCES.md).
   leaking into speech, undetected speaker changes, duplicated or invented
   text, coverage, scans. `--sample N` also writes a review sheet of N turns
   to be checked by eye against the printed page.
-- `reference/verification/` — the blind read of those 50 pages: what the
-  parser said, what an independent reader saw on the page, and whether they
-  agree.
+- `reference/verification/` — the blind reads: what the parser said, what an
+  independent reader saw on the page, and whether they agree. 300 pages in the
+  final round, 50 in the earlier one.
 - `reference/` — versioned reference data: roster snapshots, authorities
   tables, gold evaluation set. Provenance: [SOURCES.md](SOURCES.md).
 - `data/` — symlink to the OneDrive working copy; not in git (see

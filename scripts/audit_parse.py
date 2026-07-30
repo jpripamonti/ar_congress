@@ -34,7 +34,7 @@ Usage:
 
 import argparse
 import csv
-import random
+import hashlib
 import re
 import sys
 import unicodedata
@@ -165,7 +165,8 @@ def load_corpus():
     frames = []
     for p in sorted(BLOCKS_DIR.glob("*.parquet")):
         frames.append(pd.read_parquet(p, columns=[
-            "session_id", "session_date", "source_pdf", "type", "speaker_raw", "text", "pages"]))
+            "session_id", "session_date", "source_pdf", "type", "turn_id",
+            "speaker_raw", "text", "pages"]))
     if not frames:
         sys.exit(f"No parsed sessions under {BLOCKS_DIR}")
     return pd.concat(frames, ignore_index=True)
@@ -298,7 +299,7 @@ def main():
         print(f"\n   per-session detail: {out_path}")
 
     if args.sample:
-        write_review_sheet(corpus, args.sample)
+        write_review_sheet(corpus, args.sample, scanned)
 
     print(f"\n{'='*66}")
     print("Audit complete." if not problems else
@@ -306,23 +307,50 @@ def main():
     return 1 if problems else 0
 
 
-def write_review_sheet(corpus, n):
-    """Sample turns for a human to check against the PDF page.
+def write_review_sheet(corpus, n, scanned=frozenset()):
+    """Sample turns to be checked by eye against the printed page.
 
     The invariants above cannot tell whether the RIGHT person is behind the
     words — only that no rule was broken. That needs eyes on the page, so
     this writes a sheet of randomly drawn turns, spread across the years,
     each with the session, the page to open, who the parser says is speaking,
     and the opening words to look for.
+
+    The scanned sittings are left out: their text is a guess the reader cannot
+    check against, so drawing from them measures the scan and not the parser.
+
+    Each turn is drawn on the strength of its OWN content, not its position in
+    the table: the sitting, the page and its first words are hashed with a fixed
+    seed, and the lowest hashes per year are taken. That matters because a
+    parser change that adds or removes unrelated rows would otherwise shift
+    every row number and redraw the whole sheet, throwing away the reading
+    already done on it. This way a turn that survives a change keeps its place,
+    and only turns that actually changed have to be read again.
+
+    The sheet also names the page where the turn OPENS. A turn can begin several
+    pages before the words quoted here — a long speech has no label on its
+    later pages — and without that, a reader looking only at the quoted page
+    finds no speaker at all and cannot answer.
     """
-    speech = corpus[corpus.type == "speech"].copy()
+    speech = corpus[(corpus.type == "speech")
+                    & ~corpus.session_id.isin(scanned)].copy()
     speech["year"] = speech.session_date.str[:4]
-    rng = random.Random(20260728)          # fixed seed: the same sheet every run
+    first_page = {}
+    for (sid, turn), g in speech.groupby(["session_id", "turn_id"]):
+        pages = [int(p) for row in g.pages for p in row]
+        first_page[(sid, turn)] = min(pages) if pages else ""
+
+    def sample_key(r):
+        opening = " ".join(str(r.text).split()[:14])
+        page = list(r.pages)[0] if len(r.pages) else ""
+        seed = f"20260728|{r.session_id}|{page}|{opening[:60]}"
+        return int.from_bytes(hashlib.blake2b(seed.encode(), digest_size=7).digest(), "big")
+
+    speech["_key"] = speech.apply(sample_key, axis=1)
     per_year = max(1, n // speech.year.nunique())
     picks = []
-    for year, g in speech.groupby("year"):
-        idx = list(g.index)
-        picks += rng.sample(idx, min(per_year, len(idx)))
+    for _, g in speech.groupby("year"):
+        picks += list(g.nsmallest(min(per_year, len(g)), "_key").index)
     rows = []
     for i in sorted(picks):
         r = speech.loc[i]
@@ -330,6 +358,7 @@ def write_review_sheet(corpus, n):
             "session": r.session_id,
             "pdf": r.source_pdf,
             "page": list(r.pages)[0] if len(r.pages) else "",
+            "turn_opens_on_page": first_page.get((r.session_id, r.turn_id), ""),
             "parser_says_speaker": r.speaker_raw,
             "opening_words": " ".join(str(r.text).split()[:14]),
             "correct? (y/n)": "",

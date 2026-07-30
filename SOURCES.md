@@ -103,7 +103,7 @@ the corpus, drawn from 24 of 559 sittings. `scripts/audit_parse.py` covers the
 rest by checking, on every session, things that must never happen. Current
 results:
 
-- **Page apparatus inside a speech turn: 1 occurrence** in 155,247 turns (a
+- **Page apparatus inside a speech turn: 1 occurrence** in 152,577 turns (a
   footer line that landed mid-sentence in the 7 May 2014 sitting). Mastheads,
   datelines, attendance rolls, section headers and the appendix-pointer footnote
   are otherwise absent from speech, which is what the positional header and
@@ -116,6 +116,15 @@ results:
   begin a line too, and a rule keyed on position cut real debate when tried — so
   parser 0.4.8 keys on the wording, which is boilerplate, and cuts it like a
   header. Removing it also repairs the sentences it had been dropped into.
+- **Other printed apparatus that reached the body text, all now 0**: the page
+  dateline in a sitting whose font has no character map, where "Pág. 5" survives
+  as little more than its accent and its digit and the strip that looks for the
+  printed dateline cannot see it; the digital edition's link back to the contents
+  page, glued onto the end of 254 turns; the footnote's own raised number, left
+  stranded at the end of 466 turns once its text was cut; and 41 turns that
+  carried no word at all, just a stray "." or "—" the style grouping left behind.
+  Each is counted in its own column of `parse_stats.csv`, so the figures above
+  can be recomputed from the run rather than taken on faith.
 - **A second speaker's label glued inside a turn: 0**, outside the two scanned
   sittings below. This is the error that matters most — it means a change of
   speaker went unnoticed and one senator was credited with another's words.
@@ -136,40 +145,61 @@ results:
   positive.
 - **Text written out twice: 0 sessions.** No document yields more text than it
   prints.
-- **Blocks not findable in the source PDF: 0.32% on average**, 12 sessions above
+- **Blocks not findable in the source PDF: 0.42% on average**, 29 sessions above
   1%, the worst of them the 20 October 2004 file whose mis-mapped symbol font the
-  parser deliberately repairs. Elsewhere the figure is under 3%, and those are
-  turns that span a seam the parser makes on purpose: it merges a speaker's
-  consecutive paragraphs and drops the section heading printed between them.
+  parser deliberately repairs. This figure went UP as the parser improved, and
+  the reason is worth stating plainly: where a footnote had been dropped into the
+  middle of a sentence, removing it joins "…el proyecto de ley." to "Se
+  comunicará…", which reads as printed but is no longer a literal stretch of the
+  page. The check measures faithfulness to the character stream, and a repair is
+  by definition a departure from it. The rest are turns that span a seam the
+  parser makes on purpose: it merges a speaker's consecutive paragraphs and drops
+  the section heading printed between them. Sessions with very few probed blocks
+  (a short sitting in minority may have twenty) turn one miss into several
+  percent.
 - **Share of each document's printed text kept:** median 79.5%, quartiles 69%
   and 87%. The rest is dropped by design — contents pages, attendance rolls,
   appendices and inserted documents. The lowest figures are short sittings in
   minority that consist of little but a masthead and a roll.
 
-### Fifty pages read blind
+### Three hundred pages read blind
 
 Everything above is the parser checked against itself or against invariants. It
 cannot answer the plainest question — is the right person behind the words? —
-because a rule can be applied perfectly to the wrong speaker. So the 50 turns
-`audit_parse.py --sample 50` draws across the 25 years were read independently:
-each page was rendered as an image, handed to an agent that was **never shown
-the parser's answer**, and asked only which printed label governs the quoted
-words. The two answers were compared afterwards, mechanically.
+because a rule can be applied perfectly to the wrong speaker. So the 300 turns
+`audit_parse.py --sample 300` draws across the 25 years were read independently:
+each page was rendered as an image, handed to a reader that was **never shown the
+parser's answer**, and asked only which printed label governs the quoted words.
+The two answers were compared afterwards, mechanically.
 
-The readings agree on the speaker in **50 of 50**, the quoted words were found on
-the page in all 50, and no reader saw page apparatus inside the paragraph. Two of
-the turns begin on one page under a label printed on the page before, and the
-reader confirmed the parser carried the speaker across the break correctly. The
-comparison is in
-[reference/verification/blind_read_50.csv](reference/verification/blind_read_50.csv):
+The readings agree on the speaker in **300 of 300**, with no disagreement, and
+the quoted words were found on the page in all 300. Two of the 300 could only be
+confirmed by position — the same stock words are spoken by two senators on one
+page, and what the reader could verify is that both labels are printed, in the
+order the parser records them. The comparison is in
+[reference/verification/blind_read_300.csv](reference/verification/blind_read_300.csv):
 the parser's speaker, the label the reader transcribed from the page, and the
 reader's own notes and confidence.
 
-Earlier passes disagreed twice, and the reader was right both times. Those two
-disagreements are what exposed the two defects above — the section title that
-swallows the label after it, worth 55 misattributed turns corpus-wide, and the
-appendix-pointer footnote read as speech, worth 1,149 turns — neither of which
-any amount of re-reading the 36 annotated pages would have found.
+Getting to that number took four rounds, and every disagreement along the way was
+the parser's fault, not the reader's. Between them they exposed the title that
+swallows the label after it (55 turns credited to the wrong person), the
+appendix-pointer footnote read as speech (1,149 turns), the page dateline set in
+glyphs the font cannot map, the contents-page link glued onto the end of a turn,
+and the footnote's raised number left stranded once its text was cut. None of
+these could have been found by re-reading the 36 annotated pages.
+
+Two things about the method are worth stating, because both were wrong at first:
+
+* **The sheet has to say where the turn opens.** A turn can begin many pages
+  before the words quoted from it — a long speech carries no label on its later
+  pages — and a reader given only the quoted page finds no speaker at all and
+  cannot answer. Six early "disagreements" were this and nothing else.
+* **The sample must not be drawn by row number.** Each turn is now selected on a
+  hash of its own content, so a parser change that adds or removes unrelated
+  rows no longer redraws the whole sheet and throws away the reading already
+  done on it. Under the old row-number draw, one fix moved 279 of 300 rows;
+  under the new one, the same kind of fix moved 1.
 
 What this is not: an independent *human* audit. It is a second machine reading,
 independent of the parser's code path — it works from the rendered page, not from
