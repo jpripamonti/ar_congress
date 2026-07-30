@@ -26,12 +26,19 @@ text blocks, and analysis.
   blocks, and nine sessions account for most of it: sittings whose record
   is mostly an inserted document (two impeachment dossiers, a printed bill
   text, a list of judicial appointments) rather than floor debate.
-- Gold-set evaluation on 36 stratified pages spanning 2003–2024: utterance
-  boundary+attribution F1 = 1.00 (124 of 125 annotated turns), event
-  precision 1.00 and recall 0.94, no speech leaking onto contents pages.
-  The annotations have themselves been checked back against the source
-  PDFs (`scripts/check_gold.py`, 36 of 36 pass) — a second machine reading,
-  not an independent human audit.
+- Two layers of verification, because they answer different questions.
+  **On a hand-annotated sample** — 36 stratified pages spanning 2003–2024 —
+  utterance boundary+attribution F1 = 1.00 (124 of 125 turns), event
+  precision 1.00 and recall 0.94, no speech leaking onto contents pages. The
+  annotations have themselves been checked back against the source PDFs
+  (`scripts/check_gold.py`, 36 of 36 pass) — a second machine reading, not an
+  independent human audit. **On all 559 sessions** (`scripts/audit_parse.py`):
+  no turn carries a second speaker's label, one page's footer leaks into
+  speech, no text is written out twice, and a median 79.5% of each document's
+  printed text is kept (the rest — contents pages, attendance rolls,
+  appendices — is dropped by design). Two sittings of November 2001 are scans
+  with OCR text and should be excluded from any text analysis; the parser
+  flags them. Details and figures: [SOURCES.md](SOURCES.md).
 - Speakers resolved to persons: **70% of all speech blocks name a person**,
   with the ticket they were elected on and their province. A further 28% is
   a chamber office speaking under its bare title ("Sr. Presidente", "Sr.
@@ -91,6 +98,10 @@ the notebook and in [SOURCES.md](SOURCES.md).
 - `scripts/eval_gold.py` — score the parser against the gold annotations
   in `reference/gold/`.
 - `scripts/check_gold.py` — check those annotations against the source PDFs.
+- `scripts/audit_parse.py` — audit every session against its PDF: apparatus
+  leaking into speech, undetected speaker changes, duplicated or invented
+  text, coverage, scans. `--sample N` also writes a review sheet of N turns
+  for a human to check by eye.
 - `reference/` — versioned reference data: roster snapshots, authorities
   tables, gold evaluation set. Provenance: [SOURCES.md](SOURCES.md).
 - `data/` — symlink to the OneDrive working copy; not in git (see

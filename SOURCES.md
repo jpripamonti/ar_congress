@@ -95,6 +95,59 @@ speaker label was being prepended to the speaker's first words throughout
 the pre-2010 files, and a parenthetical surname was landing in the speech
 instead of the label.
 
+## Corpus-wide audit
+
+The gold set answers a narrow question well — did the parser read *these 36
+pages* the way a careful reader does — but 36 pages is 0.08% of the 45,200 in
+the corpus, drawn from 24 of 559 sittings. `scripts/audit_parse.py` covers the
+rest by checking, on every session, things that must never happen. Current
+results:
+
+- **Page apparatus inside a speech turn: 1 occurrence** in 154,875 turns (a
+  footer line that landed mid-sentence in the 7 May 2014 sitting). Mastheads,
+  datelines, attendance rolls and section headers are otherwise absent from
+  speech, which is what the positional header and footer strips are for.
+- **A second speaker's label glued inside a turn: 0**, outside the two scanned
+  sittings below. This is the error that matters most — it means a change of
+  speaker went unnoticed and one senator was credited with another's words.
+  The audit found 71 such cases when it was first written; the parser now
+  recovers labels the typesetter set in roman instead of bold, which is what
+  had caused them.
+- **Text written out twice: 0 sessions.** No document yields more text than it
+  prints.
+- **Blocks not findable in the source PDF: 21 sessions above 1%**, the worst
+  of them the two scans and the 20 October 2004 file whose mis-mapped symbol
+  font the parser deliberately repairs. Elsewhere the figure is under 3%, and
+  those are turns that span a seam the parser makes on purpose: it merges a
+  speaker's consecutive paragraphs and drops the section heading printed
+  between them.
+- **Share of each document's printed text kept:** median 79.5%, quartiles 69%
+  and 87%. The rest is dropped by design — contents pages, attendance rolls,
+  appendices and inserted documents. The lowest figures are short sittings in
+  minority that consist of little but a masthead and a roll.
+
+### Two sittings are scans, not text
+
+The 21 November 2001 and 29 November 2001 sittings are photographs of the
+printed Diario de Sesiones with optical character recognition run over them.
+Their text is a guess and reads like one: "CAMARA DE- SEÑÁDORES DE L.A
+NÁNCION", "Saeretarios", words run together, hyphens surviving from the line
+breaks of the original column. Nothing downstream can repair that. The parser
+detects them (a page-sized image behind the characters), records
+`scanned_page_share` in `parse_stats.csv`, and prints a warning; the audit
+lists them first and excludes them from its counts. **Exclude them from any
+text analysis.** An earlier note in this project claimed no file from 2000 on
+needed OCR; that was wrong for these two.
+
+### Words run together at line joins
+
+The parser reads characters in the order the PDF stores them, which is
+faithful to what was typeset but loses the spaces pdfplumber's page-level
+extraction infers from the layout. Where a word was broken across lines or
+columns the two halves can end up joined — "reemplazala expresión",
+"yplenipotenciario". It affects tokenisation, not attribution, and word counts
+in the analysis are therefore very slightly low. Not yet fixed.
+
 ### Stenographer notes are events
 
 A note the stenographer prints in parentheses — "(Aplausos.)", "(Risas.)",

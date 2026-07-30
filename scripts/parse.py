@@ -94,6 +94,12 @@ CID_RE = re.compile(r"\(cid:\d+\)")  # glyphs the PDF font maps to nothing
 # A speaker label ends at ". —"; anything printed after it is already the
 # first words of the turn, bolded by accident ("Sr. Mayans. – ¡").
 LABEL_TERM_RE = re.compile(rf"\.\s*[–—−─{PUA}]\s*")
+# A complete printed label — title, name, terminator — found inside a roman
+# paragraph, where the typesetter forgot to set it in bold.
+INLINE_LABEL_RE = re.compile(
+    rf"(?:Sr|Sra|Srta)\.\s*[A-ZÁÉÍÓÚÑ][^.]{{1,45}}?\s*\.\s*[–—−─{PUA}]\s"
+)
+SENTENCE_END = set('.!?:"”’\')]')
 COURIER_RE = re.compile(r"courier", re.I)
 
 # Ordered: first match wins. Applied lowercased.
@@ -122,6 +128,7 @@ STATS_COLUMNS = [
     "session_id",
     "file_name",
     "characters_extracted",
+    "scanned_page_share",
     "header_chars_removed",
     "footer_chars_removed",
     "body_size",
@@ -132,6 +139,7 @@ STATS_COLUMNS = [
     "empty_blocks_removed",
     "chapters_detected",
     "fused_labels_split",
+    "inline_labels_recovered",
     "label_spillover_split",
     "events_tagged",
     "inline_merged",
@@ -159,10 +167,13 @@ def extract_all_characters(pdf_path, max_pages=None):
     """
     chars = []
     page_heights = {}
+    scanned_pages = 0
     with pdfplumber.open(pdf_path) as pdf:
         pages = pdf.pages if max_pages is None else pdf.pages[:max_pages]
         for i, page in enumerate(pages):
             page_heights[i + 1] = page.height
+            if page_is_scanned(page):
+                scanned_pages += 1
             for c in page.chars:
                 family = SUBSET_RE.sub("", c["fontname"])
                 low = family.lower()
@@ -181,10 +192,31 @@ def extract_all_characters(pdf_path, max_pages=None):
                     "top": c["top"],
                 })
     remapped = repair_symbol_font(chars)
+    scanned_share = scanned_pages / max(len(pages), 1)
     print(f"Extracción completa. Se extrajeron {len(chars)} caracteres en total.")
     if remapped:
         print(f"Se repararon {remapped} caracteres de una fuente de símbolos mal mapeada.")
-    return chars, page_heights
+    if scanned_share:
+        print(f"=== Advertencia: {scanned_share:.0%} de las páginas son imágenes "
+              f"escaneadas; el texto proviene de OCR y no es fiable ===")
+    return chars, page_heights, scanned_share
+
+
+def page_is_scanned(page):
+    """Is this page a picture of a page rather than a page?
+
+    Almost every transcript is born-digital, and its characters are the
+    characters the typesetter set. A few are scans of the printed Diario de
+    Sesiones with optical character recognition run over them, and there the
+    "text" is a guess: words run together, letters swap, hyphens survive from
+    the line breaks of the original column. Nothing downstream can repair
+    that, so it has to be visible. A scanned page is an image that covers
+    essentially the whole sheet.
+    """
+    area = (page.width or 1) * (page.height or 1)
+    covered = sum(max(i["x1"] - i["x0"], 0) * max(i["bottom"] - i["top"], 0)
+                  for i in page.images)
+    return covered > 0.6 * area
 
 
 # What the mis-mapped symbol font actually draws. Every mapping was read off
@@ -606,6 +638,54 @@ def split_fused_labels(blocks, body_size):
     return out, split
 
 
+def split_inline_labels(blocks, body_size):
+    """Recover a speaker label that was set in roman instead of bold.
+
+    Every format marks a change of speaker by printing the label in bold, and
+    the label pass is gated on that. But the typesetter sometimes forgets, and
+    then the label runs on inside the previous speaker's paragraph with no
+    space around it — "…en general.Sr. Secretario (Estrada). — Se deja
+    constancia…". Read that way, one senator is credited with the next
+    speaker's words, which is the worst error this parser can make and the
+    one a page-sample check is least likely to see.
+
+    A label is recognised here only where the printed convention is complete:
+    the title, a name, the ". —" terminator, and a sentence that has just
+    ended (or the start of the block). What is found is re-emitted as a bold
+    block so the ordinary label machinery handles it from there.
+    """
+    out = []
+    found = 0
+    for b in blocks:
+        if (b.get("type") is not None or b["font_style"] != "normal"
+                or b["size"] != body_size):
+            out.append(b)
+            continue
+        text = b["text"]
+        pieces, last = [], 0
+        for m in INLINE_LABEL_RE.finditer(text):
+            before = text[:m.start()].rstrip()
+            if before and before[-1] not in SENTENCE_END:
+                continue                     # mid-sentence mention, not a label
+            pieces.append((m.start(), m.end(), m.group(0).strip()))
+        if not pieces:
+            out.append(b)
+            continue
+        for start, end, label in pieces:
+            head = text[last:start]
+            if head.strip():
+                out.append({**b, "text": head})
+            out.append({**b, "text": label, "font_style": "bold"})
+            last = end
+            found += 1
+        tail = text[last:]
+        if tail.strip():
+            out.append({**b, "text": tail})
+    if found:
+        print(f"Etiquetas en redonda recuperadas: {found}.")
+    return out, found
+
+
 def split_label_spillover(blocks, body_size):
     """Give the turn back its first words when they were bolded with the label.
 
@@ -842,7 +922,8 @@ def process_pdf(pdf_path):
     """Run the full pipeline on one PDF. Returns (blocks, chapters, stats)."""
     stats = {}
 
-    chars, page_heights = extract_all_characters(str(pdf_path))
+    chars, page_heights, scanned_share = extract_all_characters(str(pdf_path))
+    stats["scanned_page_share"] = round(scanned_share, 3)
     stats["characters_extracted"] = len(chars)
 
     chars, removed = strip_page_headers(chars)
@@ -884,6 +965,9 @@ def process_pdf(pdf_path):
 
     blocks, fused = split_fused_labels(blocks, body_size)
     stats["fused_labels_split"] = fused
+
+    blocks, inline_labels = split_inline_labels(blocks, body_size)
+    stats["inline_labels_recovered"] = inline_labels
 
     blocks, spillover = split_label_spillover(blocks, body_size)
     stats["label_spillover_split"] = spillover

@@ -870,17 +870,17 @@ session_date,file,office,person
 2006-02-15,2006-02-15_r44_EXTRAORDINARIA,secretario,Ricardo Nicanor Gutiérrez
 2006-02-15,2006-02-15_r44_EXTRAORDINARIA,vicepresidente de la nacion,Daniel Osvaldo Scioli
 2006-02-22,2006-02-22_r01_PREPARATORIA,prosecretario,José D. Canata
-2006-02-22,2006-02-22_r01_PREPARATORIA,prosecretario,Juan J. Canals
 2006-02-22,2006-02-22_r45_EXTRAORDINARIA,prosecretario,Juan J. Canals
+2006-02-22,2006-02-22_r01_PREPARATORIA,prosecretario,Juan J. Canals
 2006-02-22,2006-02-22_r45_EXTRAORDINARIA,prosecretario,Néstor H. Righetti
-2006-02-22,2006-02-22_r01_PREPARATORIA,prosecretario,Ricardo Nicanor Gutiérrez
 2006-02-22,2006-02-22_r45_EXTRAORDINARIA,prosecretario,Ricardo Nicanor Gutiérrez
+2006-02-22,2006-02-22_r01_PREPARATORIA,prosecretario,Ricardo Nicanor Gutiérrez
 2006-02-22,2006-02-22_r01_PREPARATORIA,secretario,José D. Canata
-2006-02-22,2006-02-22_r01_PREPARATORIA,secretario,Juan Héctor Estrada
 2006-02-22,2006-02-22_r45_EXTRAORDINARIA,secretario,Juan Héctor Estrada
+2006-02-22,2006-02-22_r01_PREPARATORIA,secretario,Juan Héctor Estrada
 2006-02-22,2006-02-22_r45_EXTRAORDINARIA,secretario,Néstor H. Righetti
-2006-02-22,2006-02-22_r01_PREPARATORIA,secretario,Ricardo Nicanor Gutiérrez
 2006-02-22,2006-02-22_r45_EXTRAORDINARIA,secretario,Ricardo Nicanor Gutiérrez
+2006-02-22,2006-02-22_r01_PREPARATORIA,secretario,Ricardo Nicanor Gutiérrez
 2006-02-22,2006-02-22_r45_EXTRAORDINARIA,vicepresidente de la nacion,Daniel Osvaldo Scioli
 2006-03-01,2006-03-01_r00_ASAMBLEA,secretario,Enrique Hidalgo
 2006-03-01,2006-03-01_r00_ASAMBLEA,secretario,Juan Héctor Estrada
@@ -1281,18 +1281,18 @@ session_date,file,office,person
 2008-02-22,2008-02-22_r00_ASAMBLEA,secretario,Juan Héctor Estrada
 2008-02-22,2008-02-22_r00_ASAMBLEA,secretario,Nanci María Agustina
 2008-02-22,2008-02-22_r00_ASAMBLEA,vicepresidente de la nacion,Julio César Cleto Cobos
-2008-02-27,2008-02-27_r01_PREPARATORIA,prosecretario,Gustavo Carlos Vélez
 2008-02-27,2008-02-27_r24_EXTRAORDINARIA,prosecretario,Gustavo Carlos Vélez
-2008-02-27,2008-02-27_r01_PREPARATORIA,prosecretario,Juan J. Canals
+2008-02-27,2008-02-27_r01_PREPARATORIA,prosecretario,Gustavo Carlos Vélez
 2008-02-27,2008-02-27_r24_EXTRAORDINARIA,prosecretario,Juan J. Canals
-2008-02-27,2008-02-27_r01_PREPARATORIA,prosecretario,Mario Daniele
+2008-02-27,2008-02-27_r01_PREPARATORIA,prosecretario,Juan J. Canals
 2008-02-27,2008-02-27_r24_EXTRAORDINARIA,prosecretario,Mario Daniele
-2008-02-27,2008-02-27_r01_PREPARATORIA,secretario,Gustavo Carlos Vélez
+2008-02-27,2008-02-27_r01_PREPARATORIA,prosecretario,Mario Daniele
 2008-02-27,2008-02-27_r24_EXTRAORDINARIA,secretario,Gustavo Carlos Vélez
-2008-02-27,2008-02-27_r01_PREPARATORIA,secretario,Juan Héctor Estrada
+2008-02-27,2008-02-27_r01_PREPARATORIA,secretario,Gustavo Carlos Vélez
 2008-02-27,2008-02-27_r24_EXTRAORDINARIA,secretario,Juan Héctor Estrada
-2008-02-27,2008-02-27_r01_PREPARATORIA,secretario,Mario Daniele
+2008-02-27,2008-02-27_r01_PREPARATORIA,secretario,Juan Héctor Estrada
 2008-02-27,2008-02-27_r24_EXTRAORDINARIA,secretario,Mario Daniele
+2008-02-27,2008-02-27_r01_PREPARATORIA,secretario,Mario Daniele
 2008-02-27,2008-02-27_r24_EXTRAORDINARIA,vicepresidente de la nacion,Julio César Cleto Cobos
 2008-03-01,2008-03-01_r00_ASAMBLEA,secretario,Enrique Hidalgo
 2008-03-01,2008-03-01_r00_ASAMBLEA,secretario,Juan Héctor Estrada
@@ -1937,18 +1937,18 @@ session_date,file,office,person
 2012-05-16,2012-05-16_r06_ORDINARIA,secretario,Juan Héctor Estrada
 2012-05-16,2012-05-16_r06_ORDINARIA,secretario,Mario Daniele
 2012-05-16,2012-05-16_r06_ORDINARIA,secretario,Santiago Eduardo Révora
-2012-05-30,2012-05-30_r08_INFORMATIVA_ESPECIAL,prosecretario,Luis Borsani
 2012-05-30,2012-05-30_r07_ORDINARIA,prosecretario,Luis Borsani
-2012-05-30,2012-05-30_r08_INFORMATIVA_ESPECIAL,prosecretario,Mario Daniele
+2012-05-30,2012-05-30_r08_INFORMATIVA_ESPECIAL,prosecretario,Luis Borsani
 2012-05-30,2012-05-30_r07_ORDINARIA,prosecretario,Mario Daniele
-2012-05-30,2012-05-30_r08_INFORMATIVA_ESPECIAL,prosecretario,Santiago Eduardo Révora
+2012-05-30,2012-05-30_r08_INFORMATIVA_ESPECIAL,prosecretario,Mario Daniele
 2012-05-30,2012-05-30_r07_ORDINARIA,prosecretario,Santiago Eduardo Révora
-2012-05-30,2012-05-30_r08_INFORMATIVA_ESPECIAL,secretario,Juan Héctor Estrada
+2012-05-30,2012-05-30_r08_INFORMATIVA_ESPECIAL,prosecretario,Santiago Eduardo Révora
 2012-05-30,2012-05-30_r07_ORDINARIA,secretario,Juan Héctor Estrada
-2012-05-30,2012-05-30_r08_INFORMATIVA_ESPECIAL,secretario,Mario Daniele
+2012-05-30,2012-05-30_r08_INFORMATIVA_ESPECIAL,secretario,Juan Héctor Estrada
 2012-05-30,2012-05-30_r07_ORDINARIA,secretario,Mario Daniele
-2012-05-30,2012-05-30_r08_INFORMATIVA_ESPECIAL,secretario,Santiago Eduardo Révora
+2012-05-30,2012-05-30_r08_INFORMATIVA_ESPECIAL,secretario,Mario Daniele
 2012-05-30,2012-05-30_r07_ORDINARIA,secretario,Santiago Eduardo Révora
+2012-05-30,2012-05-30_r08_INFORMATIVA_ESPECIAL,secretario,Santiago Eduardo Révora
 2012-05-30,2012-05-30_r08_INFORMATIVA_ESPECIAL,vicepresidente de la nacion,Amado Boudou
 2012-06-25,2012-06-25_r09_ESPECIAL,prosecretario,Luis Borsani
 2012-06-25,2012-06-25_r09_ESPECIAL,prosecretario,Mario Daniele
@@ -2315,18 +2315,18 @@ session_date,file,office,person
 2014-10-08,2014-10-08_r15_ESPECIAL,secretario,Juan Héctor Estrada
 2014-10-08,2014-10-08_r15_ESPECIAL,secretario,Mario Daniele
 2014-10-08,2014-10-08_r15_ESPECIAL,vicepresidente de la nacion,Amado Boudou
-2014-10-22,2014-10-22_r16_ORDINARIA,prosecretario,José Lepere
 2014-10-22,2014-10-22_r17_INFORMATIVA_ESPECIAL,prosecretario,José Lepere
-2014-10-22,2014-10-22_r16_ORDINARIA,prosecretario,Luis Borsani
+2014-10-22,2014-10-22_r16_ORDINARIA,prosecretario,José Lepere
 2014-10-22,2014-10-22_r17_INFORMATIVA_ESPECIAL,prosecretario,Luis Borsani
-2014-10-22,2014-10-22_r16_ORDINARIA,prosecretario,Mario Daniele
+2014-10-22,2014-10-22_r16_ORDINARIA,prosecretario,Luis Borsani
 2014-10-22,2014-10-22_r17_INFORMATIVA_ESPECIAL,prosecretario,Mario Daniele
-2014-10-22,2014-10-22_r16_ORDINARIA,secretario,José Lepere
+2014-10-22,2014-10-22_r16_ORDINARIA,prosecretario,Mario Daniele
 2014-10-22,2014-10-22_r17_INFORMATIVA_ESPECIAL,secretario,José Lepere
-2014-10-22,2014-10-22_r16_ORDINARIA,secretario,Juan Héctor Estrada
+2014-10-22,2014-10-22_r16_ORDINARIA,secretario,José Lepere
 2014-10-22,2014-10-22_r17_INFORMATIVA_ESPECIAL,secretario,Juan Héctor Estrada
-2014-10-22,2014-10-22_r16_ORDINARIA,secretario,Mario Daniele
+2014-10-22,2014-10-22_r16_ORDINARIA,secretario,Juan Héctor Estrada
 2014-10-22,2014-10-22_r17_INFORMATIVA_ESPECIAL,secretario,Mario Daniele
+2014-10-22,2014-10-22_r16_ORDINARIA,secretario,Mario Daniele
 2014-10-22,2014-10-22_r17_INFORMATIVA_ESPECIAL,vicepresidente de la nacion,Amado Boudou
 2014-10-29,2014-10-29_r18_ORDINARIA,prosecretario,José Lepere
 2014-10-29,2014-10-29_r18_ORDINARIA,prosecretario,Luis Borsani
@@ -2772,16 +2772,16 @@ session_date,file,office,person
 2018-04-18,2018-04-18_r03_ORDINARIA,secretario,Eric Calcagno
 2018-04-18,2018-04-18_r03_ORDINARIA,secretario,Juan Pedro Tunessi
 2018-04-18,2018-04-18_r03_ORDINARIA,vicepresidente de la nacion,Marta Gabriela Michetti
-2018-04-25,2018-04-25_r04_ESPECIAL,prosecretario,Eric Calcagno
 2018-04-25,2018-04-25_r05_INFORMATIVA_ESPECIAL,prosecretario,Eric Calcagno
-2018-04-25,2018-04-25_r04_ESPECIAL,prosecretario,Mario Daniele
+2018-04-25,2018-04-25_r04_ESPECIAL,prosecretario,Eric Calcagno
 2018-04-25,2018-04-25_r05_INFORMATIVA_ESPECIAL,prosecretario,Mario Daniele
-2018-04-25,2018-04-25_r04_ESPECIAL,secretario,Eric Calcagno
+2018-04-25,2018-04-25_r04_ESPECIAL,prosecretario,Mario Daniele
 2018-04-25,2018-04-25_r05_INFORMATIVA_ESPECIAL,secretario,Eric Calcagno
-2018-04-25,2018-04-25_r04_ESPECIAL,secretario,Juan Pedro Tunessi
+2018-04-25,2018-04-25_r04_ESPECIAL,secretario,Eric Calcagno
 2018-04-25,2018-04-25_r05_INFORMATIVA_ESPECIAL,secretario,Juan Pedro Tunessi
-2018-04-25,2018-04-25_r04_ESPECIAL,vicepresidente de la nacion,Marta Gabriela Michetti
+2018-04-25,2018-04-25_r04_ESPECIAL,secretario,Juan Pedro Tunessi
 2018-04-25,2018-04-25_r05_INFORMATIVA_ESPECIAL,vicepresidente de la nacion,Marta Gabriela Michetti
+2018-04-25,2018-04-25_r04_ESPECIAL,vicepresidente de la nacion,Marta Gabriela Michetti
 2018-05-30,2018-05-30_r06_ESPECIAL,prosecretario,Eric Calcagno
 2018-05-30,2018-05-30_r06_ESPECIAL,prosecretario,Mario Daniele
 2018-05-30,2018-05-30_r06_ESPECIAL,secretario,Eric Calcagno

@@ -154,6 +154,32 @@ Owner chose to widen coverage before publishing.
       used to fall through untyped, which undercounted every incident rate.
 - [x] Analysis re-run over the whole 2000–2024 span; figures regenerated.
 
+## Phase 6 — verify the whole corpus, not a sample (done, July 2026)
+
+The gold set covers 36 pages, 0.08% of the corpus. `scripts/audit_parse.py`
+checks every session for things that must never happen, and found real faults
+the sample could not have reached.
+
+- [x] Undetected speaker changes: 71 places where the typesetter set the label
+      in roman instead of bold, so it ran on inside the previous speaker's
+      paragraph and one senator was credited with another's words. The parser
+      now recognises a complete printed label (title, name, ". —" terminator)
+      after a finished sentence, whatever its weight. Down to 0.
+- [x] Page apparatus leaking into speech: 1 case left in 154,875 turns.
+- [x] Text written out twice by the block splitting: 0 sessions.
+- [x] **Two sittings (21 and 29 November 2001) are scans with OCR text**, not
+      born-digital transcripts. The parser detects a page-sized image behind
+      the characters, records `scanned_page_share`, and warns; the audit
+      excludes them from its counts. This contradicts the Phase 4 note that
+      claimed no file from 2000 on needed OCR.
+- [ ] Words run together at line joins ("reemplazala expresión") because the
+      parser reads characters in stored order and loses the spaces the layout
+      implies. Affects tokenisation and word counts, not attribution.
+- [ ] Owner: the audit cannot tell whether the RIGHT person is behind the
+      words, only that no rule was broken. `--sample N` writes a review sheet
+      (`data/processed/senado/review_sheet.csv`) of turns drawn across all 25
+      years, each with the PDF and page to open. 50 turns are waiting.
+
 ## Later
 
 - Caucus (bloque) mapping for departed senators (historic roster only has
