@@ -176,18 +176,33 @@ the sample could not have reached.
       parser reads characters in stored order and loses the spaces the layout
       implies. Affects tokenisation and word counts, not attribution.
 
-## Phase 7 — read the pages blind (done, July 2026 — parser 0.4.10)
+## Phase 7 — read the pages blind (done, August 2026 — parser 0.4.10)
 
 The audit checks that no rule was broken; it cannot tell whether the RIGHT
 person is behind the words. So sampled turns were read independently: each page
 rendered as an image and given to an agent that was never told the parser's
 answer, asked only "who does this page say is speaking here?", and the two
-answers compared afterwards. 50 pages first, then 300 spread across every year.
+answers compared afterwards. 50 pages first, then 300, then 500 more that do not
+overlap them — 800 in all, spread across every year.
 
 - [x] 300 of 300 agree on the speaker; the quoted words were found on the page
       in all 300; no reader saw page apparatus inside the paragraph. Two cases
       the reader marked ambiguous were settled by comparing the printed order
       of labels with the parser's own order, and both confirmed it.
+- [x] A further 500, 20 per year, drawn so that none repeats the first 300:
+      **497 of 500 agree, and no parser defect was found** — the first round of
+      this sample was also its last. The three left over are pages that print the
+      quoted phrase twice, so nothing on the page tells the reader which
+      occurrence was meant; checked afterwards against the page image, the parser
+      is right in all three. That check was not blind and is kept out of the 497,
+      recorded in its own column of
+      `reference/verification/blind_read_500.csv`.
+- [x] The readers reported page apparatus inside the paragraph 30 times. 26 are
+      the stenographer's own parentheses — applause, murmurs, a chamber rising to
+      its feet — which the edition prints inside the speech and this corpus keeps
+      on purpose. The other 4 name the appendix footnote or the contents link;
+      checked against the output, not one of those turns carries either. The
+      readers were describing the printed page, not what the parser kept.
 - [x] Earlier rounds disagreed, and the reader was right every time. Four
       distinct defects, all fixed:
       **(1)** the section title swallows the speaker label printed after it,
@@ -210,17 +225,21 @@ answers compared afterwards. 50 pages first, then 300 spread across every year.
 - [x] A milder case: the chair's surname stayed in the speech instead of
       joining the label ("Sr. Presidente" + ". (Gioja). — …"), so 27 turns
       recorded the chair as person-unstated where the page names them.
-- [x] Two flaws in the review method itself, both fixed, both worth recording
+- [x] Three flaws in the review method itself, all fixed, all worth recording
       because they produced false disagreements rather than missing real ones.
-      The sheet now says **on which page each turn opens**: a long speech
-      carries no label on its later pages, so a reader shown only the quoted
-      page finds no speaker and cannot answer — six "disagreements" were only
-      that. And the sample is now drawn by the content of each turn instead of
-      by row number, so fixing the parser no longer reshuffles it: the old
-      draw moved 279 of 300 rows after one unrelated fix and threw away a
-      finished reading round; the new one moved 1.
-- [x] Verdicts kept as evidence in
-      `reference/verification/blind_read_300.csv` (and `blind_read_50.csv`).
+      The sheet now says **on which page each turn opens** and the reader gets
+      every page from there: a long speech carries no label on its later pages,
+      so a reader shown only the quoted page finds no speaker and cannot answer —
+      six "disagreements" were only that, and capping the supplied pages at three
+      back reproduced the same six in the 500-page round. The sample is drawn by
+      the content of each turn instead of by row number, so fixing the parser no
+      longer reshuffles it: the old draw moved 279 of 300 rows after one
+      unrelated fix and threw away a finished reading round; the new one moved 1.
+      And a phrase printed twice on its page is now **counted from the PDF and
+      reported apart** instead of being charged to the parser: it happens in 60
+      of 500 cases, and in 58 every occurrence is the same speaker anyway.
+- [x] Verdicts kept as evidence in `reference/verification/blind_read_500.csv`,
+      `blind_read_300.csv` and `blind_read_50.csv`.
 - [x] The audit now also checks for the appendix-pointer footnote, so this class
       stays measured instead of being fixed and forgotten.
 - [ ] Still worth doing by hand: a blind machine read is a second machine

@@ -39,13 +39,17 @@ text blocks, and analysis.
   twice, and a median 79.5% of each document's printed text is kept (the rest —
   contents pages, attendance rolls, appendices — is dropped by design). Two
   sittings of November 2001 are scans with OCR text and should be excluded from
-  any text analysis; the parser flags them. **On 300 pages read blind** — every
+  any text analysis; the parser flags them. **On 800 pages read blind** — every
   page rendered as an image and read by an agent that was never shown the
   parser's answer, then compared — the two agree on who is speaking in
-  [300 of 300](reference/verification/blind_read_300.csv), spread across every
-  year of the span. Earlier rounds of the same read are what exposed four of
-  the defects fixed in 0.4.7–0.4.10. Details and figures:
-  [SOURCES.md](SOURCES.md).
+  [300 of 300](reference/verification/blind_read_300.csv) on the first sample and
+  [497 of 500](reference/verification/blind_read_500.csv) on a second that does
+  not overlap it, spread across every year of the span. The three left over are
+  pages that print the quoted phrase twice, so the reader could not know which
+  occurrence was meant; checked afterwards against the page, the parser is right
+  in all three. Earlier rounds of the same read are what exposed four of the
+  defects fixed in 0.4.7–0.4.10; the 500 found nothing further. Details and
+  figures: [SOURCES.md](SOURCES.md).
 - Speakers resolved to persons: **70% of all speech blocks name a person**,
   with the ticket they were elected on and their province. A further 28% is
   a chamber office speaking under its bare title ("Sr. Presidente", "Sr.
@@ -111,9 +115,9 @@ the notebook and in [SOURCES.md](SOURCES.md).
   leaking into speech, undetected speaker changes, duplicated or invented
   text, coverage, scans. `--sample N` also writes a review sheet of N turns
   to be checked by eye against the printed page.
-- `reference/verification/` — the blind reads: what the parser said, what an
-  independent reader saw on the page, and whether they agree. 300 pages in the
-  final round, 50 in the earlier one.
+- `reference/verification/` — the three blind reads: what the parser said, what an
+  independent reader saw on the page, and whether they agree. 500 pages in the
+  last round, 300 before it, 50 in the first.
 - `reference/` — versioned reference data: roster snapshots, authorities
   tables, gold evaluation set. Provenance: [SOURCES.md](SOURCES.md).
 - `data/` — symlink to the OneDrive working copy; not in git (see

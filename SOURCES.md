@@ -162,44 +162,73 @@ results:
   appendices and inserted documents. The lowest figures are short sittings in
   minority that consist of little but a masthead and a roll.
 
-### Three hundred pages read blind
+### Eight hundred pages read blind
 
 Everything above is the parser checked against itself or against invariants. It
 cannot answer the plainest question — is the right person behind the words? —
-because a rule can be applied perfectly to the wrong speaker. So the 300 turns
-`audit_parse.py --sample 300` draws across the 25 years were read independently:
-each page was rendered as an image, handed to a reader that was **never shown the
-parser's answer**, and asked only which printed label governs the quoted words.
-The two answers were compared afterwards, mechanically.
+because a rule can be applied perfectly to the wrong speaker. So turns drawn
+across the 25 years were read independently: each page was rendered as an image,
+handed to a reader that was **never shown the parser's answer**, and asked only
+which printed label governs the quoted words. The two answers were compared
+afterwards, mechanically.
 
-The readings agree on the speaker in **300 of 300**, with no disagreement, and
-the quoted words were found on the page in all 300. Two of the 300 could only be
-confirmed by position — the same stock words are spoken by two senators on one
-page, and what the reader could verify is that both labels are printed, in the
-order the parser records them. The comparison is in
-[reference/verification/blind_read_300.csv](reference/verification/blind_read_300.csv):
-the parser's speaker, the label the reader transcribed from the page, and the
-reader's own notes and confidence.
+It has been done twice, on two samples that do not overlap.
 
-Getting to that number took four rounds, and every disagreement along the way was
+* **300 turns.** Agreement on the speaker in **300 of 300**, no disagreement, the
+  quoted words found on the page in all 300. Two could only be confirmed by
+  position — the same stock words are spoken by two senators on one page, and
+  what the reader could verify is that both labels are printed, in the order the
+  parser records them.
+  ([reference/verification/blind_read_300.csv](reference/verification/blind_read_300.csv))
+* **500 further turns**, 20 per year, none of them among the first 300.
+  Agreement on the speaker in **497 of 500**, and this time the reading was right
+  first time: it exposed no parser defect at all. The three left over are all
+  cases where the reader could not know which occurrence was meant, and all three
+  were then checked by hand against the page image, where the parser proves right:
+  in two, the quoted phrase is printed twice on the same page under two different
+  labels, and the reader reported the first; in one, the reader gave a surname
+  that appears nowhere on the page.
+  ([reference/verification/blind_read_500.csv](reference/verification/blind_read_500.csv))
+
+That last check was made by looking at the page, so it is **not** blind, and it is
+kept out of the 497 rather than folded into it. It is recorded in the file's own
+column so the reasoning can be re-examined.
+
+The repeated-phrase problem is now measured rather than argued about: for each
+sampled turn, the quoted phrase is counted in the page's printed text. It appears
+more than once in **60 of the 500** — the chamber's stock formulas recur — and in
+58 of those the reader still landed on the parser's answer, because every
+occurrence belongs to the same speaker.
+
+Reaching the first 300 took four rounds, and every disagreement along the way was
 the parser's fault, not the reader's. Between them they exposed the title that
 swallows the label after it (55 turns credited to the wrong person), the
 appendix-pointer footnote read as speech (1,149 turns), the page dateline set in
 glyphs the font cannot map, the contents-page link glued onto the end of a turn,
 and the footnote's raised number left stranded once its text was cut. None of
-these could have been found by re-reading the 36 annotated pages.
+these could have been found by re-reading the 36 annotated pages. The 500 that
+followed found nothing further, which is the point of running it again.
 
-Two things about the method are worth stating, because both were wrong at first:
+Three things about the method are worth stating, because all three were wrong at
+first and each produced false disagreements rather than hiding real ones:
 
-* **The sheet has to say where the turn opens.** A turn can begin many pages
-  before the words quoted from it — a long speech carries no label on its later
-  pages — and a reader given only the quoted page finds no speaker at all and
-  cannot answer. Six early "disagreements" were this and nothing else.
+* **The sheet has to say where the turn opens**, and the reader has to be given
+  every page from there. A turn can begin many pages before the words quoted from
+  it — a president addressing the Legislative Assembly speaks for twenty pages
+  without the label being reprinted — and a reader given only the quoted page
+  finds no speaker at all and cannot answer. Six early "disagreements" in the
+  first round were this; capping the supplied pages at three back reproduced the
+  same six in the second.
 * **The sample must not be drawn by row number.** Each turn is now selected on a
   hash of its own content, so a parser change that adds or removes unrelated
   rows no longer redraws the whole sheet and throws away the reading already
   done on it. Under the old row-number draw, one fix moved 279 of 300 rows;
   under the new one, the same kind of fix moved 1.
+* **A phrase that repeats on its page cannot be scored.** The reader is asked to
+  find words and report the label above them; when the same words are printed
+  twice under different labels, nothing on the page says which was meant. Those
+  are now counted from the PDF and reported apart, instead of being charged to
+  the parser or waved through on the reader's say-so.
 
 What this is not: an independent *human* audit. It is a second machine reading,
 independent of the parser's code path — it works from the rendered page, not from
