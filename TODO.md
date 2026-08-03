@@ -182,8 +182,8 @@ The audit checks that no rule was broken; it cannot tell whether the RIGHT
 person is behind the words. So sampled turns were read independently: each page
 rendered as an image and given to an agent that was never told the parser's
 answer, asked only "who does this page say is speaking here?", and the two
-answers compared afterwards. 50 pages first, then 300, then 500 more that do not
-overlap them — 800 in all, spread across every year.
+answers compared afterwards. 50 pages first, then 300, then 500, then 998 more,
+none of the samples overlapping — 1,798 in all, spread across every year.
 
 - [x] 300 of 300 agree on the speaker; the quoted words were found on the page
       in all 300; no reader saw page apparatus inside the paragraph. Two cases
@@ -197,11 +197,27 @@ overlap them — 800 in all, spread across every year.
       is right in all three. That check was not blind and is kept out of the 497,
       recorded in its own column of
       `reference/verification/blind_read_500.csv`.
-- [x] The readers reported page apparatus inside the paragraph 30 times. 26 are
+- [x] A further 998, 40 per year, none repeating the first 800: **993 of 998
+      agree, and again no parser defect.** All five left over were checked by hand
+      against the page and the parser is right in every one — two are the
+      repeated-phrase case; two are readers writing "Sra. Presidenta" where the
+      page prints "Sra. Presidente"; one is a reader mistaking which page it had
+      been given. Evidence in `reference/verification/blind_read_1000.csv`.
+      That makes 1,498 pages drawn since the last parser fix with nothing found.
+- [x] A fourth flaw in the method, and the first that is about the reader rather
+      than the sheet: **a reader tidies the record without noticing.** Asked to
+      transcribe a label exactly, two readers supplied the grammatical agreement
+      the edition itself does not make. Every disagreement is therefore settled
+      against the page image, never against which answer reads better. A reader
+      also denied that a phrase appeared twice on a page that prints it twice —
+      which is why that count is taken from the PDF and not from the reader.
+- [x] The readers reported page apparatus inside the paragraph 30 times in the
+      500-page round and 51 times in the 998-page round. The great majority are
       the stenographer's own parentheses — applause, murmurs, a chamber rising to
       its feet — which the edition prints inside the speech and this corpus keeps
-      on purpose. The other 4 name the appendix footnote or the contents link;
-      checked against the output, not one of those turns carries either. The
+      on purpose. The 16 that name the appendix footnote, the contents link, the
+      stenographers' footer, a page number or a raised footnote digit were all
+      checked against the output: not one of those turns carries any of it. The
       readers were describing the printed page, not what the parser kept.
 - [x] Earlier rounds disagreed, and the reader was right every time. Four
       distinct defects, all fixed:
@@ -238,8 +254,8 @@ overlap them — 800 in all, spread across every year.
       And a phrase printed twice on its page is now **counted from the PDF and
       reported apart** instead of being charged to the parser: it happens in 60
       of 500 cases, and in 58 every occurrence is the same speaker anyway.
-- [x] Verdicts kept as evidence in `reference/verification/blind_read_500.csv`,
-      `blind_read_300.csv` and `blind_read_50.csv`.
+- [x] Verdicts kept as evidence in `reference/verification/blind_read_1000.csv`,
+      `blind_read_500.csv`, `blind_read_300.csv` and `blind_read_50.csv`.
 - [x] The audit now also checks for the appendix-pointer footnote, so this class
       stays measured instead of being fixed and forgotten.
 - [ ] Still worth doing by hand: a blind machine read is a second machine

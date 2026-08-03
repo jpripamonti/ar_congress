@@ -162,7 +162,7 @@ results:
   appendices and inserted documents. The lowest figures are short sittings in
   minority that consist of little but a masthead and a roll.
 
-### Eight hundred pages read blind
+### Eighteen hundred pages read blind
 
 Everything above is the parser checked against itself or against invariants. It
 cannot answer the plainest question — is the right person behind the words? —
@@ -172,7 +172,7 @@ handed to a reader that was **never shown the parser's answer**, and asked only
 which printed label governs the quoted words. The two answers were compared
 afterwards, mechanically.
 
-It has been done twice, on two samples that do not overlap.
+It has been done three times, on three samples that do not overlap.
 
 * **300 turns.** Agreement on the speaker in **300 of 300**, no disagreement, the
   quoted words found on the page in all 300. Two could only be confirmed by
@@ -189,16 +189,29 @@ It has been done twice, on two samples that do not overlap.
   labels, and the reader reported the first; in one, the reader gave a surname
   that appears nowhere on the page.
   ([reference/verification/blind_read_500.csv](reference/verification/blind_read_500.csv))
+* **998 further turns**, 40 per year, none of them among the first 800. Agreement
+  on the speaker in **993 of 998**, and again no parser defect. Of the five left
+  over, checked by hand against the page afterwards, the parser proves right in
+  all five: two are the repeated-phrase case again; in two the page prints
+  "Sra. Presidente" and the reader wrote "Presidenta", adding an ending the
+  edition does not use — those two sittings print the masculine form 154 and 145
+  times; and in one the label stands on the very page supplied, which the reader
+  mistook for a different page.
+  ([reference/verification/blind_read_1000.csv](reference/verification/blind_read_1000.csv))
 
-That last check was made by looking at the page, so it is **not** blind, and it is
-kept out of the 497 rather than folded into it. It is recorded in the file's own
-column so the reasoning can be re-examined.
+Those after-the-fact checks were made by looking at the page, so they are **not**
+blind, and they are kept out of the agreement counts rather than folded into
+them. Each is recorded in its file's own column so the reasoning can be
+re-examined.
 
-The repeated-phrase problem is now measured rather than argued about: for each
+The repeated-phrase problem is measured rather than argued about: for each
 sampled turn, the quoted phrase is counted in the page's printed text. It appears
-more than once in **60 of the 500** — the chamber's stock formulas recur — and in
-58 of those the reader still landed on the parser's answer, because every
-occurrence belongs to the same speaker.
+more than once in 60 of the 500 and **139 of the 998** — the chamber's stock
+formulas recur — and in all but two of each the reader still landed on the
+parser's answer, because every occurrence belongs to the same speaker. The count
+is taken from the PDF precisely because the reader's own judgement is not
+reliable here: in one case a reader stated the phrase appeared only once on a
+page that prints it twice.
 
 Reaching the first 300 took four rounds, and every disagreement along the way was
 the parser's fault, not the reader's. Between them they exposed the title that
@@ -206,10 +219,11 @@ swallows the label after it (55 turns credited to the wrong person), the
 appendix-pointer footnote read as speech (1,149 turns), the page dateline set in
 glyphs the font cannot map, the contents-page link glued onto the end of a turn,
 and the footnote's raised number left stranded once its text was cut. None of
-these could have been found by re-reading the 36 annotated pages. The 500 that
-followed found nothing further, which is the point of running it again.
+these could have been found by re-reading the 36 annotated pages. The 500 and the
+998 that followed found nothing further, which is the point of running it again:
+1,498 pages drawn after the last fix, and not one of them turned up a defect.
 
-Three things about the method are worth stating, because all three were wrong at
+Four things about the method are worth stating, because all four were wrong at
 first and each produced false disagreements rather than hiding real ones:
 
 * **The sheet has to say where the turn opens**, and the reader has to be given
@@ -229,12 +243,19 @@ first and each produced false disagreements rather than hiding real ones:
   twice under different labels, nothing on the page says which was meant. Those
   are now counted from the PDF and reported apart, instead of being charged to
   the parser or waved through on the reader's say-so.
+* **A reader will tidy the record without noticing.** Asked to transcribe a label
+  exactly, two readers wrote "Sra. Presidenta" where the page prints "Sra.
+  Presidente" — the grammatical agreement the edition itself does not make. Every
+  disagreement therefore has to be settled against the page image, never against
+  which of the two answers reads better.
 
 What this is not: an independent *human* audit. It is a second machine reading,
 independent of the parser's code path — it works from the rendered page, not from
 the PDF's character stream — but still a machine's reading. A shared misreading
 of what a page means remains possible, and the review sheet is regenerated for a
-human pass whenever `--sample N` is passed.
+human pass whenever `--sample N` is passed. What eighteen hundred pages do settle
+is the size of the doubt: with no confirmed error, the share of turns credited to
+the wrong person is under 0.2%.
 
 ### Two sittings are scans, not text
 
