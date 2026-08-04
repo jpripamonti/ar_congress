@@ -18,11 +18,11 @@ text blocks, and analysis.
   the files on disk by `scripts/make_manifest.py`. The 90 sessions fetched
   in January 2025 predate the download-timestamp field, so theirs is blank
   rather than guessed.
-- Corpus parsed (parser 0.4.11): 152,594 speaker-attributed speech blocks
-  and 31,922 typed stenographer events in 237,487 rows, as per-session
+- Corpus parsed (parser 0.4.12): 152,523 speaker-attributed speech blocks
+  and 31,922 typed stenographer events in 237,440 rows, as per-session
   Parquet under `data/processed/senado/`. One session fails to parse — a
   November 2001 sitting that never reached quorum, so it has no session
-  opening to find. Text the parser cannot attribute to a speaker is 1,207
+  opening to find. Text the parser cannot attribute to a speaker is 1,200
   rows (0.5%), and a handful of sessions account for most of it: sittings
   whose record is mostly an inserted document (two impeachment dossiers, a
   printed bill text, a list of judicial appointments) rather than floor
@@ -49,19 +49,21 @@ text blocks, and analysis.
   twice, and a median 79.2% of each document's printed text is kept (the rest —
   contents pages, attendance rolls, appendices — is dropped by design). Two
   sittings of November 2001 are scans with OCR text and should be excluded from
-  any text analysis; the parser flags them. **On 1,798 pages read blind** — every
+  any text analysis; the parser flags them. **On 2,298 pages read blind** — every
   page rendered as an image and read by an agent that was never shown the
   parser's answer, then compared — the two agree on who is speaking in
   [300 of 300](reference/verification/blind_read_300.csv),
-  [497 of 500](reference/verification/blind_read_500.csv) and
-  [993 of 998](reference/verification/blind_read_1000.csv) on three samples that
-  do not overlap, spread across every year of the span. Every case left over was
-  checked afterwards against the page image and the parser is right in all of
-  them — mostly pages that print the quoted phrase twice, so the reader could not
-  know which occurrence was meant. Earlier rounds of the same read are what
-  exposed four of the defects fixed in 0.4.7–0.4.10; the 1,498 pages drawn since
-  the last fix found nothing further. Details and figures:
-  [SOURCES.md](SOURCES.md).
+  [497 of 500](reference/verification/blind_read_500.csv),
+  [993 of 998](reference/verification/blind_read_1000.csv) and
+  [498 of 500](reference/verification/blind_read_500_0411.csv) on four samples
+  that do not overlap, spread across every year of the span. Every case left over
+  was checked afterwards against the page image and the parser is right in all of
+  them — pages that print the quoted phrase twice, so the reader could not know
+  which occurrence was meant. Earlier rounds are what exposed four of the defects
+  fixed in 0.4.7–0.4.10, and the latest round, read after the space fix, found a
+  fifth: a scrap of an editorial note cut off by a change of font and left as a
+  two-character turn credited to the last speaker (81 blocks corpus-wide, fixed
+  in 0.4.12). Details and figures: [SOURCES.md](SOURCES.md).
 - Speakers resolved to persons: **70% of all speech blocks name a person**,
   with the ticket they were elected on and their province. A further 28% is
   a chamber office speaking under its bare title ("Sr. Presidente", "Sr.

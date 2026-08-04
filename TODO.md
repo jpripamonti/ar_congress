@@ -387,6 +387,43 @@ keeps them — glued the last word of one line to the first of the next.
       style. The section number and its turns are right; only the title text is
       cut short.
 
+## Phase 10 — read 500 more, against the new parse (done, August 2026 — parser 0.4.12)
+
+The space fix changed the output, so the reading was run again on it: 500 turns,
+20 per year, none of them among the 1,798 read before, drawn after the re-parse.
+The exclusion compares texts with the spacing removed, or the 2003-2009 pages
+already read would have looked new.
+
+- [x] **498 of 500 agree on the speaker, no disagreement.** The two left over are
+      the repeated-phrase case again, both settled by hand afterwards: the page
+      prints the quoted words twice under two labels and the parser records both
+      turns, one under each. Evidence in
+      `reference/verification/blind_read_500_0411.csv`.
+- [x] **A defect, the first in three rounds, and one only a reader finds.** A
+      sampled "turn" whose whole text was "E 13" is not speech: it is the tail of
+      the note "El resultado de la votación surge del Acta N° 13", cut off because
+      the degree sign comes from another font, left as a two-character turn
+      credited to the last speaker. Parser 0.4.12 gives the scrap back to its
+      note.
+- [x] The rule is narrow on purpose. The same position also holds genuine short
+      turns, so a scrap is reattached only where the note stops mid-phrase AND the
+      scrap cannot be read as speech — nothing but an ordinal marker and its
+      number, or a fragment opening in lower case. Of the 102 blocks that follow
+      an unfinished note, 81 are scraps ("E", "E 13", "z.", "of Mostyn.") and the
+      rest are real speech ("Ausente.", "Gracias.", "¡Rojo!"), untouched. Every
+      scrap joined is listed in the session's log.
+- [x] One instruction was added to the reading brief, against the reader bias the
+      last round exposed: copy the ending exactly even where it reads as a
+      mistake, because the record prints "Sra. Presidente". No reader tidied a
+      label this round.
+- [x] Nothing else moved: gold set unchanged (F1 = 1.00, 124 of 125 turns), audit
+      unchanged on every invariant, and all 2,348 answers recorded across the five
+      blind reads still stand under 0.4.12, checked row by row.
+- [ ] The mis-mapped degree sign itself is still there — the notes read "Acta NE
+      13" rather than "Acta N° 13" in those 2004-2005 sittings. It is apparatus,
+      not speech, and repairing it needs the same font-by-font work as the
+      2004-10-20 symbol font.
+
 ## Later
 
 - Caucus (bloque) mapping — **done at family level, 2005 onward, all 62

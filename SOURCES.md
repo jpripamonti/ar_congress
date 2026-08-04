@@ -202,7 +202,7 @@ the corpus, drawn from 24 of 559 sittings. `scripts/audit_parse.py` covers the
 rest by checking, on every session, things that must never happen. Current
 results:
 
-- **Page apparatus inside a speech turn: 1 occurrence** in 152,594 turns (a
+- **Page apparatus inside a speech turn: 1 occurrence** in 152,523 turns (a
   footer line that landed mid-sentence in the 7 May 2014 sitting). Mastheads,
   datelines, attendance rolls, section headers and the appendix-pointer footnote
   are otherwise absent from speech, which is what the positional header and
@@ -261,7 +261,7 @@ results:
   appendices and inserted documents. The lowest figures are short sittings in
   minority that consist of little but a masthead and a roll.
 
-### Eighteen hundred pages read blind
+### Twenty-three hundred pages read blind
 
 Everything above is the parser checked against itself or against invariants. It
 cannot answer the plainest question — is the right person behind the words? —
@@ -271,7 +271,7 @@ handed to a reader that was **never shown the parser's answer**, and asked only
 which printed label governs the quoted words. The two answers were compared
 afterwards, mechanically.
 
-It has been done three times, on three samples that do not overlap.
+It has been done four times, on four samples that do not overlap.
 
 * **300 turns.** Agreement on the speaker in **300 of 300**, no disagreement, the
   quoted words found on the page in all 300. Two could only be confirmed by
@@ -297,6 +297,29 @@ It has been done three times, on three samples that do not overlap.
   times; and in one the label stands on the very page supplied, which the reader
   mistook for a different page.
   ([reference/verification/blind_read_1000.csv](reference/verification/blind_read_1000.csv))
+* **500 further turns**, 20 per year, none of them among the first 1,798, drawn
+  after the corpus was re-parsed with the spaces restored — so this round reads
+  parser 0.4.11's output rather than its predecessor's. Agreement on the speaker
+  in **498 of 500**, no disagreement. The two left over are the repeated-phrase
+  case once more, and both were checked by hand afterwards: page 61 of the
+  28 Nov 2001 sitting prints "Pido la palabra." twice, under Sr. Ulloa and under
+  Sr. Villaverde, and the parser records both turns, one under each; page 143 of
+  the 29 Nov 2017 sitting does the same with "¿Quiénes se abstienen?".
+  ([reference/verification/blind_read_500_0411.csv](reference/verification/blind_read_500_0411.csv))
+
+**This round found a defect, and it is the kind only a reader finds.** One case
+sent the reader a "turn" whose whole text was "E 13", and the reader answered
+that this is not speech at all: it is the tail of the note "El resultado de la
+votación surge del Acta N° 13", cut off because the degree sign comes from
+another font, and left as a two-character turn credited to whoever had spoken
+last. Parser 0.4.12 gives such a scrap back to the note it was cut from, but only
+where the note stops mid-phrase AND the scrap cannot be read as speech — nothing
+but an ordinal marker and its number, or a fragment opening in lower case. That
+matters, because the same position also holds genuine short turns: of the 102
+blocks that follow an unfinished note, 81 are scraps ("E", "E 13", "z.", "of
+Mostyn.", "9 y 20:") and the rest are real speech ("Ausente.", "Gracias.",
+"¡Rojo!"), which the rule leaves alone. Every scrap it joins is listed in the
+session's log, so the judgement can be re-read rather than trusted.
 
 Those after-the-fact checks were made by looking at the page, so they are **not**
 blind, and they are kept out of the agreement counts rather than folded into
@@ -305,9 +328,10 @@ re-examined.
 
 The repeated-phrase problem is measured rather than argued about: for each
 sampled turn, the quoted phrase is counted in the page's printed text. It appears
-more than once in 60 of the 500 and **139 of the 998** — the chamber's stock
-formulas recur — and in all but two of each the reader still landed on the
-parser's answer, because every occurrence belongs to the same speaker. The count
+more than once in 60 of the first 500, **139 of the 998** and 58 of the latest
+500 — the chamber's stock formulas recur — and in all but two of each the reader
+still landed on the parser's answer, because every occurrence belongs to the same
+speaker. The count
 is taken from the PDF precisely because the reader's own judgement is not
 reliable here: in one case a reader stated the phrase appeared only once on a
 page that prints it twice.
@@ -319,8 +343,10 @@ appendix-pointer footnote read as speech (1,149 turns), the page dateline set in
 glyphs the font cannot map, the contents-page link glued onto the end of a turn,
 and the footnote's raised number left stranded once its text was cut. None of
 these could have been found by re-reading the 36 annotated pages. The 500 and the
-998 that followed found nothing further, which is the point of running it again:
-1,498 pages drawn after the last fix, and not one of them turned up a defect.
+998 that followed found nothing further — 1,498 pages drawn with nothing to
+report — and the 500 read after the space fix turned up the cut-off note above.
+That is the point of running it again: the rate at which it finds something has
+fallen from every round to one round in three, on samples of the same size.
 
 Four things about the method are worth stating, because all four were wrong at
 first and each produced false disagreements rather than hiding real ones:

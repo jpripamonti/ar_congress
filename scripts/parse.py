@@ -51,7 +51,7 @@ from pathlib import Path
 import pandas as pd
 import pdfplumber
 
-PARSER_VERSION = "0.4.11"
+PARSER_VERSION = "0.4.12"
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
@@ -179,6 +179,7 @@ STATS_COLUMNS = [
     "footnote_markers_cut",
     "wordless_turns_dropped",
     "events_tagged",
+    "note_tails_reattached",
     "inline_merged",
     "appendix_demoted",
     "speech_blocks",
@@ -715,6 +716,49 @@ def classify_blocks(blocks, body_size):
     return blocks, events
 
 
+# What is left of an editorial note when the typesetter's ordinal marker comes
+# from another font: "…surge del Acta N" + "E 13", where the E is a degree sign
+# the font maps wrong. Digits, the marker, and the words that join two of them
+# ("y", "a") are all that may appear.
+NOTE_TAIL_RE = re.compile(r"^[Eº°\d][\dEº°.,;:\s]*(?:\s(?:y|a)\s[\dEº°.,;:\s]*)*[.\s—–-]*$")
+
+
+def reattach_note_tails(blocks):
+    """Give a cut-off scrap back to the editorial note it was cut from.
+
+    A note such as "— El resultado de la votación surge del Acta N° 13" sets its
+    degree sign in a different font, so the style grouping ends the block at the
+    "N" and the rest — "E 13" — becomes a two-character turn credited to whoever
+    spoke last. The same happens to a name split across fonts ("Lord Williams" +
+    "of Mostyn.").
+
+    A scrap qualifies only where the note before it stops mid-phrase, with no
+    full stop, and where the scrap itself cannot be speech: nothing but the
+    marker and its number, or a fragment opening in lower case. Short real turns
+    that happen to follow a note — "Gracias.", "Ausente.", "¡Rojo!" — are
+    untouched, which is why the test is on the shape of the scrap and not on its
+    length alone.
+    """
+    out, scraps = [], []
+    for b in blocks:
+        prev = out[-1] if out else None
+        t = b["text"].strip()
+        if (prev is not None and prev.get("type") == "event" and b.get("type") is None
+                and 0 < len(t) <= 12 and not re.search(r"[.!?)]$", prev["text"].strip())
+                and (NOTE_TAIL_RE.match(t) or t[:1].islower())):
+            prev["text"] = prev["text"].rstrip() + t
+            prev["pages"] = sorted(set(prev["pages"]) | set(b["pages"]))
+            scraps.append(t)
+            continue
+        out.append(b)
+    if scraps:
+        # listed, not just counted: every one of them should be unreadable as
+        # speech, and that is checkable only if the log says what they were
+        print(f"Restos de notas devueltos a su nota: {len(scraps)} — "
+              + ", ".join(repr(s) for s in scraps))
+    return out, len(scraps)
+
+
 DOTTED_CHAPTER_RE = re.compile(r"^\d+\.")
 
 
@@ -1163,6 +1207,9 @@ def process_pdf(pdf_path):
 
     blocks, events = classify_blocks(blocks, body_size)
     stats["events_tagged"] = events
+
+    blocks, note_tails = reattach_note_tails(blocks)
+    stats["note_tails_reattached"] = note_tails
 
     blocks, chapters, title_label_cuts = assign_chapter_to_blocks(blocks, body_size)
     stats["chapters_detected"] = len(chapters)
