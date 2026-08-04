@@ -87,14 +87,13 @@ text blocks, and analysis.
   held 30–46% of floor words to 2016 and 13–15% from 2020, while the
   radical/Cambiemos family went the other way (9–25% before 2019, 30–39%
   after) — a chamber that looks realigned at a stroke. Group the identical
-  speech by caucus and the step disappears: radical/Cambiemos sits at 23–36%
-  throughout, and provincial and other alliances end 2022–2024 at 20–21%
+  speech by caucus and the step disappears: radical/Cambiemos sits at 23–37%
+  throughout, and provincial and other alliances end 2022–2024 at 16–20%
   rather than 13%. Senators did not change sides in 2019; the tickets they had
-  been elected on consolidated into two national coalitions. The twenty
-  caucuses carrying 88% of floor speech are dated by hand
-  ([blocs_manual.csv](reference/senado/blocs_manual.csv)), each against the
-  sitting that attests it, because the Senate records a caucus once per mandate
-  and backdates it over the whole term.
+  been elected on consolidated into two national coalitions. All 62 caucuses are
+  dated by hand ([blocs_manual.csv](reference/senado/blocs_manual.csv)), each
+  against the sitting that attests it, because the Senate records a caucus once
+  per mandate and backdates it over the whole term.
 - The 2020–2023 collapse was mostly fewer sittings, not quieter ones. Floor
   words fell 6.4-fold, which splits into a 3.9-fold fall in sittings held
   (31 to 8) and only a 1.65-fold fall in words per sitting. By 2024 a
@@ -109,11 +108,12 @@ Methodological caveats (incomplete holdings before 2004, session-type mix,
 chairs excluded) are documented in the notebook and in
 [SOURCES.md](SOURCES.md). The caucus view carries its own: the Senate records
 a caucus once per mandate and stores the one the senator **ended** it in,
-projected backwards over the whole term. The twenty largest caucuses are dated
-by hand against the sittings that attest them; the rest keep the Senate's
-mandate-grained dates, a senator who crossed the floor mid-term is still
-invisible, 6.4% of floor words end up with no caucus and are excluded, and the
-records begin only in 2005.
+projected backwards over the whole term. All 62 caucuses are dated by hand
+against the sittings that attest them, but a senator who crossed the floor
+mid-term is still invisible, four caucuses rest on the mandate calendar alone,
+6.9% of floor words end up with no caucus and are excluded — unevenly, so 2017
+and 2018 keep only about three quarters of theirs — and the records begin only
+in 2005.
 
 ## Layout
 

@@ -327,18 +327,37 @@ caucus they sat with, and the gap was visibly distorting the results.
       documented it is dropped — 6.4% of floor words end with no caucus.
       The notebook's nearest-spell fallback is now bounded to 180 days, because
       an unbounded one silently refilled the gaps and undid the whole repair.
+- [x] **Then the other 42**, so all 62 caucuses are dated: 39 rows at
+      `confidence: high`, 19 medium, 4 low. Most are one- or two-member caucuses
+      that their members' mandates bound exactly. The new piece of evidence is
+      the roll of blocs read into the record on 16 Nov 2022 — Frente Nacional y
+      Popular 21, UCR 18, Unidad Ciudadana 14, Frente PRO 9, Cambio Federal 4,
+      "y los demás son monobloques" — which dates caucuses named nowhere else
+      and, in the negative, places Unidad Federal, Convicción Federal, La
+      Libertad Avanza and Provincias Unidas after that date. La Libertad Avanza
+      was backdated to Dec 2021 for two members who joined it in 2024; Unidad
+      Federal to Dec 2017 for a caucus first named in Feb 2023.
 - [x] The repair moves real numbers: the peronist share for 2016–2021 falls from
-      62–64% to 51–56% once the backdated caucuses are cut to the years they
+      62–64% to 52–58% once the backdated caucuses are cut to the years they
       existed. The main finding survives it and gets cleaner — radical/Cambiemos
-      flat at 23–36% across the supposed 2019 realignment.
+      flat at 23–37% across the supposed 2019 realignment.
+- [x] It also costs coverage, unevenly, and the figure now says so per year:
+      6.9% of floor words end with no caucus, but 2017 and 2018 keep only about
+      three quarters of theirs. Almost the whole 2016–2019 hole is one thing —
+      392,000 words by the sixteen senators whose 2015–2021 mandate the Senate
+      files under Frente de Todos. Thirteen were elected on a Frente para la
+      Victoria ticket and the rest on peronist provincial ones, so they were
+      certainly peronist, but three held monoblocs of their own; assigning them
+      all to the peronist bloc would be a guess dressed as a finding, so they
+      are left unplaced.
 
 ## Later
 
-- Caucus (bloque) mapping — **done at family level, 2005 onward, with the
-  twenty largest caucuses dated by hand** (see Phase 8). What is still open:
-  the ~40 smaller caucuses keep the Senate's mandate-grained dates, a senator
-  who crossed the floor mid-term is still invisible, 6.4% of floor words end
-  with no caucus, and 2000–2004 has none at all. Closing those needs a source
+- Caucus (bloque) mapping — **done at family level, 2005 onward, all 62
+  caucuses dated by hand** (see Phase 8). What is still open: a senator who
+  crossed the floor mid-term is invisible, four caucuses rest on the mandate
+  calendar alone, 6.9% of floor words end with no caucus (concentrated in
+  2016–2019), and 2000–2004 has none at all. Closing those needs a source
   outside the Senate.
 - Cámara de Diputados (second chamber)
 - Formal writeup / dataset publication (corpus is citable via SOURCES.md)

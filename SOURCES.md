@@ -82,11 +82,11 @@ Three limits, all measured:
 
 ### Dating the caucuses by hand
 
-The twenty caucuses that carry **88% of all floor speech** are dated one at a
-time in [reference/senado/blocs_manual.csv](reference/senado/blocs_manual.csv),
-each row naming its evidence, the sitting that attests it, and how far that
-evidence goes. `map_blocs.py` then cuts every spell back to the life of its own
-caucus. Caucuses outside the twenty keep whatever the Senate says.
+**All 62 caucuses** are dated one at a time in
+[reference/senado/blocs_manual.csv](reference/senado/blocs_manual.csv), each row
+naming its evidence, the sitting that attests it, and how far that evidence
+goes: 39 rows carry `confidence: high`, 19 `medium`, 4 `low`. `map_blocs.py`
+then cuts every spell back to the life of its own caucus.
 
 The evidence is of three kinds, and the file says which was used for each:
 
@@ -102,9 +102,16 @@ The evidence is of three kinds, and the file says which was used for each:
   single-member caucus is bounded exactly by that member's term: Estenssoro's
   Coalición Cívica and Cabanchik's Proyecto Buenos Aires Federal both run
   10 Dec 2007 to 9 Dec 2013, and the roll-call readings match to the day.
+* **The chamber's own roll of blocs.** On 16 Nov 2022 a senator reads the whole
+  chamber into the record — Frente Nacional y Popular 21, UCR 18, Unidad
+  Ciudadana 14, Frente PRO 9, Cambio Federal 4, "y los demás son monobloques".
+  That dates several caucuses which are never named anywhere else, and it works
+  in the negative too: any caucus of two or more absent from that roll did not
+  exist that day, which is what places Unidad Federal, Convicción Federal, La
+  Libertad Avanza and Provincias Unidas after it.
 * **Neither.** Some caucus names cannot be searched for at all — "8 de octubre"
-  matches the ordinary date, "San Luis" the province — and those rows say so and
-  fall back on the mandate calendar with `confidence: medium`.
+  matches the ordinary date, "San Luis" the province, "independencia" ordinary
+  speech — and those rows say so and fall back on the mandate calendar.
 
 Read together, the evidence also settled two things the raw data got wrong.
 Unidad Ciudadana is **two** caucuses, not one: 2017–2019, absorbed into Frente
@@ -117,8 +124,19 @@ Where the chamber says what a caucus split off from, the stretch cut off the
 front is handed to that predecessor — Unidad Ciudadana's and Frente Nacional y
 Popular's members sat in the Frente de Todos bloc until it was divided, and the
 chamber says so on the day. Where nothing is documented the stretch is dropped
-rather than guessed, which is why **6.4% of floor words end up with no caucus**
+rather than guessed, which is why **6.9% of floor words end up with no caucus**
 and are left out of the caucus view entirely.
+
+That loss is **not spread evenly**, and the figure says so per year. 2017 and
+2018 keep about three quarters of their floor words, 2005 keeps 72%, while most
+years keep over 98%. Almost all of the 2016–2019 hole is one thing: 392,000
+words by the sixteen senators whose 2015–2021 mandate the Senate files under
+Frente de Todos, a caucus formed in 2019. Thirteen of the sixteen were elected
+on a Frente para la Victoria ticket and the other three on peronist provincial
+ones, so they were certainly peronist — but three of them held monoblocs of
+their own, so assigning them all to the peronist bloc would be a guess dressed
+as a finding. They are left unplaced, and those years are to be read as resting
+on less evidence rather than as movement.
 
 The repair moves real numbers. The peronist share for 2016–2021 falls from
 62–64% to 51–56% once the caucuses the Senate had carried backwards are cut to
