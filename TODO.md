@@ -172,9 +172,10 @@ the sample could not have reached.
       the characters, records `scanned_page_share`, and warns; the audit
       excludes them from its counts. This contradicts the Phase 4 note that
       claimed no file from 2000 on needed OCR.
-- [ ] Words run together at line joins ("reemplazala expresión") because the
+- [x] Words run together at line joins ("reemplazala expresión") because the
       parser reads characters in stored order and loses the spaces the layout
-      implies. Affects tokenisation and word counts, not attribution.
+      implies. Affected tokenisation and word counts, not attribution.
+      **Fixed in 0.4.11** — see Phase 9.
 
 ## Phase 7 — read the pages blind (done, August 2026 — parser 0.4.10)
 
@@ -350,6 +351,41 @@ caucus they sat with, and the gap was visibly distorting the results.
       certainly peronist, but three held monoblocs of their own; assigning them
       all to the peronist bloc would be a guess dressed as a finding, so they
       are left unplaced.
+
+## Phase 9 — put back the spaces the files never stored (done, August 2026 — parser 0.4.11)
+
+The last open defect from Phase 6. The 2003–2009 files end a line without
+storing a space, so the parser — which reads characters in the order the file
+keeps them — glued the last word of one line to the first of the next.
+
+- [x] The parser now inserts a space wherever the page shows one: a new line, a
+      new column, a new page, or a gap inside a line too wide for anything else.
+      The threshold is measured rather than chosen: on files that DO print their
+      spaces, two letters of one word are never more than 0.07 of the type size
+      apart (110,744 pairs, widest 0.071), while a printed space is 0.25 to 0.60
+      wide, so 0.15 separates them cleanly. A line ending in a hyphen stays
+      joined — it is either a broken word or a file number ("P.E.-86/16").
+- [x] 710,039 spaces restored in 481 of 559 sittings. The corpus rises from
+      21.07 to 21.48 million words: +4% to +6.5% every year from 2003 to 2009,
+      under 0.1% everywhere else, which is exactly the shape of the defect.
+      Text the parser cannot attribute to anyone fell from 1,884 rows to 1,207.
+- [x] Checked against pdfplumber's own layout-aware page reading: words the
+      parser produces that the page reading never produces fell from 3.0% to
+      0.06% of tokens. Gold set unchanged (F1 = 1.00, 124 of 125 turns); the
+      audit unchanged on every invariant.
+- [x] Section numbering now works for 2003–2009, which number sections without
+      a full stop and were unreadable while the number was glued to the title:
+      443 → 529 sittings carry the section each turn belongs to. A bill number
+      left at the head of a line has the same shape, so the parser tells them
+      apart by counting — a dotless number opens a section only if it carries
+      the count forward (within three, or up to ten to open the sitting). In the
+      later files, which number with a full stop, the next section is the
+      previous plus one in 284 of 290 cases. One scanned November 2001 sitting
+      numbers too erratically to follow and now carries no sections.
+- [ ] The section TITLE for those years still stops where the style changes
+      ("7 Orden del Día N"), because the "º 522" that follows is set in another
+      style. The section number and its turns are right; only the title text is
+      cut short.
 
 ## Later
 

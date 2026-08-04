@@ -18,15 +18,25 @@ text blocks, and analysis.
   the files on disk by `scripts/make_manifest.py`. The 90 sessions fetched
   in January 2025 predate the download-timestamp field, so theirs is blank
   rather than guessed.
-- Corpus parsed (parser 0.4.10): 152,577 speaker-attributed speech blocks
-  and 31,923 typed stenographer events in 242,238 rows, as per-session
+- Corpus parsed (parser 0.4.11): 152,594 speaker-attributed speech blocks
+  and 31,922 typed stenographer events in 237,487 rows, as per-session
   Parquet under `data/processed/senado/`. One session fails to parse — a
   November 2001 sitting that never reached quorum, so it has no session
-  opening to find. Text the parser cannot attribute to a speaker is 1,884
-  rows (0.8%), and a handful of sessions account for most of it: sittings
+  opening to find. Text the parser cannot attribute to a speaker is 1,207
+  rows (0.5%), and a handful of sessions account for most of it: sittings
   whose record is mostly an inserted document (two impeachment dossiers, a
   printed bill text, a list of judicial appointments) rather than floor
   debate.
+- **The words no longer run together.** The 2003–2009 files end a line without
+  storing a space, so the last word of one line used to come out glued to the
+  first of the next — "reemplazala expresión". Parser 0.4.11 puts the space
+  back wherever the page shows one, using a width measured off the files that
+  do print their spaces: 710,039 spaces restored in 481 of the 559 sittings,
+  and the corpus rises from 21.07 to 21.48 million words (+2.0% overall, +4%
+  to +6.5% in every year from 2003 to 2009, under 0.1% elsewhere). Every word
+  count in the analysis was that much low. It also makes those years' section
+  numbering readable for the first time: 529 sittings now carry the section
+  each turn belongs to, against 443 before.
 - Two layers of verification, because they answer different questions.
   **On a hand-annotated sample** — 36 stratified pages spanning 2003–2024 —
   utterance boundary+attribution F1 = 1.00 (124 of 125 turns), event
@@ -36,7 +46,7 @@ text blocks, and analysis.
   independent human audit. **On all 559 sessions** (`scripts/audit_parse.py`):
   no turn carries a second speaker's label, no label is absorbed by the section
   title above it, one page's footer leaks into speech, no text is written out
-  twice, and a median 79.5% of each document's printed text is kept (the rest —
+  twice, and a median 79.2% of each document's printed text is kept (the rest —
   contents pages, attendance rolls, appendices — is dropped by design). Two
   sittings of November 2001 are scans with OCR text and should be excluded from
   any text analysis; the parser flags them. **On 1,798 pages read blind** — every
@@ -111,8 +121,8 @@ a caucus once per mandate and stores the one the senator **ended** it in,
 projected backwards over the whole term. All 62 caucuses are dated by hand
 against the sittings that attest them, but a senator who crossed the floor
 mid-term is still invisible, four caucuses rest on the mandate calendar alone,
-6.9% of floor words end up with no caucus and are excluded — unevenly, so 2017
-and 2018 keep only about three quarters of theirs — and the records begin only
+6.9% of floor words end up with no caucus and are excluded — unevenly, so 2005,
+2017 and 2018 keep only about three quarters of theirs — and the records begin only
 in 2005.
 
 ## Layout

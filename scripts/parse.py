@@ -4,7 +4,10 @@ taquigraficas) into per-session block tables.
 v0.3.0 pipeline (empirically recalibrated against the stratified profile of
 the corpus — see git history for the v0.2.0 heuristics it replaces):
 
-1. Extract characters with pdfplumber (text, font, size, page, y-position).
+1. Extract characters with pdfplumber (text, font, size, page, y-position),
+   putting back the spaces the file never stored: the 2003-2009 formats end
+   a line without one, so the words either side of a line join used to come
+   out glued together (space_is_missing).
 2. Strip page headers POSITIONALLY: every page format 2020-2024 carries a
    dateline containing "Pág. N" near the top (even the 2024 ArialNarrow
    variant); all characters at or above that line are furniture.
@@ -48,7 +51,7 @@ from pathlib import Path
 import pandas as pd
 import pdfplumber
 
-PARSER_VERSION = "0.4.10"
+PARSER_VERSION = "0.4.11"
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
@@ -202,8 +205,10 @@ def extract_all_characters(pdf_path, max_pages=None):
     chars = []
     page_heights = {}
     scanned_pages = 0
+    restored = 0
     with pdfplumber.open(pdf_path) as pdf:
         pages = pdf.pages if max_pages is None else pdf.pages[:max_pages]
+        prev_raw = prev_out = None
         for i, page in enumerate(pages):
             page_heights[i + 1] = page.height
             if page_is_scanned(page):
@@ -217,23 +222,64 @@ def extract_all_characters(pdf_path, max_pages=None):
                     style = "italic"
                 else:
                     style = "normal"
-                chars.append({
+                if prev_raw is not None and space_is_missing(prev_raw, c, i + 1):
+                    # the gap belongs to the line that is ending, so it is
+                    # cut or kept with it when headers and footers go
+                    chars.append(dict(prev_out, text=" "))
+                    restored += 1
+                out = {
                     "text": c["text"],
                     "font": family,
                     "font_style": style,
                     "size": round(c["size"], 1),
                     "page": i + 1,
                     "top": c["top"],
-                })
+                }
+                chars.append(out)
+                prev_raw, prev_out = dict(c, page=i + 1), out
     remapped = repair_symbol_font(chars)
     scanned_share = scanned_pages / max(len(pages), 1)
     print(f"Extracción completa. Se extrajeron {len(chars)} caracteres en total.")
+    if restored:
+        print(f"Se repusieron {restored} espacios que el archivo no guarda "
+              f"pero la página muestra.")
     if remapped:
         print(f"Se repararon {remapped} caracteres de una fuente de símbolos mal mapeada.")
     if scanned_share:
         print(f"=== Advertencia: {scanned_share:.0%} de las páginas son imágenes "
               f"escaneadas; el texto proviene de OCR y no es fiable ===")
     return chars, page_heights, scanned_share
+
+
+# A gap this wide, measured against the type size, is a space the file does not
+# store. Both bounds were measured on files that DO print their spaces: two
+# letters of one word are never more than 0.07 apart, and a printed space is
+# 0.25 to 0.60 wide, so anything above 0.15 is a space and nothing below it is.
+GAP_IS_A_SPACE = 0.15
+
+
+def space_is_missing(prev, cur, page):
+    """Does the page show a space here that the file does not store?
+
+    The parser reads characters in the order the file keeps them, which is
+    faithful to what was typeset but carries no line breaks: where the older
+    formats end a line without storing a space, the last word of one line and
+    the first of the next come out joined ("reemplazala expresión"). The same
+    happens across a wide gap inside a line, which is how a page header runs
+    into the text below it.
+
+    A line ending in a hyphen is left joined: it is either a word broken across
+    the line or a file number ("P.E.-86/16"), and in both the two halves belong
+    together.
+    """
+    if prev["text"].isspace() or cur["text"].isspace():
+        return False
+    size = max(prev["size"], cur["size"], 1)
+    if prev["page"] != page:
+        return True
+    if abs(cur["top"] - prev["top"]) > 0.5 * size:      # a new line, or a new column
+        return prev["text"] != "-"
+    return (cur["x0"] - prev["x1"]) > GAP_IS_A_SPACE * size
 
 
 def page_is_scanned(page):
@@ -669,6 +715,34 @@ def classify_blocks(blocks, body_size):
     return blocks, events
 
 
+DOTTED_CHAPTER_RE = re.compile(r"^\d+\.")
+
+
+def continues_the_count(text, current):
+    """Is this numbered title the next section, or a bill number?
+
+    A title numbered with a full stop ("7. Homenaje") is unambiguous and is
+    always taken. A dotless one is taken only where its number carries the
+    count forward, or opens the sitting — otherwise it is the number of a bill
+    left at the head of a line by the line break above it.
+
+    Forward by up to three rather than by exactly one, because a section whose
+    number is swallowed by the title above it would otherwise break the count
+    for the rest of the sitting. Bill numbers run in the hundreds and are never
+    within three of the section being read.
+
+    The count may open at anything up to ten, not at 1 alone: the first section
+    of a sitting is sometimes swallowed the same way, and the numbering then
+    starts at 2 or 3. Ten is still far below any bill number.
+    """
+    if DOTTED_CHAPTER_RE.match(text):
+        return True
+    num = int(re.match(r"\d+", text).group())
+    if current is None:
+        return num <= 10
+    return 0 < num - int(current) <= 3
+
+
 def assign_chapter_to_blocks(blocks, body_size):
     """Detect bold body-size "N. Título" headings; assign chapters to blocks.
 
@@ -677,15 +751,28 @@ def assign_chapter_to_blocks(blocks, body_size):
     that cut and the label vanishes into the title: the turn never opens, the
     next speaker's words are added to the previous speaker's turn, and the
     stranded "(Surname)" half of the label is left sitting in the speech.
+
+    The 2000–2013 layouts number their sections without a full stop ("2
+    Izamiento de la bandera"), which is also the shape of a bill number left at
+    the head of a line ("Orden del Día N° / 522 Obras de los bajos..."). The
+    two are told apart by counting: sections run 1, 2, 3 in order — in the
+    later files, which number with a full stop and cannot be confused, the next
+    section is the previous one plus one in 284 of 290 cases — while a bill
+    number is whatever the bill happens to be. So a dotless heading opens a
+    section only where it continues the count.
     """
     chapters = {}
     current = None
     out = []
     label_cuts = 0
+    out_of_sequence = 0
     for b in blocks:
         t = LEAD_JUNK_RE.sub("", b["text"].strip())
-        if (b.get("type") is None and b["font_style"] == "bold" and b["size"] == body_size
-                and CHAPTER_RE.match(t)):
+        numbered = (b.get("type") is None and b["font_style"] == "bold"
+                    and b["size"] == body_size and CHAPTER_RE.match(t))
+        if numbered and not continues_the_count(t, current):
+            out_of_sequence += 1                 # a bill number, not a section
+        elif numbered:
             # split fused "N. Título  Sra. Presidenta..." blocks on double spaces
             parts = [p.strip() for p in t.split("  ") if p.strip()] if "  " in t else [t]
             # 2000–2013 fuses with single spaces: cut a trailing speaker label
@@ -715,6 +802,8 @@ def assign_chapter_to_blocks(blocks, body_size):
         out.append(b)
     print(f"Asignación de capítulos completa. Se detectaron {len(chapters)} capítulos; "
           f"{label_cuts} etiquetas de orador separadas del título.")
+    if out_of_sequence:
+        print(f"Títulos numerados descartados por no seguir la numeración: {out_of_sequence}.")
     return out, chapters, label_cuts
 
 

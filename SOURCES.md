@@ -202,7 +202,7 @@ the corpus, drawn from 24 of 559 sittings. `scripts/audit_parse.py` covers the
 rest by checking, on every session, things that must never happen. Current
 results:
 
-- **Page apparatus inside a speech turn: 1 occurrence** in 152,577 turns (a
+- **Page apparatus inside a speech turn: 1 occurrence** in 152,594 turns (a
   footer line that landed mid-sentence in the 7 May 2014 sitting). Mastheads,
   datelines, attendance rolls, section headers and the appendix-pointer footnote
   are otherwise absent from speech, which is what the positional header and
@@ -244,7 +244,7 @@ results:
   positive.
 - **Text written out twice: 0 sessions.** No document yields more text than it
   prints.
-- **Blocks not findable in the source PDF: 0.42% on average**, 29 sessions above
+- **Blocks not findable in the source PDF: 0.424% on average**, 29 sessions above
   1%, the worst of them the 20 October 2004 file whose mis-mapped symbol font the
   parser deliberately repairs. This figure went UP as the parser improved, and
   the reason is worth stating plainly: where a footnote had been dropped into the
@@ -256,7 +256,7 @@ results:
   the section heading printed between them. Sessions with very few probed blocks
   (a short sitting in minority may have twenty) turn one miss into several
   percent.
-- **Share of each document's printed text kept:** median 79.5%, quartiles 69%
+- **Share of each document's printed text kept:** median 79.2%, quartiles 69%
   and 87%. The rest is dropped by design — contents pages, attendance rolls,
   appendices and inserted documents. The lowest figures are short sittings in
   minority that consist of little but a masthead and a roll.
@@ -369,14 +369,49 @@ lists them first and excludes them from its counts. **Exclude them from any
 text analysis.** An earlier note in this project claimed no file from 2000 on
 needed OCR; that was wrong for these two.
 
-### Words run together at line joins
+### Words that used to run together at line joins (fixed in 0.4.11)
 
-The parser reads characters in the order the PDF stores them, which is
-faithful to what was typeset but loses the spaces pdfplumber's page-level
-extraction infers from the layout. Where a word was broken across lines or
-columns the two halves can end up joined — "reemplazala expresión",
-"yplenipotenciario". It affects tokenisation, not attribution, and word counts
-in the analysis are therefore very slightly low. Not yet fixed.
+The parser reads characters in the order the file stores them, which is
+faithful to what was typeset but carries no line breaks. The 2003–2009 files
+end a line without storing a space, so the last word of one line and the first
+of the next came out joined — "reemplazala expresión", "yplenipotenciario". It
+never affected who was credited with the words, but it broke them into the
+wrong tokens, and every word count was low.
+
+Parser 0.4.11 puts the space back wherever the page shows one: a new line, a
+new column, a new page, or a gap inside a line wide enough that only a space
+explains it. "Wide enough" is measured, not guessed. On the files that DO print
+their spaces, two letters of the same word are never more than 0.07 of the type
+size apart (110,744 pairs measured, widest 0.071) while a printed space is 0.25
+to 0.60 wide, so the threshold sits at 0.15 with clear air on both sides. A
+line ending in a hyphen is left joined, because there the two halves belong
+together — either a word broken across the line or a file number like
+"P.E.-86/16".
+
+That restored **710,039 spaces in 481 of the 559 sittings** and raised the
+corpus from 21.07 to 21.48 million words (+2.0%): +4% to +6.5% in every year
+from 2003 to 2009, and under 0.1% everywhere else, which is the shape the
+defect had. Checked against pdfplumber's own layout-aware page reading over a
+sample of pages, words that exist in the parser's output but not in the page's
+own reading fell from 3.0% to 0.06%. Nothing that had already been verified
+moved: the gold set scores exactly as before (F1 = 1.00 on 124 of 125 turns),
+the audit is unchanged on every invariant, and all 1,848 answers recorded in
+the four blind reads still stand in the new parse, checked row by row.
+
+Two things followed from it, both checked. **Section numbering now works for
+2003–2009**: those sittings number their sections without a full stop ("2
+Izamiento de la bandera"), which was unreadable while the number was glued to
+the title, so 87 more sittings (443 → 529) now carry the section each turn
+belongs to. And because a bill number left at the head of a line has exactly
+the same shape ("Orden del Día N° / 522 Obras de los bajos…"), the parser now
+tells them apart by counting: sections run 1, 2, 3 in order, so a dotless
+number opens a section only where it carries the count forward — within three
+of the section before it, or up to ten to open the sitting. Bill numbers run in
+the hundreds and never qualify. In the later files, which number with a full
+stop and cannot be confused, the next section is the previous one plus one in
+284 of 290 cases, which is what the rule rests on. One sitting of November 2001
+— a scan — numbers too erratically to be followed and now carries no sections
+at all.
 
 ### Stenographer notes are events
 
