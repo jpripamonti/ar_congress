@@ -15,6 +15,17 @@
             "sha256": "e98c27b55ddc23ac1edccf591653c619dd87c3f02a2496e4886164836cf5aa7f",
             "size_bytes": 959819,
             "row_count": 1380
+        },
+        "bloques_por_fecha.csv": {
+            "file": "bloques_por_fecha.csv",
+            "source_url": "https://www.senado.gob.ar/votaciones/actas",
+            "fetched_at_utc": "2026-08-03T21:54:42+00:00",
+            "sha256": "33a36b61470e3a84f3f554026fc3c1046bc3a4b995b905db9f53ffd32fbd67e7",
+            "size_bytes": 2065130,
+            "row_count": 23007,
+            "sitting_dates": 320,
+            "years": "2005-2024",
+            "note": "one roll-call record per sitting date; each lists the whole chamber with the caucus each senator sat in that day"
         }
     },
     "manual": {

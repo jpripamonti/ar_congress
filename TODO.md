@@ -263,12 +263,56 @@ none of the samples overlapping — 1,798 in all, spread across every year.
       reading itself. `--sample N` regenerates the review sheet
       (`data/processed/senado/review_sheet.csv`) for a human pass.
 
+## Phase 8 — the caucus, not the ticket (done, August 2026)
+
+Every grouping in the analysis rested on the party a senator was ELECTED under,
+because that is the only affiliation the historic roster carries. It is not the
+caucus they sat with, and the gap was visibly distorting the results.
+
+- [x] Established that no official source publishes caucus historically: the
+      open-data portal has no caucus and no votes dataset; the transcripts
+      mention caucuses only inside speech (511 of 559 sessions) and never as a
+      roster; the site's grouped-by-caucus listing is current-composition only.
+- [x] Found it in the roll-call records instead. Every recorded vote publishes
+      the whole chamber, absent members included, with each senator's caucus.
+      `fetch_blocs.py` reads one record per sitting date — 320 dates, 2005-2024,
+      23,007 readings, 287 senators, 62 caucuses — and archives the raw pages.
+      All 283 people the corpus resolves from 2005 on match by name, exactly.
+- [x] `map_blocs.py` collapses the readings into 302 caucus spells and files
+      each caucus under the analysis's own party families, adding two keywords
+      that only bite on caucus names: the PRO (the other half of Cambiemos/JxC,
+      which as a ticket appeared as "Cambiemos") and Frente Nacional y Popular
+      (the peronist bloc after 2020). Without them 27 senators fall into the
+      residual bucket. The federal-peronist splinters are deliberately left in
+      that bucket, matching what the ticket-side rules do to their equivalents.
+- [x] **The result answers the question that motivated it.** By ticket, the
+      chamber looks realigned at a stroke in 2019-2020. By caucus, the step
+      disappears: radical/Cambiemos sits at 23-34% throughout instead of jumping
+      from 9-25% to 30-39%, and provincial and other alliances end at 20-21%
+      instead of 13%. The peronist family, largest in 18 of 21 years by ticket,
+      is largest in all twenty caucus-covered years.
+- [x] Three limits, measured and written into SOURCES.md rather than smoothed
+      over: the caucus name is trustworthy and its **date is not** (of 18
+      senators filed under Frente de Todos only 2 carry it from a plausible
+      date; the rest carry it back to 2016 or earlier, and it was formed in
+      2019); nothing exists before 2005; 2.6% of readings carry no caucus.
+- [x] Tried and rejected a correction: dating each caucus by when the chamber
+      first names it in debate. It works on distinctive names (La Libertad
+      Avanza lands on December 2023) but not on names built from ordinary words
+      — "Frente de Todos" matches "frente de todos los argentinos" — and only
+      33 of 62 caucuses are ever named as such.
+- [x] Corrected a stale claim found on the way: the notebook said the peronist
+      family was largest "in every fully held year". It is 18 of 21; the README
+      already said so and the notebook did not.
+
 ## Later
 
-- Caucus (bloque) mapping for departed senators (historic roster only has
-  the ticket they were elected on) — needed before per-bloc claims harden.
-  The analysis now shows why: the provincial-alliance share of floor speech
-  falls from ~40% to ~13% after 2019 without senators changing sides.
+- Caucus (bloque) mapping — **done at family level, 2005 onward** (see
+  Phase 8). What is still open is the finer version: the Senate records one
+  caucus per mandate and dates it unreliably, so a senator who crossed the
+  floor mid-term is invisible and no claim about *when* the chamber realigned
+  can rest on it. Fixing that needs a source outside the Senate, or the
+  ~20 largest caucuses dated by hand. 2000–2004 has no caucus at all.
 - Cámara de Diputados (second chamber)
 - Formal writeup / dataset publication (corpus is citable via SOURCES.md)
 - Optional: the 217 remaining unresolved blocks are invited outside speakers

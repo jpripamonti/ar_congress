@@ -76,12 +76,21 @@ text blocks, and analysis.
   fully held years, median 48%, across four changes of national government.
   It is the largest single family in 18 of those 21 years; in 2013, 2014 and
   2015 the provincial-and-other bucket was larger, but that bucket is a
-  residual holding many separate alliances rather than one family.
-- What moved is the labels everyone else ran under. Provincial and other
-  alliances held 36–46% of floor words from 2006 to 2016 and 13–15% from
-  2020 on, while the radical/Cambiemos family went the other way. Senators
-  did not all change sides — the tickets they were elected on consolidated
-  into two national coalitions.
+  residual holding many separate alliances rather than one family — and
+  regrouping the same speech by the caucus each senator actually sat in makes
+  the peronist family the largest in every one of the twenty years the caucus
+  data covers.
+![The same floor speech grouped by ticket and by caucus](figures/ticket_vs_caucus.png)
+
+- **What moved is mostly the labels, and the caucus data now shows it rather
+  than merely warning about it.** By ticket, provincial and other alliances
+  held 30–46% of floor words to 2016 and 13–15% from 2020, while the
+  radical/Cambiemos family went the other way (9–25% before 2019, 30–39%
+  after) — a chamber that looks realigned at a stroke. Group the identical
+  speech by caucus and the step disappears: radical/Cambiemos sits at 23–34%
+  throughout, and provincial and other alliances end 2022–2024 at 20–21%
+  rather than 13%. Senators did not change sides in 2019; the tickets they had
+  been elected on consolidated into two national coalitions.
 - The 2020–2023 collapse was mostly fewer sittings, not quieter ones. Floor
   words fell 6.4-fold, which splits into a 3.9-fold fall in sittings held
   (31 to 8) and only a 1.65-fold fall in words per sitting. By 2024 a
@@ -93,8 +102,11 @@ text blocks, and analysis.
   because stenographer events are preserved and typed rather than deleted.
 
 Methodological caveats (incomplete holdings before 2004, session-type mix,
-electoral labels rather than caucuses, chairs excluded) are documented in
-the notebook and in [SOURCES.md](SOURCES.md).
+chairs excluded) are documented in the notebook and in
+[SOURCES.md](SOURCES.md). The caucus view carries its own: the Senate records
+a caucus once per mandate and sometimes one the senator only joined later, so
+the caucus **name** can be relied on and its **start date** cannot, and the
+records begin only in 2005.
 
 ## Layout
 
@@ -105,6 +117,11 @@ the notebook and in [SOURCES.md](SOURCES.md).
   `parse_stats.csv` quality table.
 - `scripts/fetch_roster.py` — fetch senator roster datasets into
   `reference/senado/`.
+- `scripts/fetch_blocs.py` — read one roll-call record per sitting date back
+  to 2005 into `reference/senado/bloques_por_fecha.csv`: which caucus each
+  senator sat with, which the roster publishes only for sitting members.
+- `scripts/map_blocs.py` — collapse those readings into per-senator caucus
+  spells and file each caucus under the analysis's party families.
 - `scripts/extract_authorities.py` — read each sitting's masthead into
   `reference/senado/authorities_observed.csv`: who presided and who sat at
   the secretaries' table, per sitting.

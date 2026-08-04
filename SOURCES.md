@@ -45,11 +45,47 @@ senator was **elected under**, one value per mandate. It is *not* the caucus
 Cambiemos and Juntos por el Cambio tickets from 2015 on carry those labels
 and not "Unión Cívica Radical"; provincial alliances that later joined a
 national coalition disappear from the labels without their senators moving.
-Caucus membership is published only for sitting senators, so it cannot be
-reconstructed for the rest of the span. The resolved-speaker table names the
-column `party_or_alliance` for this reason, and the resolver prints the
-caveat on every run. Any grouping built on it — including the party families
-in the analysis notebook — is a grouping of electoral labels.
+The roster publishes caucus only for the 72 sitting senators, never
+historically. The resolved-speaker table names the column
+`party_or_alliance` for this reason, and the resolver prints the caveat on
+every run. Any grouping built on it is a grouping of electoral labels.
+
+### Where the caucus does come from, and how far it can be trusted
+
+The Senate's roll-call records fill most of the gap. Every recorded vote
+publishes the whole chamber — including the members absent for it — with the
+caucus each senator was sitting in, so one record per sitting date is a
+complete snapshot of that day's composition. `scripts/fetch_blocs.py` collects
+one per date (23,007 readings over 320 sitting dates, 287 senators, 62
+caucuses) and `scripts/map_blocs.py` collapses them into per-senator spells in
+`reference/senado/bloque_por_senador_periodo.csv`. Neither the caucus nor the
+votes appear in the open-data portal; both are read from the site's own
+roll-call pages, and the raw HTML is archived so a re-run neither refetches nor
+depends on the site still answering.
+
+Three limits, all measured:
+
+* **The caucus name is trustworthy; its date is not.** The Senate stores one
+  caucus per MANDATE, not per sitting, and it is sometimes one the senator only
+  joined later. Of the 18 senators filed under Frente de Todos, only 2 carry it
+  from a plausible date; the other 16 carry it back to 2016 or earlier, and that
+  caucus was formed in 2019. La Libertad Avanza and Convicción Federal show the
+  same shape. A senator who crossed the floor mid-term therefore shows one
+  unbroken spell.
+* **Nothing before 2005.** Roll-call records begin there. Those five years keep
+  the ticket and no caucus, rather than a guess.
+* **2.6% of readings carry no caucus at all**, and 11 senators have none in any
+  record.
+
+This is enough for the coarse party families and not enough for anything
+finer. Reading Frente para la Victoria as Frente de Todos keeps a senator
+inside the peronist family either way, so family-level shares survive; the
+date error goes to the heart of any claim about *when* the chamber realigned,
+so no such claim should rest on it. An attempt to date each caucus from the
+chamber's own words — when a bloc is first named in a speech — recovers the
+distinctive names (La Libertad Avanza lands on December 2023, correctly) but
+fails on names built from ordinary words, and only 33 of the 62 caucuses are
+ever named as such, so it was not used as a correction.
 
 ## Terms of use
 
