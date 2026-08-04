@@ -58,23 +58,25 @@ text blocks, and analysis.
   twice, and a median 79.2% of each document's printed text is kept (the rest —
   contents pages, attendance rolls, appendices — is dropped by design). Two
   sittings of November 2001 are scans with OCR text and should be excluded from
-  any text analysis; the parser flags them. **On 3,298 pages read blind** — every
+  any text analysis; the parser flags them. **On 4,298 pages read blind** — every
   page rendered as an image and read by an agent that was never shown the
   parser's answer, then compared — the two agree on who is speaking in
   [300 of 300](reference/verification/blind_read_300.csv),
   [497 of 500](reference/verification/blind_read_500.csv),
   [993 of 998](reference/verification/blind_read_1000.csv),
-  [498 of 500](reference/verification/blind_read_500_0411.csv) and
-  [1,000 of 1,000](reference/verification/blind_read_1000_0412.csv) on five
+  [498 of 500](reference/verification/blind_read_500_0411.csv),
+  [1,000 of 1,000](reference/verification/blind_read_1000_0412.csv) and
+  [998 of 1,000](reference/verification/blind_read_1000_0413.csv) on six
   samples that do not overlap, spread across every year of the span. Every case
   left over was checked afterwards against the page image and the parser is right
   in all of them — pages that print the quoted phrase twice, so the reader could
   not know which occurrence was meant. **Who is speaking is settled; what the turn
-  says is still being corrected.** Earlier rounds exposed four of the defects
+  says was still being corrected until the sixth round.** Earlier rounds exposed four of the defects
   fixed in 0.4.7–0.4.10; the fifth found an editorial note cut off by a change of
   font and left as a two-character turn (0.4.12); and the sixth, while agreeing on
   every speaker, still found three pieces of editorial punctuation kept as speech
-  (0.4.13). Details and figures: [SOURCES.md](SOURCES.md).
+  (0.4.13). The seventh asked the same of another thousand turns and found
+  nothing to fix. Details and figures: [SOURCES.md](SOURCES.md).
 - Speakers resolved to persons: **70% of all speech blocks name a person**,
   with the ticket they were elected on and their province. A further 28% is
   a chamber office speaking under its bare title ("Sr. Presidente", "Sr.
@@ -164,9 +166,10 @@ in 2005.
   leaking into speech, undetected speaker changes, duplicated or invented
   text, coverage, scans. `--sample N` also writes a review sheet of N turns
   to be checked by eye against the printed page.
-- `reference/verification/` — the six blind reads: what the parser said, what an
-  independent reader saw on the page, and whether they agree. 1,000 pages in the
-  last round, 500 before it, 998 before that, then 500, 300 and 50 in the first.
+- `reference/verification/` — the seven blind reads: what the parser said, what
+  an independent reader saw on the page, and whether they agree. 1,000 pages in
+  each of the last two rounds, 500 before them, 998 before that, then 500, 300
+  and 50 in the first.
 - `reference/` — versioned reference data: roster snapshots, authorities
   tables, gold evaluation set. Provenance: [SOURCES.md](SOURCES.md).
 - `data/` — symlink to the OneDrive working copy; not in git (see

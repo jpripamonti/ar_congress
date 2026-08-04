@@ -261,7 +261,7 @@ results:
   appendices and inserted documents. The lowest figures are short sittings in
   minority that consist of little but a masthead and a roll.
 
-### Thirty-three hundred pages read blind
+### Forty-three hundred pages read blind
 
 Everything above is the parser checked against itself or against invariants. It
 cannot answer the plainest question — is the right person behind the words? —
@@ -271,7 +271,7 @@ handed to a reader that was **never shown the parser's answer**, and asked only
 which printed label governs the quoted words. The two answers were compared
 afterwards, mechanically.
 
-It has been done five times, on five samples that do not overlap.
+It has been done six times, on six samples that do not overlap.
 
 * **300 turns.** Agreement on the speaker in **300 of 300**, no disagreement, the
   quoted words found on the page in all 300. Two could only be confirmed by
@@ -311,8 +311,18 @@ It has been done five times, on five samples that do not overlap.
   left over at all, and none needing an after-the-fact check. Every one of the
   116 turns whose quoted phrase the page prints more than once agreed as well.
   ([reference/verification/blind_read_1000_0412.csv](reference/verification/blind_read_1000_0412.csv))
+* **1,000 further turns**, 40 per year, none of them among the first 3,348, read
+  after those three punctuation repairs. Agreement on the speaker in
+  **998 of 1,000**, no disagreement, and **no parser defect of any kind** — the
+  first round that turned up nothing at all to fix. The two left over are the
+  repeated-phrase case: page 13 of the 12 Jul 2017 sitting prints "¿Por qué se
+  cambió el orden?" four times under three different labels, and the parser
+  records all four turns, one under each. This round the year 2000 could not
+  fill its share of forty: its 96 locatable turns had all been read already, so
+  the shortfall went to the years that had turns to spare.
+  ([reference/verification/blind_read_1000_0413.csv](reference/verification/blind_read_1000_0413.csv))
 
-**That round still found three defects, because agreeing on the speaker is not
+**The sixth round found three defects, because agreeing on the speaker is not
 the same as agreeing on the text.** Readers are asked to say whether anything
 that is not speech appears inside the paragraph they are reading, and 24 of the
 1,000 said yes. Most were footnote markers and stage directions that sit on the
@@ -367,11 +377,10 @@ re-examined.
 
 The repeated-phrase problem is measured rather than argued about: for each
 sampled turn, the quoted phrase is counted in the page's printed text. It appears
-more than once in 60 of the first 500, 139 of the 998, 58 of the 500 after that
-and **116 of the latest 1,000** — the chamber's stock formulas recur — and in all
-but two of each round the reader still landed on the parser's answer, because
-every occurrence belongs to the same speaker. In the latest round all 116 landed
-on it. The count
+more than once in 60 of the first 500, 139 of the 998, 58 of the 500 after that,
+116 of the 1,000 after that and **126 of the latest 1,000** — the chamber's stock
+formulas recur — and in all but two of each round the reader still landed on the
+parser's answer, because every occurrence belongs to the same speaker. The count
 is taken from the PDF precisely because the reader's own judgement is not
 reliable here: in one case a reader stated the phrase appeared only once on a
 page that prints it twice.
@@ -384,17 +393,30 @@ glyphs the font cannot map, the contents-page link glued onto the end of a turn,
 and the footnote's raised number left stranded once its text was cut. None of
 these could have been found by re-reading the 36 annotated pages. The 500 and the
 998 that followed found nothing further — 1,498 pages drawn with nothing to
-report — the 500 read after the space fix turned up the cut-off note above, and
-the latest 1,000 agreed on every speaker while still turning up three pieces of
-editorial punctuation kept as speech.
+report — the 500 read after the space fix turned up the cut-off note above, the
+1,000 after that agreed on every speaker while still turning up three pieces of
+editorial punctuation kept as speech, and the latest 1,000 turned up nothing at
+all.
 
-That is the point of running it again, and the two things it now measures have
-come apart. **Who is speaking is settled**: 3,348 turns read blind across six
-rounds, agreement in all but ten, and every one of those ten resolved in the
-parser's favour by hand. **What the turn says is still being corrected**, in
-smaller and smaller pieces — a dash, a colon, a section number — found only
-because readers are asked to report anything on the page that is not speech, and
-answer even when the speaker is not in doubt.
+That is the point of running it again, and the two things it measures have come
+apart. **Who is speaking is settled**: 4,348 turns read blind across seven
+rounds, agreement in all but twelve, and every one of those twelve resolved in
+the parser's favour by hand — all of them pages that print the quoted phrase
+more than once. **What the turn says was still being corrected** until the sixth
+round, in smaller and smaller pieces — a dash, a colon, a section number — found
+only because readers are asked to report anything on the page that is not
+speech, and to answer even when the speaker is not in doubt. The seventh round
+asked the same question of another thousand turns and got nothing back: 29
+readers reported apparatus on the page, and in every case it had stayed on the
+page.
+
+Two things the latest round confirmed rather than corrected are worth recording,
+because both look like errors and are not. A page of May 2010 interleaves
+"(Aplausos)" between the items of a list a senator is reading out, so her turn
+comes out as fragments each opening with a comma — which is what the page shows.
+And a page of October 2022 misspells a surname as "Sr. Rodíguez Saá", missing an
+r, which the parser copies as printed and the resolver still matches to the right
+person.
 
 Four things about the method are worth stating, because all four were wrong at
 first and each produced false disagreements rather than hiding real ones:

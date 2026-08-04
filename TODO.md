@@ -463,6 +463,28 @@ short of the thousand.
       no speaker changed anywhere. The only four turns that no longer exist are
       the note scraps Phase 10 correctly returned to their notes.
 
+## Phase 12 — read 1,000 more, after the punctuation repairs (done, August 2026 — parser 0.4.13)
+
+- [x] **998 of 1,000 agree on the speaker, no disagreement, and no defect of any
+      kind** — the first round that turned up nothing at all to fix. The two left
+      over are the repeated-phrase case: page 13 of the 12 Jul 2017 sitting
+      prints "¿Por qué se cambió el orden?" four times under three different
+      labels, and the parser records all four turns, one under each. Evidence in
+      `reference/verification/blind_read_1000_0413.csv`.
+- [x] 29 readers reported apparatus inside the paragraph they were reading —
+      footnote markers, applause, "(Lee:)" — and in every case it had stayed on
+      the page and never entered the output. Checked one by one.
+- [x] Two things confirmed rather than corrected, both of which look like errors:
+      a May 2010 page interleaves "(Aplausos)" between the items of a list a
+      senator is reading out, so her turn comes out as fragments each opening
+      with a comma, which is what the page shows; and an October 2022 page
+      misspells a surname as "Sr. Rodíguez Saá", which the parser copies as
+      printed and the resolver still matches to the right person.
+- [ ] **The year 2000 is exhausted.** Its 96 locatable turns have all been read
+      across the seven rounds, so this round covered 24 years, not 25, and its
+      share of forty went to the years with turns to spare. Any further round has
+      the same floor: three sittings is all that is held for that year.
+
 ## Later
 
 - Caucus (bloque) mapping — **done at family level, 2005 onward, all 62
