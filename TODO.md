@@ -485,6 +485,36 @@ short of the thousand.
       share of forty went to the years with turns to spare. Any further round has
       the same floor: three sittings is all that is held for that year.
 
+## Phase 13 — read 1,000 more, and find a word broken in half (done, August 2026 — parser 0.4.14)
+
+- [x] **1,000 of 1,000 agree on the speaker**, nothing left over at all — the
+      largest sample yet settled entirely by the blind read, with no
+      after-the-fact check needed. All 128 turns whose quoted phrase the page
+      prints more than once agreed as well. Evidence in
+      `reference/verification/blind_read_1000_0413b.csv`.
+- [x] 27 readers reported apparatus inside the paragraph; all 27 checked against
+      the output and all 27 had stayed on the page.
+- [x] **One text defect, found through the question rather than the answer.** A
+      reader was asked to locate "i la Argentina debe ser tomada en su
+      totalidad?", which no page prints. The page has "…de allí trasladarnos a
+      otra parte del país (aplausos), si la Argentina…": the note is interjected
+      mid-sentence, and in a few files the italic run it is set in carries a
+      character or two past the closing parenthesis, so the note kept ", s" and
+      the sentence resumed at "i la Argentina". 0.4.14 gives the tail back — 5
+      broken words and 70 marks of sentence punctuation, 75 turns in 41
+      sittings. A colon is never taken: 13 notes end in one and it is the note's
+      own, introducing the matter quoted below.
+- [x] Nothing verified regressed after the re-parse: gold F1 = 1.00 (124 of 125),
+      the annotations still check out against the PDFs (36 of 36), the audit is
+      unchanged on every invariant (0.424% of blocks not located, median coverage
+      79.2%, no text written out twice, one footer leak), and all **5,348 answers
+      recorded across the eight blind reads still stand — no speaker changed
+      anywhere and no turn went missing**.
+- [ ] **2002 is nearly exhausted too.** It yielded 12 turns of the forty asked
+      for, on top of the year 2000 yielding none. Four sittings is all that is
+      held for 2002, so future rounds keep drawing more heavily on the years
+      after 2004.
+
 ## Later
 
 - Caucus (bloque) mapping — **done at family level, 2005 onward, all 62

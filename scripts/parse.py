@@ -51,7 +51,7 @@ from pathlib import Path
 import pandas as pd
 import pdfplumber
 
-PARSER_VERSION = "0.4.13"
+PARSER_VERSION = "0.4.14"
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
@@ -182,6 +182,7 @@ STATS_COLUMNS = [
     "note_tails_reattached",
     "note_dashes_returned",
     "note_colons_returned",
+    "note_tails_returned",
     "inline_merged",
     "appendix_demoted",
     "speech_blocks",
@@ -764,6 +765,7 @@ def reattach_note_tails(blocks):
 TRAILING_DASH_RE = re.compile(r"\s*[—–-]\s*$")
 LEADING_DASH_RE = re.compile(r"^\s*[—–-]")
 LEADING_COLON_RE = re.compile(r"^\s*:\s")
+NOTE_TAIL_RE = re.compile(r"\)([^)]{1,12})$")
 
 
 def return_stage_direction_punctuation(blocks):
@@ -782,8 +784,17 @@ def return_stage_direction_punctuation(blocks):
     mid-phrase, with no closing punctuation of its own. Where the note is
     already complete ("(Risas.)") the colon is left alone: nothing there shows
     it is not part of what follows.
+
+    A third case runs the other way. An interjected note is set in italics, and
+    in a few files the italic run carries a character or two past the closing
+    parenthesis, so the note ends "(aplausos), s" and the sentence resumes at
+    "i la Argentina debe ser tomada en su totalidad?" — a word broken in half.
+    5,191 parenthesised notes end cleanly; 5 hold letters the sentence
+    continues, and 70 hold a comma, semicolon or dash closing the clause the
+    note interrupted. Those go back to the speech. A colon does not: 13 notes
+    end in one and it is the note's own, introducing the matter quoted below.
     """
-    dashes = colons = 0
+    dashes = colons = tails = 0
     for i, b in enumerate(blocks[:-1]):
         nxt = blocks[i + 1]
         if (b.get("type") is None and nxt.get("type") == "event"
@@ -800,10 +811,31 @@ def return_stage_direction_punctuation(blocks):
             b["text"] = LEADING_COLON_RE.sub("", b["text"], count=1)
             prev["text"] = prev["text"].rstrip() + ": "
             colons += 1
-    if dashes or colons:
+    for i, b in enumerate(blocks[:-1]):
+        nxt = blocks[i + 1]
+        if b.get("type") != "event" or nxt.get("type") is not None:
+            continue
+        m = NOTE_TAIL_RE.search(b["text"].rstrip())
+        if not m:
+            continue
+        tail = m.group(1)
+        stripped = tail.strip()
+        letters = re.search(r"[^\W\d_]", stripped, re.UNICODE)
+        resumes = nxt["text"].lstrip()[:1].islower()
+        if not stripped or stripped == "." or ":" in stripped:
+            continue
+        if not ((letters and resumes) or re.fullmatch(r"[,;—–]+", stripped)):
+            continue
+        b["text"] = b["text"].rstrip()[: m.start(1)]
+        # a tail ending in a letter is half of a word: join it with no space
+        rest = nxt["text"].lstrip() if stripped[-1:].isalpha() else nxt["text"]
+        nxt["text"] = stripped + rest
+        tails += 1
+    if dashes or colons or tails:
         print(f"Puntuación devuelta a la nota que la lleva impresa: "
-              f"{dashes} rayas de apertura, {colons} dos puntos de cierre.")
-    return blocks, dashes, colons
+              f"{dashes} rayas de apertura, {colons} dos puntos de cierre; "
+              f"{tails} arranques de frase devueltos al orador.")
+    return blocks, dashes, colons, tails
 
 
 DOTTED_CHAPTER_RE = re.compile(r"^\d+\.")
@@ -1276,9 +1308,11 @@ def process_pdf(pdf_path):
     blocks, note_tails = reattach_note_tails(blocks)
     stats["note_tails_reattached"] = note_tails
 
-    blocks, note_dashes, note_colons = return_stage_direction_punctuation(blocks)
+    blocks, note_dashes, note_colons, note_tails = \
+        return_stage_direction_punctuation(blocks)
     stats["note_dashes_returned"] = note_dashes
     stats["note_colons_returned"] = note_colons
+    stats["note_tails_returned"] = note_tails
 
     blocks, chapters, title_label_cuts = assign_chapter_to_blocks(blocks, body_size)
     stats["chapters_detected"] = len(chapters)

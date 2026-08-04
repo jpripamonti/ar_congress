@@ -202,7 +202,7 @@ the corpus, drawn from 24 of 559 sittings. `scripts/audit_parse.py` covers the
 rest by checking, on every session, things that must never happen. Current
 results:
 
-- **Page apparatus inside a speech turn: 1 occurrence** in 152,521 turns (a
+- **Page apparatus inside a speech turn: 1 occurrence** in 152,590 turns (a
   footer line that landed mid-sentence in the 7 May 2014 sitting). Mastheads,
   datelines, attendance rolls, section headers and the appendix-pointer footnote
   are otherwise absent from speech, which is what the positional header and
@@ -261,7 +261,7 @@ results:
   appendices and inserted documents. The lowest figures are short sittings in
   minority that consist of little but a masthead and a roll.
 
-### Forty-three hundred pages read blind
+### Fifty-three hundred pages read blind
 
 Everything above is the parser checked against itself or against invariants. It
 cannot answer the plainest question — is the right person behind the words? —
@@ -271,7 +271,7 @@ handed to a reader that was **never shown the parser's answer**, and asked only
 which printed label governs the quoted words. The two answers were compared
 afterwards, mechanically.
 
-It has been done six times, on six samples that do not overlap.
+It has been done seven times, on seven samples that do not overlap.
 
 * **300 turns.** Agreement on the speaker in **300 of 300**, no disagreement, the
   quoted words found on the page in all 300. Two could only be confirmed by
@@ -321,6 +321,29 @@ It has been done six times, on six samples that do not overlap.
   fill its share of forty: its 96 locatable turns had all been read already, so
   the shortfall went to the years that had turns to spare.
   ([reference/verification/blind_read_1000_0413.csv](reference/verification/blind_read_1000_0413.csv))
+* **1,000 further turns**, 40 per year, none of them among the first 4,348.
+  Agreement on the speaker in **1,000 of 1,000** — the second round with nothing
+  left over, and this time the largest sample yet in which every single case was
+  settled by the blind read alone. All 128 turns whose quoted phrase the page
+  prints more than once agreed as well. It did, however, find a defect in the
+  text, described below. Two years could not fill their share of forty: the year
+  2000 has no unread turn left at all, and 2002 yielded 12, so their shortfall
+  went to the years with turns to spare.
+  ([reference/verification/blind_read_1000_0413b.csv](reference/verification/blind_read_1000_0413b.csv))
+
+**The eighth round found a word broken in half.** One reader was given a turn
+whose recorded text began "i la Argentina debe ser tomada en su totalidad?" and
+reported that the page shows the running head cutting through the paragraph. The
+page in fact prints "…de allí trasladarnos a otra parte del país (aplausos), si
+la Argentina debe ser tomada en su totalidad?" — the note is interjected in the
+middle of the sentence, and in a few files the italic run it is set in carries
+one or two characters past the closing parenthesis. The note came out as
+"(aplausos), s" and the sentence resumed at "i la Argentina", a word split in
+two. Parser 0.4.14 gives the tail back to the speaker: 5,191 parenthesised notes
+end cleanly; 5 held letters the sentence continues, and 70 held a comma,
+semicolon or dash closing the clause the note interrupted. A colon does not
+count as a tail — 13 notes end in one, and there it is the note's own,
+introducing the matter quoted below. 75 turns changed in 41 sittings.
 
 **The sixth round found three defects, because agreeing on the speaker is not
 the same as agreeing on the text.** Readers are asked to say whether anything
@@ -378,7 +401,8 @@ re-examined.
 The repeated-phrase problem is measured rather than argued about: for each
 sampled turn, the quoted phrase is counted in the page's printed text. It appears
 more than once in 60 of the first 500, 139 of the 998, 58 of the 500 after that,
-116 of the 1,000 after that and **126 of the latest 1,000** — the chamber's stock
+116 and 126 of the two 1,000-turn rounds after those, and **128 of the latest
+1,000** — the chamber's stock
 formulas recur — and in all but two of each round the reader still landed on the
 parser's answer, because every occurrence belongs to the same speaker. The count
 is taken from the PDF precisely because the reader's own judgement is not
@@ -395,22 +419,25 @@ these could have been found by re-reading the 36 annotated pages. The 500 and th
 998 that followed found nothing further — 1,498 pages drawn with nothing to
 report — the 500 read after the space fix turned up the cut-off note above, the
 1,000 after that agreed on every speaker while still turning up three pieces of
-editorial punctuation kept as speech, and the latest 1,000 turned up nothing at
-all.
+editorial punctuation kept as speech, the 1,000 after that turned up nothing at
+all, and the latest 1,000 turned up the broken word above.
 
 That is the point of running it again, and the two things it measures have come
-apart. **Who is speaking is settled**: 4,348 turns read blind across seven
+apart. **Who is speaking is settled**: 5,348 turns read blind across eight
 rounds, agreement in all but twelve, and every one of those twelve resolved in
 the parser's favour by hand — all of them pages that print the quoted phrase
-more than once. **What the turn says was still being corrected** until the sixth
-round, in smaller and smaller pieces — a dash, a colon, a section number — found
-only because readers are asked to report anything on the page that is not
-speech, and to answer even when the speaker is not in doubt. The seventh round
-asked the same question of another thousand turns and got nothing back: 29
-readers reported apparatus on the page, and in every case it had stayed on the
-page.
+more than once. The last two rounds, 2,000 turns between them, left only two
+cases needing any check at all. **What the turn says is still being corrected**,
+in smaller and smaller pieces — a dash, a colon, a section number, and now two
+letters — found only because readers are asked to report anything on the page
+that is not speech, and to answer even when the speaker is not in doubt. All 27
+reports of apparatus in the latest round were checked against the output and all
+27 had stayed on the page where they belong. The broken word came to light a
+different way: the phrase the reader was asked to find began "i la Argentina",
+and no page prints that. What each round tests is not only the reader's answer
+but the question put to them.
 
-Two things the latest round confirmed rather than corrected are worth recording,
+Two things the seventh round confirmed rather than corrected are worth recording,
 because both look like errors and are not. A page of May 2010 interleaves
 "(Aplausos)" between the items of a list a senator is reading out, so her turn
 comes out as fragments each opening with a comma — which is what the page shows.

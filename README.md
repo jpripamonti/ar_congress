@@ -18,11 +18,11 @@ text blocks, and analysis.
   the files on disk by `scripts/make_manifest.py`. The 90 sessions fetched
   in January 2025 predate the download-timestamp field, so theirs is blank
   rather than guessed.
-- Corpus parsed (parser 0.4.13): 152,521 speaker-attributed speech blocks
-  and 31,922 typed stenographer events in 237,410 rows, as per-session
+- Corpus parsed (parser 0.4.14): 152,590 speaker-attributed speech blocks
+  and 31,922 typed stenographer events in 237,455 rows, as per-session
   Parquet under `data/processed/senado/`. One session fails to parse — a
   November 2001 sitting that never reached quorum, so it has no session
-  opening to find. Text the parser cannot attribute to a speaker is 1,200
+  opening to find. Text the parser cannot attribute to a speaker is 1,207
   rows (0.5%), and a handful of sessions account for most of it: sittings
   whose record is mostly an inserted document (two impeachment dossiers, a
   printed bill text, a list of judicial appointments) rather than floor
@@ -45,7 +45,12 @@ text blocks, and analysis.
   section's number is set in the body face rather than the bold of its title,
   the number stayed on the turn above and the section was lost altogether —
   26 sections recovered. All three were found by readers of the sixth blind
-  round and fixed in 0.4.13.
+  round and fixed in 0.4.13. The eighth round found the same fault splitting a
+  word: an interjected note is set in italics, and in a few files the italic run
+  carries a character or two past the closing parenthesis, so the note came out
+  "(aplausos), s" and the sentence resumed at "i la Argentina debe ser tomada en
+  su totalidad?". 0.4.14 gives those tails back — 5 broken words and 70 marks of
+  sentence punctuation, in 75 turns.
 - Two layers of verification, because they answer different questions.
   **On a hand-annotated sample** — 36 stratified pages spanning 2003–2024 —
   utterance boundary+attribution F1 = 1.00 (124 of 125 turns), event
@@ -58,25 +63,27 @@ text blocks, and analysis.
   twice, and a median 79.2% of each document's printed text is kept (the rest —
   contents pages, attendance rolls, appendices — is dropped by design). Two
   sittings of November 2001 are scans with OCR text and should be excluded from
-  any text analysis; the parser flags them. **On 4,298 pages read blind** — every
+  any text analysis; the parser flags them. **On 5,298 pages read blind** — every
   page rendered as an image and read by an agent that was never shown the
   parser's answer, then compared — the two agree on who is speaking in
   [300 of 300](reference/verification/blind_read_300.csv),
   [497 of 500](reference/verification/blind_read_500.csv),
   [993 of 998](reference/verification/blind_read_1000.csv),
   [498 of 500](reference/verification/blind_read_500_0411.csv),
-  [1,000 of 1,000](reference/verification/blind_read_1000_0412.csv) and
-  [998 of 1,000](reference/verification/blind_read_1000_0413.csv) on six
+  [1,000 of 1,000](reference/verification/blind_read_1000_0412.csv),
+  [998 of 1,000](reference/verification/blind_read_1000_0413.csv) and
+  [1,000 of 1,000](reference/verification/blind_read_1000_0413b.csv) on seven
   samples that do not overlap, spread across every year of the span. Every case
   left over was checked afterwards against the page image and the parser is right
   in all of them — pages that print the quoted phrase twice, so the reader could
   not know which occurrence was meant. **Who is speaking is settled; what the turn
-  says was still being corrected until the sixth round.** Earlier rounds exposed four of the defects
+  says is still being corrected.** Earlier rounds exposed four of the defects
   fixed in 0.4.7–0.4.10; the fifth found an editorial note cut off by a change of
-  font and left as a two-character turn (0.4.12); and the sixth, while agreeing on
+  font and left as a two-character turn (0.4.12); the sixth, while agreeing on
   every speaker, still found three pieces of editorial punctuation kept as speech
-  (0.4.13). The seventh asked the same of another thousand turns and found
-  nothing to fix. Details and figures: [SOURCES.md](SOURCES.md).
+  (0.4.13); the seventh found nothing to fix; and the eighth, agreeing on every
+  speaker in turn, found a word broken in half by an interjected note (0.4.14).
+  Details and figures: [SOURCES.md](SOURCES.md).
 - Speakers resolved to persons: **70% of all speech blocks name a person**,
   with the ticket they were elected on and their province. A further 28% is
   a chamber office speaking under its bare title ("Sr. Presidente", "Sr.
@@ -166,9 +173,9 @@ in 2005.
   leaking into speech, undetected speaker changes, duplicated or invented
   text, coverage, scans. `--sample N` also writes a review sheet of N turns
   to be checked by eye against the printed page.
-- `reference/verification/` — the seven blind reads: what the parser said, what
+- `reference/verification/` — the eight blind reads: what the parser said, what
   an independent reader saw on the page, and whether they agree. 1,000 pages in
-  each of the last two rounds, 500 before them, 998 before that, then 500, 300
+  each of the last three rounds, 500 before them, 998 before that, then 500, 300
   and 50 in the first.
 - `reference/` — versioned reference data: roster snapshots, authorities
   tables, gold evaluation set. Provenance: [SOURCES.md](SOURCES.md).
