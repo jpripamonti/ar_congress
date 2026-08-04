@@ -51,7 +51,7 @@ from pathlib import Path
 import pandas as pd
 import pdfplumber
 
-PARSER_VERSION = "0.4.12"
+PARSER_VERSION = "0.4.13"
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
@@ -180,6 +180,8 @@ STATS_COLUMNS = [
     "wordless_turns_dropped",
     "events_tagged",
     "note_tails_reattached",
+    "note_dashes_returned",
+    "note_colons_returned",
     "inline_merged",
     "appendix_demoted",
     "speech_blocks",
@@ -759,6 +761,51 @@ def reattach_note_tails(blocks):
     return out, len(scraps)
 
 
+TRAILING_DASH_RE = re.compile(r"\s*[—–-]\s*$")
+LEADING_DASH_RE = re.compile(r"^\s*[—–-]")
+LEADING_COLON_RE = re.compile(r"^\s*:\s")
+
+
+def return_stage_direction_punctuation(blocks):
+    """Give an editorial note back the punctuation printed as part of it.
+
+    A note is introduced by a dash — "— Se vota." — but in many files that dash
+    is stored at the end of the line above, so it comes out stuck to the end of
+    the turn before it, which then appears to finish on a dangling dash. The
+    dash is stored where it belongs 17,912 times and left behind 8,648; in only
+    8 of those does the note carry a dash of its own, and that is what shows the
+    stray one is the same dash rather than a second.
+
+    The mirror case is a note that ends in a colon — "…cuyos textos se incluyen
+    en el Apéndice, son los siguientes:" — whose colon is stored with the block
+    below and opens the next turn. It is taken back only where the note stops
+    mid-phrase, with no closing punctuation of its own. Where the note is
+    already complete ("(Risas.)") the colon is left alone: nothing there shows
+    it is not part of what follows.
+    """
+    dashes = colons = 0
+    for i, b in enumerate(blocks[:-1]):
+        nxt = blocks[i + 1]
+        if (b.get("type") is None and nxt.get("type") == "event"
+                and TRAILING_DASH_RE.search(b["text"])
+                and not LEADING_DASH_RE.match(nxt["text"])):
+            b["text"] = TRAILING_DASH_RE.sub(" ", b["text"])
+            nxt["text"] = "— " + nxt["text"].lstrip()
+            dashes += 1
+    for i, b in enumerate(blocks):
+        prev = blocks[i - 1] if i else None
+        if (i and b.get("type") is None and prev.get("type") == "event"
+                and LEADING_COLON_RE.match(b["text"])
+                and not re.search(r"[.!?)]$", prev["text"].strip())):
+            b["text"] = LEADING_COLON_RE.sub("", b["text"], count=1)
+            prev["text"] = prev["text"].rstrip() + ": "
+            colons += 1
+    if dashes or colons:
+        print(f"Puntuación devuelta a la nota que la lleva impresa: "
+              f"{dashes} rayas de apertura, {colons} dos puntos de cierre.")
+    return blocks, dashes, colons
+
+
 DOTTED_CHAPTER_RE = re.compile(r"^\d+\.")
 
 
@@ -810,10 +857,26 @@ def assign_chapter_to_blocks(blocks, body_size):
     out = []
     label_cuts = 0
     out_of_sequence = 0
+    numbers_recovered = 0
     for b in blocks:
         t = LEAD_JUNK_RE.sub("", b["text"].strip())
-        numbered = (b.get("type") is None and b["font_style"] == "bold"
-                    and b["size"] == body_size and CHAPTER_RE.match(t))
+        bold_title = (b.get("type") is None and b["font_style"] == "bold"
+                      and b["size"] == body_size)
+        if (bold_title and not t[:1].isdigit() and out
+                and not SPEAKER_RE.match(t) and len(t.split()) >= 4):
+            # the section's own number is sometimes set in the body face rather
+            # than the bold of its title, so the style grouping leaves it on the
+            # end of the turn above and the section is lost. Take it back only
+            # where it continues the count, so a figure that merely happens to
+            # end a sentence is not read as a section number — and never onto a
+            # speaker's label, which is bold too and follows the same notes.
+            stray = re.search(r"(?:^|\s)(\d{1,3}\.)\s*$", out[-1]["text"])
+            if stray and continues_the_count(stray.group(1), current):
+                out[-1]["text"] = out[-1]["text"][:stray.start(1)].rstrip() + " "
+                t = f"{stray.group(1)} {t}"
+                b["text"] = t
+                numbers_recovered += 1
+        numbered = bold_title and CHAPTER_RE.match(t)
         if numbered and not continues_the_count(t, current):
             out_of_sequence += 1                 # a bill number, not a section
         elif numbered:
@@ -848,6 +911,8 @@ def assign_chapter_to_blocks(blocks, body_size):
           f"{label_cuts} etiquetas de orador separadas del título.")
     if out_of_sequence:
         print(f"Títulos numerados descartados por no seguir la numeración: {out_of_sequence}.")
+    if numbers_recovered:
+        print(f"Números de sección recuperados del bloque anterior: {numbers_recovered}.")
     return out, chapters, label_cuts
 
 
@@ -1210,6 +1275,10 @@ def process_pdf(pdf_path):
 
     blocks, note_tails = reattach_note_tails(blocks)
     stats["note_tails_reattached"] = note_tails
+
+    blocks, note_dashes, note_colons = return_stage_direction_punctuation(blocks)
+    stats["note_dashes_returned"] = note_dashes
+    stats["note_colons_returned"] = note_colons
 
     blocks, chapters, title_label_cuts = assign_chapter_to_blocks(blocks, body_size)
     stats["chapters_detected"] = len(chapters)

@@ -424,6 +424,45 @@ already read would have looked new.
       not speech, and repairing it needs the same font-by-font work as the
       2004-10-20 symbol font.
 
+## Phase 11 — read 1,000 more (done, August 2026 — parser 0.4.13)
+
+A thousand turns, 40 per year, none of them among the 2,348 read before. The
+year 2000 holds only three sittings and cannot fill its share, so its shortfall
+was spread over the years that had turns to spare rather than leaving the round
+short of the thousand.
+
+- [x] **1,000 of 1,000 agree on the speaker.** No disagreement, and for the first
+      time nothing left over needing a check by hand. All 116 turns whose quoted
+      phrase the page prints more than once agreed too. Evidence in
+      `reference/verification/blind_read_1000_0412.csv`.
+- [x] **Three defects even so, all in the text rather than the speaker.** Readers
+      are asked to report anything inside the paragraph that is not speech;
+      24 of the 1,000 did, and three of those were real:
+      - The dash that introduces a stenographer's note ("— Se vota.") is stored
+        at the end of the line above in many files, so the turn before it ended
+        on a dangling dash — 9,003 turns, 5.9% of the corpus. The dash is stored
+        where it belongs 17,912 times; in only 8 of the 9,003 does the note carry
+        a dash of its own, which is what shows the stray one is the same dash.
+      - A note ending in a colon ("…son los siguientes:") lost it to the block
+        below, which then opened ": Denominación de un puente carretero…". Taken
+        back in 29 cases, only where the note stops mid-phrase. Where the note is
+        already complete ("(Risas.)") the colon is left where it is — 17 such
+        cases, untouched on purpose.
+      - A section's number set in the body face rather than the bold of its title
+        stayed on the turn above, so the title carried no number, was not read as
+        a section, and everything under it stayed filed under the section before.
+        26 sections recovered; 530 sittings now carry sections. The number is
+        taken back only onto a title of four words or more that is not a
+        speaker's label, and only where it continues the count — the first draft
+        stole vote-record numbers ("Acta N° 1.") onto speaker labels and invented
+        thirteen sections in one sitting.
+- [x] Nothing verified moved: gold set unchanged (F1 = 1.00, 124 of 125 turns),
+      audit unchanged on every invariant (0.424% of blocks not located, median
+      coverage 79.2%, no text written out twice), and all 3,348 answers recorded
+      across the six blind reads still stand under 0.4.13, checked row by row —
+      no speaker changed anywhere. The only four turns that no longer exist are
+      the note scraps Phase 10 correctly returned to their notes.
+
 ## Later
 
 - Caucus (bloque) mapping — **done at family level, 2005 onward, all 62

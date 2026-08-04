@@ -202,7 +202,7 @@ the corpus, drawn from 24 of 559 sittings. `scripts/audit_parse.py` covers the
 rest by checking, on every session, things that must never happen. Current
 results:
 
-- **Page apparatus inside a speech turn: 1 occurrence** in 152,523 turns (a
+- **Page apparatus inside a speech turn: 1 occurrence** in 152,521 turns (a
   footer line that landed mid-sentence in the 7 May 2014 sitting). Mastheads,
   datelines, attendance rolls, section headers and the appendix-pointer footnote
   are otherwise absent from speech, which is what the positional header and
@@ -261,7 +261,7 @@ results:
   appendices and inserted documents. The lowest figures are short sittings in
   minority that consist of little but a masthead and a roll.
 
-### Twenty-three hundred pages read blind
+### Thirty-three hundred pages read blind
 
 Everything above is the parser checked against itself or against invariants. It
 cannot answer the plainest question — is the right person behind the words? —
@@ -271,7 +271,7 @@ handed to a reader that was **never shown the parser's answer**, and asked only
 which printed label governs the quoted words. The two answers were compared
 afterwards, mechanically.
 
-It has been done four times, on four samples that do not overlap.
+It has been done five times, on five samples that do not overlap.
 
 * **300 turns.** Agreement on the speaker in **300 of 300**, no disagreement, the
   quoted words found on the page in all 300. Two could only be confirmed by
@@ -306,20 +306,59 @@ It has been done four times, on four samples that do not overlap.
   Sr. Villaverde, and the parser records both turns, one under each; page 143 of
   the 29 Nov 2017 sitting does the same with "¿Quiénes se abstienen?".
   ([reference/verification/blind_read_500_0411.csv](reference/verification/blind_read_500_0411.csv))
+* **1,000 further turns**, 40 per year, none of them among the first 2,348.
+  Agreement on the speaker in **1,000 of 1,000** — the first round with no case
+  left over at all, and none needing an after-the-fact check. Every one of the
+  116 turns whose quoted phrase the page prints more than once agreed as well.
+  ([reference/verification/blind_read_1000_0412.csv](reference/verification/blind_read_1000_0412.csv))
 
-**This round found a defect, and it is the kind only a reader finds.** One case
-sent the reader a "turn" whose whole text was "E 13", and the reader answered
-that this is not speech at all: it is the tail of the note "El resultado de la
-votación surge del Acta N° 13", cut off because the degree sign comes from
-another font, and left as a two-character turn credited to whoever had spoken
-last. Parser 0.4.12 gives such a scrap back to the note it was cut from, but only
-where the note stops mid-phrase AND the scrap cannot be read as speech — nothing
-but an ordinal marker and its number, or a fragment opening in lower case. That
-matters, because the same position also holds genuine short turns: of the 102
-blocks that follow an unfinished note, 81 are scraps ("E", "E 13", "z.", "of
-Mostyn.", "9 y 20:") and the rest are real speech ("Ausente.", "Gracias.",
-"¡Rojo!"), which the rule leaves alone. Every scrap it joins is listed in the
-session's log, so the judgement can be re-read rather than trusted.
+**That round still found three defects, because agreeing on the speaker is not
+the same as agreeing on the text.** Readers are asked to say whether anything
+that is not speech appears inside the paragraph they are reading, and 24 of the
+1,000 said yes. Most were footnote markers and stage directions that sit on the
+printed page but never entered the output. Three were real, and all three are the
+same kind of mistake: a mark of punctuation belonging to the editorial matter
+around a turn, stored on the wrong side of the boundary and kept as if it were
+part of what someone said. Parser 0.4.13 gives each back:
+
+* **The dash that introduces a note stayed on the turn above it.** A note is
+  printed "— Se vota."; in many files that dash is stored at the end of the line
+  before it, so the turn it follows appeared to end on a dangling dash. The dash
+  is stored where it belongs 17,912 times and left behind 9,003 — 5.9% of all
+  turns — and in only 8 of those does the note carry a dash of its own, which is
+  what shows the stray one is the same dash rather than a second.
+* **The colon that closes a note opened the next turn.** "…cuyos textos se
+  incluyen en el Apéndice, son los siguientes:" lost its colon to the block
+  below, which then began ": Denominación de un puente carretero…". Taken back
+  only where the note stops mid-phrase with no closing punctuation of its own:
+  29 cases. Where the note is already complete — "(Risas.)" followed by a turn
+  that starts with a colon — the colon is left alone, because nothing there
+  shows it is not part of what follows. That leaves 17 such cases untouched, on
+  purpose.
+* **A section's number was left on the turn above it, and the section was
+  lost.** In some sittings the number is set in the body face rather than the
+  bold of its title, so the style grouping ends the block at the number: the
+  turn above ends "…todos los asuntos. 5." and the title "Renuncia presentada
+  por el señor senador Claudio Javier Poggi" is left with no number, which means
+  it is not read as a section at all and everything under it stays filed under
+  section 4. The number is taken back only onto a title of four words or more
+  that is not a speaker's label, and only where it continues the section count.
+  26 sections were recovered, and one more sitting now carries sections: 530.
+
+The fifth round had found a fourth defect of the same family, fixed before this
+one was drawn. One case sent the reader a "turn" whose whole text was "E 13",
+and the reader answered that this is not speech at all: it is the tail of the
+note "El resultado de la votación surge del Acta N° 13", cut off because the
+degree sign comes from another font, and left as a two-character turn credited
+to whoever had spoken last. Parser 0.4.12 gives such a scrap back to the note it
+was cut from, but only where the note stops mid-phrase AND the scrap cannot be
+read as speech — nothing but an ordinal marker and its number, or a fragment
+opening in lower case. That matters, because the same position also holds
+genuine short turns: of the 102 blocks that follow an unfinished note, 81 are
+scraps ("E", "E 13", "z.", "of Mostyn.", "9 y 20:") and the rest are real speech
+("Ausente.", "Gracias.", "¡Rojo!"), which the rule leaves alone. Every scrap it
+joins is listed in the session's log, so the judgement can be re-read rather
+than trusted.
 
 Those after-the-fact checks were made by looking at the page, so they are **not**
 blind, and they are kept out of the agreement counts rather than folded into
@@ -328,10 +367,11 @@ re-examined.
 
 The repeated-phrase problem is measured rather than argued about: for each
 sampled turn, the quoted phrase is counted in the page's printed text. It appears
-more than once in 60 of the first 500, **139 of the 998** and 58 of the latest
-500 — the chamber's stock formulas recur — and in all but two of each the reader
-still landed on the parser's answer, because every occurrence belongs to the same
-speaker. The count
+more than once in 60 of the first 500, 139 of the 998, 58 of the 500 after that
+and **116 of the latest 1,000** — the chamber's stock formulas recur — and in all
+but two of each round the reader still landed on the parser's answer, because
+every occurrence belongs to the same speaker. In the latest round all 116 landed
+on it. The count
 is taken from the PDF precisely because the reader's own judgement is not
 reliable here: in one case a reader stated the phrase appeared only once on a
 page that prints it twice.
@@ -344,9 +384,17 @@ glyphs the font cannot map, the contents-page link glued onto the end of a turn,
 and the footnote's raised number left stranded once its text was cut. None of
 these could have been found by re-reading the 36 annotated pages. The 500 and the
 998 that followed found nothing further — 1,498 pages drawn with nothing to
-report — and the 500 read after the space fix turned up the cut-off note above.
-That is the point of running it again: the rate at which it finds something has
-fallen from every round to one round in three, on samples of the same size.
+report — the 500 read after the space fix turned up the cut-off note above, and
+the latest 1,000 agreed on every speaker while still turning up three pieces of
+editorial punctuation kept as speech.
+
+That is the point of running it again, and the two things it now measures have
+come apart. **Who is speaking is settled**: 3,348 turns read blind across six
+rounds, agreement in all but ten, and every one of those ten resolved in the
+parser's favour by hand. **What the turn says is still being corrected**, in
+smaller and smaller pieces — a dash, a colon, a section number — found only
+because readers are asked to report anything on the page that is not speech, and
+answer even when the speaker is not in doubt.
 
 Four things about the method are worth stating, because all four were wrong at
 first and each produced false disagreements rather than hiding real ones:
