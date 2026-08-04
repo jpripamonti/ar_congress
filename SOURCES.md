@@ -65,27 +65,72 @@ depends on the site still answering.
 
 Three limits, all measured:
 
-* **The caucus name is trustworthy; its date is not.** The Senate stores one
-  caucus per MANDATE, not per sitting, and it is sometimes one the senator only
-  joined later. Of the 18 senators filed under Frente de Todos, only 2 carry it
-  from a plausible date; the other 16 carry it back to 2016 or earlier, and that
-  caucus was formed in 2019. La Libertad Avanza and Convicción Federal show the
-  same shape. A senator who crossed the floor mid-term therefore shows one
-  unbroken spell.
+* **The Senate dates the caucus wrong, in one specific and repairable way.** It
+  stores one caucus per MANDATE and stores the one the senator ENDED that
+  mandate in, projected backwards over the whole term. Of the 18 senators filed
+  under Frente de Todos, only 2 carry it from a plausible date; the other 16
+  carry it back to 2016 or earlier, and that caucus was formed in 2019. La
+  Libertad Avanza and Convicción Federal show the same shape, and Pichetto's
+  entire 2013–2019 mandate is filed under Peronismo Republicano, a bloc he
+  founded in 2019 on leaving, while he in fact led the Frente para la Victoria
+  bloc throughout. A senator who crossed the floor mid-term therefore shows one
+  unbroken spell. See "Dating the caucuses by hand" below for the repair.
 * **Nothing before 2005.** Roll-call records begin there. Those five years keep
   the ticket and no caucus, rather than a guess.
 * **2.6% of readings carry no caucus at all**, and 11 senators have none in any
   record.
 
-This is enough for the coarse party families and not enough for anything
-finer. Reading Frente para la Victoria as Frente de Todos keeps a senator
-inside the peronist family either way, so family-level shares survive; the
-date error goes to the heart of any claim about *when* the chamber realigned,
-so no such claim should rest on it. An attempt to date each caucus from the
-chamber's own words — when a bloc is first named in a speech — recovers the
-distinctive names (La Libertad Avanza lands on December 2023, correctly) but
-fails on names built from ordinary words, and only 33 of the 62 caucuses are
-ever named as such, so it was not used as a correction.
+### Dating the caucuses by hand
+
+The twenty caucuses that carry **88% of all floor speech** are dated one at a
+time in [reference/senado/blocs_manual.csv](reference/senado/blocs_manual.csv),
+each row naming its evidence, the sitting that attests it, and how far that
+evidence goes. `map_blocs.py` then cuts every spell back to the life of its own
+caucus. Caucuses outside the twenty keep whatever the Senate says.
+
+The evidence is of three kinds, and the file says which was used for each:
+
+* **The chamber naming the bloc in debate.** The strongest, because it is dated
+  and unambiguous. The preparatory sitting of 27 Nov 2019 has Mayans proposing
+  authorities "en nombre del bloque del Frente de Todos" for the term opening on
+  10 December. The sitting of 12 May 2022 speaks of "dividiendo el bloque del
+  Frente de Todos" and of "el nuevo bloque Unidad Ciudadana" — one sentence
+  fixing the end of one caucus and the start of another. The sitting of 16 Nov
+  2022 goes further and reads out the whole composition: Frente Nacional y
+  Popular 21, UCR 18, Unidad Ciudadana 14 (Di Tullio), Frente PRO 9.
+* **The mandate calendar.** Because the Senate keys a caucus to a mandate, a
+  single-member caucus is bounded exactly by that member's term: Estenssoro's
+  Coalición Cívica and Cabanchik's Proyecto Buenos Aires Federal both run
+  10 Dec 2007 to 9 Dec 2013, and the roll-call readings match to the day.
+* **Neither.** Some caucus names cannot be searched for at all — "8 de octubre"
+  matches the ordinary date, "San Luis" the province — and those rows say so and
+  fall back on the mandate calendar with `confidence: medium`.
+
+Read together, the evidence also settled two things the raw data got wrong.
+Unidad Ciudadana is **two** caucuses, not one: 2017–2019, absorbed into Frente
+de Todos, then re-formed in May 2022 — a single span would have filed three
+years of Frente de Todos speech under the wrong name. And Frente de Todos ends
+as a *bloc* in May 2022 while surviving as the name of the *interbloc* that
+holds both halves, which is why the transcripts keep using it to 2024.
+
+Where the chamber says what a caucus split off from, the stretch cut off the
+front is handed to that predecessor — Unidad Ciudadana's and Frente Nacional y
+Popular's members sat in the Frente de Todos bloc until it was divided, and the
+chamber says so on the day. Where nothing is documented the stretch is dropped
+rather than guessed, which is why **6.4% of floor words end up with no caucus**
+and are left out of the caucus view entirely.
+
+The repair moves real numbers. The peronist share for 2016–2021 falls from
+62–64% to 51–56% once the caucuses the Senate had carried backwards are cut to
+the years they existed — the raw data had invented a bump.
+
+One correction was tried and rejected: dating every caucus automatically by
+when the chamber first names it. It recovers the distinctive names (La Libertad
+Avanza lands on December 2023, correctly) but fails on names built from ordinary
+words — "Frente de Todos" matches "frente de todos los argentinos", and its
+earliest hits turn out to be the Chamber of *Deputies* bloc of the same name —
+and only 33 of the 62 caucuses are ever named as such. Reading the matches by
+hand is what separates those cases, which is why the table is hand-made.
 
 ## Terms of use
 

@@ -30,6 +30,13 @@ the residual bucket. They are peronist in origin but sat apart from the peronist
 bloc on purpose, and the analysis's ticket-side rules leave their equivalents
 there too — moving them would inflate the peronist share on the caucus side only
 and make the very comparison this exists for meaningless.
+
+CLIPPING. blocs_manual.csv dates the twenty caucuses that carry 88% of the floor
+speech, by hand, each with the sitting that attests it. Every spell is cut down
+to the life of its own caucus, and whatever falls outside is dropped rather than
+guessed: it is a mandate labelled with a caucus that did not exist yet, and the
+records do not say what the senator sat in before. Caucuses left undated keep
+their spells whole. Pass --no-clip to see the uncorrected version.
 """
 
 import argparse
@@ -42,6 +49,7 @@ import pandas as pd
 REPO_ROOT = Path(__file__).resolve().parents[1]
 REF_DIR = REPO_ROOT / "reference" / "senado"
 SRC = REF_DIR / "bloques_por_fecha.csv"
+MANUAL = REF_DIR / "blocs_manual.csv"
 OUT = REF_DIR / "bloque_por_senador_periodo.csv"
 
 
@@ -88,17 +96,87 @@ def spells(readings):
     return out
 
 
+def load_lifetimes(path):
+    """The hand-dated caucus lives, as {caucus: [(start, end), ...]}.
+
+    A blank start or end means open on that side — the caucus outlives the
+    roll-call records there, so nothing is cut. A caucus can have more than one
+    life: Unidad Ciudadana sat from 2017 to 2019, was absorbed, and re-formed in
+    2022, and treating that as one unbroken span would file three years of
+    Frente de Todos speech under the wrong name.
+    """
+    lives = {}
+    with path.open(encoding="utf-8") as fh:
+        for r in csv.DictReader(fh):
+            if r["confidence"] == "none":
+                lives[r["bloc"]] = None
+                continue
+            lives.setdefault(r["bloc"], []).append(
+                (r["period_start"].strip(), r["period_end"].strip(),
+                 r.get("predecessor", "").strip()))
+    return lives
+
+
+def clip(rows, lives):
+    """Cut every spell down to the life of its own caucus.
+
+    Where the transcripts say what a caucus split off from, the stretch cut off
+    the front is handed to that predecessor — the members of Unidad Ciudadana sat
+    in the Frente de Todos bloc until it was divided in May 2022, and the chamber
+    says so on the day. Where nothing is documented the stretch is dropped, not
+    guessed: it is a mandate labelled with a caucus that did not exist yet.
+    """
+    out, dropped, trimmed, handed = [], 0, 0, 0
+    for r in rows:
+        lifes = lives.get(r["bloque"], "undated")
+        if lifes is None:                      # "SIN ESPECIFICAR" and the like
+            dropped += 1
+            continue
+        if lifes == "undated":                 # not among the hand-dated twenty
+            out.append(r)
+            continue
+        kept = False
+        for start, end, predecessor in lifes:
+            lo = max(r["desde"], start) if start else r["desde"]
+            hi = min(r["hasta"], end) if end else r["hasta"]
+            if lo > hi:
+                continue
+            if (lo, hi) != (r["desde"], r["hasta"]):
+                trimmed += 1
+            out.append(r | {"desde": lo, "hasta": hi})
+            kept = True
+            if predecessor and lo > r["desde"]:
+                out.append({"senador": r["senador"], "desde": r["desde"],
+                            "hasta": lo, "bloque": predecessor,
+                            "familia": family(predecessor)})
+                handed += 1
+        dropped += not kept
+    return out, dropped, trimmed, handed
+
+
 def main():
     ap = argparse.ArgumentParser(
         description="Collapse roll-call caucus readings into per-senator spells.")
     ap.add_argument("--src", type=Path, default=SRC)
     ap.add_argument("--out", type=Path, default=OUT)
+    ap.add_argument("--manual", type=Path, default=MANUAL)
+    ap.add_argument("--no-clip", action="store_true",
+                    help="skip the hand-dated correction, warts and all")
     args = ap.parse_args()
 
     readings = pd.read_csv(args.src)
     rows = [{
         "senador": s, "desde": a, "hasta": b, "bloque": c, "familia": family(c),
     } for s, a, b, c in spells(readings)]
+
+    if not args.no_clip:
+        before = len(rows)
+        rows, dropped, trimmed, handed = clip(rows, load_lifetimes(args.manual))
+        print(f"hand-dated correction: {before} spells in, {len(rows)} out — "
+              f"{trimmed} trimmed to their caucus's life, {handed} of those "
+              f"handed back to a documented predecessor, {dropped} dropped as a "
+              f"caucus that did not exist yet")
+
     rows.sort(key=lambda r: (r["senador"], r["desde"]))
 
     with args.out.open("w", encoding="utf-8", newline="") as fh:

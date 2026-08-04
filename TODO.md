@@ -304,15 +304,42 @@ caucus they sat with, and the gap was visibly distorting the results.
 - [x] Corrected a stale claim found on the way: the notebook said the peronist
       family was largest "in every fully held year". It is 18 of 21; the README
       already said so and the notebook did not.
+- [x] **Dated the twenty largest caucuses by hand** — 88% of all floor speech —
+      in `reference/senado/blocs_manual.csv`, each row carrying its evidence,
+      the sitting that attests it, and how far that evidence goes. Reading the
+      matches is what the job actually was: the earliest hits for "Frente de
+      Todos" turn out to be the Chamber of *Deputies* bloc of the same name, and
+      "Convicción Federal" matched an ordinary turn of phrase in 2004.
+      Three findings the raw data had buried:
+      **(1)** the Senate stores the caucus a senator ENDED each mandate in and
+      projects it backwards over the whole term — that is the whole shape of the
+      error, not a scatter of mistakes;
+      **(2)** Unidad Ciudadana is *two* caucuses (2017–2019, absorbed, re-formed
+      May 2022), and treating it as one filed three years of Frente de Todos
+      speech under the wrong name;
+      **(3)** Frente de Todos ends as a *bloc* in May 2022 but survives as the
+      *interbloc* holding both halves, which is why it keeps appearing to 2024.
+      Best single piece of evidence: the sitting of 16 Nov 2022, where the
+      chamber reads out its own composition bloc by bloc with the numbers.
+- [x] `map_blocs.py --no-clip` keeps the uncorrected version available. Spells
+      are cut to their caucus's life; where the chamber says what a caucus split
+      off from, the front is handed to that predecessor, and where nothing is
+      documented it is dropped — 6.4% of floor words end with no caucus.
+      The notebook's nearest-spell fallback is now bounded to 180 days, because
+      an unbounded one silently refilled the gaps and undid the whole repair.
+- [x] The repair moves real numbers: the peronist share for 2016–2021 falls from
+      62–64% to 51–56% once the backdated caucuses are cut to the years they
+      existed. The main finding survives it and gets cleaner — radical/Cambiemos
+      flat at 23–36% across the supposed 2019 realignment.
 
 ## Later
 
-- Caucus (bloque) mapping — **done at family level, 2005 onward** (see
-  Phase 8). What is still open is the finer version: the Senate records one
-  caucus per mandate and dates it unreliably, so a senator who crossed the
-  floor mid-term is invisible and no claim about *when* the chamber realigned
-  can rest on it. Fixing that needs a source outside the Senate, or the
-  ~20 largest caucuses dated by hand. 2000–2004 has no caucus at all.
+- Caucus (bloque) mapping — **done at family level, 2005 onward, with the
+  twenty largest caucuses dated by hand** (see Phase 8). What is still open:
+  the ~40 smaller caucuses keep the Senate's mandate-grained dates, a senator
+  who crossed the floor mid-term is still invisible, 6.4% of floor words end
+  with no caucus, and 2000–2004 has none at all. Closing those needs a source
+  outside the Senate.
 - Cámara de Diputados (second chamber)
 - Formal writeup / dataset publication (corpus is citable via SOURCES.md)
 - Optional: the 217 remaining unresolved blocks are invited outside speakers
