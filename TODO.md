@@ -515,6 +515,46 @@ short of the thousand.
       held for 2002, so future rounds keep drawing more heavily on the years
       after 2004.
 
+## Phase 14 — ask every turn whether it looks like speech (done, August 2026 — parser 0.4.16)
+
+- [x] **A new check in `audit_parse.py` that reads the first and last characters
+      of all 152,574 turns**, which nothing else did: every text fault found so
+      far has lived at the edge of a block, and the conservation check probes
+      only from ten characters in. Reports turns opening mid-word under a new
+      speaker, turns of three characters or fewer, and turns ending on a dash or
+      comma.
+- [x] **Speaker names cut in half — 14 repaired.** The closing letter of the name
+      is set in the roman face rather than the bold, so the corpus held speakers
+      called "Sr. President", "Sra. Higone", "Sr. God". Taken back only where the
+      bold block reads as a label with no terminator, the block below opens in
+      lower case, and its terminator arrives within thirty characters.
+- [x] **The terminator is a plain hyphen from about 2013 on**, and the pattern
+      did not accept it, so the repair that separates a label from speech bolted
+      onto it had been inert for a decade: 96 → 165 labels.
+- [x] **82 words made whole in 34 sittings.** A sentence whose opening is set a
+      point larger than the body was dropped as page apparatus — the "T" of
+      "Tiene la palabra…", and once the chair's whole "Por favor, les pido si
+      podemos mantener el s", leaving the turn as "ilencio durante la
+      exposición". The rule fires only where the break falls inside a word.
+- [x] Turns opening mid-word under a new speaker fall from 44 to 7, and all 7 are
+      printed that way. Nothing verified regressed: gold F1 = 1.00 (124/125),
+      annotations 36/36, and 5,347 of the 5,348 blind-read answers unchanged —
+      the one that moved is case 850 of the seventh round, whose parser answer
+      was the truncated "Sr. Presidente (Pinedo).- C" and is now the whole label.
+- [ ] **The blind read cannot see this class of fault.** That same case 850 was
+      scored as agreement, because the comparison ignores a stray character in a
+      label. Reading pages blind answers who is speaking; the shape of what is
+      recorded needs its own check.
+- [ ] **A turn interrupted by a page break comes out as two rows**, and 677 of
+      them resume mid-word — heavily the 2003 impeachment sittings. Nothing is
+      lost and no one is misattributed, but a word split across the seam counts
+      as two. Worth joining them; not attempted here.
+- [ ] **An italic run opening a turn can land on the turn above.** On page 40 of
+      the 7 May 2014 sitting the page prints "Sr. Jefe de Gabinete de Ministros.
+      – La Nación es un diario opositor…" and the newspaper's name, set in
+      italics, is filed at the end of the previous senator's turn. Found by eye,
+      not measured; the size of the family is unknown.
+
 ## Later
 
 - Caucus (bloque) mapping — **done at family level, 2005 onward, all 62

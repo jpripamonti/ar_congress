@@ -51,7 +51,7 @@ from pathlib import Path
 import pandas as pd
 import pdfplumber
 
-PARSER_VERSION = "0.4.14"
+PARSER_VERSION = "0.4.16"
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
@@ -125,7 +125,11 @@ TRAILING_MARKER_RE = re.compile(r"([.!?])\s*\d{1,3}\s*$")
 CID_RE = re.compile(r"\(cid:\d+\)")  # glyphs the PDF font maps to nothing
 # A speaker label ends at ". —"; anything printed after it is already the
 # first words of the turn, bolded by accident ("Sr. Mayans. – ¡").
-LABEL_TERM_RE = re.compile(rf"\.\s*[–—−─{PUA}]\s*")
+# The terminator is a dash of some kind, and from about 2013 the files set it
+# as a plain hyphen ("Sr. Godoy.-") rather than the en or em dash the earlier
+# ones use. Leaving the hyphen out meant every repair keyed on this pattern was
+# silently inert for a decade of sittings.
+LABEL_TERM_RE = re.compile(rf"\.\s*[–—−─\-{PUA}]\s*")
 # A complete printed label — title, name, terminator — found inside a roman
 # paragraph, where the typesetter forgot to set it in bold.
 INLINE_LABEL_RE = re.compile(
@@ -173,6 +177,8 @@ STATS_COLUMNS = [
     "title_labels_cut",
     "fused_labels_split",
     "inline_labels_recovered",
+    "split_words_rejoined",
+    "labels_rejoined",
     "label_spillover_split",
     "apparatus_text_cut",
     "contents_links_cut",
@@ -689,6 +695,43 @@ def classify_event(text):
     return "unspecified"
 
 
+def rejoin_split_word(blocks, body_size):
+    """Rescue the words that a change of type size cut off mid-word.
+
+    Blocks whose size differs from the body's are page apparatus — footnotes,
+    plates, attendance lists — and are dropped. But the typesetter sometimes
+    sets the opening of a sentence a point larger than the rest of it, and then
+    the opening is dropped with them: the "T" of "Tiene la palabra el señor
+    senador Rodríguez Saá" disappears and the turn begins "iene la palabra";
+    the chair's "Por favor, les pido si podemos mantener el s" goes and the turn
+    begins "ilencio durante la exposición".
+
+    The evidence that the two belong together is that the break falls INSIDE a
+    word: the block above ends on a letter and the block below opens on a lower
+    case one, with no space between them. Nothing that is really apparatus ends
+    that way. Any label terminator carried at the front of the rescued piece is
+    dropped, since it belongs to the label and not to the sentence.
+    """
+    out, rejoined = [], 0
+    for i, b in enumerate(blocks):
+        t = b["text"].strip()
+        nxt = blocks[i + 1] if i + 1 < len(blocks) else None
+        if (t and b["size"] != body_size and t[-1:].isalpha()
+                and b.get("type") is None
+                and nxt is not None and nxt.get("type") is None
+                and nxt["size"] == body_size and nxt["font_style"] != "bold"
+                and nxt["text"].lstrip()[:1].islower()):
+            piece = re.sub(r"^\s*\.?\s*[–—−─-]\s*", "", t)
+            if piece and piece[-1:].isalpha():
+                nxt["text"] = piece + nxt["text"].lstrip()
+                rejoined += 1
+                continue
+        out.append(b)
+    if rejoined:
+        print(f"Palabras partidas por un cambio de cuerpo reunidas: {rejoined}.")
+    return out, rejoined
+
+
 def classify_blocks(blocks, body_size):
     """Assign preliminary types: furniture, event (+subtype), inline.
 
@@ -1028,6 +1071,67 @@ def split_inline_labels(blocks, body_size):
     return out, found
 
 
+def reclaim_truncated_label(blocks, body_size):
+    """Give the label back its last letters when the bold stops short of them.
+
+    The mirror of the case below. The page prints "Sr. Presidente. – Se gira a
+    la Comisión…", but the closing "e" of "Presidente" is set in the roman face
+    rather than the bold, so the style grouping ends the label at "Sr.
+    President" and the turn opens "e. – Se gira…". The speaker recorded is then
+    a word cut in half — "Sr. President", "Sra. Higone", "Sr. Pre" — which
+    matches no person, and the words that finish the name are read as speech.
+
+    Taken back only where every one of these holds: the bold block reads as a
+    label but carries no terminator of its own, the block after it is ordinary
+    text, it begins in lower case (so it continues a word rather than opening a
+    sentence), and its terminator arrives within the first 30 characters. A turn
+    that legitimately resumes in lower case — an answer echoing the question —
+    has no terminator ahead of it and is left alone.
+    """
+    out, taken = [], 0
+    skip = 0
+    for idx, b in enumerate(blocks):
+        if skip:
+            skip -= 1
+            continue
+        t = b["text"].strip()
+        if not (b.get("type") is None and b["font_style"] == "bold"
+                and b["size"] == body_size and SPEAKER_RE.match(t)
+                and not LABEL_TERM_RE.search(t)):
+            out.append(b)
+            continue
+        # the face can change more than once inside one name — "Sr. God" /
+        # "o" / "y.-" is three blocks — so the rest of the label is gathered
+        # from as many as it takes, within a budget of 30 characters
+        run, chars = [], ""
+        for nxt in blocks[idx + 1:idx + 5]:
+            if nxt.get("type") is not None or nxt["size"] != body_size:
+                break
+            piece = nxt["text"].lstrip() if not run else nxt["text"]
+            if not run and not piece[:1].islower():
+                break
+            run.append(nxt)
+            chars += piece
+            if len(chars) > 30 or LABEL_TERM_RE.search(chars[:30]):
+                break
+        m = LABEL_TERM_RE.search(chars[:30]) if chars else None
+        if m and "." not in chars[:m.start()]:
+            b = {**b, "text": t + chars[:m.end()]}
+            rest = chars[m.end():]
+            last = run[-1]
+            last["text"] = rest
+            last["font_style"] = "normal"
+            skip = len(run)              # the ones wholly absorbed disappear
+            out.append(b)
+            out.append(last)
+            taken += 1
+            continue
+        out.append(b)
+    if taken:
+        print(f"Etiquetas cortadas a mitad de palabra reunidas: {taken}.")
+    return out, taken
+
+
 def split_label_spillover(blocks, body_size):
     """Give the turn back its first words when they were bolded with the label.
 
@@ -1049,8 +1153,14 @@ def split_label_spillover(blocks, body_size):
             if m and (spill := t[m.end():].strip()):
                 nxt = blocks[idx + 1] if idx + 1 < len(blocks) else None
                 out.append({**b, "text": t[:m.end()]})
+                # left standing alone, a spill of one or two characters is read
+                # as page furniture further down and the turn loses its first
+                # letter — "T" dropped and the turn opening "iene la palabra".
+                # So the face of the block below does not decide this: only
+                # that it is ordinary text and not a label of its own.
                 if (nxt is not None and nxt.get("type") is None
-                        and nxt["font_style"] == "normal" and nxt["size"] == body_size):
+                        and nxt["size"] == body_size
+                        and not SPEAKER_RE.match(nxt["text"].strip())):
                     # the spill opens the very next sentence ("¡" + "Sí!"):
                     # rejoin without a separator, the typesetter had none
                     nxt["text"] = spill + nxt["text"].lstrip()
@@ -1302,6 +1412,9 @@ def process_pdf(pdf_path):
     blocks, empty_removed = remove_empty_blocks(blocks)
     stats["empty_blocks_removed"] = empty_removed
 
+    blocks, split_words = rejoin_split_word(blocks, body_size)
+    stats["split_words_rejoined"] = split_words
+
     blocks, events = classify_blocks(blocks, body_size)
     stats["events_tagged"] = events
 
@@ -1323,6 +1436,9 @@ def process_pdf(pdf_path):
 
     blocks, inline_labels = split_inline_labels(blocks, body_size)
     stats["inline_labels_recovered"] = inline_labels
+
+    blocks, label_rejoined = reclaim_truncated_label(blocks, body_size)
+    stats["labels_rejoined"] = label_rejoined
 
     blocks, spillover = split_label_spillover(blocks, body_size)
     stats["label_spillover_split"] = spillover

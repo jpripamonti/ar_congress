@@ -19,6 +19,13 @@ checked everywhere, by looking for things that must never happen:
    purpose, so this is a distribution to inspect, not a pass/fail.
 5. ONE PERSON PER LABEL — a (sitting, label) pair must resolve to exactly one
    person.
+6. SHAPE — does a turn begin and end like something a person said? Every text
+   fault found so far has lived at the edge of a block, where the printed face
+   changes mid-name or mid-word: a label cut in half ("Sra. Higone" and a turn
+   opening "t. – Gracias."), a note that kept the first letters of the sentence
+   it interrupted, a scrap of an editorial note left as a two-character turn.
+   The conservation check looks inside blocks and never at their first and last
+   characters, so nothing else asks this.
 
 Sessions that are scans with OCR text are reported first and excluded from the
 counts: their faults belong to the scan, not to the parser.
@@ -210,14 +217,53 @@ def check_output_only(corpus, scanned):
     return len(glued)
 
 
+def check_turn_shape(corpus, scanned):
+    """Turns that do not begin or end the way speech does.
+
+    A turn opening in lower case is not by itself a fault: a note interrupts a
+    sentence and the sentence resumes, and an answer can echo the question. What
+    is reported is the case with nothing to explain it — the block before is not
+    a note — because that is the shape a name cut in half leaves behind.
+    """
+    print("\n6. Turns that do not begin or end like speech:")
+    mid_word, scrap, dangling = [], [], []
+    for sid, g in corpus.groupby("session_id"):
+        if sid in scanned:
+            continue
+        g = g.reset_index(drop=True)
+        for i, b in g.iterrows():
+            if b.type != "speech":
+                continue
+            s = " ".join(str(b.text).split())
+            if not s:
+                continue
+            if len(s) <= 3 and not re.fullmatch(r"(Sí|No|Ya)\.?", s):
+                scrap.append((sid, b.speaker_raw, s))
+            if re.search(r"[—–\-,;]$", s):
+                dangling.append((sid, b.speaker_raw, s[-45:]))
+            if i and re.match(r"^[a-záéíóúñ]", s) and g.loc[i - 1].type != "event":
+                j = i - 1
+                while j >= 0 and g.loc[j].type != "speech":
+                    j -= 1
+                if j >= 0 and g.loc[j].speaker_raw != b.speaker_raw:
+                    mid_word.append((sid, b.speaker_raw, s[:60]))
+    for name, group in (("a turn opening mid-word under a new speaker", mid_word),
+                        ("a turn of three characters or fewer", scrap),
+                        ("a turn ending on a dash or comma", dangling)):
+        print(f"   {len(group):6}  {name}")
+        for sid, sp, s in group[:4]:
+            print(f"          [{sid}] {sp!r}: {s!r}")
+    return len(mid_word)
+
+
 def check_attribution_windows(corpus):
     """No turn may be credited to someone the record places outside the office."""
     if not SPEAKERS.exists():
-        print("\n4. Attribution windows: speakers.parquet not found — skipped")
+        print("\n7. Attribution windows: speakers.parquet not found — skipped")
         return 0
     sp = pd.read_parquet(SPEAKERS)
     bad = 0
-    print("\n4. Attribution outside the person's mandate or tenure:")
+    print("\n7. Attribution outside the person's mandate or tenure:")
     named = sp[sp.person_id.notna()]
     print(f"   {len(named):6}  (session, label) pairs carry a person")
     # The resolver filters by date when it matches, so a violation here means
@@ -247,6 +293,7 @@ def main():
     corpus = load_corpus()
     scanned = report_scanned(corpus)
     problems = check_output_only(corpus, scanned)
+    problems += check_turn_shape(corpus, scanned)
     problems += check_attribution_windows(corpus)
 
     if not args.skip_source:
@@ -269,7 +316,7 @@ def main():
 
         df["scanned"] = df.session_id.isin(scanned)
         foreign = df[(df.foreign_passage_share > 0.01) & ~df.scanned]
-        print("\n5. Blocks whose text is not found in the source PDF:")
+        print("\n8. Blocks whose text is not found in the source PDF:")
         print(f"   {int(df.blocks_probed.sum()):,} blocks probed across {len(df)} sessions; "
               f"{df.foreign_passage_share.mean():.3%} not located on average")
         print(f"   {len(foreign)} sessions above 1%, scans aside")
@@ -278,14 +325,14 @@ def main():
         problems += len(foreign)
 
         dup = df[df.duplication_ratio > 1.02]
-        print("\n6. Sessions whose output is longer than the page it came from "
+        print("\n9. Sessions whose output is longer than the page it came from "
               "(text written out twice):")
         print(f"   {len(dup)} of {len(df)}")
         for _, r in dup.sort_values("duplication_ratio", ascending=False).head(5).iterrows():
             print(f"          {r.duplication_ratio:5.2f}x  {r.session_id}")
         problems += len(dup)
 
-        print(f"\n7. Share of each document's printed text kept in the output:")
+        print(f"\n10. Share of each document's printed text kept in the output:")
         q = df.coverage.quantile([0.05, 0.25, 0.5, 0.75, 0.95])
         for k, v in q.items():
             print(f"          p{int(k*100):02d}  {v:.1%}")

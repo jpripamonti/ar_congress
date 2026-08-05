@@ -202,7 +202,7 @@ the corpus, drawn from 24 of 559 sittings. `scripts/audit_parse.py` covers the
 rest by checking, on every session, things that must never happen. Current
 results:
 
-- **Page apparatus inside a speech turn: 1 occurrence** in 152,590 turns (a
+- **Page apparatus inside a speech turn: 1 occurrence** in 152,574 turns (a
   footer line that landed mid-sentence in the 7 May 2014 sitting). Mastheads,
   datelines, attendance rolls, section headers and the appendix-pointer footnote
   are otherwise absent from speech, which is what the positional header and
@@ -244,7 +244,7 @@ results:
   positive.
 - **Text written out twice: 0 sessions.** No document yields more text than it
   prints.
-- **Blocks not findable in the source PDF: 0.424% on average**, 29 sessions above
+- **Blocks not findable in the source PDF: 0.421% on average**, 29 sessions above
   1%, the worst of them the 20 October 2004 file whose mis-mapped symbol font the
   parser deliberately repairs. This figure went UP as the parser improved, and
   the reason is worth stating plainly: where a footnote had been dropped into the
@@ -260,6 +260,58 @@ results:
   and 87%. The rest is dropped by design — contents pages, attendance rolls,
   appendices and inserted documents. The lowest figures are short sittings in
   minority that consist of little but a masthead and a roll.
+- **Turns that do not begin or end the way speech does: 7 open mid-word under a
+  new speaker**, and all 7 are printed that way — the record really does write
+  "Sr. Presidente (Pinedo).- informo a la Cámara…". This check was added last and
+  is the only one that looks at the FIRST and last characters of a turn rather
+  than inside it, which is where every text fault found so far has lived. It
+  began at 44 and the difference was three faults of one family, all repaired in
+  0.4.15–0.4.16 and described below. It also reports two counts kept as
+  observations rather than faults: 71 turns of three characters or fewer (a
+  senator answering "20." or the chair "E") and 131 that end on a dash or comma,
+  most of them in the 2003 impeachment sittings, where a turn interrupted by a
+  page break comes out as two rows instead of one.
+
+### The name cut in half
+
+The audit's shape check found what eight rounds of blind reading had not. A
+label is printed "Sr. Presidente. – Se gira a la Comisión…" and the closing "e"
+of "Presidente" is set in the roman face rather than the bold, so the style
+grouping ends the label one letter early: the corpus recorded a speaker called
+**"Sr. President"** and the turn opened "e. – Se gira…". The same happened to
+real names — "Sra. Higone" for Higonet, "Sr. God" for Godoy, where the face
+changes twice inside one surname and the name arrives in three pieces. Parser
+0.4.15 takes the letters back, but only where the bold block reads as a label
+and carries no terminator of its own, the block below opens in lower case, and
+its terminator arrives within thirty characters: 14 names.
+
+Two further faults surfaced with it, both larger than the first.
+
+* **The terminator is a plain hyphen from about 2013 on.** The pattern that
+  finds the ".—" closing a label accepted every kind of dash except the ordinary
+  hyphen, and the later files write "Sr. Godoy.-". Every repair keyed on that
+  pattern was therefore silently inert for a decade of sittings — including the
+  one that separates a label from the speech bolted onto it by a bold run left
+  open. Accepting the hyphen took that repair from 96 to **165** labels.
+* **A sentence set a point larger was thrown away.** Blocks whose type size
+  differs from the body's are page apparatus — footnotes, plates, attendance
+  lists — and are dropped, but the typesetter sometimes sets the opening of a
+  sentence a point larger than the rest, and it went with them: the "T" of
+  "Tiene la palabra el señor senador Rodríguez Saá", and in the 31 July 2013
+  sitting the chair's entire "Por favor, les pido si podemos mantener el s",
+  leaving the turn to read "ilencio durante la exposición. Les agradezco." The
+  evidence that the two belong together is that the break falls INSIDE a word —
+  the block above ends on a letter, the block below opens on a lower-case one,
+  and nothing that is really apparatus ends that way. **82 words** made whole
+  again in 34 sittings.
+
+One thing this says about the blind reads is worth recording. Case 850 of the
+seventh round had the parser answering "Sr. Presidente (Pinedo).- C" where the
+reader had written "Sr. Presidente (Pinedo).-", and the comparison scored it as
+agreement, because it compares the words of a label and ignores a stray
+character. The reader was right and the parser was wrong, and the test could not
+see it. Reading pages blind answers who is speaking; it does not police the
+shape of what is recorded, and the two need separate checks.
 
 ### Fifty-three hundred pages read blind
 
