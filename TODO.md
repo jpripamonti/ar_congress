@@ -536,7 +536,7 @@ short of the thousand.
       "Tiene la palabra…", and once the chair's whole "Por favor, les pido si
       podemos mantener el s", leaving the turn as "ilencio durante la
       exposición". The rule fires only where the break falls inside a word.
-- [x] Turns opening mid-word under a new speaker fall from 44 to 7, and all 7 are
+- [x] Turns opening mid-word under a new speaker fall from 44 to 5, and all 5 are
       printed that way. Nothing verified regressed: gold F1 = 1.00 (124/125),
       annotations 36/36, and 5,347 of the 5,348 blind-read answers unchanged —
       the one that moved is case 850 of the seventh round, whose parser answer
@@ -561,11 +561,27 @@ short of the thousand.
       letter or two after it — that is the italic-overrun fault, repaired later
       in the run, and feeding it more of the sentence undid the earlier repair.
       The blind-read re-check caught that collision on the first pass.
-- [ ] **An italic run opening a turn can land on the turn above.** On page 40 of
-      the 7 May 2014 sitting the page prints "Sr. Jefe de Gabinete de Ministros.
-      – La Nación es un diario opositor…" and the newspaper's name, set in
-      italics, is filed at the end of the previous senator's turn. Found by eye,
-      not measured; the size of the family is unknown.
+- [x] **An italic run opening a turn landing on the turn above — measured and
+      repaired (0.4.18).** The 7 May 2014 sitting prints "Sr. Jefe de Gabinete de
+      Ministros. – La Nación es un diario opositor…" and the newspaper's name was
+      filed at the end of the previous senator's turn. Handed forward where the
+      next block belongs to somebody else and continues in lower case. **2 cases
+      in the whole corpus** — a wrong attribution, and a very small family.
+
+## Phase 15 — make the corpus citable (in progress, August 2026)
+
+- [x] `docs/DATA_DICTIONARY.md` — what every column holds, what the values mean,
+      and the three traps: `office_only` is 28% of the floor and is deliberately
+      nameless, `party_or_alliance` is the ticket and not the caucus, and turns
+      must be counted by `turn_id` rather than by rows.
+- [x] `docs/RELEASE.md` — what a release bundle contains, the checks that must
+      pass before one goes out, how versions are cut, and how the transcripts
+      and this corpus are cited separately.
+- [ ] **Decide the licence for the derived tables** — CC BY 4.0 is what the
+      release document proposes; the code stays MIT.
+- [ ] **Mint a DOI.** Zenodo is the fitting home: it versions, it keeps one
+      identifier that always points at the latest, and it is where datasets like
+      this are cited from. Publishing is the author's call, not the pipeline's.
 
 ## Later
 

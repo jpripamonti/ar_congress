@@ -51,7 +51,7 @@ from pathlib import Path
 import pandas as pd
 import pdfplumber
 
-PARSER_VERSION = "0.4.17"
+PARSER_VERSION = "0.4.18"
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
@@ -190,6 +190,7 @@ STATS_COLUMNS = [
     "note_colons_returned",
     "note_tails_returned",
     "inline_merged",
+    "italics_handed_forward",
     "appendix_demoted",
     "speech_blocks",
     "heading_blocks",
@@ -1329,13 +1330,30 @@ def consolidate_speaker_blocks(blocks):
     Inline italics are absorbed into the running turn (they are content,
     not events); events, headings, furniture, and unattributed blocks
     break the turn.
+
+    An italic run that OPENS a turn is the exception. A newspaper's name printed
+    right after the label — "Sr. Jefe de Gabinete de Ministros. – La Nación es
+    un diario opositor…" — would otherwise be swallowed by the turn above,
+    putting another senator's words in the previous speaker's mouth. It is
+    handed forward instead when the block after it belongs to somebody else and
+    continues in lower case, which shows the run opens that sentence rather than
+    closing the one before.
     """
     out = []
     cur = None
     inline_merged = 0
-    for b in blocks:
+    handed_forward = 0
+    for i, b in enumerate(blocks):
         if b.get("type") == "inline":
-            if cur is not None:
+            nxt = blocks[i + 1] if i + 1 < len(blocks) else None
+            opens_next = (nxt is not None and nxt.get("speaker")
+                          and (cur is None or nxt["speaker"] != cur.get("speaker"))
+                          and nxt["text"].lstrip()[:1].islower())
+            if opens_next:
+                nxt["text"] = b["text"].strip() + nxt["text"]
+                nxt["pages"] = sorted(set(nxt["pages"]) | set(b["pages"]))
+                handed_forward += 1
+            elif cur is not None:
                 cur["text"] += " " + b["text"].strip()
                 cur["pages"] = sorted(set(cur["pages"]) | set(b["pages"]))
                 inline_merged += 1
@@ -1360,7 +1378,10 @@ def consolidate_speaker_blocks(blocks):
     if cur is not None:
         out.append(cur)
     print(f"Consolidación completa: {len(out)} bloques finales, {inline_merged} cursivas absorbidas.")
-    return out, inline_merged
+    if handed_forward:
+        print(f"Bastardillas que abren un turno, devueltas a quien las dijo: "
+              f"{handed_forward}.")
+    return out, inline_merged, handed_forward
 
 
 # ---------------------------------------------------------------------------
@@ -1465,8 +1486,9 @@ def process_pdf(pdf_path):
 
     blocks = identify_speakers(blocks, body_size)
     blocks = clean_speaker_names(blocks)
-    blocks, inline_merged = consolidate_speaker_blocks(blocks)
+    blocks, inline_merged, italics_forward = consolidate_speaker_blocks(blocks)
     stats["inline_merged"] = inline_merged
+    stats["italics_handed_forward"] = italics_forward
 
     blocks, demoted = demote_appendix_debris(blocks)
     stats["appendix_demoted"] = demoted

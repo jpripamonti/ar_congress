@@ -260,13 +260,13 @@ results:
   and 87%. The rest is dropped by design — contents pages, attendance rolls,
   appendices and inserted documents. The lowest figures are short sittings in
   minority that consist of little but a masthead and a roll.
-- **Turns that do not begin or end the way speech does: 7 open mid-word under a
-  new speaker**, and all 7 are printed that way — the record really does write
+- **Turns that do not begin or end the way speech does: 5 open mid-word under a
+  new speaker**, and all 5 are printed that way — the record really does write
   "Sr. Presidente (Pinedo).- informo a la Cámara…". This check was added last and
   is the only one that looks at the FIRST and last characters of a turn rather
   than inside it, which is where every text fault found so far has lived. It
-  began at 44 and the difference was three faults of one family, all repaired in
-  0.4.15–0.4.16 and described below. It also reports two counts kept as
+  began at 44 and the difference was faults of one family, all repaired in
+  0.4.15–0.4.18 and described below. It also reports two counts kept as
   observations rather than faults: 71 turns of three characters or fewer (a
   senator answering "20." or the chair "E") and 131 that end on a dash or comma,
   most of them in the 2003 impeachment sittings, where a turn interrupted by a
@@ -322,6 +322,17 @@ interjected in the middle of somebody's sentence, and what follows really is
 that person resuming — 28,308 complete notes and 1,529 unfinished ones followed
 by speech in upper case are left untouched. **8 tails**, with no case where the
 test was wrong.
+
+One more of the same shape, found by eye and then measured. An italic run that
+OPENS a turn — a newspaper's name printed right after the label, "Sr. Jefe de
+Gabinete de Ministros. – *La Nación* es un diario opositor…" — was absorbed into
+the turn above, so one senator's words were filed under another's name. Italics
+inside a sentence do belong to the turn they interrupt, which is why they are
+absorbed at all; the exception is the run whose next block belongs to somebody
+else and continues in lower case, which shows the run opens that sentence rather
+than closing the one before. **2 cases in the whole corpus** — worth repairing
+because it is a wrong attribution, worth stating because the family is that
+small.
 
 The same edge also explains what a page break does NOT do. When an intervention
 crosses to the next page, the running head stands between its halves and the

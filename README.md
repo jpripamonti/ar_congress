@@ -18,7 +18,7 @@ text blocks, and analysis.
   the files on disk by `scripts/make_manifest.py`. The 90 sessions fetched
   in January 2025 predate the download-timestamp field, so theirs is blank
   rather than guessed.
-- Corpus parsed (parser 0.4.17): 152,565 speaker-attributed speech blocks
+- Corpus parsed (parser 0.4.18): 152,565 speaker-attributed speech blocks
   and 31,928 typed stenographer events in 237,343 rows, as per-session
   Parquet under `data/processed/senado/`. One session fails to parse — a
   November 2001 sitting that never reached quorum, so it has no session
@@ -66,7 +66,7 @@ text blocks, and analysis.
   names rejoined, 165 labels split from the speech stuck to them (69 more than
   the dash alone allowed), 82 words made whole again. Found by a new check that
   asks of all 152,565 turns whether each begins and ends the way speech does —
-  turns opening mid-word under a new speaker fall from 44 to 7, and those 7 are
+  turns opening mid-word under a new speaker fall from 44 to 5, and those 5 are
   printed that way.
 - **A note is no longer put in somebody's mouth.** The page prints "— Se practica
   la votación por medios electrónicos."; the block ended after "la" and the rest
@@ -75,6 +75,9 @@ text blocks, and analysis.
   the tail of a note describing a senator raising the flag. 0.4.17 takes a tail
   of any length back to its note where the note ends on a letter and the tail
   opens in lower case: 8 of them, against 28,308 complete notes left untouched.
+  0.4.18 does the same for an italic run that opens a turn — a newspaper's name
+  printed right after the label was being swallowed by the turn above, putting
+  one senator's words in another's mouth. Measured across the corpus: 2 cases.
 - Two layers of verification, because they answer different questions.
   **On a hand-annotated sample** — 36 stratified pages spanning 2003–2024 —
   utterance boundary+attribution F1 = 1.00 (124 of 125 turns), event
@@ -84,7 +87,7 @@ text blocks, and analysis.
   independent human audit. **On all 559 sessions** (`scripts/audit_parse.py`):
   no turn carries a second speaker's label, no label is absorbed by the section
   title above it, one page's footer leaks into speech, no text is written out
-  twice, 7 turns of 152,565 open mid-word and every one of them is printed that
+  twice, 5 turns of 152,565 open mid-word and every one of them is printed that
   way, and a median 79.2% of each document's printed text is kept (the rest —
   contents pages, attendance rolls, appendices — is dropped by design). Two
   sittings of November 2001 are scans with OCR text and should be excluded from
@@ -122,6 +125,10 @@ text blocks, and analysis.
   of state, officials of other institutions. **Genuine lookup failures are
   down to 0.1%** (220 blocks), nearly all of them invited outside speakers
   at public hearings, named by surname alone.
+- **What every column holds and what not to assume about it**:
+  [docs/DATA_DICTIONARY.md](docs/DATA_DICTIONARY.md) — written for someone who
+  has never seen this project. How a version is cut, checked and cited:
+  [docs/RELEASE.md](docs/RELEASE.md).
 - Analysis over the whole span: [notebooks/analysis.ipynb](notebooks/analysis.ipynb).
   Roadmap in [TODO.md](TODO.md).
 
