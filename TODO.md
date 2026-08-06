@@ -545,10 +545,22 @@ short of the thousand.
       scored as agreement, because the comparison ignores a stray character in a
       label. Reading pages blind answers who is speaking; the shape of what is
       recorded needs its own check.
-- [ ] **A turn interrupted by a page break comes out as two rows**, and 677 of
-      them resume mid-word — heavily the 2003 impeachment sittings. Nothing is
-      lost and no one is misattributed, but a word split across the seam counts
-      as two. Worth joining them; not attempted here.
+- [x] **A turn interrupted by a page break comes out as two rows — measured, and
+      not a fault.** 1,503 of them, all filed under one turn, so nobody is
+      misattributed: 919 break cleanly, 580 keep the space that separates the
+      words, and 4 want a space the file never stored. It looked like the
+      largest thing left and it was nothing.
+- [x] **8 note tails taken out of somebody's mouth (0.4.17).** Chasing that same
+      edge found the real fault: 0.4.12 gives a cut-off scrap back to its note
+      but only up to twelve characters, and longer tails stayed filed as speech —
+      the chair "saying" *votación por medios electrónicos* and *nacional en el
+      mástil del recinto*. Now taken back at any length where the note ends on a
+      letter and the tail opens in lower case; 28,308 complete notes and 1,529
+      unfinished ones followed by upper case are untouched. A note ending in "…"
+      or ")" is excluded, and so is one whose closing parenthesis already has a
+      letter or two after it — that is the italic-overrun fault, repaired later
+      in the run, and feeding it more of the sentence undid the earlier repair.
+      The blind-read re-check caught that collision on the first pass.
 - [ ] **An italic run opening a turn can land on the turn above.** On page 40 of
       the 7 May 2014 sitting the page prints "Sr. Jefe de Gabinete de Ministros.
       – La Nación es un diario opositor…" and the newspaper's name, set in

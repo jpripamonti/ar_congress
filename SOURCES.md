@@ -202,7 +202,7 @@ the corpus, drawn from 24 of 559 sittings. `scripts/audit_parse.py` covers the
 rest by checking, on every session, things that must never happen. Current
 results:
 
-- **Page apparatus inside a speech turn: 1 occurrence** in 152,574 turns (a
+- **Page apparatus inside a speech turn: 1 occurrence** in 152,565 turns (a
   footer line that landed mid-sentence in the 7 May 2014 sitting). Mastheads,
   datelines, attendance rolls, section headers and the appendix-pointer footnote
   are otherwise absent from speech, which is what the positional header and
@@ -304,6 +304,31 @@ Two further faults surfaced with it, both larger than the first.
   the block above ends on a letter, the block below opens on a lower-case one,
   and nothing that is really apparatus ends that way. **82 words** made whole
   again in 34 sittings.
+
+### The note that was put in somebody's mouth
+
+Chasing the same edge in the other direction turned up one more. Parser 0.4.12
+gives a cut-off scrap back to the note it was cut from, but only a scrap: twelve
+characters at most. Some tails are longer. The page prints "— Se practica la
+votación por medios electrónicos."; the block ended after "la", and the rest was
+filed as SPEECH, so the corpus had the chair saying "votación por medios
+electrónicos" out loud. Another had him saying "nacional en el mástil del
+recinto." — the tail of a note describing a senator raising the flag.
+
+0.4.17 takes back a tail of any length where the note ends on a LETTER and the
+tail opens in lower case, which is a sentence continuing and not how a turn
+begins. The letter is what makes it safe: a note ending in "…" or ")" is one
+interjected in the middle of somebody's sentence, and what follows really is
+that person resuming — 28,308 complete notes and 1,529 unfinished ones followed
+by speech in upper case are left untouched. **8 tails**, with no case where the
+test was wrong.
+
+The same edge also explains what a page break does NOT do. When an intervention
+crosses to the next page, the running head stands between its halves and the
+speech comes out as two rows — 1,503 of them. All are filed under one turn, so
+nobody is misattributed: 919 break cleanly, 580 keep the space that separates
+the words, and 4 want a space the file never stored. It looked like the largest
+remaining fault and it is not a fault at all.
 
 One thing this says about the blind reads is worth recording. Case 850 of the
 seventh round had the parser answering "Sr. Presidente (Pinedo).- C" where the

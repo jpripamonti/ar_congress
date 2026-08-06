@@ -51,7 +51,7 @@ from pathlib import Path
 import pandas as pd
 import pdfplumber
 
-PARSER_VERSION = "0.4.16"
+PARSER_VERSION = "0.4.17"
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
@@ -784,17 +784,37 @@ def reattach_note_tails(blocks):
     that happen to follow a note — "Gracias.", "Ausente.", "¡Rojo!" — are
     untouched, which is why the test is on the shape of the scrap and not on its
     length alone.
+
+    The tail is not always short. "— Se practica la votación por medios
+    electrónicos." breaks after "la", and the rest was credited to the chair as
+    if he had said "votación por medios electrónicos" out loud; another left him
+    saying "nacional en el mástil del recinto." So a tail of any length is taken
+    back where the note ends on a LETTER and the tail opens in lower case — a
+    sentence continuing, which is not how a turn begins. The letter is what
+    makes it safe: a note ending in "…" or ")" is one interjected in the middle
+    of somebody's sentence, and what follows really is that person resuming.
+    8 such tails in the corpus, with no case where the test is wrong.
     """
     out, scraps = [], []
     for b in blocks:
         prev = out[-1] if out else None
         t = b["text"].strip()
-        if (prev is not None and prev.get("type") == "event" and b.get("type") is None
-                and 0 < len(t) <= 12 and not re.search(r"[.!?)]$", prev["text"].strip())
-                and (NOTE_TAIL_RE.match(t) or t[:1].islower())):
-            prev["text"] = prev["text"].rstrip() + t
+        if not (prev is not None and prev.get("type") == "event"
+                and b.get("type") is None and t
+                and not re.search(r"[.!?)]$", prev["text"].strip())):
+            out.append(b)
+            continue
+        note = prev["text"].strip()
+        is_scrap = len(t) <= 12 and (NOTE_TAIL_RE.match(t) or t[:1].islower())
+        # a note whose closing parenthesis is followed by a letter or two is the
+        # other fault entirely — the italic run overrunning into the sentence,
+        # repaired further down — so it must not be fed more of that sentence
+        is_sentence = (note[-1:].isalpha() and t[:1].islower()
+                       and not NOTE_TAIL_RE.search(note))
+        if is_scrap or is_sentence:
+            prev["text"] = prev["text"].rstrip() + (" " if is_sentence else "") + t
             prev["pages"] = sorted(set(prev["pages"]) | set(b["pages"]))
-            scraps.append(t)
+            scraps.append(t if len(t) <= 40 else t[:40] + "…")
             continue
         out.append(b)
     if scraps:
