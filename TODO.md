@@ -568,11 +568,53 @@ short of the thousand.
       next block belongs to somebody else and continues in lower case. **2 cases
       in the whole corpus** — a wrong attribution, and a very small family.
 
+## Phase 16 — the caucus, dated and marked (August 2026)
+
+How other corpora do this was surveyed first: the unit is the turn everywhere,
+party membership is timestamped rather than fixed to a person in every project
+with a stated rationale, unresolvable speakers are omitted and the non-match
+rate published, and the chair is recognised but left deliberately thin. This
+phase brings the caucus up to that standard.
+
+- [x] **Split the two affiliations.** `party_or_alliance` became
+      `elected_ticket` — the list a senator stood on — and `bloc` is new: the
+      caucus they sat with. Measured over the 13.6M words where both are known,
+      they are written the same way in 4.5%, differ in wording but not in
+      political camp in 76.8%, and fall in different camps in 18.7% — of which
+      98% is a provincially-elected senator sitting with a national caucus, the
+      thing the ticket alone cannot tell you. Genuine floor-crossing between two
+      named national camps is 0.34%.
+- [x] **Recover 2000–2004 from the web archive.** The Senate's own bloc-roster
+      page, long dead: 905 senator-rows over 13 captures, May 2000 to June 2004,
+      by `scripts/fetch_archived_blocs.py`. All 91 pre-2005 sittings fall within
+      six months of a capture. 903 of the 905 name someone in office that day;
+      the two that do not are the page lagging the chamber and are kept as
+      printed. The pages are broken HTML in three specific ways, each handled by
+      name rather than by loosening the parse.
+- [x] **Date eleven more caucuses, and say what was searched for the rest.**
+      Ten start dates now rest on the archived pages or on the chamber naming
+      the caucus in debate, each with the verbatim sentence. Two caucus names
+      turned out to cover two separate lives. Seven still have no start, and the
+      file now records what was looked for — Tucumán's senator is listed among
+      the "presidentes de bloque" in 2009, so she headed a caucus the record
+      never names.
+- [x] **Mark the misdated readings instead of hiding them.** 3,206 of 23,007
+      roll-call readings (13.9%), over 262 of 320 roll calls, name a caucus that
+      did not exist that day. Every one is kept and marked. 1,046 more cannot be
+      checked at all and are marked differently.
+- [x] **One observation file.** `bloque_observado.csv`: 23,118 rows, one per day
+      one senator's caucus was actually recorded, 333 dates, 368 senators. No
+      interpolation, no spells. The resolver takes the nearest observation and
+      writes the distance in days beside it.
+- [x] **Re-verify.** Gold F1 1.00 (124/125), annotations 36/36, audit invariants
+      unchanged (152,565 turns, 1,204 unattributed, 5 opening mid-word). The
+      passage files were never rewritten, so the eight blind reads stand.
+
 ## Phase 15 — make the corpus citable (in progress, August 2026)
 
 - [x] `docs/DATA_DICTIONARY.md` — what every column holds, what the values mean,
       and the three traps: `office_only` is 28% of the floor and is deliberately
-      nameless, `party_or_alliance` is the ticket and not the caucus, and turns
+      nameless, `elected_ticket` is the ticket and not the caucus, and turns
       must be counted by `turn_id` rather than by rows.
 - [x] `docs/RELEASE.md` — what a release bundle contains, the checks that must
       pass before one goes out, how versions are cut, and how the transcripts
@@ -585,12 +627,15 @@ short of the thousand.
 
 ## Later
 
-- Caucus (bloque) mapping — **done at family level, 2005 onward, all 62
-  caucuses dated by hand** (see Phase 8). What is still open: a senator who
-  crossed the floor mid-term is invisible, four caucuses rest on the mandate
-  calendar alone, 6.9% of floor words end with no caucus (concentrated in
-  2016–2019), and 2000–2004 has none at all. Closing those needs a source
-  outside the Senate.
+- Caucus (bloque) mapping — **done, 2000–2024** (see Phase 16). What is still
+  open: seven caucuses have no established start, so their readings can never
+  be checked; a senator who changed caucus between two observations changes on
+  the later one rather than the day they moved; and 2.7% of identified
+  senators' floor words get no caucus at all. Two leads were checked and came
+  up empty — Wikidata holds the field for dated caucus membership but leaves it
+  blank for Argentine senators of this period, and the cross-national
+  legislator databases either omit Argentina or record the electoral party
+  rather than the caucus.
 - Cámara de Diputados (second chamber)
 - Formal writeup / dataset publication (corpus is citable via SOURCES.md)
 - Optional: the 217 remaining unresolved blocks are invited outside speakers

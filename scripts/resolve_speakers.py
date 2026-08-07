@@ -16,13 +16,30 @@ Implements the join strategy from the roster research (July 2026):
 - Known chair-name typo variants (Ledezma Abdala, Villarreal, ...) come
   from the authorities table's variants column.
 
+Two different political affiliations are written out, and they are not the
+same thing. `elected_ticket` is the list a senator stood on, which is what
+the roster records. `bloc` is the caucus they actually sat with, taken from
+`bloque_observado.csv` — the Senate's own roll-call records from 2005, and
+archived snapshots of its bloc-roster page before that. The two diverge in
+most of the corpus: a senator elected on a provincial alliance nearly always
+sits with one of the national caucuses, and only the caucus says which side
+of the chamber they are on. The old single column was named
+`party_or_alliance`, which invited exactly that confusion.
+
+The caucus is observed on particular days, never continuously, so each row
+also carries which observation was used, how far it is from the sitting, and
+whether it can be trusted: the Senate re-labels old roll calls with caucus
+names that did not exist yet, and `bloc_status` marks those rather than
+silently passing them on.
+
 Inputs:  data/processed/senado/blocks/*.parquet,
          reference/senado/senadores_historico.json,
-         reference/senado/authorities_manual.csv
+         reference/senado/authorities_manual.csv,
+         reference/senado/bloque_observado.csv
 Output:  data/processed/senado/speakers.parquet — one row per
-         (session_id, speaker_raw) with person_id, name, party_or_alliance,
-         province,
-         role, match_status — plus a printed resolution summary.
+         (session_id, speaker_raw) with person_id, name, elected_ticket,
+         province, bloc, bloc_status, bloc_basis, bloc_observed,
+         bloc_gap_days, role, match_status — plus a printed summary.
 """
 
 import difflib
@@ -46,6 +63,15 @@ OBSERVED = REPO_ROOT / "reference" / "senado" / "authorities_observed.csv"
 # sittings whose masthead could not be read; it is safe because no two
 # officers in the corpus share a surname (checked when the table is built).
 OBSERVED_PAD_DAYS = 200
+BLOC_OBS = REPO_ROOT / "reference" / "senado" / "bloque_observado.csv"
+# How far a sitting may sit from the nearest day the chamber's composition was
+# recorded. The composition is only ever observed on particular days: roll
+# calls every few weeks from 2005 (longest gap 168 days, an election-year
+# recess), and archived roster pages every few months before that (longest gap
+# 297 days). 200 reaches across either without reaching into the next mandate,
+# which is the thing that would actually be wrong. It is deliberately loose:
+# the distance is written on every row, so a stricter cut costs one filter.
+BLOC_MAX_GAP_DAYS = 200
 OUT_PATH = REPO_ROOT / "data" / "processed" / "senado" / "speakers.parquet"
 
 ROLE_WORDS = re.compile(
@@ -484,6 +510,55 @@ def resolve_one(label, session_date, session_type, mandates, auth):
     return {"match_status": "unmatched"}
 
 
+def load_bloc_observations():
+    """The caucus each senator was recorded in, on each day it was recorded.
+
+    Returns {person_id: [(date, bloc, status, basis), ...]} sorted by date.
+    """
+    if not BLOC_OBS.exists():
+        print(f"WARNING: {BLOC_OBS.name} missing — no caucus will be attached")
+        return {}
+    df = pd.read_csv(BLOC_OBS)
+    # 'acta_anacronica' names a caucus that did not yet (or no longer) exist on
+    # the day of the vote: the Senate re-labels old roll calls with the caucus a
+    # senator later belonged to. Kept, marked, never silently passed on.
+    #
+    # Both archived-roster readings count as confirmed, including the caucuses
+    # too old to appear in the dated list. The asymmetry is the point: a roll
+    # call carries a caucus name written long after the vote, which is why it
+    # has to be checked, while an archived page was written the day it says —
+    # it is the caucus and its members printed together, so it attests itself.
+    status = {"acta": "confirmed", "acta_anacronica": "anachronistic",
+              "acta_sin_control": "undatable", "foto": "confirmed",
+              "foto_bloque_previo": "confirmed"}
+    basis = {"acta de votacion": "roll call",
+             "foto de la pagina de bloques": "archived roster"}
+    obs = {}
+    for r in df.itertuples(index=False):
+        # keyed the same way the roster is, so the join is on the person
+        obs.setdefault(f"sen:{r.person_id}", []).append(
+            (date.fromisoformat(r.fecha), r.bloque,
+             status.get(r.fiabilidad, r.fiabilidad), basis.get(r.fuente, r.fuente)))
+    for v in obs.values():
+        v.sort(key=lambda x: x[0])
+    print(f"{len(df)} caucus observations for {len(obs)} senators, "
+          f"{df.fecha.min()} to {df.fecha.max()}")
+    return obs
+
+
+def bloc_on(person_id, when, obs):
+    """The caucus recorded nearest to `when`, or empty fields if none is close."""
+    rows = obs.get(person_id) if person_id is not None else None
+    if not rows:
+        return {}
+    d, bloc, status, basis = min(rows, key=lambda x: abs((x[0] - when).days))
+    gap = abs((d - when).days)
+    if gap > BLOC_MAX_GAP_DAYS:
+        return {}
+    return {"bloc": bloc, "bloc_status": status, "bloc_basis": basis,
+            "bloc_observed": d.isoformat(), "bloc_gap_days": gap}
+
+
 def main():
     for p in (HISTORICO, AUTHORITIES):
         if not p.exists():
@@ -493,6 +568,7 @@ def main():
     # one wins, because it carries verified tenure bounds and a source.
     auth = load_authorities() + load_observed_authorities(mandates)
     print(f"{len(mandates)} mandate rows, {len(auth)} authority rows")
+    bloc_obs = load_bloc_observations()
 
     corpus = pd.concat([pd.read_parquet(p) for p in sorted(BLOCKS_DIR.glob("*.parquet"))],
                        ignore_index=True)
@@ -514,12 +590,16 @@ def main():
             "person_id": res.get("person_id"),
             "person_name": res.get("person_name"),
             "role": res.get("role"),
-            "party_or_alliance": res.get("party"),
+            "elected_ticket": res.get("party"),
             "province": res.get("province"),
             "match_status": res["match_status"],
+            **bloc_on(res.get("person_id"), d, bloc_obs),
         })
 
     df = pd.DataFrame(out)
+    for c in ("bloc", "bloc_status", "bloc_basis", "bloc_observed", "bloc_gap_days"):
+        if c not in df:
+            df[c] = None
     df.to_parquet(OUT_PATH, index=False)
 
     total = df.n_blocks.sum()
@@ -530,12 +610,30 @@ def main():
     print(f"\nTop unresolved labels ({len(bad)} label-sessions):")
     top = bad.groupby("label_clean").n_blocks.sum().sort_values(ascending=False).head(15)
     print(top.to_string())
+    senators = df[df.match_status.isin(["matched_senator", "matched_senator_chair"])]
+    n = senators.n_blocks.sum()
+    print(f"\nCaucus attached, by speech blocks (senators only, total {n}):")
+    got = senators[senators.bloc.notna()]
+    print(f"  with a caucus       {got.n_blocks.sum()} ({got.n_blocks.sum()/n:.1%})")
+    print(got.groupby("bloc_status").n_blocks.sum().sort_values(ascending=False)
+          .apply(lambda x: f"    {x} ({x/n:.1%})").to_string())
+    print(got.groupby("bloc_basis").n_blocks.sum()
+          .apply(lambda x: f"    {x} ({x/n:.1%})").to_string())
+    miss = senators[senators.bloc.isna()]
+    print(f"  no caucus           {miss.n_blocks.sum()} ({miss.n_blocks.sum()/n:.1%})")
+    if len(got):
+        print(f"  median days from the nearest observation: {got.bloc_gap_days.median():.0f}")
+
     print(f"\nWritten: {OUT_PATH}")
-    print("\nNote: party_or_alliance is the ticket each senator was ELECTED on,\n"
-          "which is what the roster records. It is not the bloc they sat with —\n"
-          "the two diverge sharply after 2015, when radicals were elected on\n"
-          "Cambiemos and Juntos por el Cambio tickets. Do not read it as caucus\n"
-          "membership; caucus is only published for sitting senators.")
+    print("\nNote: elected_ticket is the list each senator STOOD ON, which is what\n"
+          "the roster records. bloc is the caucus they SAT WITH. They are different\n"
+          "and they disagree across most of the corpus — a senator elected on a\n"
+          "provincial alliance nearly always sits with a national caucus, and only\n"
+          "bloc says which. Where bloc_status is 'anachronistic' the Senate's own\n"
+          "record names a caucus that did not exist on the day of the sitting; those\n"
+          "rows are kept and marked, not corrected. Speech from the chair carries a\n"
+          "caucus too, because the person did belong to one — but it is procedural\n"
+          "speech, so reading it as partisan is a mistake the data cannot prevent.")
 
 
 if __name__ == "__main__":

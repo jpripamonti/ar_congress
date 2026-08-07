@@ -14,8 +14,9 @@ spanning 2000 to 2024, 21.5 million words.
 | File | One row is | Rows |
 | --- | --- | --- |
 | `data/processed/senado/blocks/<sitting>.parquet` | a passage of one sitting — a turn of speech, a stenographer's note, a heading, or page matter | 237,343 across 559 files |
-| `data/processed/senado/speakers.parquet` | one printed speaker label in one sitting, resolved to a person where possible | one per (sitting, label) pair |
+| `data/processed/senado/speakers.parquet` | one printed speaker label in one sitting, resolved to a person and to the caucus they sat with | one per (sitting, label) pair |
 | `data/processed/senado/parse_stats.csv` | one sitting, with 40 counts of what the parser did to it | 559 |
+| `reference/senado/bloque_observado.csv` | one day the chamber's composition was actually recorded, for one senator | 23,118 over 333 dates, 2000–2024 |
 
 There is one file of passages per sitting rather than one big file, so that a
 single sitting can be read without loading the corpus. Concatenating them all is
@@ -74,9 +75,53 @@ people in different sittings, and sometimes within one sitting.
 | `n_blocks` | How many passages in that sitting carry this label. |
 | `person_id`, `person_name` | The person, where one could be established. Empty otherwise. |
 | `role` | The office, for people who speak by office rather than by name — the chair, the secretaries, the cabinet chief, the President of the Nation. Taken verbatim from the record, so the same office appears under several spellings. |
-| `party_or_alliance` | **The ticket the senator was ELECTED on, not the caucus they sat with.** The two diverge sharply after 2015. If you want the caucus, use `reference/senado/bloque_por_senador_periodo.csv`, and read the caveats in SOURCES.md first. |
+| `elected_ticket` | **The list the senator STOOD ON, not the caucus they sat with.** One value per mandate, taken from the roster. See the two-affiliations note below before using it. |
 | `province` | The province the senator represents. |
+| `bloc` | **The caucus the senator SAT WITH.** Taken from the nearest day the chamber's composition was actually recorded — see below. |
+| `bloc_status` | How far that caucus can be trusted: `confirmed` (82.7% of senators' floor words), `anachronistic` (13.0% — the source names a caucus that did not exist on that date), `undatable` (1.6% — the caucus has no established start, so nothing can be checked). Empty where there is no caucus at all (2.7%). |
+| `bloc_basis` | Where the caucus came from: `roll call` (86.7% of senators' floor words) or `archived roster` (10.6%, the pre-2005 years). |
+| `bloc_observed` | The date the caucus was actually recorded on. |
+| `bloc_gap_days` | How many days that is from the sitting. Median 0 — most sittings are themselves roll-call days. Rows further than 200 days from any observation get no caucus. |
 | `match_status` | How the label was resolved. This is the field to filter on, and its values are not interchangeable — see below. |
+
+### Two political affiliations, and they are not the same
+
+`elected_ticket` is the list a senator stood on. `bloc` is the caucus they sat
+with once in the chamber. They disagree across most of the corpus, and the
+disagreement is not noise:
+
+- The two are written the same way in **4.5%** of senators' floor words.
+- They are written differently but mean the same political camp in **76.8%** —
+  the peronist bloc renaming itself, mostly.
+- They fall in different camps in **18.7%**, and this is the part that matters:
+  almost all of it is a senator elected on a **provincial alliance** who sits
+  with a **national caucus**. Someone elected for the Frente Jujeño sits with
+  the radicals; someone elected for Chubut Somos Todos sits with the Frente de
+  Todos. The ticket does not say which side of the chamber they are on. The
+  caucus does.
+- Genuine floor-crossing between two *named* national camps is **0.34%**.
+
+So: for "which party won this seat", use the ticket. For anything about how the
+chamber divided, use the caucus.
+
+### Why some caucuses are marked `anachronistic`
+
+The Senate re-labels its own old roll calls with the caucus a senator joined
+later. Frente de Todos, formed in December 2019, is stamped on votes going back
+to 2010; Pichetto's whole 2013–2019 term is filed under a caucus he founded in
+2019 on leaving. Every reading is checked against the caucus's own dated life
+in `reference/senado/blocs_manual.csv`, and the ones that fail are **kept and
+marked, never corrected or dropped** — 13.0% of senators' floor words. Dropping
+them would hide how much of the Senate's own record is like this. Filter on
+`bloc_status == "confirmed"` for any claim about *when* the chamber realigned.
+
+### The chair carries a caucus, and that is a trap
+
+A senator speaking from the chair (`match_status == "matched_senator_chair"`)
+gets a caucus like anyone else, because they did belong to one. But what they
+are saying is procedural — granting the floor, announcing a count. Reading it
+as partisan speech is a mistake the data cannot prevent for you. Exclude the
+chair from anything about party positions.
 
 ### What `match_status` means, and why 28% has no name
 
@@ -103,6 +148,11 @@ what the analysis in this repository does, and it says so.
 - **Two sittings of November 2001 are scans read by character recognition**, and
   their text is unreliable. The parser flags them; exclude them from any text
   analysis. They are `2001-11-21_r72` and `2001-11-29_r74`.
+- **The caucus is observed, never continuous.** It is recorded on 333 days
+  across 25 years — roll-call days from 2005, and thirteen archived captures of
+  the Senate's own bloc-roster page before that. Every row says which day it
+  used and how far that is from the sitting. A senator who changed caucus
+  between two observations changes on the later one, not on the day they moved.
 - **Coverage before 2004 is thin and uneven** — 34 of 47 sittings held for 2003,
   4 of 47 for 2002, 10 of 83 for 2001, 3 of 75 for 2000 — because the Senate's
   portal lists them but no longer serves the files. Year-on-year comparisons

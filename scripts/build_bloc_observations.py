@@ -1,0 +1,254 @@
+"""One row per day the chamber's composition was actually recorded.
+
+This is the source of truth for "which caucus did this senator sit with on this
+day". It does not interpolate, and it does not collapse anything into spells:
+each row is a single observation, on a single date, with the record it came
+from. Everything downstream picks the observation nearest the sitting it cares
+about and can see how far away that was.
+
+TWO SOURCES, and they are not equally precise.
+
+  Roll-call records, 2005 onward. Every recorded vote publishes the whole
+  chamber, absentees included, with the caucus beside each name, so one record
+  per sitting date is a complete snapshot of that day. Collected by
+  fetch_blocs.py into bloques_por_fecha.csv.
+
+  Archived roster pages, 2000-2004. The Senate ran a page listing every senator
+  under their caucus. It is long dead, but the Internet Archive holds thirteen
+  captures spanning 25 May 2000 to 19 Jun 2004, which is the whole span the
+  roll-call records do not reach. A capture says what the page said on the day
+  it was captured, which is not the same as the day the chamber changed: the
+  page lags, and twice in 905 rows it is provably stale — a senator listed four
+  days after his term ended, another a month before his began. Bracketing a
+  change between two captures is sound; dating it to the day is not.
+
+WHAT bloque_observado.csv's fiabilidad COLUMN MEANS. The Senate re-labels old
+roll calls with the caucus a senator joined later: Frente de Todos, formed in
+December 2019, is stamped on votes back to 2010. Every reading is therefore
+checked against the caucus's own dated life in blocs_manual.csv, and one of:
+
+  acta ................. the caucus existed on the day of the vote
+  acta_anacronica ...... it did not — the name postdates (or predates) the vote
+  acta_sin_control ..... the caucus has no dated start, so nothing can be checked
+  foto ................. from an archived roster page
+  foto_bloque_previo ... likewise, but a caucus that died before the roll-call
+                         records begin, so it has no entry in blocs_manual.csv
+
+Nothing is deleted or corrected. A reading known to be misdated is more useful
+marked than removed, because removing it would hide how much of the Senate's
+own record is like this.
+
+Inputs:  reference/senado/bloques_por_fecha.csv     (fetch_blocs.py)
+         reference/senado/bloque_por_foto.csv       (fetch_archived_blocs.py)
+         reference/senado/blocs_manual.csv          (hand-dated caucus lives)
+         reference/senado/senadores_historico.json  (the roster)
+Output:  reference/senado/bloque_observado.csv
+"""
+
+import json
+import re
+import sys
+import unicodedata
+from pathlib import Path
+
+import pandas as pd
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from map_blocs import family  # noqa: E402  — one definition of the families
+
+REPO_ROOT = Path(__file__).resolve().parents[1]
+REF = REPO_ROOT / "reference" / "senado"
+ROLLCALL = REF / "bloques_por_fecha.csv"
+SNAPSHOTS = REF / "bloque_por_foto.csv"
+LIVES = REF / "blocs_manual.csv"
+HISTORICO = REF / "senadores_historico.json"
+OUT = REF / "bloque_observado.csv"
+
+# The Senate's own placeholder for "no caucus recorded". Not the name of
+# anything, so it is dropped rather than carried as if it were a caucus.
+PLACEHOLDER = "SIN ESPECIFICAR"
+
+# The archived pages write a caucus's name shorter than the roll-call records
+# later do. Where the two are the same string once case, accents, punctuation
+# and a leading "Bloque" are set aside, they are matched automatically. These
+# five are not, and are a judgement that the shorter printed name is the same
+# caucus — recorded here rather than buried in a normalisation rule.
+SAME_CAUCUS = {
+    "RENOVADOR DE SALTA": "PARTIDO RENOVADOR DE SALTA",
+    "FTE CIV Y SOCIAL DE CATAMARCA": "FRENTE CÍVICO Y SOCIAL DE CATAMARCA",
+    "UNION CIVICA RADICAL": "UCR - UNIÓN CÍVICA RADICAL",
+    "LIBERAL DE CORRIENTES": "PARTIDO LIBERAL DE CORRIENTES",
+    # a single Santa Cruz senator, filed under the province's own name for the
+    # national party he sat with
+    "PROVINCIA DE SANTA CRUZ PARTIDO JUSTICIALISTA": "JUSTICIALISTA",
+}
+
+
+def norm(s):
+    s = unicodedata.normalize("NFKD", str(s))
+    return " ".join("".join(c for c in s if not unicodedata.combining(c)).upper().split())
+
+
+def load_people():
+    """The roster, with each mandate's real dates, for resolving printed names."""
+    rows = json.load(open(HISTORICO, encoding="utf-8"))["table"]["rows"]
+    p = pd.DataFrame(rows)
+    p["ini"] = pd.to_datetime(p["INICIO PERIODO REAL"], errors="coerce")
+    p["fin"] = pd.to_datetime(p["CESE PERIODO REAL"], errors="coerce")
+    p["fin"] = p.fin.fillna(pd.Timestamp("2100-01-01"))
+    p = p[p.ini.notna()].copy()
+    p["full"] = p.SENADOR.map(norm)
+    p["ape"] = p.SENADOR.str.split(",").str[0].map(norm)
+    p["nom"] = p.SENADOR.str.split(",").str[1].fillna("").map(norm)
+    return p
+
+
+def resolve_person(printed, when, roster):
+    """Who the archived page meant, decided by name and by who was in office.
+
+    The pages and the roster do not always spell a name the same way: a senator
+    under her maiden name on one and her married name on the other, a hyphen
+    present in one and not the other, half a compound surname. So an exact match
+    is tried first, then surname-token overlap with a shared given name, and
+    both are tried against the senators actually in office on the capture date
+    before falling back to the whole roster. Several rows of one person are one
+    person: the roster holds one per mandate.
+    """
+    # a hyphen in a compound surname is present on one side and not the other
+    # ("MIKKELSEN LÖTH" against "MIKKELSEN-LÖTH"), so it splits like a space
+    def parts(s):
+        return set(norm(s).replace("-", " ").split())
+
+    full = norm(printed)
+    ape, nom = printed.split(",")[0], (printed.split(",")[1] if "," in printed else "")
+    serving = roster[(roster.ini <= when) & (roster.fin >= when)]
+    for pool, how in ((serving, "in office"), (roster, "any date")):
+        hit = pool[pool.full == full]
+        if len(hit) == 1:
+            return hit.iloc[0], f"exact name, {how}"
+        want_ape, want_nom = parts(ape), parts(nom)
+        c = pool[pool.ape.map(lambda x: bool(want_ape & parts(x)))]
+        if want_nom:
+            c = c[c.nom.map(lambda x: bool(want_nom & parts(x))).astype(bool)]
+        if len(c) and c.ID.nunique() == 1:
+            return c.assign(_d=(c.ini - when).abs()).sort_values("_d").iloc[0], \
+                f"surname and given name, {how}"
+    return None, None
+
+
+def load_lives():
+    """When each caucus is known to have existed, and which ones span everything."""
+    b = pd.read_csv(LIVES)
+    standing = set(b[b.basis == "standing bloc"].bloc)
+    start = b.dropna(subset=["period_start"]).groupby("bloc").period_start.min().to_dict()
+    end = b.dropna(subset=["period_end"]).groupby("bloc").period_end.max().to_dict()
+    undated = set(b[b.period_start.isna()].bloc) - standing
+    return start, end, undated
+
+
+def from_rollcalls(roster, start, end, undated):
+    people = {n: (i, s) for n, i, s in zip(roster.full, roster.ID, roster.SENADOR)}
+    r = pd.read_csv(ROLLCALL)
+    r = r[r.bloque.notna() & (r.bloque.str.strip() != "")
+          & (r.bloque != PLACEHOLDER)].copy()
+
+    def status(row):
+        b, f = row.bloque, row.fecha
+        if b in start and f < start[b]:
+            return "acta_anacronica"
+        if b in end and f > end[b]:
+            return "acta_anacronica"
+        return "acta_sin_control" if b in undated else "acta"
+
+    key = r.senador.map(norm)
+    return pd.DataFrame({
+        "fecha": r.fecha,
+        "person_id": key.map(lambda k: people[k][0]),
+        "person_name": key.map(lambda k: people[k][1]),
+        "bloque": r.bloque,
+        "fiabilidad": r.apply(status, axis=1),
+        "fuente": "acta de votacion",
+        "procedencia": "https://www.senado.gob.ar/votaciones/detalleActa/"
+                       + r.acta_id.astype(str),
+    })
+
+
+def canonical_bloc(printed, known):
+    """The name blocs_manual.csv uses for this caucus, or '' if it has none.
+
+    A caucus that died before 2005 never reaches the roll-call records and so
+    has no entry there. Those keep the name the page printed.
+    """
+    k = re.sub(r"^BLOQUE\s+", "", norm(printed).replace(".", " ").replace("-", " "))
+    k = " ".join(k.split())
+    return known.get(k) or SAME_CAUCUS.get(k, "")
+
+
+def from_snapshots(people):
+    if not SNAPSHOTS.exists():
+        print(f"  {SNAPSHOTS.name} missing — no pre-2005 observations")
+        return pd.DataFrame()
+    s = pd.read_csv(SNAPSHOTS)
+    known = {}
+    for b in pd.read_csv(LIVES).bloc.dropna().unique():
+        k = re.sub(r"^BLOQUE\s+", "", norm(b).replace(".", " ").replace("-", " "))
+        known[" ".join(k.split())] = b
+    canon = s.bloque_impreso.map(lambda p: canonical_bloc(p, known))
+    unknown = sorted(set(s.bloque_impreso[canon == ""]))
+    if unknown:
+        print(f"  {len(unknown)} caucuses with no entry in {LIVES.name}, kept as "
+              f"printed (they died before the roll-call records begin):")
+        for u in unknown:
+            print(f"      {u}")
+    ids, names, unresolved, rules = [], [], [], []
+    for printed, when in zip(s.senador_impreso, pd.to_datetime(s.snapshot_date)):
+        hit, how = resolve_person(printed, when, people)
+        if hit is None:
+            unresolved.append(printed)
+            ids.append(None); names.append(printed); continue
+        ids.append(hit.ID); names.append(hit.SENADOR); rules.append(how)
+        if not (hit.ini <= when <= hit.fin):
+            print(f"  {when:%Y-%m-%d}: the page still lists {hit.SENADOR}, whose "
+                  f"mandate ran {hit.ini:%Y-%m-%d} to {hit.fin:%Y-%m-%d} — the page "
+                  f"lagged the chamber, kept as printed")
+    if unresolved:
+        sys.exit(f"{len(unresolved)} printed names match nobody: {unresolved[:6]}")
+    print("  names resolved by: " + ", ".join(
+        f"{v} {k}" for k, v in pd.Series(rules).value_counts().items()))
+    return pd.DataFrame({
+        "fecha": s.snapshot_date,
+        "person_id": ids,
+        "person_name": names,
+        "bloque": [c or p for c, p in zip(canon, s.bloque_impreso)],
+        "fiabilidad": ["foto" if c else "foto_bloque_previo" for c in canon],
+        "fuente": "foto de la pagina de bloques",
+        "procedencia": s.snapshot_url,
+    })
+
+
+def main():
+    people = load_people()
+    start, end, undated = load_lives()
+    parts = [from_rollcalls(people, start, end, undated), from_snapshots(people)]
+    o = pd.concat([p for p in parts if len(p)], ignore_index=True)
+    o["familia"] = o.bloque.map(family)
+    o = o.sort_values(["fecha", "person_name"]).reset_index(drop=True)
+
+    missing = o[o.person_id.isna()]
+    if len(missing):
+        sys.exit(f"{len(missing)} observations name someone not in the roster:\n"
+                 f"{missing.person_name.unique()[:10]}")
+    o.to_csv(OUT, index=False)
+
+    print(f"{len(o):,} observations, {o.person_id.nunique()} senators, "
+          f"{o.fecha.nunique()} dates, {o.fecha.min()} to {o.fecha.max()}")
+    print("\nby source and how far it can be trusted:")
+    print(o.groupby(["fuente", "fiabilidad"]).size().to_string())
+    bad = (o.fiabilidad == "acta_anacronica").sum()
+    print(f"\nreadings naming a caucus that did not exist that day: {bad:,} "
+          f"({bad/len(o):.1%}) — kept and marked, not corrected")
+    print(f"\nWritten: {OUT}")
+
+
+if __name__ == "__main__":
+    main()

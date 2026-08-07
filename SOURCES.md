@@ -46,9 +46,21 @@ Cambiemos and Juntos por el Cambio tickets from 2015 on carry those labels
 and not "Unión Cívica Radical"; provincial alliances that later joined a
 national coalition disappear from the labels without their senators moving.
 The roster publishes caucus only for the 72 sitting senators, never
-historically. The resolved-speaker table names the column
-`party_or_alliance` for this reason, and the resolver prints the caveat on
-every run. Any grouping built on it is a grouping of electoral labels.
+historically. The resolved-speaker table names the column `elected_ticket`
+for this reason, and the resolver prints the caveat on every run. Any grouping
+built on it is a grouping of electoral labels.
+
+How far the two actually diverge, measured over the 13.6 million words of floor
+speech where both are known: the ticket and the caucus are written the same way
+in 4.5%; written differently but meaning the same political camp in 76.8%,
+which is mostly the peronist bloc renaming itself; and falling in different
+camps in 18.7%. That last part is the whole value of holding both. Almost all
+of it — 98% — is a senator elected on a **provincial alliance** sitting with a
+**national caucus**: elected for the Frente Jujeño, sits with the radicals;
+elected for Chubut Somos Todos, sits with the Frente de Todos. The ticket does
+not say which side of the chamber someone is on. Genuine floor-crossing between
+two named national camps is 0.34%, so the ticket is not *wrong* about the
+peronist/radical divide — it is simply silent about everyone else.
 
 ### Where the caucus does come from, and how far it can be trusted
 
@@ -57,15 +69,13 @@ publishes the whole chamber — including the members absent for it — with the
 caucus each senator was sitting in, so one record per sitting date is a
 complete snapshot of that day's composition. `scripts/fetch_blocs.py` collects
 one per date (23,007 readings over 320 sitting dates, 287 senators, 62
-caucuses) and `scripts/map_blocs.py` collapses them into per-senator spells in
-`reference/senado/bloque_por_senador_periodo.csv`. Neither the caucus nor the
-votes appear in the open-data portal; both are read from the site's own
-roll-call pages, and the raw HTML is archived so a re-run neither refetches nor
-depends on the site still answering.
+caucuses). Neither the caucus nor the votes appear in the open-data portal;
+both are read from the site's own roll-call pages, and the raw HTML is archived
+so a re-run neither refetches nor depends on the site still answering.
 
 Three limits, all measured:
 
-* **The Senate dates the caucus wrong, in one specific and repairable way.** It
+* **The Senate dates the caucus wrong, in one specific and measurable way.** It
   stores one caucus per MANDATE and stores the one the senator ENDED that
   mandate in, projected backwards over the whole term. Of the 18 senators filed
   under Frente de Todos, only 2 carry it from a plausible date; the other 16
@@ -74,21 +84,88 @@ Three limits, all measured:
   entire 2013–2019 mandate is filed under Peronismo Republicano, a bloc he
   founded in 2019 on leaving, while he in fact led the Frente para la Victoria
   bloc throughout. A senator who crossed the floor mid-term therefore shows one
-  unbroken spell. See "Dating the caucuses by hand" below for the repair.
-* **Nothing before 2005.** Roll-call records begin there. Those five years keep
-  the ticket and no caucus, rather than a guess.
+  unbroken spell.
+
+  Checked against the dated caucus lives below, **3,206 of 23,007 readings
+  (13.9%), spread over 262 of the 320 roll calls, name a caucus that did not
+  exist on the day of the vote.** Every one is kept and marked
+  `acta_anacronica` rather than dropped or repaired: dropping them would hide
+  how much of the Senate's own record is like this, and repairing them would
+  mean inventing what the senator sat in instead, which no record says.
 * **2.6% of readings carry no caucus at all**, and 11 senators have none in any
   record.
+* **A caucus with no established start cannot be checked at all** — 1,046
+  readings, marked `acta_sin_control`, so they are never mistaken for confirmed.
+
+### Before 2005: the Senate's own page, as the web archive kept it
+
+Roll-call records begin in February 2005, and 12.9% of the corpus's floor
+speech is older than that. The Senate itself published a page listing every
+senator under their caucus through those years. The page is long dead and the
+Senate keeps no archive of it, but the Internet Archive captured it, and
+`scripts/fetch_archived_blocs.py` recovers **905 senator-rows from 13 captures
+running 25 May 2000 to 19 Jun 2004** — which closes the gap almost exactly
+against roll-call records starting the following February. All 91 pre-2005
+sittings in the corpus fall within six months of a capture, and 79% of their
+words within three.
+
+This is the chamber's own statement of its own composition, and it records real
+events rather than a frozen list: three new peronist caucuses appear in
+December 2001 as the party splinters during the crisis; after the October 2003
+election the page files the newly seated senators under a caucus literally
+called "No Informado", and the next capture empties that holding bucket into
+four real caucuses, which is four caucus changes no other source records.
+
+Two limits, both stated on every row rather than smoothed over:
+
+* **A capture dates the page, not the chamber.** It says what the page said the
+  day it was captured. Bracketing a change between two captures is sound;
+  dating it to the day is not, and the readings carry a capture date so the
+  distance is always visible.
+* **The page lags, provably.** Every recovered name was checked against the
+  roster's own mandate dates: 903 of 905 name someone in office that day. The
+  two that do not are a senator still listed four days after his term ended and
+  another listed a month before his began. Both are kept as printed.
+
+Eighteen caucuses on these pages died before the roll-call records begin and so
+have no entry in the dated list below — Frepaso, Cruzada Renovadora de San
+Juan, 17 de Octubre, Peronista del Interior and others. They keep the name the
+page printed and are marked `foto_bloque_previo`, since there is nothing to
+check them against.
+
+### One file holds every observation
+
+`scripts/build_bloc_observations.py` puts both sources in
+`reference/senado/bloque_observado.csv`: **23,118 rows, one per day one
+senator's caucus was actually recorded**, over 333 dates and 368 senators, each
+with the record it came from and how far it can be trusted. It interpolates
+nothing and collapses nothing into spells. `resolve_speakers.py` then takes,
+for each sitting, the observation nearest that senator — writing the caucus,
+its status, its basis, the day it was observed and the distance in days, so any
+stricter reading costs one filter. Of the floor speech by identified senators,
+82.7% gets a confirmed caucus, 13.0% one marked anachronistic, 1.6% one that
+cannot be checked, and 2.7% none at all.
 
 ### Dating the caucuses by hand
 
 **All 62 caucuses** are dated one at a time in
 [reference/senado/blocs_manual.csv](reference/senado/blocs_manual.csv), each row
 naming its evidence, the sitting that attests it, and how far that evidence
-goes: 39 rows carry `confidence: high`, 19 `medium`, 4 `low`. `map_blocs.py`
-then cuts every spell back to the life of its own caucus.
+goes: 65 rows, because three caucus names cover two separate lives each, of
+which 40 carry `confidence: high`, 20 `medium` and 4 `low`. Those dates are
+what every roll-call reading is checked against.
 
-The evidence is of three kinds, and the file says which was used for each:
+The evidence is of four kinds, and the file says which was used for each:
+
+* **The Senate's own bloc-roster page, as archived.** For the pre-2005 years
+  this is often the only evidence there is, and it is direct: the caucus is
+  printed with its members under it. It fixed a start for nine caucuses that
+  had none — the Frente Cívico y Social de Catamarca and the Movimiento Popular
+  Neuquino back to May 2000, Fuerza Republicana to April 2002, the Radical
+  Independiente to August 2002 — and it brackets two formations to within three
+  months: Falcó sits under the UCR in the capture of 15 Dec 2003 and under a
+  Radical Rionegrino caucus in the next one, and Giustiniani moves out of "No
+  Informado" into the Partido Socialista over the same gap.
 
 * **The chamber naming the bloc in debate.** The strongest, because it is dated
   and unambiguous. The preparatory sitting of 27 Nov 2019 has Mayans proposing
@@ -113,12 +190,29 @@ The evidence is of three kinds, and the file says which was used for each:
   matches the ordinary date, "San Luis" the province, "independencia" ordinary
   speech — and those rows say so and fall back on the mandate calendar.
 
-Read together, the evidence also settled two things the raw data got wrong.
+Read together, the evidence also settled four things the raw data got wrong.
 Unidad Ciudadana is **two** caucuses, not one: 2017–2019, absorbed into Frente
 de Todos, then re-formed in May 2022 — a single span would have filed three
-years of Frente de Todos speech under the wrong name. And Frente de Todos ends
-as a *bloc* in May 2022 while surviving as the name of the *interbloc* that
-holds both halves, which is why the transcripts keep using it to 2024.
+years of Frente de Todos speech under the wrong name. Frente de Todos ends as a
+*bloc* in May 2022 while surviving as the name of the *interbloc* that holds
+both halves, which is why the transcripts keep using it to 2024. And the
+archived pages show the same two-lives shape twice more: the Movimiento Popular
+Fueguino sat in 2000–2001 as well as 2013–2019, and a Liberal de Corrientes
+caucus existed in 2002–2003 as well as 2009–2015. Each is now two rows.
+
+**Seven caucuses still have no start date, and the file says what was looked
+for.** Producción y Trabajo, Concertación Plural and Partido de la Victoria are
+named in the corpus only as parties outside the chamber — the closest miss is
+Basualdo saying "pertenezco a un partido que se denomina Producción y Trabajo",
+which calls it a party, not a caucus. Federalismo Santafesino appears nowhere
+at all, not even in the speeches of the senator the Senate attributes it to.
+Puntano Independiente appears nowhere. Trabajo y Dignidad is named in debate in
+February 2010, but by its second holder, so that dates her spell and not the
+caucus. And Tucumán was searched for under seven phrasings without success: a
+committee record of 8 Jul 2009 lists its senator among the "presidentes de
+bloque", so she did head a caucus and the record simply never prints its name.
+A blank here is the honest answer — an invented start would silence exactly the
+misdated readings these dates exist to catch.
 
 Where the chamber says what a caucus split off from, the stretch cut off the
 front is handed to that predecessor — Unidad Ciudadana's and Frente Nacional y

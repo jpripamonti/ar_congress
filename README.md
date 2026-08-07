@@ -172,12 +172,19 @@ Methodological caveats (incomplete holdings before 2004, session-type mix,
 chairs excluded) are documented in the notebook and in
 [SOURCES.md](SOURCES.md). The caucus view carries its own: the Senate records
 a caucus once per mandate and stores the one the senator **ended** it in,
-projected backwards over the whole term. All 62 caucuses are dated by hand
-against the sittings that attest them, but a senator who crossed the floor
-mid-term is still invisible, four caucuses rest on the mandate calendar alone,
-6.9% of floor words end up with no caucus and are excluded — unevenly, so 2005,
-2017 and 2018 keep only about three quarters of theirs — and the records begin only
-in 2005.
+projected backwards over the whole term, so **3,206 of its 23,007 readings
+(13.9%) name a caucus that did not exist on the day of the vote**. All 62
+caucuses are dated by hand against the sittings that attest them, every reading
+is checked against those dates, and the ones that fail are marked rather than
+dropped or repaired. Seven caucuses still have no established start, so nothing
+can be checked for them. A senator who crossed the floor between two
+observations changes on the later one, not the day they moved.
+
+Before 2005 the roll-call records do not exist at all, and that gap is now
+filled from the Senate's own bloc-roster page as the Internet Archive kept it —
+905 senator-rows over 13 captures from May 2000 to June 2004, every one checked
+against the roster's mandate dates. A capture dates the page, not the chamber:
+it brackets a change between two dates and never fixes one to the day.
 
 ## Layout
 
@@ -191,8 +198,14 @@ in 2005.
 - `scripts/fetch_blocs.py` — read one roll-call record per sitting date back
   to 2005 into `reference/senado/bloques_por_fecha.csv`: which caucus each
   senator sat with, which the roster publishes only for sitting members.
-- `scripts/map_blocs.py` — collapse those readings into per-senator caucus
-  spells and file each caucus under the analysis's party families.
+- `scripts/fetch_archived_blocs.py` — recover the pre-2005 years from the
+  Senate's own bloc-roster page, long dead, as the Internet Archive kept it:
+  905 senator-rows over 13 captures, 2000 to 2004.
+- `scripts/build_bloc_observations.py` — put both sources in
+  `reference/senado/bloque_observado.csv`, one row per day one senator's
+  caucus was actually recorded, each marked with how far it can be trusted.
+- `scripts/map_blocs.py` — collapse the roll-call readings into per-senator
+  caucus spells and file each caucus under the analysis's party families.
 - `scripts/extract_authorities.py` — read each sitting's masthead into
   `reference/senado/authorities_observed.csv`: who presided and who sat at
   the secretaries' table, per sitting.

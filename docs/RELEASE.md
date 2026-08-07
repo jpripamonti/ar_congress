@@ -10,7 +10,9 @@ so a release is a separate, frozen bundle.
 | Part | Where it comes from | Why it is in the release |
 | --- | --- | --- |
 | The passages, one file per sitting | `data/processed/senado/blocks/*.parquet` | The corpus itself. |
-| The resolved speakers | `data/processed/senado/speakers.parquet` | Turns a printed label into a person. |
+| The resolved speakers | `data/processed/senado/speakers.parquet` | Turns a printed label into a person, and into the caucus they sat with. |
+| The caucus observations | `reference/senado/bloque_observado.csv` | Every day one senator's caucus was actually recorded, with the record it came from and how far it can be trusted. |
+| The archived bloc-roster pages | `data/raw/senado/bloques_archivados/` | 224 KB of HTML, 13 captures. The only copies of a Senate page that no longer exists; the pre-2005 caucus cannot be rebuilt without them. |
 | The parse record | `data/processed/senado/parse_stats.csv` | 40 counts per sitting of what the parser did to it, so every repair can be recomputed rather than trusted. |
 | The provenance manifest | `raw_data_manifest.csv` | Checksum, source URL and download time of every source file. |
 | The reference tables | `reference/senado/` | Roster snapshots, hand-dated caucuses, observed authorities. |
@@ -19,14 +21,26 @@ so a release is a separate, frozen bundle.
 
 The source PDFs are **not** redistributed. They are the Senate's to publish, the
 manifest identifies each one by checksum and URL, and `scripts/download.py`
-fetches them again.
+fetches them again. This is the same arrangement other parliamentary corpora
+use where the source cannot be passed on: release the pipeline and a
+record-level manifest, so anyone with access to the sources rebuilds the exact
+corpus.
+
+The archived bloc-roster pages under `data/raw/senado/bloques_archivados/` are
+kept, because unlike the PDFs they are copies of pages that no longer exist
+anywhere else and the analysis cannot be re-run without them. Each row derived
+from them carries the archive URL it came from.
 
 ## Before a release goes out
 
 Each of these must pass, and the numbers they print belong in the release notes.
 
 ```bash
-uv run scripts/parse.py --force && uv run scripts/resolve_speakers.py
+uv run scripts/parse.py --force
+```
+
+```bash
+uv run scripts/fetch_archived_blocs.py --offline && uv run scripts/build_bloc_observations.py && uv run scripts/resolve_speakers.py
 ```
 
 ```bash
@@ -43,6 +57,10 @@ uv run scripts/audit_parse.py
 - The annotations themselves still check out against the source files: 36 of 36.
 - The audit's invariants hold: no turn carries a second speaker's label, no text
   is written out twice, and the turns that open mid-word are printed that way.
+- Every name on an archived bloc-roster page still resolves to a senator, and
+  the only ones outside their mandate are the two known cases of the page
+  lagging the chamber. `build_bloc_observations.py` stops if a name resolves to
+  nobody and prints the lagging ones on every run.
 - Every answer recorded in the eight blind reads still resolves to the same
   speaker in the re-parsed corpus.
 - The notebook re-executes with no errors and its figures are regenerated.
