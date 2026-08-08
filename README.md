@@ -18,7 +18,7 @@ text blocks, and analysis.
   the files on disk by `scripts/make_manifest.py`. The 90 sessions fetched
   in January 2025 predate the download-timestamp field, so theirs is blank
   rather than guessed.
-- Corpus parsed (parser 0.4.19): 152,565 speaker-attributed speech blocks
+- Corpus parsed (parser 0.4.20): 152,565 speaker-attributed speech blocks
   and 31,928 typed stenographer events in 237,343 rows, as per-session
   Parquet under `data/processed/senado/`. One session fails to parse — a
   November 2001 sitting that never reached quorum, so it has no session
@@ -84,18 +84,22 @@ text blocks, and analysis.
   closes it is back in the body face, so it arrives as another piece again. Every
   piece was being joined with a space, so the corpus read "del  default . Por ese
   motivo" where the page reads "del default. Por ese motivo". 0.4.19 joins each
-  piece the way the page sets it: **4,653 marks of punctuation in 3,175 turns
-  come back to the word they close**, and the count of anything separated by
-  spaces — words included — stops counting 3,647 of them as words in their own
-  right. The 1,035 that remain are spaces the page itself prints. Found by the
-  ninth blind read.
+  piece the way the page sets it. Of the 4,653 marks that stood apart from their
+  word, **3,618 were the parser's own doing and are now joined**; the 1,035 that
+  remain are spaces the page itself prints. 0.4.20 extends the same rule to the
+  marks the first pass left out — the closing quotation mark, the apostrophe, the
+  square bracket — and to the opening side, where a quoted word had come out
+  spaced on both sides: `caso " strawberry ",` for a page that prints
+  `caso "strawberry",`. Together they stop 3,785 marks of punctuation being
+  counted as words by anything that splits on spaces. Found by the ninth blind
+  read, and completed by the review of that fix.
 - Two layers of verification, because they answer different questions.
   **On a hand-annotated sample** — 36 stratified pages spanning 2003–2024 —
   utterance boundary+attribution F1 = 1.00 (124 of 125 turns), event
   precision 1.00 and recall 0.94, no speech leaking onto contents pages. The
   annotations have themselves been checked back against the source PDFs
   (`scripts/check_gold.py`, 36 of 36 pass) — a second machine reading, not an
-  independent human audit. **On all 559 sessions** (`scripts/audit_parse.py`):
+  independent human audit. **On all 558 sessions that parse** (`scripts/audit_parse.py`):
   no turn carries a second speaker's label, no label is absorbed by the section
   title above it, one page's footer leaks into speech, no text is written out
   twice, 5 turns of 152,565 open mid-word and every one of them is printed that
@@ -117,15 +121,16 @@ text blocks, and analysis.
   left over was checked afterwards against the page image and the parser is right
   in all of them — pages that print the quoted phrase twice, so the reader could
   not know which occurrence was meant, and, in the ninth round, ten pages that
-  carry no printed label at all because the speech began pages earlier and the
-  reader rightly refused to guess a name. **Who is speaking is settled; what the turn
+  carry no printed label at all — nine because the speech began pages earlier and
+  the reader rightly refused to guess a name, one a reader's own slip. **Who is speaking is settled; what the turn
   says is still being corrected.** Earlier rounds exposed four of the defects
   fixed in 0.4.7–0.4.10; the fifth found an editorial note cut off by a change of
   font and left as a two-character turn (0.4.12); the sixth, while agreeing on
   every speaker, still found three pieces of editorial punctuation kept as speech
   (0.4.13); the seventh found nothing to fix; the eighth, agreeing on every
   speaker in turn, found a word broken in half by an interjected note (0.4.14);
-  and the ninth found the punctuation left adrift from italicised words (0.4.19).
+  and the ninth found the punctuation left adrift from italicised words
+  (0.4.19, completed in 0.4.20).
   Details and figures: [SOURCES.md](SOURCES.md).
 - Speakers resolved to persons: **70% of all speech blocks name a person**,
   with the ticket they were elected on and their province. A further 28% is
@@ -134,7 +139,7 @@ text blocks, and analysis.
   about 2016. **These are deliberately left without a person.** The chair
   changes hands during a sitting and the page does not say who holds it, so
   any name would be a guess; the sitting's own cover page names two or more
-  presiding officers in 266 of the 526 sittings whose cover page says who
+  presiding officers in 340 of the 545 sittings whose cover page says who
   presided at all (`scripts/count_presiding.py`). They are marked as
   office-known-person-unstated. Another 1.3% is correctly out of scope —
   parties and witnesses at the impeachment trials, deputies, foreign heads

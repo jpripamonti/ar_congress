@@ -13,7 +13,7 @@ spanning 2000 to 2024, 21.5 million words.
 
 | File | One row is | Rows |
 | --- | --- | --- |
-| `data/processed/senado/blocks/<sitting>.parquet` | a passage of one sitting — a turn of speech, a stenographer's note, a heading, or page matter | 237,343 across 559 files |
+| `data/processed/senado/blocks/<sitting>.parquet` | a passage of one sitting — a turn of speech, a stenographer's note, a heading, or page matter | 237,343 across 558 files (one sitting fails to parse) |
 | `data/processed/senado/speakers.parquet` | one printed speaker label in one sitting, resolved to a person and to the caucus they sat with | one per (sitting, label) pair |
 | `data/processed/senado/parse_stats.csv` | one sitting, with 40 counts of what the parser did to it | 559 |
 | `reference/senado/bloque_observado.csv` | one day the chamber's composition was actually recorded, for one senator | 23,325 over 336 dates, 2000–2024 |
@@ -132,7 +132,7 @@ chair from anything about party positions.
 | Value | Share of speech | What it means |
 | --- | --- | --- |
 | `matched_senator` | 37.6% | A named senator, resolved against the roster and their mandate dates. |
-| `office_only` | 28.1% | **A chamber office speaking under its bare title** — "Sr. Presidente", "Sr. Secretario", with no surname printed. This is how the record was printed before about 2016. **These are deliberately left without a person.** The chair changes hands during a sitting and the page does not say who holds it; the cover names two or more presiding officers in 266 of the 526 sittings whose cover says who presided. Any name here would be a guess. |
+| `office_only` | 28.1% | **A chamber office speaking under its bare title** — "Sr. Presidente", "Sr. Secretario", with no surname printed. This is how the record was printed before about 2016. **These are deliberately left without a person.** The chair changes hands during a sitting and the page does not say who holds it; the cover names two or more presiding officers in 340 of the 545 sittings whose cover says who presided. Any name here would be a guess. |
 | `matched_senator_chair` | 17.1% | A senator speaking from the chair, where the page names them. |
 | `matched_authority` | 15.5% | Someone holding a national or chamber office, resolved against a hand-compiled table of office-holders. |
 | `out_of_scope` | 1.3% | Correctly not a senator: parties and witnesses at the impeachment trials, deputies, foreign heads of state, officials of other institutions. |
@@ -152,8 +152,8 @@ what the analysis in this repository does, and it says so.
 - **Two sittings of November 2001 are scans read by character recognition**, and
   their text is unreliable. The parser flags them; exclude them from any text
   analysis. They are `2001-11-21_r72` and `2001-11-29_r74`.
-- **The caucus is observed, never continuous.** It is recorded on 333 days
-  across 25 years — roll-call days from 2005, and thirteen archived captures of
+- **The caucus is observed, never continuous.** It is recorded on 336 days
+  across 25 years — roll-call days from 2005, and sixteen archived captures of
   the Senate's own bloc-roster page before that. Every row says which day it
   used and how far that is from the sitting. A senator who changed caucus
   between two observations changes on the later one, not on the day they moved.
@@ -173,10 +173,11 @@ Three layers, described in full in [SOURCES.md](../SOURCES.md):
 
 - **36 pages annotated by hand**, spanning 2003–2024: boundary and attribution
   score 1.00, 124 of 125 turns.
-- **All 559 sittings audited against their source files**: no turn carries a
+- **All 558 parsed sittings audited against their source files**: no turn carries a
   second speaker's label, no text is written out twice, and every turn is
   checked for beginning and ending the way speech does.
 - **5,463 turns read blind** across nine rounds, by a reader that was never
-  shown the parser's answer: agreement on who is speaking in all but twelve, and
-  all twelve resolved in the parser's favour afterwards — every one of them a
-  page that prints the quoted phrase more than once.
+  shown the parser's answer: agreement on who is speaking in all but twenty-two,
+  and all twenty-two resolved in the parser's favour afterwards — pages that print
+  the quoted phrase more than once, and pages that print no label at all because
+  the speech began earlier.

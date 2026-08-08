@@ -145,8 +145,8 @@ nothing and collapses nothing into spells. `resolve_speakers.py` then takes,
 for each sitting, the observation nearest that senator — writing the caucus,
 its status, its basis, the day it was observed and the distance in days, so any
 stricter reading costs one filter. Of the floor speech by identified senators,
-82.7% gets a confirmed caucus, 13.0% one marked anachronistic, 1.6% one that
-cannot be checked, and 2.7% none at all.
+83.4% gets a confirmed caucus, 13.0% one marked anachronistic, 1.1% one that
+cannot be checked, and 2.4% none at all.
 
 ### Dating the caucuses by hand
 
@@ -157,7 +157,10 @@ goes: 65 rows, because three caucus names cover two separate lives each, of
 which 40 carry `confidence: high`, 20 `medium` and 4 `low`. Those dates are
 what every roll-call reading is checked against. Every sentence the file quotes
 is quoted as the source prints it, accents and capitals included, so it can be
-found by searching for it — 24 in the transcripts and 3 in the archived roster.
+found by searching for it — 32 in the transcripts and 3 in the archived roster.
+The one exception says so in its own note: the dashes around it are set in a
+symbol font the file leaves unmapped, so it matches the page but not the parsed
+text.
 
 The evidence is of four kinds, and the file says which was used for each:
 
@@ -364,7 +367,7 @@ results:
   is the only one that looks at the FIRST and last characters of a turn rather
   than inside it, which is where every text fault found so far has lived. It
   began at 44 and the difference was faults of one family, all repaired in
-  0.4.15–0.4.19 and described below. It also reports two counts kept as
+  0.4.15–0.4.20 and described below. It also reports two counts kept as
   observations rather than faults: 71 turns of three characters or fewer (a
   senator answering "20." or the chair "E") and 131 that end on a dash or comma,
   most of them in the 2003 impeachment sittings, where a turn interrupted by a
@@ -457,7 +460,8 @@ handed to a reader that was **never shown the parser's answer**, and asked only
 which printed label governs the quoted words. The two answers were compared
 afterwards, mechanically.
 
-It has been done seven times, on seven samples that do not overlap.
+It has been done nine times, on nine samples that do not overlap. The first
+eight were drawn turn by turn; the ninth, page by page.
 
 * **300 turns.** Agreement on the speaker in **300 of 300**, no disagreement, the
   quoted words found on the page in all 300. Two could only be confirmed by
@@ -518,14 +522,14 @@ It has been done seven times, on seven samples that do not overlap.
   ([reference/verification/blind_read_1000_0413b.csv](reference/verification/blind_read_1000_0413b.csv))
 * **115 further pages**, 5 per year, none of them among the first 5,298 and none
   on a page any earlier round had been given. Agreement on the speaker in
-  **105 of 115**. The ten left over are of a kind the earlier rounds did not
-  throw up: the reader was given the opening of a block that continues a speech
-  begun pages earlier, so no label is printed anywhere on the page and the reader
-  refused, rightly, to supply a name. All ten were checked afterwards — the
-  parser's speaker is the one who opened that turn, and on the two longest runs
-  the intervening pages were read to confirm no label was skipped in between. One
-  of the ten is a reader's own slip: the phrase is on the page, three labels
-  down. The round found the spacing defect described below. Two years could fill
+  **105 of 115**. Nine of the ten left over are of a kind the earlier rounds did
+  not throw up: the reader was given the opening of a block that continues a
+  speech begun pages earlier, so no label is printed anywhere on the page and the
+  reader refused, rightly, to supply a name. All nine were checked afterwards —
+  the parser's speaker is the one who opened that turn, and on the two longest
+  runs the intervening pages were read to confirm no label was skipped in
+  between. The tenth is a reader's own slip: the phrase is on the page, three
+  labels down. The round found the spacing defect described below. Two years could fill
   nothing at all: 2000 has no unread turn left, and 2002 none on an unread page.
   ([reference/verification/blind_read_115_0418.csv](reference/verification/blind_read_115_0418.csv))
 
@@ -539,13 +543,23 @@ full stop that closes the word is back in the body face, so it reaches the parse
 as yet another piece. Every piece was being joined to the turn with a space,
 which put a space on both sides of the italicised word. Parser 0.4.19 joins each
 piece the way the page sets it — no space where the piece opens with punctuation
-that never takes one, and none where the text already ends in one. **4,653 marks
-of punctuation in 3,175 turns come back to the word they close** (2,547 commas,
-1,646 full stops, and the rest colons, semicolons, question and exclamation marks
-and closing parentheses), and 3,647 of them stop being counted as words in their
-own right by anything that splits on spaces. 1,035 spaced marks remain and are
-the page's own: an em dash closing a parenthetical, an ellipsis, and the odd
-space the typist left before a stop.
+that never takes one, and none where the text already ends in one. Of the 4,653
+marks that stood apart from their word (2,547 commas, 1,646 full stops, and the
+rest colons, semicolons, question and exclamation marks and closing parentheses),
+**3,618 were the parser's own doing and are now joined**. The 1,035 that remain
+are the page's own spacing: an em dash closing a parenthetical, an ellipsis, an
+apostrophe opening a decade ("los años ’90"), and the odd space the typist left
+before a stop.
+
+**0.4.20 finishes it, on both sides.** The review of that fix found it had been
+written for the marks the example happened to contain. The closing quotation
+mark, the apostrophe and the square bracket were left out, so the corpus still
+read "Ministerio de Economía ”, el Dr." where the page prints no space; 138 of
+those. And the rule only ever guarded the closing side, so a word set between
+quotation marks came out spaced away from both of them — "caso " strawberry ","
+for a page that prints "caso "strawberry","". The same test now runs against the
+opening marks as well. Between them the two versions stop 3,785 marks of
+punctuation being counted as words by anything that splits on spaces.
 
 **The eighth round found a word broken in half.** One reader was given a turn
 whose recorded text began "i la Argentina debe ser tomada en su totalidad?" and

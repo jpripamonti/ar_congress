@@ -11,7 +11,7 @@ composition — and they close the gap almost exactly, running to June 2004
 against roll-call records that start in February 2005.
 
 WHAT A CAPTURE IS AND IS NOT. It says what the page said on the day it was
-captured. The page lags the chamber: of the 905 senator-rows recovered here,
+captured. The page lags the chamber: of the 1,112 senator-rows recovered here,
 two are provably stale against the roster's own mandate dates — one senator
 still listed four days after his term ended, one listed a month before his
 began. So a capture brackets a change between two dates; it never dates one to
@@ -161,8 +161,13 @@ def remember_source(ts, url):
     unusable, which is what it was until now.
     """
     side = CACHE_DIR / f"snap_{ts}.url"
-    if not side.exists():
-        side.write_text(url + "\n", encoding="utf-8")
+    if side.exists() and side.read_text(encoding="utf-8").strip() == url:
+        return
+    if side.exists():
+        print(f"    {ts}: recorded address replaced\n"
+              f"      was {side.read_text(encoding='utf-8').strip()}\n"
+              f"      now {url}")
+    side.write_text(url + "\n", encoding="utf-8")
 
 
 def cached_source(ts):

@@ -51,7 +51,7 @@ from pathlib import Path
 import pandas as pd
 import pdfplumber
 
-PARSER_VERSION = "0.4.19"
+PARSER_VERSION = "0.4.20"
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
@@ -1329,14 +1329,18 @@ def clean_speaker_names(blocks):
 # phrase — arrives as its own piece, and the comma or full stop that follows it
 # is back in the body face, so it arrives as yet another piece. Joining every
 # piece with a space put 4,653 of these marks adrift from the word they close.
-NEVER_SPACED_BEFORE = ".,;:!?)…»"
+NEVER_SPACED_BEFORE = ".,;:!?)]…»\u201d\u2019\""
+# and their mirror: an opening mark takes no space AFTER it, which is the same
+# fault seen from the other side — a quoted word came out as "caso " strawberry ","
+NEVER_SPACED_AFTER = "([\u00ab\u00bf\u00a1\u201c\""
 
 
 def rejoin(text, piece):
     """Put two pieces of one turn back together with the spacing the page shows."""
     if not text or not piece:
         return text + piece
-    if text.endswith(" ") or piece.startswith(" ") or piece[0] in NEVER_SPACED_BEFORE:
+    if (text.endswith(" ") or piece.startswith(" ")
+            or piece[0] in NEVER_SPACED_BEFORE or text[-1] in NEVER_SPACED_AFTER):
         return text + piece
     return text + " " + piece
 
@@ -1388,7 +1392,9 @@ def consolidate_speaker_blocks(blocks):
         if cur is not None and speaker == cur.get("speaker") and b.get("turn_id") == cur.get("turn_id"):
             # the rest of a sentence broken by an italic word opens with the
             # punctuation that closes it, and that mark belongs to the word
-            cur["text"] += (b["text"] if b["text"][:1] in NEVER_SPACED_BEFORE
+            cur["text"] += (b["text"]
+                            if (b["text"][:1] in NEVER_SPACED_BEFORE
+                                or cur["text"][-1:] in NEVER_SPACED_AFTER)
                             else " " + b["text"])
             cur["pages"] = sorted(set(cur["pages"]) | set(b["pages"]))
         else:

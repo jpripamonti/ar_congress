@@ -14,11 +14,11 @@ TWO SOURCES, and they are not equally precise.
   fetch_blocs.py into bloques_por_fecha.csv.
 
   Archived roster pages, 2000-2004. The Senate ran a page listing every senator
-  under their caucus. It is long dead, but the Internet Archive holds thirteen
+  under their caucus. It is long dead, but the Internet Archive holds sixteen
   captures spanning 25 May 2000 to 19 Jun 2004, which is the whole span the
   roll-call records do not reach. A capture says what the page said on the day
   it was captured, which is not the same as the day the chamber changed: the
-  page lags, and twice in 905 rows it is provably stale — a senator listed four
+  page lags, and twice in 1,112 rows it is provably stale — a senator listed four
   days after his term ended, another a month before his began. Bracketing a
   change between two captures is sound; dating it to the day is not.
 

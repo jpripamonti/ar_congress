@@ -670,18 +670,19 @@ recomputing every number in the documents against the files on disk.
       italicised word inside a sentence reaches the parser as its own piece and
       the mark that closes it as another, and every piece was joined with a
       space: "del  default . Por ese motivo" for a page that reads "del default.
-      Por ese motivo". 4,653 marks in 3,175 turns come back to their word, and
-      3,647 of them stop being counted as words by anything splitting on spaces.
-      The 1,035 that remain are the page's own spacing. Nothing verified
-      regressed: gold F1 1.00 (124/125), annotations 36/36, and the eight earlier
-      blind reads still stand — no speaker changed.
+      Por ese motivo". Of the 4,653 marks that stood apart from their word, 3,618
+      were the parser's doing and are now joined; the 1,035 that remain are the
+      page's own spacing. Nothing verified regressed: gold F1 1.00 (124/125),
+      annotations 36/36, and the eight earlier blind reads still stand — no
+      speaker changed.
 - [x] **The archived roster carried a dead address on all of its rows.** The
       offline path of `fetch_archived_blocs.py` wrote the literal word "(cached)"
       where the address goes, so every row pointed at
       `…/20000525090352id_/(cached)`. Each capture now keeps the address it came
       from beside it, and the offline path stops rather than inventing one. The
-      re-run also found the archive now serves four captures it did not before:
-      **1,112 senator-rows over 16 captures**, up from 905 over 13.
+      re-run also found the archive now serves three captures with rosters on them
+      that it did not before, and a fourth that is a "página en construcción" with
+      nobody on it: **1,112 senator-rows over 16 captures**, up from 905 over 13.
 - [x] **A caucus that lived twice was given one life.** Unidad Ciudadana sat
       2017–2019, was absorbed, and formed again when the Frente de Todos bloc
       split on 12 May 2022. `build_bloc_observations.py` folded the two into one
@@ -719,6 +720,49 @@ recomputing every number in the documents against the files on disk.
       transcripts and 3 against the archived roster; the remaining two are single
       words the notes discuss rather than quote. **All 27 now appear verbatim in
       the source they cite**, 24 in the transcripts and 3 in the roster.
+
+## Phase 18 — seven readers sent after the repairs themselves (August 2026)
+
+Phase 17 fixed three faults and rewrote a great deal of prose. None of that had
+been checked by anyone but its author, so seven readers were sent after it, each
+told to assume the repair was wrong until it had been proved right. Four of the
+seven found something.
+
+- [x] **The spacing repair had been written for its own example (0.4.20).** It
+      covered the marks that happened to appear in the case that found it and
+      left out the closing quotation mark, the apostrophe and the square bracket
+      — 138 of those still stood apart from their word. It also guarded only the
+      closing side, so a word between quotation marks came out spaced away from
+      both: "caso " strawberry "," for a page that prints them tight. Both sides
+      are now tested. Re-verified after re-parsing: gold F1 1.00 (124/125),
+      annotations 36/36, corpus totals unchanged.
+- [x] **The presiding-officer count was blind to a change of format.** The Senate
+      replaced the cover-page sentence with a list of offices around mid-2020, so
+      `count_presiding.py` read five officers as one, or as none, for every
+      sitting after that; three narrower faults cost it one officer per page
+      elsewhere, including a role pattern that could never match the masculine
+      "presidente". Rewritten to read both formats and checked against eight
+      cover pages verified by hand: **340 of 545**, not 266 of 526, and 14
+      sittings say nothing rather than 33.
+- [x] **Two quotations had never been rewritten at all** — including the one used
+      as the example of the fault, the Frente Cívico Jujeño. The extraction that
+      found the quotations broke on a note containing an English possessive
+      ("the Senate's own page"), which threw its quote-pairing out by one and hid
+      every quotation in such a note. Found again with a rule that survives a
+      stray apostrophe, and corrected, along with a quotation attributed to the
+      sitting of 21 Dec 2005 that is in the one of the 22nd.
+- [x] **Four numbers had been left behind in corners the edit never reached**:
+      the caucus-confidence shares in SOURCES.md, the count of audited sittings
+      (559, when one does not parse and 558 are checked), and two sentences about
+      the blind read. Also corrected: three captures with rosters on them
+      appeared, not four — the fourth is a "página en construcción" with nobody
+      on it — and nine of the ninth round's ten open cases are unlabelled pages,
+      the tenth being a reader's own slip.
+- [ ] **1,234 characters of the corpus are glyphs no font could map**, sitting in
+      the private-use range: 654 of one, 263 of a dash, and the rest scattered.
+      They land inside words and sentences — "bloque unipersonal el bloque
+      Misiones" — and nothing currently maps them back to the characters the page
+      shows. Found while checking a quotation.
 
 ## Explicitly not building
 
