@@ -16,7 +16,7 @@ spanning 2000 to 2024, 21.5 million words.
 | `data/processed/senado/blocks/<sitting>.parquet` | a passage of one sitting — a turn of speech, a stenographer's note, a heading, or page matter | 237,343 across 559 files |
 | `data/processed/senado/speakers.parquet` | one printed speaker label in one sitting, resolved to a person and to the caucus they sat with | one per (sitting, label) pair |
 | `data/processed/senado/parse_stats.csv` | one sitting, with 40 counts of what the parser did to it | 559 |
-| `reference/senado/bloque_observado.csv` | one day the chamber's composition was actually recorded, for one senator | 23,118 over 333 dates, 2000–2024 |
+| `reference/senado/bloque_observado.csv` | one day the chamber's composition was actually recorded, for one senator | 23,325 over 336 dates, 2000–2024 |
 
 There is one file of passages per sitting rather than one big file, so that a
 single sitting can be read without loading the corpus. Concatenating them all is
@@ -78,8 +78,8 @@ people in different sittings, and sometimes within one sitting.
 | `elected_ticket` | **The list the senator STOOD ON, not the caucus they sat with.** One value per mandate, taken from the roster. See the two-affiliations note below before using it. |
 | `province` | The province the senator represents. |
 | `bloc` | **The caucus the senator SAT WITH.** Taken from the nearest day the chamber's composition was actually recorded — see below. |
-| `bloc_status` | How far that caucus can be trusted: `confirmed` (82.7% of senators' floor words), `anachronistic` (13.0% — the source names a caucus that did not exist on that date), `undatable` (1.6% — the caucus has no established start, so nothing can be checked). Empty where there is no caucus at all (2.7%). |
-| `bloc_basis` | Where the caucus came from: `roll call` (86.7% of senators' floor words) or `archived roster` (10.6%, the pre-2005 years). |
+| `bloc_status` | How far that caucus can be trusted: `confirmed` (83.4% of senators' floor words), `anachronistic` (13.0% — the source names a caucus that did not exist on that date), `undatable` (1.1% — the caucus has no established start, so nothing can be checked). Empty where there is no caucus at all (2.4%). |
+| `bloc_basis` | Where the caucus came from: `roll call` (79.9% of senators' floor words) or `archived roster` (17.7%, the pre-2005 years). |
 | `bloc_observed` | The date the caucus was actually recorded on. |
 | `bloc_gap_days` | How many days that is from the sitting. Median 0 — most sittings are themselves roll-call days. Rows further than 200 days from any observation get no caucus. |
 | `match_status` | How the label was resolved. This is the field to filter on, and its values are not interchangeable — see below. |
@@ -90,16 +90,20 @@ people in different sittings, and sometimes within one sitting.
 with once in the chamber. They disagree across most of the corpus, and the
 disagreement is not noise:
 
-- The two are written the same way in **4.5%** of senators' floor words.
-- They are written differently but mean the same political camp in **76.8%** —
+Measured over the 14.7 million words of floor speech by identified senators
+where both affiliations are recorded, and grouping labels into the four party
+families the notebook uses:
+
+- The two are written the same way in **9.2%**.
+- They are written differently but mean the same political camp in **72.0%** —
   the peronist bloc renaming itself, mostly.
-- They fall in different camps in **18.7%**, and this is the part that matters:
-  almost all of it is a senator elected on a **provincial alliance** who sits
+- They fall in different camps in **18.9%**, and this is the part that matters:
+  three quarters of it is a senator elected on a **provincial alliance** who sits
   with a **national caucus**. Someone elected for the Frente Jujeño sits with
   the radicals; someone elected for Chubut Somos Todos sits with the Frente de
   Todos. The ticket does not say which side of the chamber they are on. The
   caucus does.
-- Genuine floor-crossing between two *named* national camps is **0.34%**.
+- Genuine floor-crossing between two *named* national camps is **0.31%**.
 
 So: for "which party won this seat", use the ticket. For anything about how the
 chamber divided, use the caucus.
@@ -128,9 +132,9 @@ chair from anything about party positions.
 | Value | Share of speech | What it means |
 | --- | --- | --- |
 | `matched_senator` | 37.6% | A named senator, resolved against the roster and their mandate dates. |
-| `office_only` | 28.1% | **A chamber office speaking under its bare title** — "Sr. Presidente", "Sr. Secretario", with no surname printed. This is how the record was printed before about 2016. **These are deliberately left without a person.** The chair changes hands during a sitting and the page does not say who holds it; the cover names two or more presiding officers in 282 of the 559 sittings. Any name here would be a guess. |
+| `office_only` | 28.1% | **A chamber office speaking under its bare title** — "Sr. Presidente", "Sr. Secretario", with no surname printed. This is how the record was printed before about 2016. **These are deliberately left without a person.** The chair changes hands during a sitting and the page does not say who holds it; the cover names two or more presiding officers in 266 of the 526 sittings whose cover says who presided. Any name here would be a guess. |
 | `matched_senator_chair` | 17.1% | A senator speaking from the chair, where the page names them. |
-| `matched_authority` | 15.6% | Someone holding a national or chamber office, resolved against a hand-compiled table of office-holders. |
+| `matched_authority` | 15.5% | Someone holding a national or chamber office, resolved against a hand-compiled table of office-holders. |
 | `out_of_scope` | 1.3% | Correctly not a senator: parties and witnesses at the impeachment trials, deputies, foreign heads of state, officials of other institutions. |
 | `unmatched` | 0.1% | A genuine failure: 218 passages, nearly all invited outside speakers at public hearings, named by surname alone. |
 | `collective` | 0.1% | "Varios señores senadores" — the record attributing words to several people at once. |
@@ -172,7 +176,7 @@ Three layers, described in full in [SOURCES.md](../SOURCES.md):
 - **All 559 sittings audited against their source files**: no turn carries a
   second speaker's label, no text is written out twice, and every turn is
   checked for beginning and ending the way speech does.
-- **5,348 turns read blind** across eight rounds, by a reader that was never
+- **5,463 turns read blind** across nine rounds, by a reader that was never
   shown the parser's answer: agreement on who is speaking in all but twelve, and
   all twelve resolved in the parser's favour afterwards — every one of them a
   page that prints the quoted phrase more than once.

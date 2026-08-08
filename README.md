@@ -18,11 +18,11 @@ text blocks, and analysis.
   the files on disk by `scripts/make_manifest.py`. The 90 sessions fetched
   in January 2025 predate the download-timestamp field, so theirs is blank
   rather than guessed.
-- Corpus parsed (parser 0.4.18): 152,565 speaker-attributed speech blocks
+- Corpus parsed (parser 0.4.19): 152,565 speaker-attributed speech blocks
   and 31,928 typed stenographer events in 237,343 rows, as per-session
   Parquet under `data/processed/senado/`. One session fails to parse — a
   November 2001 sitting that never reached quorum, so it has no session
-  opening to find. Text the parser cannot attribute to a speaker is 1,207
+  opening to find. Text the parser cannot attribute to a speaker is 1,204
   rows (0.5%), and a handful of sessions account for most of it: sittings
   whose record is mostly an inserted document (two impeachment dossiers, a
   printed bill text, a list of judicial appointments) rather than floor
@@ -78,6 +78,17 @@ text blocks, and analysis.
   0.4.18 does the same for an italic run that opens a turn — a newspaper's name
   printed right after the label was being swallowed by the turn above, putting
   one senator's words in another's mouth. Measured across the corpus: 2 cases.
+- **Punctuation is no longer left standing on its own.** A word set in italics
+  inside a sentence — a foreign word, a newspaper's name, a Latin phrase —
+  arrives from the file as a piece of its own, and the comma or full stop that
+  closes it is back in the body face, so it arrives as another piece again. Every
+  piece was being joined with a space, so the corpus read "del  default . Por ese
+  motivo" where the page reads "del default. Por ese motivo". 0.4.19 joins each
+  piece the way the page sets it: **4,653 marks of punctuation in 3,175 turns
+  come back to the word they close**, and the count of anything separated by
+  spaces — words included — stops counting 3,647 of them as words in their own
+  right. The 1,035 that remain are spaces the page itself prints. Found by the
+  ninth blind read.
 - Two layers of verification, because they answer different questions.
   **On a hand-annotated sample** — 36 stratified pages spanning 2003–2024 —
   utterance boundary+attribution F1 = 1.00 (124 of 125 turns), event
@@ -91,7 +102,7 @@ text blocks, and analysis.
   way, and a median 79.2% of each document's printed text is kept (the rest —
   contents pages, attendance rolls, appendices — is dropped by design). Two
   sittings of November 2001 are scans with OCR text and should be excluded from
-  any text analysis; the parser flags them. **On 5,298 pages read blind** — every
+  any text analysis; the parser flags them. **On 5,413 pages read blind** — every
   page rendered as an image and read by an agent that was never shown the
   parser's answer, then compared — the two agree on who is speaking in
   [300 of 300](reference/verification/blind_read_300.csv),
@@ -99,18 +110,22 @@ text blocks, and analysis.
   [993 of 998](reference/verification/blind_read_1000.csv),
   [498 of 500](reference/verification/blind_read_500_0411.csv),
   [1,000 of 1,000](reference/verification/blind_read_1000_0412.csv),
-  [998 of 1,000](reference/verification/blind_read_1000_0413.csv) and
-  [1,000 of 1,000](reference/verification/blind_read_1000_0413b.csv) on seven
+  [998 of 1,000](reference/verification/blind_read_1000_0413.csv),
+  [1,000 of 1,000](reference/verification/blind_read_1000_0413b.csv) and
+  [105 of 115](reference/verification/blind_read_115_0418.csv) on eight
   samples that do not overlap, spread across every year of the span. Every case
   left over was checked afterwards against the page image and the parser is right
   in all of them — pages that print the quoted phrase twice, so the reader could
-  not know which occurrence was meant. **Who is speaking is settled; what the turn
+  not know which occurrence was meant, and, in the ninth round, ten pages that
+  carry no printed label at all because the speech began pages earlier and the
+  reader rightly refused to guess a name. **Who is speaking is settled; what the turn
   says is still being corrected.** Earlier rounds exposed four of the defects
   fixed in 0.4.7–0.4.10; the fifth found an editorial note cut off by a change of
   font and left as a two-character turn (0.4.12); the sixth, while agreeing on
   every speaker, still found three pieces of editorial punctuation kept as speech
-  (0.4.13); the seventh found nothing to fix; and the eighth, agreeing on every
-  speaker in turn, found a word broken in half by an interjected note (0.4.14).
+  (0.4.13); the seventh found nothing to fix; the eighth, agreeing on every
+  speaker in turn, found a word broken in half by an interjected note (0.4.14);
+  and the ninth found the punctuation left adrift from italicised words (0.4.19).
   Details and figures: [SOURCES.md](SOURCES.md).
 - Speakers resolved to persons: **70% of all speech blocks name a person**,
   with the ticket they were elected on and their province. A further 28% is
@@ -119,11 +134,12 @@ text blocks, and analysis.
   about 2016. **These are deliberately left without a person.** The chair
   changes hands during a sitting and the page does not say who holds it, so
   any name would be a guess; the sitting's own cover page names two or more
-  presiding officers in 282 of the 559 sessions. They are marked as
+  presiding officers in 266 of the 526 sittings whose cover page says who
+  presided at all (`scripts/count_presiding.py`). They are marked as
   office-known-person-unstated. Another 1.3% is correctly out of scope —
   parties and witnesses at the impeachment trials, deputies, foreign heads
   of state, officials of other institutions. **Genuine lookup failures are
-  down to 0.1%** (220 blocks), nearly all of them invited outside speakers
+  down to 0.1%** (218 blocks), nearly all of them invited outside speakers
   at public hearings, named by surname alone.
 - **What every column holds and what not to assume about it**:
   [docs/DATA_DICTIONARY.md](docs/DATA_DICTIONARY.md) — written for someone who
@@ -148,8 +164,8 @@ text blocks, and analysis.
 
 - **What moved is mostly the labels, and the caucus data now shows it rather
   than merely warning about it.** By ticket, provincial and other alliances
-  held 30–46% of floor words to 2016 and 13–15% from 2020, while the
-  radical/Cambiemos family went the other way (9–25% before 2019, 30–39%
+  held 27–46% of floor words to 2016 and 13–15% from 2020, while the
+  radical/Cambiemos family went the other way (9–27% before 2019, 30–39%
   after) — a chamber that looks realigned at a stroke. Group the identical
   speech by caucus and the step disappears: radical/Cambiemos sits at 23–37%
   throughout, and provincial and other alliances end 2022–2024 at 16–20%
@@ -172,8 +188,8 @@ Methodological caveats (incomplete holdings before 2004, session-type mix,
 chairs excluded) are documented in the notebook and in
 [SOURCES.md](SOURCES.md). The caucus view carries its own: the Senate records
 a caucus once per mandate and stores the one the senator **ended** it in,
-projected backwards over the whole term, so **3,206 of its 23,007 readings
-(13.9%) name a caucus that did not exist on the day of the vote**. All 62
+projected backwards over the whole term, so **3,043 of its 22,213 readings
+(13.7%) name a caucus that did not exist on the day of the vote**. All 62
 caucuses are dated by hand against the sittings that attest them, every reading
 is checked against those dates, and the ones that fail are marked rather than
 dropped or repaired. Seven caucuses still have no established start, so nothing
@@ -182,7 +198,7 @@ observations changes on the later one, not the day they moved.
 
 Before 2005 the roll-call records do not exist at all, and that gap is now
 filled from the Senate's own bloc-roster page as the Internet Archive kept it —
-905 senator-rows over 13 captures from May 2000 to June 2004, every one checked
+1,112 senator-rows over 16 captures from May 2000 to June 2004, every one checked
 against the roster's mandate dates. A capture dates the page, not the chamber:
 it brackets a change between two dates and never fixes one to the day.
 
@@ -200,7 +216,7 @@ it brackets a change between two dates and never fixes one to the day.
   senator sat with, which the roster publishes only for sitting members.
 - `scripts/fetch_archived_blocs.py` — recover the pre-2005 years from the
   Senate's own bloc-roster page, long dead, as the Internet Archive kept it:
-  905 senator-rows over 13 captures, 2000 to 2004.
+  1,112 senator-rows over 16 captures, 2000 to 2004.
 - `scripts/build_bloc_observations.py` — put both sources in
   `reference/senado/bloque_observado.csv`, one row per day one senator's
   caucus was actually recorded, each marked with how far it can be trusted.

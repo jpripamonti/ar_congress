@@ -140,14 +140,35 @@ def fetch(ts, url):
     """One capture, from the cache if it is already there."""
     path = CACHE_DIR / f"snap_{ts}.html"
     if path.exists():
+        remember_source(ts, url)
         return path.read_bytes()
     r = get(RAW.format(ts=ts, url=url))
     if r is None:
         return None
     CACHE_DIR.mkdir(parents=True, exist_ok=True)
     path.write_bytes(r.content)
+    remember_source(ts, url)
     time.sleep(FETCH_DELAY)
     return r.content
+
+
+def remember_source(ts, url):
+    """Keep the address a capture came from beside the capture itself.
+
+    The roster lived at three addresses over the years and the capture file is
+    named only for its timestamp, so a later offline re-run has no way to
+    rebuild the link back to the archive. Without this the URL column comes out
+    unusable, which is what it was until now.
+    """
+    side = CACHE_DIR / f"snap_{ts}.url"
+    if not side.exists():
+        side.write_text(url + "\n", encoding="utf-8")
+
+
+def cached_source(ts):
+    """The address a cached capture came from, or None if it was never kept."""
+    side = CACHE_DIR / f"snap_{ts}.url"
+    return side.read_text(encoding="utf-8").strip() if side.exists() else None
 
 
 def parse(html, ts, url):
@@ -190,8 +211,14 @@ def main():
     args = ap.parse_args()
 
     if args.offline:
-        captures = [(p.stem.removeprefix("snap_"), "(cached)")
-                    for p in sorted(CACHE_DIR.glob("snap_*.html"))]
+        captures = []
+        for p in sorted(CACHE_DIR.glob("snap_*.html")):
+            ts = p.stem.removeprefix("snap_")
+            url = cached_source(ts)
+            if url is None:
+                sys.exit(f"{p.name} has no recorded source address; run once "
+                         f"online so every capture keeps the address it came from")
+            captures.append((ts, url))
         print(f"{len(captures)} cached captures")
     else:
         captures = list_captures()
@@ -199,7 +226,7 @@ def main():
 
     all_rows, total_orphans = [], 0
     for ts, url in captures:
-        html = fetch(ts, url) if url != "(cached)" else (CACHE_DIR / f"snap_{ts}.html").read_bytes()
+        html = fetch(ts, url)
         if html is None:
             print(f"  {ts}  FETCH FAILED")
             continue

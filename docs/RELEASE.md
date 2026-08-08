@@ -12,7 +12,7 @@ so a release is a separate, frozen bundle.
 | The passages, one file per sitting | `data/processed/senado/blocks/*.parquet` | The corpus itself. |
 | The resolved speakers | `data/processed/senado/speakers.parquet` | Turns a printed label into a person, and into the caucus they sat with. |
 | The caucus observations | `reference/senado/bloque_observado.csv` | Every day one senator's caucus was actually recorded, with the record it came from and how far it can be trusted. |
-| The archived bloc-roster pages | `data/raw/senado/bloques_archivados/` | 224 KB of HTML, 13 captures. The only copies of a Senate page that no longer exists; the pre-2005 caucus cannot be rebuilt without them. |
+| The archived bloc-roster pages | `data/raw/senado/bloques_archivados/` | HTML, 16 captures. The only copies of a Senate page that no longer exists; the pre-2005 caucus cannot be rebuilt without them. |
 | The parse record | `data/processed/senado/parse_stats.csv` | 40 counts per sitting of what the parser did to it, so every repair can be recomputed rather than trusted. |
 | The provenance manifest | `raw_data_manifest.csv` | Checksum, source URL and download time of every source file. |
 | The reference tables | `reference/senado/` | Roster snapshots, hand-dated caucuses, observed authorities. |
@@ -96,7 +96,7 @@ A citation should name the corpus, its version, the span it covers and where it
 lives, for example:
 
 > Ripamonti, J. (2026). *Argentine Senate stenographic transcripts, 2000–2024:
-> a speaker-attributed corpus* (version 0.4.18) [Data set].
+> a speaker-attributed corpus* (version 0.4.19) [Data set].
 
 ## Where to put it
 

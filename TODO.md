@@ -147,7 +147,7 @@ Owner chose to widen coverage before publishing.
       this chamber covers them, so they are typed out of scope rather than
       counted as failures.
 - [x] Result: genuine lookup failures fell from 9% of speech blocks to 0.1%
-      (217 blocks), and persons named rose from 63% to 70%. The residue is
+      (218 blocks), and persons named rose from 63% to 70%. The residue is
       invited outside speakers at public hearings, named by surname alone.
 - [x] Event subtypes widened to cover disorder however the stenographer
       words it — senators talking over each other was the commonest form and
@@ -184,7 +184,7 @@ person is behind the words. So sampled turns were read independently: each page
 rendered as an image and given to an agent that was never told the parser's
 answer, asked only "who does this page say is speaking here?", and the two
 answers compared afterwards. 50 pages first, then 300, then 500, then 998 more,
-none of the samples overlapping — 1,798 in all, spread across every year.
+none of the samples overlapping — 1,848 in all, spread across every year.
 
 - [x] 300 of 300 agree on the speaker; the quoted words were found on the page
       in all 300; no reader saw page apparatus inside the paragraph. Two cases
@@ -272,8 +272,8 @@ caucus they sat with, and the gap was visibly distorting the results.
 
 - [x] Established that no official source publishes caucus historically: the
       open-data portal has no caucus and no votes dataset; the transcripts
-      mention caucuses only inside speech (511 of 559 sessions) and never as a
-      roster; the site's grouped-by-caucus listing is current-composition only.
+      mention caucuses only inside speech (503 of the 558 sessions that parse)
+      and never as a roster; the site's grouped-by-caucus listing is current-composition only.
 - [x] Found it in the roll-call records instead. Every recorded vote publishes
       the whole chamber, absent members included, with each senator's caucus.
       `fetch_blocs.py` reads one record per sitting date — 320 dates, 2005-2024,
@@ -329,7 +329,8 @@ caucus they sat with, and the gap was visibly distorting the results.
       The notebook's nearest-spell fallback is now bounded to 180 days, because
       an unbounded one silently refilled the gaps and undid the whole repair.
 - [x] **Then the other 42**, so all 62 caucuses are dated: 39 rows at
-      `confidence: high`, 19 medium, 4 low. Most are one- or two-member caucuses
+      `confidence: high`, 19 medium, 4 low (40, 20 and 4 today, after Phase 16
+      added a row and split another). Most are one- or two-member caucuses
       that their members' mandates bound exactly. The new piece of evidence is
       the roll of blocs read into the record on 16 Nov 2022 — Frente Nacional y
       Popular 21, UCR 18, Unidad Ciudadana 14, Frente PRO 9, Cambio Federal 4,
@@ -368,7 +369,8 @@ keeps them — glued the last word of one line to the first of the next.
 - [x] 710,039 spaces restored in 481 of 559 sittings. The corpus rises from
       21.07 to 21.48 million words: +4% to +6.5% every year from 2003 to 2009,
       under 0.1% everywhere else, which is exactly the shape of the defect.
-      Text the parser cannot attribute to anyone fell from 1,884 rows to 1,207.
+      Text the parser cannot attribute to anyone fell from 1,884 rows to 1,207
+      (1,204 today, after later repairs).
 - [x] Checked against pdfplumber's own layout-aware page reading: words the
       parser produces that the page reading never produces fell from 3.0% to
       0.06% of tokens. Gold set unchanged (F1 = 1.00, 124 of 125 turns); the
@@ -541,6 +543,11 @@ short of the thousand.
       annotations 36/36, and 5,347 of the 5,348 blind-read answers unchanged —
       the one that moved is case 850 of the seventh round, whose parser answer
       was the truncated "Sr. Presidente (Pinedo).- C" and is now the whole label.
+- [x] **The blind read cannot see this class of fault** — so the ninth round was
+      drawn page by page instead of turn by turn, and the readers were asked to
+      report anything on the page that looked broken as well as who was speaking.
+      That is what surfaced the spacing defect: the reader was not comparing a
+      label, they were reading a sentence.
 - [ ] **The blind read cannot see this class of fault.** That same case 850 was
       scored as agreement, because the comparison ignores a stray character in a
       label. Reading pages blind answers who is speaking; the shape of what is
@@ -578,32 +585,33 @@ phase brings the caucus up to that standard.
 
 - [x] **Split the two affiliations.** `party_or_alliance` became
       `elected_ticket` — the list a senator stood on — and `bloc` is new: the
-      caucus they sat with. Measured over the 13.6M words where both are known,
-      they are written the same way in 4.5%, differ in wording but not in
-      political camp in 76.8%, and fall in different camps in 18.7% — of which
+      caucus they sat with. Measured over the 14.7M words where both are known,
+      they are written the same way in 9.2%, differ in wording but not in
+      political camp in 72.0%, and fall in different camps in 18.9% — of which
       98% is a provincially-elected senator sitting with a national caucus, the
       thing the ticket alone cannot tell you. Genuine floor-crossing between two
-      named national camps is 0.34%.
+      named national camps is 0.31%.
 - [x] **Recover 2000–2004 from the web archive.** The Senate's own bloc-roster
-      page, long dead: 905 senator-rows over 13 captures, May 2000 to June 2004,
+      page, long dead: 1,112 senator-rows over 16 captures, May 2000 to June 2004,
       by `scripts/fetch_archived_blocs.py`. All 91 pre-2005 sittings fall within
-      six months of a capture. 903 of the 905 name someone in office that day;
+      six months of a capture. 1,110 of the 1,112 name someone in office that day;
       the two that do not are the page lagging the chamber and are kept as
       printed. The pages are broken HTML in three specific ways, each handled by
       name rather than by loosening the parse.
 - [x] **Date eleven more caucuses, and say what was searched for the rest.**
       Ten start dates now rest on the archived pages or on the chamber naming
       the caucus in debate, each with the verbatim sentence. Two caucus names
-      turned out to cover two separate lives. Seven still have no start, and the
+      turned out to cover two separate lives, which makes three in the file
+      counting Unidad Ciudadana, dated earlier. Seven still have no start, and the
       file now records what was looked for — Tucumán's senator is listed among
       the "presidentes de bloque" in 2009, so she headed a caucus the record
       never names.
-- [x] **Mark the misdated readings instead of hiding them.** 3,206 of 23,007
-      roll-call readings (13.9%), over 262 of 320 roll calls, name a caucus that
-      did not exist that day. Every one is kept and marked. 1,046 more cannot be
-      checked at all and are marked differently.
-- [x] **One observation file.** `bloque_observado.csv`: 23,118 rows, one per day
-      one senator's caucus was actually recorded, 333 dates, 368 senators. No
+- [x] **Mark the misdated readings instead of hiding them.** 3,043 of the 22,213
+      roll-call readings that name a caucus (13.7%), over 311 of 320 roll calls,
+      name one that did not exist that day. Every one is kept and marked. 1,046
+      more cannot be checked at all and are marked differently.
+- [x] **One observation file.** `bloque_observado.csv`: 23,325 rows, one per day
+      one senator's caucus was actually recorded, 336 dates, 369 senators. No
       interpolation, no spells. The resolver takes the nearest observation and
       writes the distance in days beside it.
 - [x] **Re-verify.** Gold F1 1.00 (124/125), annotations 36/36, audit invariants
@@ -630,7 +638,7 @@ phase brings the caucus up to that standard.
 - Caucus (bloque) mapping — **done, 2000–2024** (see Phase 16). What is still
   open: seven caucuses have no established start, so their readings can never
   be checked; a senator who changed caucus between two observations changes on
-  the later one rather than the day they moved; and 2.7% of identified
+  the later one rather than the day they moved; and 2.4% of identified
   senators' floor words get no caucus at all. Two leads were checked and came
   up empty — Wikidata holds the field for dated caucus membership but leaves it
   blank for Argentine senators of this period, and the cross-national
@@ -638,10 +646,76 @@ phase brings the caucus up to that standard.
   rather than the caucus.
 - Cámara de Diputados (second chamber)
 - Formal writeup / dataset publication (corpus is citable via SOURCES.md)
-- Optional: the 217 remaining unresolved blocks are invited outside speakers
+- Optional: the 218 remaining unresolved blocks are invited outside speakers
   at public hearings. Typing them would need the transcripts' own
   introductions of each guest; worth it only if guest speech is ever a
   research target.
+
+## Phase 17 — eleven readers sent to look for trouble (August 2026)
+
+Nine of the fifteen phases before this one were checked only by the person who
+wrote them. This one was not: a ninth blind read of 115 pages drawn page by page,
+three independent audits of the caucus work of Phase 16, and two passes
+recomputing every number in the documents against the files on disk.
+
+- [x] **Ninth blind read: 105 of 115 agree on the speaker (parser 0.4.18).** The
+      sample is drawn page by page rather than turn by turn — 5 pages a year,
+      none of them on a page any earlier round used. Ten pages carry no printed
+      label because the speech began pages earlier, and every reader refused to
+      guess; all ten were checked by hand and the parser's speaker is the one who
+      opened that turn. On the two longest runs the intervening pages were read
+      to confirm no label was skipped. One of the ten was a reader's own slip.
+      Evidence in `reference/verification/blind_read_115_0418.csv`.
+- [x] **The punctuation of a sentence was standing on its own (0.4.19).** An
+      italicised word inside a sentence reaches the parser as its own piece and
+      the mark that closes it as another, and every piece was joined with a
+      space: "del  default . Por ese motivo" for a page that reads "del default.
+      Por ese motivo". 4,653 marks in 3,175 turns come back to their word, and
+      3,647 of them stop being counted as words by anything splitting on spaces.
+      The 1,035 that remain are the page's own spacing. Nothing verified
+      regressed: gold F1 1.00 (124/125), annotations 36/36, and the eight earlier
+      blind reads still stand — no speaker changed.
+- [x] **The archived roster carried a dead address on all of its rows.** The
+      offline path of `fetch_archived_blocs.py` wrote the literal word "(cached)"
+      where the address goes, so every row pointed at
+      `…/20000525090352id_/(cached)`. Each capture now keeps the address it came
+      from beside it, and the offline path stops rather than inventing one. The
+      re-run also found the archive now serves four captures it did not before:
+      **1,112 senator-rows over 16 captures**, up from 905 over 13.
+- [x] **A caucus that lived twice was given one life.** Unidad Ciudadana sat
+      2017–2019, was absorbed, and formed again when the Frente de Todos bloc
+      split on 12 May 2022. `build_bloc_observations.py` folded the two into one
+      span running from the first start to the first close, so **163 readings
+      from May 2022 on were marked as naming a caucus that did not exist** —
+      including the sitting that attests it. `map_blocs.py` had this right
+      already. Misdated readings fall from 3,206 to 3,043.
+- [x] **A quoted sentence that was cut in the middle of a word.** The evidence for
+      Unidad Ciudadana's second life quoted "el nuevo bloque unidad ciudadana";
+      the page reads "la presidenta **del** nuevo bloque Unidad Ciudadana", and
+      the quote began after the "d". It matched as a search string, which is why
+      it survived. Corrected, along with the note's claim that the chamber
+      "called" the caucus that.
+- [x] **Numbers recomputed against the files.** Corrected: unattributed text
+      1,207 → 1,204; unresolved blocks 217 → 218; roll calls carrying a misdated
+      reading 262 of 320 → 311 of 320; the first-phase blind-read total 1,798 →
+      1,848 (50+300+500+998, an arithmetic slip the rest of the document had
+      already corrected); sessions where someone says "bloque" on the floor 511
+      of 559 → 503 of 558; the radical/Cambiemos share before 2019 9–25% → 9–27%
+      and the provincial share to 2016 30–46% → 27–46% (2004 broke both ceilings);
+      four repair counters in SOURCES.md that later re-parses had nudged.
+- [x] **One claim could not be reproduced and has been replaced.** "The cover page
+      names two or more presiding officers in 282 of the 559 sessions" could not
+      be rebuilt from anything in the repository — three attempts landed between
+      30 and 266. `scripts/count_presiding.py` now counts it in the open: **266 of
+      the 526 sittings whose cover page says who presided**, with 33 saying
+      nothing.
+- [ ] **The quotes in `blocs_manual.csv` are not verbatim, by construction.** All
+      26 Spanish quotations were captured through an accent-stripping,
+      lower-casing search, so none reproduces what the page prints. 21 are exact
+      substrings of the transcript, 3 differ only in dropped commas, 1 elides with
+      "…" on purpose and 1 comes from the archived roster rather than a sitting.
+      Nothing is wrong in substance; the convention is simply undocumented, and a
+      reader has no way to tell a normalised quote from a faithful one.
 
 ## Explicitly not building
 

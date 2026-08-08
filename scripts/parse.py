@@ -51,7 +51,7 @@ from pathlib import Path
 import pandas as pd
 import pdfplumber
 
-PARSER_VERSION = "0.4.18"
+PARSER_VERSION = "0.4.19"
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
@@ -1324,6 +1324,23 @@ def clean_speaker_names(blocks):
     return blocks
 
 
+# Punctuation that never takes a space before it on a printed page. A word set
+# in italics inside a sentence — a foreign word, a newspaper's name, a Latin
+# phrase — arrives as its own piece, and the comma or full stop that follows it
+# is back in the body face, so it arrives as yet another piece. Joining every
+# piece with a space put 4,653 of these marks adrift from the word they close.
+NEVER_SPACED_BEFORE = ".,;:!?)…»"
+
+
+def rejoin(text, piece):
+    """Put two pieces of one turn back together with the spacing the page shows."""
+    if not text or not piece:
+        return text + piece
+    if text.endswith(" ") or piece.startswith(" ") or piece[0] in NEVER_SPACED_BEFORE:
+        return text + piece
+    return text + " " + piece
+
+
 def consolidate_speaker_blocks(blocks):
     """Merge consecutive same-speaker speech into turns.
 
@@ -1354,7 +1371,7 @@ def consolidate_speaker_blocks(blocks):
                 nxt["pages"] = sorted(set(nxt["pages"]) | set(b["pages"]))
                 handed_forward += 1
             elif cur is not None:
-                cur["text"] += " " + b["text"].strip()
+                cur["text"] = rejoin(cur["text"], b["text"].strip())
                 cur["pages"] = sorted(set(cur["pages"]) | set(b["pages"]))
                 inline_merged += 1
             else:
@@ -1369,7 +1386,10 @@ def consolidate_speaker_blocks(blocks):
             out.append(b)
             continue
         if cur is not None and speaker == cur.get("speaker") and b.get("turn_id") == cur.get("turn_id"):
-            cur["text"] += " " + b["text"]
+            # the rest of a sentence broken by an italic word opens with the
+            # punctuation that closes it, and that mark belongs to the word
+            cur["text"] += (b["text"] if b["text"][:1] in NEVER_SPACED_BEFORE
+                            else " " + b["text"])
             cur["pages"] = sorted(set(cur["pages"]) | set(b["pages"]))
         else:
             if cur is not None:

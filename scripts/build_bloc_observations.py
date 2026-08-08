@@ -137,16 +137,41 @@ def resolve_person(printed, when, roster):
 
 
 def load_lives():
-    """When each caucus is known to have existed, and which ones span everything."""
+    """When each caucus is known to have existed, life by life.
+
+    A caucus can have lived more than once: Unidad Ciudadana sat from 2017 to
+    2019, was absorbed into the Frente de Todos bloc, and formed again when that
+    bloc split in May 2022. Folding the two into one span running from the first
+    start to the last close makes the whole second life impossible, which is how
+    163 readings of it — including the sitting that attests the caucus — came to
+    be marked as naming a caucus that did not exist. map_blocs.py keeps the
+    lives apart already; this now does too.
+    """
     b = pd.read_csv(LIVES)
     standing = set(b[b.basis == "standing bloc"].bloc)
-    start = b.dropna(subset=["period_start"]).groupby("bloc").period_start.min().to_dict()
-    end = b.dropna(subset=["period_end"]).groupby("bloc").period_end.max().to_dict()
-    undated = set(b[b.period_start.isna()].bloc) - standing
-    return start, end, undated
+    lives = {}
+    for bloc, first, last in zip(b.bloc, b.period_start, b.period_end):
+        lives.setdefault(bloc, []).append(
+            (None if pd.isna(first) else first, None if pd.isna(last) else last))
+    undated = {bloc for bloc, spans in lives.items()
+               if all(first is None for first, _ in spans)} - standing
+    return lives, undated
 
 
-def from_rollcalls(roster, start, end, undated):
+def was_alive(bloc, day, lives):
+    """Was the caucus alive that day, by any one of the lives it is known to have had?
+
+    A caucus nobody has dated cannot be contradicted, and neither can a life
+    left open at one end; both count as alive.
+    """
+    spans = lives.get(bloc)
+    if spans is None:
+        return True
+    return any((first is None or day >= first) and (last is None or day <= last)
+               for first, last in spans)
+
+
+def from_rollcalls(roster, lives, undated):
     people = {n: (i, s) for n, i, s in zip(roster.full, roster.ID, roster.SENADOR)}
     r = pd.read_csv(ROLLCALL)
     r = r[r.bloque.notna() & (r.bloque.str.strip() != "")
@@ -154,9 +179,7 @@ def from_rollcalls(roster, start, end, undated):
 
     def status(row):
         b, f = row.bloque, row.fecha
-        if b in start and f < start[b]:
-            return "acta_anacronica"
-        if b in end and f > end[b]:
+        if not was_alive(b, f, lives):
             return "acta_anacronica"
         return "acta_sin_control" if b in undated else "acta"
 
@@ -228,8 +251,8 @@ def from_snapshots(people):
 
 def main():
     people = load_people()
-    start, end, undated = load_lives()
-    parts = [from_rollcalls(people, start, end, undated), from_snapshots(people)]
+    lives, undated = load_lives()
+    parts = [from_rollcalls(people, lives, undated), from_snapshots(people)]
     o = pd.concat([p for p in parts if len(p)], ignore_index=True)
     o["familia"] = o.bloque.map(family)
     o = o.sort_values(["fecha", "person_name"]).reset_index(drop=True)

@@ -50,17 +50,19 @@ historically. The resolved-speaker table names the column `elected_ticket`
 for this reason, and the resolver prints the caveat on every run. Any grouping
 built on it is a grouping of electoral labels.
 
-How far the two actually diverge, measured over the 13.6 million words of floor
-speech where both are known: the ticket and the caucus are written the same way
-in 4.5%; written differently but meaning the same political camp in 76.8%,
-which is mostly the peronist bloc renaming itself; and falling in different
-camps in 18.7%. That last part is the whole value of holding both. Almost all
-of it — 98% — is a senator elected on a **provincial alliance** sitting with a
-**national caucus**: elected for the Frente Jujeño, sits with the radicals;
-elected for Chubut Somos Todos, sits with the Frente de Todos. The ticket does
-not say which side of the chamber someone is on. Genuine floor-crossing between
-two named national camps is 0.34%, so the ticket is not *wrong* about the
-peronist/radical divide — it is simply silent about everyone else.
+How far the two actually diverge, measured over the 14.7 million words of floor
+speech by identified senators where both are known, grouping labels into the
+four party families the notebook uses: the ticket and the caucus are written the
+same way in 9.2%; written differently but meaning the same political camp in
+72.0%, which is mostly the peronist bloc renaming itself; and falling in
+different camps in 18.9%. That last part is the whole value of holding both.
+Three quarters of it is a senator elected on a **provincial alliance** sitting
+with a **national caucus**: elected for the Frente Jujeño, sits with the
+radicals; elected for Chubut Somos Todos, sits with the Frente de Todos. The
+ticket does not say which side of the chamber someone is on. Genuine
+floor-crossing between two named national camps is 0.31%, so the ticket is not
+*wrong* about the peronist/radical divide — it is simply silent about everyone
+else.
 
 ### Where the caucus does come from, and how far it can be trusted
 
@@ -86,9 +88,9 @@ Three limits, all measured:
   bloc throughout. A senator who crossed the floor mid-term therefore shows one
   unbroken spell.
 
-  Checked against the dated caucus lives below, **3,206 of 23,007 readings
-  (13.9%), spread over 262 of the 320 roll calls, name a caucus that did not
-  exist on the day of the vote.** Every one is kept and marked
+  Checked against the dated caucus lives below, **3,043 of the 22,213 readings
+  that name a caucus (13.7%), spread over 311 of the 320 roll calls, name one
+  that did not exist on the day of the vote.** Every one is kept and marked
   `acta_anacronica` rather than dropped or repaired: dropping them would hide
   how much of the Senate's own record is like this, and repairing them would
   mean inventing what the senator sat in instead, which no record says.
@@ -103,7 +105,7 @@ Roll-call records begin in February 2005, and 12.9% of the corpus's floor
 speech is older than that. The Senate itself published a page listing every
 senator under their caucus through those years. The page is long dead and the
 Senate keeps no archive of it, but the Internet Archive captured it, and
-`scripts/fetch_archived_blocs.py` recovers **905 senator-rows from 13 captures
+`scripts/fetch_archived_blocs.py` recovers **1,112 senator-rows from 16 captures
 running 25 May 2000 to 19 Jun 2004** — which closes the gap almost exactly
 against roll-call records starting the following February. All 91 pre-2005
 sittings in the corpus fall within six months of a capture, and 79% of their
@@ -123,7 +125,7 @@ Two limits, both stated on every row rather than smoothed over:
   dating it to the day is not, and the readings carry a capture date so the
   distance is always visible.
 * **The page lags, provably.** Every recovered name was checked against the
-  roster's own mandate dates: 903 of 905 name someone in office that day. The
+  roster's own mandate dates: 1,110 of 1,112 name someone in office that day. The
   two that do not are a senator still listed four days after his term ended and
   another listed a month before his began. Both are kept as printed.
 
@@ -136,8 +138,8 @@ check them against.
 ### One file holds every observation
 
 `scripts/build_bloc_observations.py` puts both sources in
-`reference/senado/bloque_observado.csv`: **23,118 rows, one per day one
-senator's caucus was actually recorded**, over 333 dates and 368 senators, each
+`reference/senado/bloque_observado.csv`: **23,325 rows, one per day one
+senator's caucus was actually recorded**, over 336 dates and 369 senators, each
 with the record it came from and how far it can be trusted. It interpolates
 nothing and collapses nothing into spells. `resolve_speakers.py` then takes,
 for each sitting, the observation nearest that senator — writing the caucus,
@@ -313,8 +315,8 @@ results:
   dateline in a sitting whose font has no character map, where "Pág. 5" survives
   as little more than its accent and its digit and the strip that looks for the
   printed dateline cannot see it; the digital edition's link back to the contents
-  page, glued onto the end of 254 turns; the footnote's own raised number, left
-  stranded at the end of 466 turns once its text was cut; and 41 turns that
+  page, glued onto the end of 255 turns; the footnote's own raised number, left
+  stranded at the end of 468 turns once its text was cut; and 49 turns that
   carried no word at all, just a stray "." or "—" the style grouping left behind.
   Each is counted in its own column of `parse_stats.csv`, so the figures above
   can be recomputed from the run rather than taken on faith.
@@ -360,7 +362,7 @@ results:
   is the only one that looks at the FIRST and last characters of a turn rather
   than inside it, which is where every text fault found so far has lived. It
   began at 44 and the difference was faults of one family, all repaired in
-  0.4.15–0.4.18 and described below. It also reports two counts kept as
+  0.4.15–0.4.19 and described below. It also reports two counts kept as
   observations rather than faults: 71 turns of three characters or fewer (a
   senator answering "20." or the chair "E") and 131 that end on a dash or comma,
   most of them in the 2003 impeachment sittings, where a turn interrupted by a
@@ -479,7 +481,7 @@ It has been done seven times, on seven samples that do not overlap.
   times; and in one the label stands on the very page supplied, which the reader
   mistook for a different page.
   ([reference/verification/blind_read_1000.csv](reference/verification/blind_read_1000.csv))
-* **500 further turns**, 20 per year, none of them among the first 1,798, drawn
+* **500 further turns**, 20 per year, none of them among the first 1,848, drawn
   after the corpus was re-parsed with the spaces restored — so this round reads
   parser 0.4.11's output rather than its predecessor's. Agreement on the speaker
   in **498 of 500**, no disagreement. The two left over are the repeated-phrase
@@ -512,6 +514,36 @@ It has been done seven times, on seven samples that do not overlap.
   2000 has no unread turn left at all, and 2002 yielded 12, so their shortfall
   went to the years with turns to spare.
   ([reference/verification/blind_read_1000_0413b.csv](reference/verification/blind_read_1000_0413b.csv))
+* **115 further pages**, 5 per year, none of them among the first 5,298 and none
+  on a page any earlier round had been given. Agreement on the speaker in
+  **105 of 115**. The ten left over are of a kind the earlier rounds did not
+  throw up: the reader was given the opening of a block that continues a speech
+  begun pages earlier, so no label is printed anywhere on the page and the reader
+  refused, rightly, to supply a name. All ten were checked afterwards — the
+  parser's speaker is the one who opened that turn, and on the two longest runs
+  the intervening pages were read to confirm no label was skipped in between. One
+  of the ten is a reader's own slip: the phrase is on the page, three labels
+  down. The round found the spacing defect described below. Two years could fill
+  nothing at all: 2000 has no unread turn left, and 2002 none on an unread page.
+  ([reference/verification/blind_read_115_0418.csv](reference/verification/blind_read_115_0418.csv))
+
+**The ninth round found the punctuation of a sentence standing on its own.** A
+reader was given a turn whose recorded text read "…la salida del  default . Por
+ese motivo…" and reported that the page prints "default." with nothing between
+the word and the stop. It does. A word set in italics inside a sentence — a
+foreign word, a newspaper's name, a Latin phrase — reaches the parser as a piece
+of its own, because the change of face ends the piece before it; the comma or
+full stop that closes the word is back in the body face, so it reaches the parser
+as yet another piece. Every piece was being joined to the turn with a space,
+which put a space on both sides of the italicised word. Parser 0.4.19 joins each
+piece the way the page sets it — no space where the piece opens with punctuation
+that never takes one, and none where the text already ends in one. **4,653 marks
+of punctuation in 3,175 turns come back to the word they close** (2,547 commas,
+1,646 full stops, and the rest colons, semicolons, question and exclamation marks
+and closing parentheses), and 3,647 of them stop being counted as words in their
+own right by anything that splits on spaces. 1,035 spaced marks remain and are
+the page's own: an em dash closing a parenthetical, an ellipsis, and the odd
+space the typist left before a stop.
 
 **The eighth round found a word broken in half.** One reader was given a turn
 whose recorded text began "i la Argentina debe ser tomada en su totalidad?" and
@@ -539,7 +571,7 @@ part of what someone said. Parser 0.4.13 gives each back:
 * **The dash that introduces a note stayed on the turn above it.** A note is
   printed "— Se vota."; in many files that dash is stored at the end of the line
   before it, so the turn it follows appeared to end on a dangling dash. The dash
-  is stored where it belongs 17,912 times and left behind 9,003 — 5.9% of all
+  is stored where it belongs 17,912 times and left behind 9,004 — 5.9% of all
   turns — and in only 8 of those does the note carry a dash of its own, which is
   what shows the stray one is the same dash rather than a second.
 * **The colon that closes a note opened the next turn.** "…cuyos textos se
@@ -602,14 +634,16 @@ these could have been found by re-reading the 36 annotated pages. The 500 and th
 report — the 500 read after the space fix turned up the cut-off note above, the
 1,000 after that agreed on every speaker while still turning up three pieces of
 editorial punctuation kept as speech, the 1,000 after that turned up nothing at
-all, and the latest 1,000 turned up the broken word above.
+all, the 1,000 after that turned up the broken word above, and the 115 read page
+by page turned up the spacing defect above.
 
 That is the point of running it again, and the two things it measures have come
-apart. **Who is speaking is settled**: 5,348 turns read blind across eight
-rounds, agreement in all but twelve, and every one of those twelve resolved in
-the parser's favour by hand — all of them pages that print the quoted phrase
-more than once. The last two rounds, 2,000 turns between them, left only two
-cases needing any check at all. **What the turn says is still being corrected**,
+apart. **Who is speaking is settled**: 5,463 turns read blind across nine
+rounds, agreement in all but twenty-two, and every one of those twenty-two
+resolved in the parser's favour by hand — pages that print the quoted phrase more
+than once, and pages that print no label at all because the speech began earlier.
+The ninth round is the first drawn page by page rather than turn by turn, which
+is why that second kind appears in it and in none before. **What the turn says is still being corrected**,
 in smaller and smaller pieces — a dash, a colon, a section number, and now two
 letters — found only because readers are asked to report anything on the page
 that is not speech, and to answer even when the speaker is not in doubt. All 27
