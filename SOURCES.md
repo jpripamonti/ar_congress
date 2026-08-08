@@ -155,7 +155,9 @@ cannot be checked, and 2.7% none at all.
 naming its evidence, the sitting that attests it, and how far that evidence
 goes: 65 rows, because three caucus names cover two separate lives each, of
 which 40 carry `confidence: high`, 20 `medium` and 4 `low`. Those dates are
-what every roll-call reading is checked against.
+what every roll-call reading is checked against. Every sentence the file quotes
+is quoted as the source prints it, accents and capitals included, so it can be
+found by searching for it — 24 in the transcripts and 3 in the archived roster.
 
 The evidence is of four kinds, and the file says which was used for each:
 

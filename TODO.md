@@ -709,13 +709,16 @@ recomputing every number in the documents against the files on disk.
       30 and 266. `scripts/count_presiding.py` now counts it in the open: **266 of
       the 526 sittings whose cover page says who presided**, with 33 saying
       nothing.
-- [ ] **The quotes in `blocs_manual.csv` are not verbatim, by construction.** All
-      26 Spanish quotations were captured through an accent-stripping,
-      lower-casing search, so none reproduces what the page prints. 21 are exact
-      substrings of the transcript, 3 differ only in dropped commas, 1 elides with
-      "…" on purpose and 1 comes from the archived roster rather than a sitting.
-      Nothing is wrong in substance; the convention is simply undocumented, and a
-      reader has no way to tell a normalised quote from a faithful one.
+- [x] **Every quotation in `blocs_manual.csv` now reads as the record prints it.**
+      All of them had been captured through an accent-stripping, lower-casing
+      search, and what was pasted back was the search string rather than the
+      sentence it found — "desde el bloque del Frente Civico Jujeno" for a page
+      that prints "Jujeño". Nothing was wrong in substance, but a quotation that
+      cannot be found by quoting it is not evidence a reader can check, and one
+      of them had been cut in the middle of a word. 17 rewritten against the
+      transcripts and 3 against the archived roster; the remaining two are single
+      words the notes discuss rather than quote. **All 27 now appear verbatim in
+      the source they cite**, 24 in the transcripts and 3 in the roster.
 
 ## Explicitly not building
 
