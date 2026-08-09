@@ -157,10 +157,7 @@ goes: 65 rows, because three caucus names cover two separate lives each, of
 which 40 carry `confidence: high`, 20 `medium` and 4 `low`. Those dates are
 what every roll-call reading is checked against. Every sentence the file quotes
 is quoted as the source prints it, accents and capitals included, so it can be
-found by searching for it — 32 in the transcripts and 3 in the archived roster.
-The one exception says so in its own note: the dashes around it are set in a
-symbol font the file leaves unmapped, so it matches the page but not the parsed
-text.
+found by searching for it — 33 in the transcripts and 3 in the archived roster.
 
 The evidence is of four kinds, and the file says which was used for each:
 
@@ -303,7 +300,7 @@ the corpus, drawn from 24 of 559 sittings. `scripts/audit_parse.py` covers the
 rest by checking, on every session, things that must never happen. Current
 results:
 
-- **Page apparatus inside a speech turn: 1 occurrence** in 152,565 turns (a
+- **Page apparatus inside a speech turn: 1 occurrence** in 152,553 turns (a
   footer line that landed mid-sentence in the 7 May 2014 sitting). Mastheads,
   datelines, attendance rolls, section headers and the appendix-pointer footnote
   are otherwise absent from speech, which is what the positional header and
@@ -367,7 +364,7 @@ results:
   is the only one that looks at the FIRST and last characters of a turn rather
   than inside it, which is where every text fault found so far has lived. It
   began at 44 and the difference was faults of one family, all repaired in
-  0.4.15–0.4.20 and described below. It also reports two counts kept as
+  0.4.15–0.4.21 and described below. It also reports two counts kept as
   observations rather than faults: 71 turns of three characters or fewer (a
   senator answering "20." or the chair "E") and 131 that end on a dash or comma,
   most of them in the 2003 impeachment sittings, where a turn interrupted by a
@@ -560,6 +557,25 @@ quotation marks came out spaced away from both of them — "caso " strawberry ",
 for a page that prints "caso "strawberry","". The same test now runs against the
 opening marks as well. Between them the two versions stop 3,785 marks of
 punctuation being counted as words by anything that splits on spaces.
+
+**Fourteen characters the fonts never declared are now readable.** Chasing one of
+those quotations found 1,234 characters sitting in Unicode's private-use range,
+where a glyph lands when the file uses a font whose encoding it never states.
+They are not exotic: the WordPerfect-era sittings draw ordinary typography from
+Symbol, SymbolMT and WordPerfect's MathA, so the ordinal of "5° Reunión", the
+dash after a speaker's label, the bullet of a printed list and even the "P" and
+the "g" of a running head all arrived as codepoints with no meaning. Left in,
+they sat inside words and sentences — "bloque unipersonal el bloque Misiones".
+0.4.21 gives each of the fourteen the character the page shows, settled by what
+surrounds it rather than by the font's nominal table, since these files use a
+nominally Greek codepoint to print an ordinal. Nothing in the range is mapped on
+faith: two codepoints of four occurrences were traced to their page before being
+read as "P" and "g", and anything not on the list is still treated as unmapped.
+Restoring the label dash lets the existing repairs see labels they had been
+blind to, so the corpus loses 12 speech blocks and 27 rows to merges and to page
+matter now recognisable as page matter. Verified after re-parsing: gold F1 1.00
+(124/125), annotations 36/36, 5 turns opening mid-word, and no private-use
+character left anywhere in the corpus.
 
 **The eighth round found a word broken in half.** One reader was given a turn
 whose recorded text began "i la Argentina debe ser tomada en su totalidad?" and

@@ -758,11 +758,22 @@ seven found something.
       appeared, not four — the fourth is a "página en construcción" with nobody
       on it — and nine of the ninth round's ten open cases are unlabelled pages,
       the tenth being a reader's own slip.
-- [ ] **1,234 characters of the corpus are glyphs no font could map**, sitting in
-      the private-use range: 654 of one, 263 of a dash, and the rest scattered.
-      They land inside words and sentences — "bloque unipersonal el bloque
-      Misiones" — and nothing currently maps them back to the characters the page
-      shows. Found while checking a quotation.
+- [x] **1,234 characters of the corpus were glyphs no font could map (0.4.21).**
+      They sat in the private-use range, where a glyph lands when the file draws
+      it from a font whose encoding it never declares, and they landed inside
+      words and sentences — "bloque unipersonal el bloque Misiones". Fourteen
+      codepoints account for all of them, and none is exotic: the WordPerfect-era
+      sittings print ordinary typography from Symbol, SymbolMT and MathA, so the
+      ordinal of "5° Reunión", the dash after a speaker's label, a list's bullet
+      and even the "P" and "g" of a running head arrived meaningless. Each is now
+      given the character its page shows, settled by what surrounds it rather than
+      by the font's nominal table — these files use a nominally Greek codepoint
+      for an ordinal — and anything outside the fourteen is still treated as
+      unmapped. **Nothing in the private-use range is left in the corpus.**
+      Restoring the label dash lets repairs keyed on it see labels they had been
+      blind to: 12 speech blocks and 27 rows fewer, to merges and to page matter
+      now recognisable as such. Gold F1 1.00 (124/125), annotations 36/36, 5 turns
+      opening mid-word. Found while checking a quotation.
 
 ## Explicitly not building
 
