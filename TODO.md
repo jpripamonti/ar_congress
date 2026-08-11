@@ -763,17 +763,27 @@ seven found something.
       it from a font whose encoding it never declares, and they landed inside
       words and sentences — "bloque unipersonal el bloque Misiones". Fourteen
       codepoints account for all of them, and none is exotic: the WordPerfect-era
-      sittings print ordinary typography from Symbol, SymbolMT and MathA, so the
+      sittings print ordinary typography from Symbol, SymbolMT, MathA and
+      Phonetic, and one sitting from a private slot of Times New Roman, so the
       ordinal of "5° Reunión", the dash after a speaker's label, a list's bullet
-      and even the "P" and "g" of a running head arrived meaningless. Each is now
-      given the character its page shows, settled by what surrounds it rather than
-      by the font's nominal table — these files use a nominally Greek codepoint
-      for an ordinal — and anything outside the fourteen is still treated as
-      unmapped. **Nothing in the private-use range is left in the corpus.**
-      Restoring the label dash lets repairs keyed on it see labels they had been
-      blind to: 12 speech blocks and 27 rows fewer, to merges and to page matter
-      now recognisable as such. Gold F1 1.00 (124/125), annotations 36/36, 5 turns
-      opening mid-word. Found while checking a quotation.
+      and even the "P" and "g" of a running head arrived meaningless. Thirteen are
+      now given the character their own page shows, settled by what surrounds them
+      rather than by the font's nominal table — these files use a nominally Greek
+      codepoint for an ordinal. The fourteenth is removed instead: it prints an
+      upside-down A inside the word "categoría", once, and keeping it would break
+      the word. Five of the fourteen rest on ten occurrences or fewer and are
+      flagged as the weaker readings; two others, the "P" and the "g", never reach
+      the text at all and are read only so the header strip can recognise a
+      running head. A scan of all 559 source PDFs closes the list at exactly these
+      fourteen, 2,676 occurrences, of which 1,234 reached the text.
+      **Nothing in the private-use range is left in the corpus.** Restoring the
+      label dash lets repairs keyed on it see labels they had been blind to: in
+      two sittings, 15 lines of page matter are read and dropped and the 24
+      half-turns they were splitting rejoin into 12 — 27 rows and 12 speech blocks
+      fewer, same speaker, same turn and same words on both sides of all 13 joins
+      (`reference/verification/glyph_map_diff_0421.csv`); the other 556 sittings
+      are untouched. Gold F1 1.00 (124/125), annotations 36/36, 5 turns opening
+      mid-word. Found while checking a quotation.
 
 ## Explicitly not building
 

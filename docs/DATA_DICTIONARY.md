@@ -51,7 +51,7 @@ To get from a label to a person, join `speakers.parquet` on
 | `chapter`, `chapter_title` | The numbered section of the sitting's agenda the passage falls under, and its title. Present in 530 of the 559 sittings; the rest print no section numbering the parser can read. |
 | `session_id` | The sitting: date plus its number within the year, e.g. `2014-05-07_r07`. |
 | `session_date` | The date of the sitting, `YYYY-MM-DD`. |
-| `session_type` | What kind of sitting, as the Senate names it: `ORDINARIA` (159,026 rows), `ESPECIAL` (42,040), `EXTRAORDINARIA` (12,285), `INFORMATIVA ESPECIAL` (7,095 — the cabinet chief's report to the chamber), `TRIBUNAL DE JUICIO POLITICO` (6,792 — impeachment trials, where the speakers are largely not senators), `ASAMBLEA` (5,875 — both chambers together, where the President of the Nation speaks), `PREPARATORIA` (2,357), and five smaller kinds. **Mixing them without thinking will mislead you**: an impeachment trial and an ordinary sitting are not the same kind of speech. |
+| `session_type` | What kind of sitting, as the Senate names it: `ORDINARIA` (159,001 rows), `ESPECIAL` (42,040), `EXTRAORDINARIA` (12,285), `INFORMATIVA ESPECIAL` (7,095 — the cabinet chief's report to the chamber), `TRIBUNAL DE JUICIO POLITICO` (6,792 — impeachment trials, where the speakers are largely not senators), `ASAMBLEA` (5,875 — both chambers together, where the President of the Nation speaks), `PREPARATORIA` (2,357), and five smaller kinds. **Mixing them without thinking will mislead you**: an impeachment trial and an ordinary sitting are not the same kind of speech. |
 | `sesion`, `reunion` | The Senate's own two numberings of the sitting, as printed on its cover. |
 
 **Where it came from**

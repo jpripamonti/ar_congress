@@ -1,0 +1,14 @@
+case,session,pdf,pages,speech_blocks_before,speech_blocks_after,speaker_before,speaker_after,turn_before,turn_after,words_before,words_after,words_identical,page_matter_dropped,opening_words
+1,2002-08-22_r20,2002-08-22_r20_EN_MINORIA.pdf,3 4,1,1,Sr. Presidente (López Arias),Sr. Presidente (López Arias),4.0,4.0,30,30,yes,22 de agosto de 2002 Versión provisional - sesión en minoría,Por Secretaría me informan que hay 37 señores senadores en la casa
+2,2002-08-22_r20,2002-08-22_r20_EN_MINORIA.pdf,4 5,1,1,Sr. Presidente (López Arias),Sr. Presidente (López Arias),13.0,13.0,5,5,yes,22 de agosto de 2002 Versión provisional - sesión en minoría,Por Secretaría se tomará lista
+3,2008-08-06_r12,2008-08-06_r12_ORDINARIA.pdf,10 11,2,1,Sr. Prosecretario (Canals),Sr. Prosecretario (Canals),4.0,4.0,1047,1047,yes,Pág. 11,Mensajes solicitando acuerdo Nº 1000 08 para promover al grado inmediato superior
+4,2008-08-06_r12,2008-08-06_r12_ORDINARIA.pdf,11 12,2,1,Sr. Presidente,Sr. Presidente,5.0,5.0,657,657,yes,Pág. 12,Plan de labor parlamentaria para la sesión del día 6 8 08
+5,2008-08-06_r12,2008-08-06_r12_ORDINARIA.pdf,13,0,0,,,,,0,0,yes,Pág. 13,
+6,2008-08-06_r12,2008-08-06_r12_ORDINARIA.pdf,13 14,2,1,Sr. Pichetto,Sr. Pichetto,21.0,21.0,163,163,yes,Pág. 14,Señor presidente estuve viendo previamente estos proyectos y ninguno de ellos merece
+7,2008-08-06_r12,2008-08-06_r12_ORDINARIA.pdf,14 15,2,1,Sr. Presidente,Sr. Presidente,31.0,31.0,12,12,yes,Pág. 15,Lo dejamos reservado en mesa Tiene la palabra la señora senadora Fellner
+8,2008-08-06_r12,2008-08-06_r12_ORDINARIA.pdf,15 16,2,1,Sr. Pichetto,Sr. Pichetto,46.0,46.0,49,49,yes,Pág. 16,Señor presidente solicito que el proyecto presentado por el senador por Río
+9,2008-08-06_r12,2008-08-06_r12_ORDINARIA.pdf,16 17,2,1,Sr. Rossi,Sr. Rossi,56.0,56.0,57,57,yes,Pág. 17,Señor presidente tal como se acordara recién con el bloque de la
+10,2008-08-06_r12,2008-08-06_r12_ORDINARIA.pdf,17 18,2,1,Sr. Prosecretario (Canals),Sr. Prosecretario (Canals),68.0,68.0,247,247,yes,Pág. 18,Se deja constancia de que En el Orden del Día Nº 327
+11,2008-08-06_r12,2008-08-06_r12_ORDINARIA.pdf,18 19 20 21 22,4,1,Sr. Prosecretario (Canals),Sr. Prosecretario (Canals),68.0,68.0,1947,1947,yes,Pág. 19 || Pág. 20 || Pág. 21,O D 314 08 Beneplácito por la realización de las III Jornadas
+12,2008-08-06_r12,2008-08-06_r12_ORDINARIA.pdf,28 29,2,1,Sr. Ríos,Sr. Ríos,97.0,97.0,384,384,yes,6 de agosto de 2008 Versión provisional - Sesión ordinaria   Pág. 29,Me permiten terminar de hablar Básicamente no estamos asistiendo a la última
+13,2008-08-06_r12,2008-08-06_r12_ORDINARIA.pdf,29 30,2,1,Sra. Negre de Alonso,Sra. Negre de Alonso,105.0,105.0,46,46,yes,6 de agosto de 2008 Versión provisional - Sesión ordinaria   Pág. 30,El inciso g establecería Designar asesores con especialidad en temas tributarios y

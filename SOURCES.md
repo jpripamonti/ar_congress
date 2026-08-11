@@ -318,7 +318,7 @@ results:
   as little more than its accent and its digit and the strip that looks for the
   printed dateline cannot see it; the digital edition's link back to the contents
   page, glued onto the end of 255 turns; the footnote's own raised number, left
-  stranded at the end of 468 turns once its text was cut; and 49 turns that
+  stranded at the end of 469 turns once its text was cut; and 48 turns that
   carried no word at all, just a stray "." or "—" the style grouping left behind.
   Each is counted in its own column of `parse_stats.csv`, so the figures above
   can be recomputed from the run rather than taken on faith.
@@ -342,7 +342,7 @@ results:
   positive.
 - **Text written out twice: 0 sessions.** No document yields more text than it
   prints.
-- **Blocks not findable in the source PDF: 0.421% on average**, 29 sessions above
+- **Blocks not findable in the source PDF: 0.422% on average**, 29 sessions above
   1%, the worst of them the 20 October 2004 file whose mis-mapped symbol font the
   parser deliberately repairs. This figure went UP as the parser improved, and
   the reason is worth stating plainly: where a footnote had been dropped into the
@@ -562,20 +562,44 @@ punctuation being counted as words by anything that splits on spaces.
 those quotations found 1,234 characters sitting in Unicode's private-use range,
 where a glyph lands when the file uses a font whose encoding it never states.
 They are not exotic: the WordPerfect-era sittings draw ordinary typography from
-Symbol, SymbolMT and WordPerfect's MathA, so the ordinal of "5° Reunión", the
-dash after a speaker's label, the bullet of a printed list and even the "P" and
-the "g" of a running head all arrived as codepoints with no meaning. Left in,
-they sat inside words and sentences — "bloque unipersonal el bloque Misiones".
-0.4.21 gives each of the fourteen the character the page shows, settled by what
+Symbol, SymbolMT, WordPerfect's MathA and Phonetic, and one sitting from a
+private slot of Times New Roman, so the ordinal of "5° Reunión", the dash after
+a speaker's label, the bullet of a printed list and even the "P" and the "g" of a
+running head all arrived as codepoints with no meaning. Left in, they sat inside
+words and sentences — "bloque unipersonal el bloque Misiones". 0.4.21 gives
+thirteen of the fourteen the character its own page shows, settled by what
 surrounds it rather than by the font's nominal table, since these files use a
-nominally Greek codepoint to print an ordinal. Nothing in the range is mapped on
-faith: two codepoints of four occurrences were traced to their page before being
-read as "P" and "g", and anything not on the list is still treated as unmapped.
-Restoring the label dash lets the existing repairs see labels they had been
-blind to, so the corpus loses 12 speech blocks and 27 rows to merges and to page
-matter now recognisable as page matter. Verified after re-parsing: gold F1 1.00
-(124/125), annotations 36/36, 5 turns opening mid-word, and no private-use
-character left anywhere in the corpus.
+nominally Greek codepoint to print an ordinal.
+
+Nothing in the range is mapped on faith, and the weaker readings say so. Nine
+rest on dozens to hundreds of occurrences. Five are thin, and each was read off
+its printed page: the ellipsis that ends a trailing-off turn (8 occurrences in
+two sittings); a parenthetical dash drawn from a private slot of Times New Roman
+(9, one sitting); the third of the three codepoints that print an ordinal (10,
+two sittings); a hard space WordPerfect draws as a raised dot, "son las
+reglas·del juego" (once); and the one character the parser removes instead of
+translating — a Symbol codepoint that prints an upside-down A in the middle of
+"categoría", once, in the sitting of 20 October 2004, where keeping it would
+break the word for every reader. Two of the fourteen, the "P" and the "g", never
+reach the text at all: they appear only in the running head, and are read so that
+the header strip can recognise a running head as one. A scan of all 559 source
+PDFs closes the list — 2,676 occurrences of exactly these fourteen codepoints and
+no others, of which 1,234 reached the text — and anything not on the list is
+still treated as unmapped
+([reference/verification/unmapped_glyphs_0421.csv](reference/verification/unmapped_glyphs_0421.csv),
+one row per codepoint with its font, its count and a line of its printed context).
+
+Restoring the label dash lets the existing repairs see labels they had been blind
+to. In two sittings the parser now reads 15 lines of page matter it could not
+read before — a dateline, a page number — and drops them; the 24 half-turns those
+lines had been splitting rejoin into 12. That is the whole of the change: 27 rows
+and 12 speech blocks fewer, with the same speaker, the same turn number and the
+same words on both sides of all 13 joins, listed case by case with their pages in
+[reference/verification/glyph_map_diff_0421.csv](reference/verification/glyph_map_diff_0421.csv).
+In the other 556 sittings
+nothing moved at all. Verified after re-parsing: gold F1 1.00 (124/125),
+annotations 36/36, 5 turns opening mid-word, and no private-use character left
+anywhere in the corpus.
 
 **The eighth round found a word broken in half.** One reader was given a turn
 whose recorded text began "i la Argentina debe ser tomada en su totalidad?" and
@@ -603,7 +627,7 @@ part of what someone said. Parser 0.4.13 gives each back:
 * **The dash that introduces a note stayed on the turn above it.** A note is
   printed "— Se vota."; in many files that dash is stored at the end of the line
   before it, so the turn it follows appeared to end on a dangling dash. The dash
-  is stored where it belongs 17,912 times and left behind 9,004 — 5.9% of all
+  is stored where it belongs 17,912 times and left behind 9,025 — 6.1% of all
   turns — and in only 8 of those does the note carry a dash of its own, which is
   what shows the stray one is the same dash rather than a second.
 * **The colon that closes a note opened the next turn.** "…cuyos textos se

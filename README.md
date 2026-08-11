@@ -40,7 +40,7 @@ text blocks, and analysis.
 - **Punctuation belonging to the editorial matter no longer counts as speech.**
   A stenographer's note is printed "— Se vota.", but in many files that opening
   dash is stored at the end of the line above, so the turn before it came out
-  ending on a dangling dash: 9,003 turns, 5.9% of the corpus. The mirror case is
+  ending on a dangling dash: 9,025 turns, 6.1% of the corpus. The mirror case is
   a note ending in a colon that opened the next turn instead (29). And where a
   section's number is set in the body face rather than the bold of its title,
   the number stayed on the turn above and the section was lost altogether —
@@ -96,16 +96,23 @@ text blocks, and analysis.
 - **The characters no font would declare are readable now.** 1,234 characters of
   the corpus sat in the range Unicode reserves for private use, where a glyph
   lands when the file draws it from a font whose encoding it never states. The
-  WordPerfect-era sittings use Symbol and WordPerfect's MathA for ordinary
-  typography, so the ordinal of "5° Reunión", the dash after a speaker's label,
+  WordPerfect-era sittings draw ordinary typography from Symbol, SymbolMT,
+  WordPerfect's MathA and Phonetic, and one sitting from a private slot of Times
+  New Roman, so the ordinal of "5° Reunión", the dash after a speaker's label,
   the bullet of a printed list and even the "P" and the "g" of a running head all
   came out as codepoints meaning nothing, sitting inside words and sentences.
-  0.4.21 gives each of the fourteen the character the page shows, read from what
-  surrounds it rather than from the font's nominal table — these files print an
-  ordinal with a nominally Greek codepoint. **No private-use character is left in
-  the corpus.** Giving the label dash back also lets repairs that were keyed on it
-  see labels they had been blind to, which is why the corpus loses 12 speech
-  blocks and 27 rows: merges, and page matter now recognisable as page matter.
+  0.4.21 gives thirteen of the fourteen the character its own page shows, read
+  from what surrounds it rather than from the font's nominal table — these files
+  print an ordinal with a nominally Greek codepoint. The fourteenth is removed
+  instead of translated: it prints an upside-down A in the middle of the word
+  "categoría", once, and keeping it would break the word for every reader. A scan
+  of all 559 source PDFs finds exactly these fourteen and no others, so **no
+  private-use character is left in the corpus.** Giving the label dash back also
+  lets repairs that were keyed on it see labels they had been blind to. In two
+  sittings that drops 15 lines of page matter the parser could not read before —
+  a dateline, a page number — and the 24 half-turns those lines had been
+  splitting rejoin into 12: 27 rows and 12 speech blocks fewer, with the same
+  speaker, the same turn number and the same words on both sides of every join.
 - Two layers of verification, because they answer different questions.
   **On a hand-annotated sample** — 36 stratified pages spanning 2003–2024 —
   utterance boundary+attribution F1 = 1.00 (124 of 125 turns), event
