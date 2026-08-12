@@ -18,7 +18,7 @@ text blocks, and analysis.
   the files on disk by `scripts/make_manifest.py`. The 90 sessions fetched
   in January 2025 predate the download-timestamp field, so theirs is blank
   rather than guessed.
-- Corpus parsed (parser 0.4.21): 152,553 speaker-attributed speech blocks
+- Corpus parsed (parser 0.4.22): 152,553 speaker-attributed speech blocks
   and 31,928 typed stenographer events in 237,316 rows, as per-session
   Parquet under `data/processed/senado/`. One session fails to parse — a
   November 2001 sitting that never reached quorum, so it has no session
@@ -101,18 +101,27 @@ text blocks, and analysis.
   New Roman, so the ordinal of "5° Reunión", the dash after a speaker's label,
   the bullet of a printed list and even the "P" and the "g" of a running head all
   came out as codepoints meaning nothing, sitting inside words and sentences.
-  0.4.21 gives thirteen of the fourteen the character its own page shows, read
-  from what surrounds it rather than from the font's nominal table — these files
+  0.4.22 gives thirteen of the fourteen the character its own page shows, read
+  off the printed page rather than from the font's nominal table — these files
   print an ordinal with a nominally Greek codepoint. The fourteenth is removed
   instead of translated: it prints an upside-down A in the middle of the word
-  "categoría", once, and keeping it would break the word for every reader. A scan
-  of all 559 source PDFs finds exactly these fourteen and no others, so **no
-  private-use character is left in the corpus.** Giving the label dash back also
-  lets repairs that were keyed on it see labels they had been blind to. In two
-  sittings that drops 15 lines of page matter the parser could not read before —
-  a dateline, a page number — and the 24 half-turns those lines had been
-  splitting rejoin into 12: 27 rows and 12 speech blocks fewer, with the same
-  speaker, the same turn number and the same words on both sides of every join.
+  "categoría", once, and keeping it would break the word for every reader. Where
+  the page shows something the document plainly did not mean, the page still
+  wins: one codepoint draws an underscore in two sittings that wanted an ordinal
+  in one and an exclamation mark in the other, and it is recorded as the
+  underscore it prints. A scan of all 559 source PDFs finds exactly these
+  fourteen and no others, so **no private-use character is left in the corpus.**
+  Giving the label dash back also lets repairs that were keyed on it see labels
+  they had been blind to. The whole of the change is 13 places in two sittings:
+  15 lines of page matter the parser
+  could not read before — a dateline, a page number — are now recognised and
+  dropped, and in ten of those places the dropped line had been splitting a
+  senator's turn, so 22 half-turns rejoin into 10. That is 27 rows and 12 speech
+  blocks fewer, with the same speaker, the same turn number and the same words on
+  both sides of every one of the 13. Nothing else in the corpus moves: 48 other
+  sittings have single characters translated inside ordinary speech, which is the
+  point of the table, and no sitting anywhere changes a block, a turn number or a
+  speaker.
 - Two layers of verification, because they answer different questions.
   **On a hand-annotated sample** — 36 stratified pages spanning 2003–2024 —
   utterance boundary+attribution F1 = 1.00 (124 of 125 turns), event

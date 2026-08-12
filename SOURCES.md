@@ -364,7 +364,7 @@ results:
   is the only one that looks at the FIRST and last characters of a turn rather
   than inside it, which is where every text fault found so far has lived. It
   began at 44 and the difference was faults of one family, all repaired in
-  0.4.15–0.4.21 and described below. It also reports two counts kept as
+  0.4.15–0.4.22 and described below. It also reports two counts kept as
   observations rather than faults: 71 turns of three characters or fewer (a
   senator answering "20." or the chair "E") and 131 that end on a dash or comma,
   most of them in the 2003 impeachment sittings, where a turn interrupted by a
@@ -566,38 +566,56 @@ Symbol, SymbolMT, WordPerfect's MathA and Phonetic, and one sitting from a
 private slot of Times New Roman, so the ordinal of "5° Reunión", the dash after
 a speaker's label, the bullet of a printed list and even the "P" and the "g" of a
 running head all arrived as codepoints with no meaning. Left in, they sat inside
-words and sentences — "bloque unipersonal el bloque Misiones". 0.4.21 gives
-thirteen of the fourteen the character its own page shows, settled by what
-surrounds it rather than by the font's nominal table, since these files use a
+words and sentences — "bloque unipersonal el bloque Misiones". 0.4.22 gives
+thirteen of the fourteen the character its own page shows, settled by looking at
+the printed page rather than by the font's nominal table, since these files use a
 nominally Greek codepoint to print an ordinal.
+
+**What the page shows wins even when the page is wrong.** One codepoint is drawn
+as an underscore, and it stands for a different character in each of the two
+sittings that use it: "192_aniversario" wants an ordinal, and "¡Sí, juro_" — five
+senators being sworn in on 26 November 2009, among twenty-two whose oath prints
+normally — wants an exclamation mark. It is recorded as the underscore it prints.
+Reading it by what the sentence needs would mean writing something the page does
+not show, and would be wrong in one of the two places whichever character were
+chosen. This was caught in review, by rendering the page and looking at it, after
+0.4.21 had read the codepoint as an ordinal from its context alone and put a
+degree sign into those five oaths.
 
 Nothing in the range is mapped on faith, and the weaker readings say so. Nine
 rest on dozens to hundreds of occurrences. Five are thin, and each was read off
 its printed page: the ellipsis that ends a trailing-off turn (8 occurrences in
 two sittings); a parenthetical dash drawn from a private slot of Times New Roman
-(9, one sitting); the third of the three codepoints that print an ordinal (10,
-two sittings); a hard space WordPerfect draws as a raised dot, "son las
-reglas·del juego" (once); and the one character the parser removes instead of
+(9, one sitting); the underscore described above (10, two sittings); a hard
+space WordPerfect draws as a raised dot, "son las reglas·del juego" (once);
+and the one character the parser removes instead of
 translating — a Symbol codepoint that prints an upside-down A in the middle of
 "categoría", once, in the sitting of 20 October 2004, where keeping it would
 break the word for every reader. Two of the fourteen, the "P" and the "g", never
 reach the text at all: they appear only in the running head, and are read so that
 the header strip can recognise a running head as one. A scan of all 559 source
 PDFs closes the list — 2,676 occurrences of exactly these fourteen codepoints and
-no others, of which 1,234 reached the text — and anything not on the list is
+no others, of which 1,234 reached the text. The other 1,442 sit in matter the
+parser drops or absorbs before it writes anything: 1,136 of them in the running
+head, 137 in the label dash itself, which is consumed when a speaker's label is
+split from the words after it, and 169 elsewhere. Anything not on the list is
 still treated as unmapped
-([reference/verification/unmapped_glyphs_0421.csv](reference/verification/unmapped_glyphs_0421.csv),
+([reference/verification/unmapped_glyphs_0422.csv](reference/verification/unmapped_glyphs_0422.csv),
 one row per codepoint with its font, its count and a line of its printed context).
 
 Restoring the label dash lets the existing repairs see labels they had been blind
-to. In two sittings the parser now reads 15 lines of page matter it could not
-read before — a dateline, a page number — and drops them; the 24 half-turns those
-lines had been splitting rejoin into 12. That is the whole of the change: 27 rows
-and 12 speech blocks fewer, with the same speaker, the same turn number and the
-same words on both sides of all 13 joins, listed case by case with their pages in
+to. The whole of the change is 13 places in two sittings. Fifteen lines of page
+matter the parser could not read before — a dateline, a page number — are now
+legible as page matter and dropped. In ten of those places the dropped line had
+been splitting a senator's turn in two, so 22 half-turns rejoin into 10; the other
+three drop a line and join nothing. That is where the corpus loses 12 speech
+blocks and 27 rows. All 13 places carry the same speaker, the same turn number
+and the same words on both sides, listed case by case with their pages in
 [reference/verification/glyph_map_diff_0421.csv](reference/verification/glyph_map_diff_0421.csv).
-In the other 556 sittings
-nothing moved at all. Verified after re-parsing: gold F1 1.00 (124/125),
+No block, turn number or speaker changes anywhere else; 48 further sittings have
+single characters translated inside ordinary speech, which is what the table is
+for, and 508 are unchanged to the character. Verified after re-parsing:
+gold F1 1.00 (124/125),
 annotations 36/36, 5 turns opening mid-word, and no private-use character left
 anywhere in the corpus.
 

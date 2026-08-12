@@ -51,7 +51,7 @@ from pathlib import Path
 import pandas as pd
 import pdfplumber
 
-PARSER_VERSION = "0.4.21"
+PARSER_VERSION = "0.4.22"
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
@@ -77,18 +77,25 @@ PUA = r"-"
 # drawn from Symbol, SymbolMT, WordPerfect's MathA and Phonetic, and one private
 # slot of Times New Roman, whose encodings the file never declares. A scan of all
 # 559 source PDFs finds exactly these fourteen and no others — 2,676 occurrences,
-# of which 1,234 reach the text and the rest sit in the running head. Each is
-# settled by what its own page shows rather than by the font's nominal table: the
-# WordPerfect-era files use these fonts for ordinary typography, so a codepoint
-# that is nominally a Greek letter prints as an ordinal. Left in, they land
-# inside words and sentences: "5 Reunion",
+# of which 1,234 reach the text. The rest are in matter the parser drops or
+# absorbs before writing anything: chiefly the running head, and the label dash
+# itself, which is consumed when a speaker's label is split from their words.
+# Each is settled by what its own page shows rather than by the font's nominal
+# table: the WordPerfect-era files use these fonts for ordinary typography, so
+# a codepoint that is nominally a Greek letter prints as an ordinal. Left in,
+# they land inside words and sentences: "5 Reunion",
 # "59 aniversario", "bloque unipersonal el bloque Misiones".
 # Anything else in the range is still left alone and still treated as unmapped.
 GLYPH_MEANING = {
     "\uf0b0": "\u00b0",   # Symbol B0, the ordinal: "5° Reunión", "1° de enero"
     "\uf045": "\u00b0",   # Symbol/MathA 45, the same ordinal: "59° aniversario"
-    "\uf05f": "\u00b0",   # Symbol 5F, the same again: "192° aniversario". Thin
-                          # evidence: 10 occurrences, two sittings of 2008-2009
+    "\uf05f": "_",        # Symbol 5F, which the page draws as an underscore
+                          # and which stands for a different character in each of
+                          # its two sittings: "192_aniversario" wants an ordinal,
+                          # "¡Sí, juro_" wants an exclamation mark. Read as the
+                          # underscore it prints, because no single substitution
+                          # is right in both places and the page is the record.
+                          # 10 occurrences, 2008 and 2009
     "\uf02d": "\u2013",   # Symbol 2D, the dash that opens a parenthetical
     "\uf8e7": "\u2014",   # SymbolMT F8E7, the dash after a speaker's label
     "\ue83a": "\u2014",   # a private slot of Times New Roman: a parenthetical
@@ -96,9 +103,10 @@ GLYPH_MEANING = {
     "\uf0bc": "\u2026",   # Symbol BC, the ellipsis ending a trailing-off turn.
                           # Thin evidence: 8 occurrences over two sittings
     "\uf0b7": "\u2022",   # Symbol B7, the bullet of a printed list
-    "\uf02e": ".",        # Symbol 2E and 20, the stop and the space of "Pág. 5"
-    "\uf020": " ",        # in the running head of fourteen sittings, 2002-2010;
-                          # the space also from WordPerfect's Phonetic font
+    "\uf02e": ".",        # Symbol 2E, the stop of "Pág. 5" in the running head
+                          # of thirteen sittings, 2002-2009
+    "\uf020": " ",        # Symbol 20, the space beside it, in those thirteen and
+                          # one more where WordPerfect's Phonetic font draws it
     "\uf041": " ",        # MathA 41, drawn as a raised dot — WordPerfect's own
                           # mark for a hard space: "son las reglas·del juego".
                           # One occurrence, read off its page (26 Mar 2009)
@@ -880,7 +888,7 @@ def return_stage_direction_punctuation(blocks):
     A note is introduced by a dash — "— Se vota." — but in many files that dash
     is stored at the end of the line above, so it comes out stuck to the end of
     the turn before it, which then appears to finish on a dangling dash. The
-    dash is stored where it belongs 17,912 times and left behind 8,648; in only
+    dash is stored where it belongs 17,912 times and left behind 9,025; in only
     8 of those does the note carry a dash of its own, and that is what shows the
     stray one is the same dash rather than a second.
 

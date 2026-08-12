@@ -442,8 +442,8 @@ short of the thousand.
       24 of the 1,000 did, and three of those were real:
       - The dash that introduces a stenographer's note ("— Se vota.") is stored
         at the end of the line above in many files, so the turn before it ended
-        on a dangling dash — 9,003 turns, 5.9% of the corpus. The dash is stored
-        where it belongs 17,912 times; in only 8 of the 9,003 does the note carry
+        on a dangling dash — 9,025 turns, 6.1% of the corpus. The dash is stored
+        where it belongs 17,912 times; in only 8 of the 9,025 does the note carry
         a dash of its own, which is what shows the stray one is the same dash.
       - A note ending in a colon ("…son los siguientes:") lost it to the block
         below, which then opened ": Denominación de un puente carretero…". Taken
@@ -758,7 +758,8 @@ seven found something.
       appeared, not four — the fourth is a "página en construcción" with nobody
       on it — and nine of the ninth round's ten open cases are unlabelled pages,
       the tenth being a reader's own slip.
-- [x] **1,234 characters of the corpus were glyphs no font could map (0.4.21).**
+- [x] **1,234 characters of the corpus were glyphs no font could map (0.4.21,
+      corrected in 0.4.22).**
       They sat in the private-use range, where a glyph lands when the file draws
       it from a font whose encoding it never declares, and they landed inside
       words and sentences — "bloque unipersonal el bloque Misiones". Fourteen
@@ -777,13 +778,27 @@ seven found something.
       running head. A scan of all 559 source PDFs closes the list at exactly these
       fourteen, 2,676 occurrences, of which 1,234 reached the text.
       **Nothing in the private-use range is left in the corpus.** Restoring the
-      label dash lets repairs keyed on it see labels they had been blind to: in
-      two sittings, 15 lines of page matter are read and dropped and the 24
-      half-turns they were splitting rejoin into 12 — 27 rows and 12 speech blocks
-      fewer, same speaker, same turn and same words on both sides of all 13 joins
-      (`reference/verification/glyph_map_diff_0421.csv`); the other 556 sittings
-      are untouched. Gold F1 1.00 (124/125), annotations 36/36, 5 turns opening
-      mid-word. Found while checking a quotation.
+      label dash lets repairs keyed on it see labels they had been blind to. The
+      whole change is 13 places in two sittings: 15 lines of page matter are read
+      and dropped, and in ten of those places the dropped line had been splitting
+      a turn, so 22 half-turns rejoin into 10 — 27 rows and 12 speech blocks
+      fewer, same speaker, same turn and same words on both sides of all 13
+      (`reference/verification/glyph_map_diff_0421.csv`); no block, turn number or
+      speaker changes anywhere else. Gold F1 1.00 (124/125), annotations 36/36,
+      5 turns opening mid-word. Found while checking a quotation.
+- [x] **One of those fourteen was read from its context and not from its page,
+      and it put a degree sign into five senators' oaths (0.4.22).** The
+      codepoint appears in two sittings. In one it sits in "192 aniversario",
+      where an ordinal is the obvious reading, and that is how 0.4.21 read it —
+      from the sentence, without looking at the page. In the other it closes
+      "¡Sí, juro", where the obvious reading is an exclamation mark; that sitting
+      was never examined. So the corpus published "¡Sí, juro°" for five of the
+      twenty-two senators sworn in on 26 November 2009. Rendered at 600 dpi the
+      page draws an underscore in both places, and 0.4.22 records the underscore:
+      no single substitution is right in both, and inventing one would put on the
+      page something the page does not show. Found by a reviewer asked to check
+      each of the fourteen against its printed page — the check the fix itself
+      claimed to have done, and had not done for this one.
 
 ## Explicitly not building
 
