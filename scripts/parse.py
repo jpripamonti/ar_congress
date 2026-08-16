@@ -51,7 +51,7 @@ from pathlib import Path
 import pandas as pd
 import pdfplumber
 
-PARSER_VERSION = "0.4.22"
+PARSER_VERSION = "0.4.23"
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
@@ -88,7 +88,14 @@ PUA = r"-"
 # Anything else in the range is still left alone and still treated as unmapped.
 GLYPH_MEANING = {
     "\uf0b0": "\u00b0",   # Symbol B0, the ordinal: "5° Reunión", "1° de enero"
-    "\uf045": "\u00b0",   # Symbol/MathA 45, the same ordinal: "59° aniversario"
+    "\uf045": "\u00b0",   # 45, the same ordinal, from two fonts that draw it
+                          # differently: MathA prints the ring ("N° 2"), Symbol
+                          # prints a capital E, so two sittings of 2004 and 2007
+                          # show "59E aniversario" and "Acta NE 5" on the page.
+                          # Reconstructed rather than transcribed, because every
+                          # one of the 100 occurrences is an ordinal; reading the
+                          # E as an E splits the notes it sits in and invents
+                          # turns nobody spoke. Declared in SOURCES.md.
     "\uf05f": "_",        # Symbol 5F, which the page draws as an underscore
                           # and which stands for a different character in each of
                           # its two sittings: "192_aniversario" wants an ordinal,
@@ -119,6 +126,7 @@ GLYPH_MEANING = {
                           # Neither ever reaches the text: reading them is what
                           # lets the header strip see a running head as one
 }
+
 
 # 2000–2013 layouts split the chair label across styles:
 #   bold "Sr. Presidente" + normal "(Pampuro)" + bold ". –"
@@ -378,10 +386,25 @@ def repair_symbol_font(chars):
     abierta"). That swallows the turn's opening words into the speaker
     label and leaves the chair unidentifiable.
 
+    What the page shows, not just what the file stores. Rendered, the page
+    really does print "Sra. Avelin. C ...porque hay un fiscal" — the letter
+    is on the paper, checked with two independent renderers. So this is a
+    reconstruction of a document broken in print, not a recovery of what the
+    page shows, and it is declared as such in SOURCES.md. It is made anyway
+    because without it the label and the words after it cannot be told apart
+    and the whole sitting loses its speakers.
+
     Other sittings do set real text in Courier — an inserted document in a
     typewriter face — and must not be touched. The two uses are told apart
     by run length: a font standing in for punctuation never draws more than
     a couple of characters in a row, while body text runs for hundreds.
+
+    One entry needs a second guard. "1" stands in for the ordinal of "Orden
+    del Dia N 1284", but the same font also sets the raised reference number
+    of a footnote, and turning THAT into an ordinal writes a degree sign into
+    two other sittings. The two are the same character at different sizes:
+    the ordinal is set at body size, the reference number smaller. So the
+    substitution is made only at body size.
     """
     idx = [i for i, c in enumerate(chars) if COURIER_RE.search(c["font"])]
     if not idx:
@@ -392,12 +415,16 @@ def repair_symbol_font(chars):
         longest = max(longest, run)
     if longest > 3:
         return 0                      # the font is carrying words, not symbols
+    body = Counter(c["size"] for c in chars).most_common(1)[0][0]
     fixed = 0
     for i in idx:
         repl = SYMBOL_FONT_MAP.get(chars[i]["text"])
-        if repl is not None:
-            chars[i]["text"] = repl
-            fixed += 1
+        if repl is None:
+            continue
+        if chars[i]["text"] == "1" and chars[i]["size"] < body - 0.5:
+            continue                  # a raised footnote number, not an ordinal
+        chars[i]["text"] = repl
+        fixed += 1
     return fixed
 
 

@@ -18,8 +18,8 @@ text blocks, and analysis.
   the files on disk by `scripts/make_manifest.py`. The 90 sessions fetched
   in January 2025 predate the download-timestamp field, so theirs is blank
   rather than guessed.
-- Corpus parsed (parser 0.4.22): 152,553 speaker-attributed speech blocks
-  and 31,928 typed stenographer events in 237,316 rows, as per-session
+- Corpus parsed (parser 0.4.23): 152,550 speaker-attributed speech blocks
+  and 31,928 typed stenographer events in 237,308 rows, as per-session
   Parquet under `data/processed/senado/`. One session fails to parse — a
   November 2001 sitting that never reached quorum, so it has no session
   opening to find. Text the parser cannot attribute to a speaker is 1,204
@@ -40,7 +40,8 @@ text blocks, and analysis.
 - **Punctuation belonging to the editorial matter no longer counts as speech.**
   A stenographer's note is printed "— Se vota.", but in many files that opening
   dash is stored at the end of the line above, so the turn before it came out
-  ending on a dangling dash: 9,025 turns, 6.1% of the corpus. The mirror case is
+  ending on a dangling dash. It happened to 9,025 of the 26,937 notes that open
+  with a dash — one in three. The mirror case is
   a note ending in a colon that opened the next turn instead (29). And where a
   section's number is set in the body face rather than the bold of its title,
   the number stayed on the turn above and the section was lost altogether —
@@ -65,9 +66,9 @@ text blocks, and analysis.
   turn to begin "ilencio durante la exposición". 0.4.16 repairs all three: 14
   names rejoined, 165 labels split from the speech stuck to them (69 more than
   the dash alone allowed), 82 words made whole again. Found by a new check that
-  asks of all 152,553 turns whether each begins and ends the way speech does —
-  turns opening mid-word under a new speaker fall from 44 to 5, and those 5 are
-  printed that way.
+  asks of all 152,550 speech blocks whether each begins and ends the way speech
+  does — turns opening mid-word under a new speaker fall from 44 to 5, and those
+  5 are printed that way.
 - **A note is no longer put in somebody's mouth.** The page prints "— Se practica
   la votación por medios electrónicos."; the block ended after "la" and the rest
   was filed as speech, so the corpus had the chair saying "votación por medios

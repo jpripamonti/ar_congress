@@ -442,9 +442,10 @@ short of the thousand.
       24 of the 1,000 did, and three of those were real:
       - The dash that introduces a stenographer's note ("— Se vota.") is stored
         at the end of the line above in many files, so the turn before it ended
-        on a dangling dash — 9,025 turns, 6.1% of the corpus. The dash is stored
-        where it belongs 17,912 times; in only 8 of the 9,025 does the note carry
-        a dash of its own, which is what shows the stray one is the same dash.
+        on a dangling dash — 9,025 of the 26,937 notes that open with a dash, one
+        in three. The dash is stored where it belongs 17,912 times; in only 8 of
+        the 9,025 does the note carry a dash of its own, which is what shows
+        the stray one is the same dash.
       - A note ending in a colon ("…son los siguientes:") lost it to the block
         below, which then opened ": Denominación de un puente carretero…". Taken
         back in 29 cases, only where the note stops mid-phrase. Where the note is
@@ -793,12 +794,29 @@ seven found something.
       from the sentence, without looking at the page. In the other it closes
       "¡Sí, juro", where the obvious reading is an exclamation mark; that sitting
       was never examined. So the corpus published "¡Sí, juro°" for five of the
-      twenty-two senators sworn in on 26 November 2009. Rendered at 600 dpi the
+      twenty-three senators sworn in on 26 November 2009. Rendered at 600 dpi the
       page draws an underscore in both places, and 0.4.22 records the underscore:
       no single substitution is right in both, and inventing one would put on the
       page something the page does not show. Found by a reviewer asked to check
       each of the fourteen against its printed page — the check the fix itself
       claimed to have done, and had not done for this one.
+
+## Next
+
+- [ ] **Stop reading letter-spaced typography as separate words.** A phrase set
+      with wide spacing between its letters for emphasis — "T e n e r  c a l i d a d"
+      in the President's address of 1 March 2009 — comes out as one word per
+      letter, because the gaps sit just above the threshold the space-restoring
+      rule uses. 177 runs in 45 sittings, 9 of them inside attributed speech,
+      2,852 words counted that the page prints as far fewer, and the phrases
+      unfindable by search. Measured and listed in
+      `reference/verification/letter_spacing_0423.csv`. The fix belongs where the
+      gaps are still measurable, in character extraction: a run of single letters
+      whose gaps are all alike and all below what a printed space measures is
+      tracking, and only the noticeably wider gap inside such a run is a word
+      boundary. It touches the rule that inserts 710,040 spaces corpus-wide, so
+      it needs its own verification pass — re-parse, gold set, annotations, and a
+      count of how many of those 710,040 move.
 
 ## Explicitly not building
 

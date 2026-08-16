@@ -295,12 +295,12 @@ instead of the label.
 ## Corpus-wide audit
 
 The gold set answers a narrow question well — did the parser read *these 36
-pages* the way a careful reader does — but 36 pages is 0.08% of the 45,200 in
+pages* the way a careful reader does — but 36 pages is 0.08% of the 45,687 in
 the corpus, drawn from 24 of 559 sittings. `scripts/audit_parse.py` covers the
 rest by checking, on every session, things that must never happen. Current
 results:
 
-- **Page apparatus inside a speech turn: 1 occurrence** in 152,553 turns (a
+- **Page apparatus inside a speech turn: 1 occurrence** in 152,550 speech blocks (a
   footer line that landed mid-sentence in the 7 May 2014 sitting). Mastheads,
   datelines, attendance rolls, section headers and the appendix-pointer footnote
   are otherwise absent from speech, which is what the positional header and
@@ -358,13 +358,30 @@ results:
   and 87%. The rest is dropped by design — contents pages, attendance rolls,
   appendices and inserted documents. The lowest figures are short sittings in
   minority that consist of little but a masthead and a roll.
+- **Letter-spaced typography is read as separate words: 177 runs in 45
+  sittings, 9 of them inside speech.** Where a page sets a phrase with wide
+  spacing between its letters for emphasis — the printed page really does show
+  "T e n e r  c a l i d a d" in the President's opening address of 1 March 2009 —
+  the rule that restores the spaces the file never stored cannot tell that
+  spacing from a space between words, and records each letter as its own word.
+  The gaps sit just above the threshold (about 0.18 of the type size against a
+  cut-off of 0.15, where a real printed space is 0.25 to 0.60), which is why the
+  rule takes them. It inflates the word count by 2,852 words in 21.48 million,
+  0.013%, and makes those phrases unfindable by any search. Ninety-seven runs are
+  in headings and 71 in page matter; the nine inside speech are listed with their
+  sitting, page and speaker in
+  [reference/verification/letter_spacing_0423.csv](reference/verification/letter_spacing_0423.csv).
+  Not repaired yet: the rule that would have to change inserts 710,040 spaces
+  across the corpus, and it is not worth touching without its own verification
+  pass. Found by a review asked to hunt for repairs justified by meaning rather
+  than by the page.
 - **Turns that do not begin or end the way speech does: 5 open mid-word under a
   new speaker**, and all 5 are printed that way — the record really does write
   "Sr. Presidente (Pinedo).- informo a la Cámara…". This check was added last and
   is the only one that looks at the FIRST and last characters of a turn rather
   than inside it, which is where every text fault found so far has lived. It
   began at 44 and the difference was faults of one family, all repaired in
-  0.4.15–0.4.22 and described below. It also reports two counts kept as
+  0.4.15–0.4.23 and described below. It also reports two counts kept as
   observations rather than faults: 71 turns of three characters or fewer (a
   senator answering "20." or the chair "E") and 131 that end on a dash or comma,
   most of them in the 2003 impeachment sittings, where a turn interrupted by a
@@ -571,16 +588,39 @@ thirteen of the fourteen the character its own page shows, settled by looking at
 the printed page rather than by the font's nominal table, since these files use a
 nominally Greek codepoint to print an ordinal.
 
-**What the page shows wins even when the page is wrong.** One codepoint is drawn
-as an underscore, and it stands for a different character in each of the two
-sittings that use it: "192_aniversario" wants an ordinal, and "¡Sí, juro_" — five
-senators being sworn in on 26 November 2009, among twenty-two whose oath prints
-normally — wants an exclamation mark. It is recorded as the underscore it prints.
-Reading it by what the sentence needs would mean writing something the page does
-not show, and would be wrong in one of the two places whichever character were
-chosen. This was caught in review, by rendering the page and looking at it, after
-0.4.21 had read the codepoint as an ordinal from its context alone and put a
-degree sign into those five oaths.
+**Where a page is itself broken, and what is done about it.** Reading these
+codepoints turned up three sittings whose PAGE is wrong, not just whose file is —
+checked by rendering the page at 600 dpi with two independent renderers. The rule
+that came out of it has three cases, and the third was learnt the hard way.
+
+*The glyph is clear: transcribe it.* That is almost all of them.
+
+*The page is broken but every occurrence means the same thing: reconstruct it,
+and say so here.* Two sittings, of 2004 and 2007, print "59E aniversario" and
+"Acta NE 5", because the ordinal is drawn from a font that puts a capital E where
+another font puts the ring. All 100 occurrences are ordinals, so the corpus
+writes the ordinal. A third sitting, of 20 October 2004, prints its dashes and
+quotation marks as the letters C, A and @ — "Sra. Avelín. C ...porque hay un
+fiscal" is what is on the paper — because a font used for nothing but punctuation
+carries a broken character map. The corpus writes the dash, because otherwise a
+speaker's name cannot be told from their words and the sitting loses its speakers
+altogether. Both are reconstructions of a broken document, not transcriptions of
+it, and reading them literally does more damage than the fault: read as a letter,
+the E splits the notes it sits in and invents twenty-five turns nobody spoke.
+
+*The page is broken and the occurrences mean different things: transcribe it,
+because no reconstruction can be right.* One codepoint is drawn as an underscore
+and stands for a different character in each of the two sittings that use it:
+"192_aniversario" wants an ordinal, and "¡Sí, juro_" — five of the twenty-three
+senators sworn in on 26 November 2009, the other eighteen printing normally —
+wants an exclamation mark. It is recorded as the underscore it prints. This was
+caught in review, by rendering the page and looking at it, after 0.4.21 had read
+the codepoint as an ordinal from its context alone and put a degree sign into
+those five oaths. The same fault turned up a second time in the repair that reads
+the broken punctuation font: it was turning the raised reference number of a
+footnote into an ordinal in two other sittings, because the number and the
+ordinal are the same character there. They are set at different sizes, and 0.4.23
+makes the substitution only at body size.
 
 Nothing in the range is mapped on faith, and the weaker readings say so. Nine
 rest on dozens to hundreds of occurrences. Five are thin, and each was read off
@@ -645,8 +685,8 @@ part of what someone said. Parser 0.4.13 gives each back:
 * **The dash that introduces a note stayed on the turn above it.** A note is
   printed "— Se vota."; in many files that dash is stored at the end of the line
   before it, so the turn it follows appeared to end on a dangling dash. The dash
-  is stored where it belongs 17,912 times and left behind 9,025 — 6.1% of all
-  turns — and in only 8 of those does the note carry a dash of its own, which is
+  is stored where it belongs 17,912 times and left behind 9,025 — one note in
+  three — and in only 8 of those does the note carry a dash of its own, which is
   what shows the stray one is the same dash rather than a second.
 * **The colon that closes a note opened the next turn.** "…cuyos textos se
   incluyen en el Apéndice, son los siguientes:" lost its colon to the block

@@ -13,7 +13,7 @@ spanning 2000 to 2024, 21.5 million words.
 
 | File | One row is | Rows |
 | --- | --- | --- |
-| `data/processed/senado/blocks/<sitting>.parquet` | a passage of one sitting — a turn of speech, a stenographer's note, a heading, or page matter | 237,316 across 558 files (one sitting fails to parse) |
+| `data/processed/senado/blocks/<sitting>.parquet` | a passage of one sitting — a turn of speech, a stenographer's note, a heading, or page matter | 237,308 across 558 files (one sitting fails to parse) |
 | `data/processed/senado/speakers.parquet` | one printed speaker label in one sitting, resolved to a person and to the caucus they sat with | one per (sitting, label) pair |
 | `data/processed/senado/parse_stats.csv` | one sitting, with 40 counts of what the parser did to it | 559 |
 | `reference/senado/bloque_observado.csv` | one day the chamber's composition was actually recorded, for one senator | 23,325 over 336 dates, 2000–2024 |
@@ -28,7 +28,7 @@ the normal way to work with it.
 
 | Column | Meaning |
 | --- | --- |
-| `type` | `speech` — words somebody said (152,553). `event` — the stenographer's note about something that happened (31,928). `heading` — a section title. `furniture` — printed page matter kept only for tracing; not speech. `inline_italic` — an italicised fragment that had no turn to belong to. `other` — text the parser could not attribute to anyone (1,204, 0.5%). |
+| `type` | `speech` — words somebody said (152,550). `event` — the stenographer's note about something that happened (31,928). `heading` — a section title. `furniture` — printed page matter kept only for tracing; not speech. `inline_italic` — an italicised fragment that had no turn to belong to. `other` — text the parser could not attribute to anyone (1,204, 0.5%). |
 | `text` | The words themselves, as printed. Spelling, punctuation and the edition's own mistakes are preserved: where a page misspells a senator's surname, so does this. |
 | `event_type` | Only for notes. `vote` (17,400), `incident` (4,093, disorder in the chamber), `applause` (3,755), `unspecified` (1,723), `laughter` (1,395), `pause` (1,378), `stage` (1,179, someone entering, leaving or taking the chair), `timestamp` (1,005, the clock time the record prints). |
 | `seq` | Position within the sitting. Sorting by it gives the order the words were printed in, which is the order they were spoken. |
@@ -51,7 +51,7 @@ To get from a label to a person, join `speakers.parquet` on
 | `chapter`, `chapter_title` | The numbered section of the sitting's agenda the passage falls under, and its title. Present in 530 of the 559 sittings; the rest print no section numbering the parser can read. |
 | `session_id` | The sitting: date plus its number within the year, e.g. `2014-05-07_r07`. |
 | `session_date` | The date of the sitting, `YYYY-MM-DD`. |
-| `session_type` | What kind of sitting, as the Senate names it: `ORDINARIA` (159,001 rows), `ESPECIAL` (42,040), `EXTRAORDINARIA` (12,285), `INFORMATIVA ESPECIAL` (7,095 — the cabinet chief's report to the chamber), `TRIBUNAL DE JUICIO POLITICO` (6,792 — impeachment trials, where the speakers are largely not senators), `ASAMBLEA` (5,875 — both chambers together, where the President of the Nation speaks), `PREPARATORIA` (2,357), and five smaller kinds. **Mixing them without thinking will mislead you**: an impeachment trial and an ordinary sitting are not the same kind of speech. |
+| `session_type` | What kind of sitting, as the Senate names it: `ORDINARIA` (158,994 rows), `ESPECIAL` (42,040), `EXTRAORDINARIA` (12,285), `INFORMATIVA ESPECIAL` (7,095 — the cabinet chief's report to the chamber), `TRIBUNAL DE JUICIO POLITICO` (6,792 — impeachment trials, where the speakers are largely not senators), `ASAMBLEA` (5,875 — both chambers together, where the President of the Nation speaks), `PREPARATORIA` (2,357), and five smaller kinds. **Mixing them without thinking will mislead you**: an impeachment trial and an ordinary sitting are not the same kind of speech. |
 | `sesion`, `reunion` | The Senate's own two numberings of the sitting, as printed on its cover. |
 
 **Where it came from**
