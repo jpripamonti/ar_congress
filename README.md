@@ -18,8 +18,8 @@ text blocks, and analysis.
   the files on disk by `scripts/make_manifest.py`. The 90 sessions fetched
   in January 2025 predate the download-timestamp field, so theirs is blank
   rather than guessed.
-- Corpus parsed (parser 0.4.23): 152,550 speaker-attributed speech blocks
-  and 31,928 typed stenographer events in 237,308 rows, as per-session
+- Corpus parsed (parser 0.4.24): 152,550 speaker-attributed speech blocks
+  and 31,928 typed stenographer events in 237,323 rows, as per-session
   Parquet under `data/processed/senado/`. One session fails to parse — a
   November 2001 sitting that never reached quorum, so it has no session
   opening to find. Text the parser cannot attribute to a speaker is 1,204
@@ -31,7 +31,7 @@ text blocks, and analysis.
   storing a space, so the last word of one line used to come out glued to the
   first of the next — "reemplazala expresión". Parser 0.4.11 puts the space
   back wherever the page shows one, using a width measured off the files that
-  do print their spaces: 710,039 spaces restored in 481 of the 559 sittings,
+  do print their spaces: 670,660 spaces restored in 482 of the 559 sittings,
   and the corpus rises from 21.07 to 21.48 million words (+2.0% overall, +4%
   to +6.5% in every year from 2003 to 2009, under 0.1% elsewhere). Every word
   count in the analysis was that much low. It also makes those years' section
@@ -123,6 +123,23 @@ text blocks, and analysis.
   sittings have single characters translated inside ordinary speech, which is the
   point of the table, and no sitting anywhere changes a block, a turn number or a
   speaker.
+- **A word whose letters are spaced apart is one word again.** A page that spaces
+  out a word's letters to draw the eye to it — "T e n e r  c a l i d a d" in the
+  President's address of 1 March 2009, "V o t a c i ó n  N o m i n a l" over every
+  roll-call table from 2004 on — leaves a gap between every pair of letters as
+  wide as the gap that means a missing space, so the corpus held one word per
+  letter: 189 such runs in 50 sittings, 13 of them inside speech, and the phrases
+  findable by no search. What tells the two apart is that a missing space is one
+  wide gap between letters otherwise set tight, while a spaced-out word is a row
+  of gaps that all measure alike. 0.4.24 puts no space inside such a row, and
+  still puts one where the row is broken by a gap wider than the rest, which is
+  where the page separates two words. The change is 115 blocks in 43 sittings —
+  97 headings, 9 passages of speech, 9 of page matter — and **in all 115 the
+  letters are identical and only the spacing moved**
+  ([reference/verification/letter_spacing_0424.csv](reference/verification/letter_spacing_0424.csv)).
+  With its heading legible, the masthead of a roll-call table is recognised in
+  three sittings where it used to be lost, which is 15 new rows. Every output
+  check of the audit is identical, and the gold set scores exactly as before.
 - Two layers of verification, because they answer different questions.
   **On a hand-annotated sample** — 36 stratified pages spanning 2003–2024 —
   utterance boundary+attribution F1 = 1.00 (124 of 125 turns), event

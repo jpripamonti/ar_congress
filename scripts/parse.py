@@ -7,7 +7,9 @@ the corpus — see git history for the v0.2.0 heuristics it replaces):
 1. Extract characters with pdfplumber (text, font, size, page, y-position),
    putting back the spaces the file never stored: the 2003-2009 formats end
    a line without one, so the words either side of a line join used to come
-   out glued together (space_is_missing).
+   out glued together (space_is_missing) — except where the page has spaced
+   a word's own letters apart for emphasis, which measures the same and is
+   not a space (letter_spacing_gaps).
 2. Strip page headers POSITIONALLY: every page format 2020-2024 carries a
    dateline containing "Pág. N" near the top (even the 2024 ArialNarrow
    variant); all characters at or above that line are furniture.
@@ -51,7 +53,7 @@ from pathlib import Path
 import pandas as pd
 import pdfplumber
 
-PARSER_VERSION = "0.4.23"
+PARSER_VERSION = "0.4.24"
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
@@ -272,6 +274,7 @@ def extract_all_characters(pdf_path, max_pages=None):
     page_heights = {}
     scanned_pages = 0
     restored = 0
+    suppressed = 0
     with pdfplumber.open(pdf_path) as pdf:
         pages = pdf.pages if max_pages is None else pdf.pages[:max_pages]
         prev_raw = prev_out = None
@@ -279,7 +282,9 @@ def extract_all_characters(pdf_path, max_pages=None):
             page_heights[i + 1] = page.height
             if page_is_scanned(page):
                 scanned_pages += 1
-            for c in page.chars:
+            page_chars = page.chars
+            tracked = letter_spacing_gaps(page_chars)
+            for j, c in enumerate(page_chars):
                 family = SUBSET_RE.sub("", c["fontname"])
                 low = family.lower()
                 if "bold" in low:
@@ -289,10 +294,15 @@ def extract_all_characters(pdf_path, max_pages=None):
                 else:
                     style = "normal"
                 if prev_raw is not None and space_is_missing(prev_raw, c, i + 1):
-                    # the gap belongs to the line that is ending, so it is
-                    # cut or kept with it when headers and footers go
-                    chars.append(dict(prev_out, text=" "))
-                    restored += 1
+                    if j in tracked:
+                        # the page spaces this word's own letters apart for
+                        # emphasis; the gap is not a space (letter_spacing_gaps)
+                        suppressed += 1
+                    else:
+                        # the gap belongs to the line that is ending, so it is
+                        # cut or kept with it when headers and footers go
+                        chars.append(dict(prev_out, text=" "))
+                        restored += 1
                 text = GLYPH_MEANING.get(c["text"], c["text"])
                 if text == "":
                     continue
@@ -312,6 +322,9 @@ def extract_all_characters(pdf_path, max_pages=None):
     if restored:
         print(f"Se repusieron {restored} espacios que el archivo no guarda "
               f"pero la página muestra.")
+    if suppressed:
+        print(f"No se repusieron {suppressed} huecos que son el espaciado de "
+              f"letras de una palabra destacada, no un espacio.")
     if remapped:
         print(f"Se repararon {remapped} caracteres de una fuente de símbolos mal mapeada.")
     if scanned_share:
@@ -349,6 +362,88 @@ def space_is_missing(prev, cur, page):
     if abs(cur["top"] - prev["top"]) > 0.5 * size:      # a new line, or a new column
         return prev["text"] != "-"
     return (cur["x0"] - prev["x1"]) > GAP_IS_A_SPACE * size
+
+
+# A word set with its letters spaced apart for emphasis — "T e n e r  c a l i d a d"
+# in the President's address of 1 March 2009, "V o t a c i ó n  N o m i n a l"
+# over every roll-call table from 2004 on. The gap between two of its letters is
+# wider than GAP_IS_A_SPACE, so the rule above used to read every one of them as
+# a space and hand out one word per letter. What tells the two apart is that the
+# gaps of a spaced-out word all measure the same, and a missing space is one wide
+# gap between two runs of letters set tight. Where the page really does put a
+# space inside such a word, it is visible either as a space the file stores or as
+# the one gap noticeably wider than the rest — and that gap is still read as a
+# space. Measured over all 559 files: a spaced-out word's gaps run from 0.15 to
+# 0.94 of the type size — one word of the address of 23 June 2004 is set at 0.9 —
+# and inside one word they never vary by more than a fifteenth of themselves.
+LETTER_SPACING_CEIL = 1.00      # wider than this is layout, not a spaced word
+LETTER_SPACING_TOLERANCE = 0.20  # gaps this close to their run's own gap are alike
+LETTER_SPACING_MIN_GAPS = 4     # five characters in a row, at least
+LETTER_SPACING_MIN_ALPHA = 0.5  # a word or a file number ("S-4188/08"), not the
+                                # row of dots of a contents line, which is spaced
+                                # exactly the same way and means the opposite
+
+
+def letter_spacing_gaps(page_chars):
+    """Which gaps on this page are a word's letter spacing rather than a space?
+
+    Returns the indices whose gap to the character before them is the extra
+    space a typesetter puts between the letters of a word to draw the eye to
+    it. Everything else — including the one wider gap that separates two such
+    words — is left to space_is_missing, which is what puts the space back.
+    """
+    spaced = set()
+    gaps = [None]                # gaps[j]: the gap before character j, or None
+    for j in range(1, len(page_chars)):
+        prev, cur = page_chars[j - 1], page_chars[j]
+        size = max(prev["size"], cur["size"], 1)
+        if abs(cur["top"] - prev["top"]) > 0.5 * size:      # a new line
+            gaps.append(None)
+            continue
+        gaps.append((cur["x0"] - prev["x1"]) / size)
+
+    run = []
+    for j in range(1, len(gaps) + 1):
+        gap = gaps[j] if j < len(gaps) else None
+        if gap is not None and GAP_IS_A_SPACE <= gap <= LETTER_SPACING_CEIL:
+            run.append(j)
+            continue
+        spaced.update(letter_spaced_run(run, gaps, page_chars))
+        run = []
+    return spaced
+
+
+def letter_spaced_run(run, gaps, page_chars):
+    """The gaps of one candidate run that are letter spacing, if it is a word."""
+    if len(run) < LETTER_SPACING_MIN_GAPS:
+        return ()
+    widths = sorted(gaps[j] for j in run)
+    typical = widths[len(widths) // 2]
+    alike = [j for j in run
+             if abs(gaps[j] - typical) <= LETTER_SPACING_TOLERANCE * typical]
+    if len(alike) < LETTER_SPACING_MIN_GAPS or len(alike) < 0.7 * len(run):
+        return ()
+    text = "".join(c["text"] for c in page_chars[run[0] - 1:run[-1] + 1])
+    if sum(c.isalnum() for c in text) < LETTER_SPACING_MIN_ALPHA * max(len(text), 1):
+        return ()
+    # Where the spaced word is set so wide that its own gaps are as wide as a
+    # space, the space in front of it measures no more than they do and would be
+    # swallowed with them ("…Aires.Esos expedientes"). It is still visible: the
+    # character before the word is set tight against the one before it, so it
+    # belongs to a word set normally, and the gap between the two is a space.
+    # The same at the far end, where the spaced word runs back into normal text.
+    # "Set tight" means what the rest of the page does — a gap of about nothing —
+    # not merely narrower than a space: inside a spaced word one pair of letters
+    # can fall just under the threshold and end the run without ending the word.
+    def is_tight(gap):
+        return gap is not None and gap < GAP_IS_A_SPACE and gap < 0.5 * typical
+
+    edges = []
+    if is_tight(gaps[run[0] - 1]):
+        edges.append(run[0])
+    if run[-1] + 1 < len(gaps) and is_tight(gaps[run[-1] + 1]):
+        edges.append(run[-1])
+    return [j for j in alike if j not in edges]
 
 
 def page_is_scanned(page):

@@ -801,22 +801,45 @@ seven found something.
       each of the fourteen against its printed page — the check the fix itself
       claimed to have done, and had not done for this one.
 
+## Phase 19 — a spaced-out word is one word again (August 2026 — parser 0.4.24)
+
+- [x] **Letter-spaced typography no longer comes out one word per letter.**
+      189 runs in 50 sittings, 13 of them inside attributed speech, cost 2,697
+      words counted that the page prints as far fewer. The premise this task
+      rested on was half wrong: the files store the spaces of such a phrase
+      themselves, so the word boundary never had to be guessed from the widths.
+      A gap is letter spacing where four or more gaps in a row measure alike —
+      none more than a fifth from the row's own measure — and what they separate
+      is letters or figures rather than the row of dots of a contents line,
+      which is spaced identically and means the opposite. The one gap that
+      breaks the pattern by being wider is still read as a space, which is what
+      saves the space in front of a word set so wide that its own gaps are as
+      wide as one ("Buenos Aires. Esos expedientes", not "Aires.Esos"). The
+      measured range is 0.15 to 0.94 of the type size; the first cut at this
+      stopped at 0.48 and missed the widest of them.
+- [x] **Verified.** 115 blocks changed in 43 sittings, and in all 115 the letters
+      are identical and only the spacing moved; 15 rows are new, all of them a
+      roll-call masthead recognised now that its heading is legible
+      (`reference/verification/letter_spacing_0424.csv`). Spaces restored fall
+      from 710,040 to 670,660, the 39,380 difference being the gaps now read as
+      letter spacing. The audit's whole output side is byte-identical, gold F1
+      1.00 (124/125), annotations 36/36, 152,550 speech blocks, 1,204 rows
+      unattributed, 5 turns opening mid-word.
+
 ## Next
 
-- [ ] **Stop reading letter-spaced typography as separate words.** A phrase set
-      with wide spacing between its letters for emphasis — "T e n e r  c a l i d a d"
-      in the President's address of 1 March 2009 — comes out as one word per
-      letter, because the gaps sit just above the threshold the space-restoring
-      rule uses. 177 runs in 45 sittings, 9 of them inside attributed speech,
-      2,852 words counted that the page prints as far fewer, and the phrases
-      unfindable by search. Measured and listed in
-      `reference/verification/letter_spacing_0423.csv`. The fix belongs where the
-      gaps are still measurable, in character extraction: a run of single letters
-      whose gaps are all alike and all below what a printed space measures is
-      tracking, and only the noticeably wider gap inside such a run is a word
-      boundary. It touches the rule that inserts 710,040 spaces corpus-wide, so
-      it needs its own verification pass — re-parse, gold set, annotations, and a
-      count of how many of those 710,040 move.
+- [ ] **The lone letters that are left, and what they are.** 11 runs remain
+      against 189, and 6 are the page's own doing: four are enumerations a
+      senator really spoke ("los incisos a) y b)"), two are "D E C R E T A" in
+      files that store a space between every letter. The other 5 are a different
+      fault — the file gives each character its own vertical position, so the
+      parser reads every one as a new line and separates them: the appendix link
+      of two sittings of 2013 and three fragments of a masthead of 18 November
+      2009. Page matter in every case, but the mechanism could reach speech.
+- [ ] **One new heading reads "V otación Nominal".** Of the 15 rows the repair
+      added, one draws its capital from a font of its own, so the block grouping
+      splits it off and rejoins it with a space. One sitting, 4 March 2009, page
+      matter.
 
 ## Explicitly not building
 

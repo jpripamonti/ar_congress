@@ -358,23 +358,17 @@ results:
   and 87%. The rest is dropped by design — contents pages, attendance rolls,
   appendices and inserted documents. The lowest figures are short sittings in
   minority that consist of little but a masthead and a roll.
-- **Letter-spaced typography is read as separate words: 177 runs in 45
-  sittings, 9 of them inside speech.** Where a page sets a phrase with wide
-  spacing between its letters for emphasis — the printed page really does show
-  "T e n e r  c a l i d a d" in the President's opening address of 1 March 2009 —
-  the rule that restores the spaces the file never stored cannot tell that
-  spacing from a space between words, and records each letter as its own word.
-  The gaps sit just above the threshold (about 0.18 of the type size against a
-  cut-off of 0.15, where a real printed space is 0.25 to 0.60), which is why the
-  rule takes them. It inflates the word count by 2,852 words in 21.48 million,
-  0.013%, and makes those phrases unfindable by any search. Ninety-seven runs are
-  in headings and 71 in page matter; the nine inside speech are listed with their
-  sitting, page and speaker in
-  [reference/verification/letter_spacing_0423.csv](reference/verification/letter_spacing_0423.csv).
-  Not repaired yet: the rule that would have to change inserts 710,040 spaces
-  across the corpus, and it is not worth touching without its own verification
-  pass. Found by a review asked to hunt for repairs justified by meaning rather
-  than by the page.
+- **Letter-spaced typography used to be read as separate words: 189 runs in 50
+  sittings, 13 of them inside speech. Repaired in 0.4.24** (see "The word whose
+  letters were read as words" below). What is left is 11 runs of lone letters,
+  and 6 of them are the page's own doing: four are real enumerations a senator
+  spoke ("los incisos a) y b) y c)"), and two are sittings whose file stores a
+  space between every letter of "D E C R E T A", which is how that page reads.
+  The other 5 come from a different fault and are still open: on a handful of
+  pages the file gives every character its own vertical position, so the parser
+  reads each as a new line and separates them — the link back to the appendix in
+  two sittings of 2013, and three fragments of a roll-call masthead of 18
+  November 2009.
 - **Turns that do not begin or end the way speech does: 5 open mid-word under a
   new speaker**, and all 5 are printed that way — the record really does write
   "Sr. Presidente (Pinedo).- informo a la Cámara…". This check was added last and
@@ -383,7 +377,7 @@ results:
   began at 44 and the difference was faults of one family, all repaired in
   0.4.15–0.4.23 and described below. It also reports two counts kept as
   observations rather than faults: 71 turns of three characters or fewer (a
-  senator answering "20." or the chair "E") and 131 that end on a dash or comma,
+  senator answering "20." or the chair "E") and 130 that end on a dash or comma,
   most of them in the 2003 impeachment sittings, where a turn interrupted by a
   page break comes out as two rows instead of one.
 
@@ -865,6 +859,49 @@ stop and cannot be confused, the next section is the previous one plus one in
 284 of 290 cases, which is what the rule rests on. One sitting of November 2001
 — a scan — numbers too erratically to be followed and now carries no sections
 at all.
+
+### The word whose letters were read as words (fixed in 0.4.24)
+
+The rule above reads a wide gap as a space the file forgot to store. A page
+that spaces out the letters of a word to draw the eye to it — the President's
+address of 1 March 2009 prints "T e n e r  c a l i d a d institucional", every
+roll-call table from 2004 on is headed "V o t a c i ó n  N o m i n a l" — puts a
+gap of exactly that width between every pair of letters, so the rule handed out
+one word per letter. Across the corpus it did that to 189 runs in 50 sittings,
+13 of them inside speech, at a cost of 2,697 words counted that the page prints
+as far fewer, and it left those phrases findable by no search.
+
+What tells the two cases apart is measurable on the page. A missing space is
+one wide gap between two runs of letters set tight against each other; a
+spaced-out word is a row of gaps that all measure the same. So a gap is letter
+spacing, and no space is put back, where four or more gaps in a row measure
+alike — none differing from the row's own measure by more than a fifth — and
+what they separate is letters and figures rather than the row of dots that
+joins an item to its page number in the contents, which is spaced the same way
+and means the opposite. Everything else is left to the rule above.
+
+Two things had to be settled from the pages themselves. **The word's own spaces
+are not lost.** Where the page really does put a space inside such a phrase, the
+file usually stores it, and the wider gap that opens the phrase is still read as
+a space: the address of 23 June 2004 sets a word so wide that the space in front
+of it measures no more than the gaps inside it, and it survives because the
+character before it is set tight against its neighbour and so belongs to a word
+set normally ("Buenos Aires. Esos expedientes", not "Aires.Esos"). **The
+measured range is wider than it looked**: a spaced-out word's gaps run from 0.15
+to 0.94 of the type size, so the first cut at this repair, which stopped at 0.48,
+missed the widest of them.
+
+Measured against the previous parse, the whole change is **115 blocks in 43
+sittings, and in all 115 the letters are the same and only the spacing moved** —
+97 headings, 9 passages of speech and 9 of page matter, each listed before
+and after in
+[reference/verification/letter_spacing_0424.csv](reference/verification/letter_spacing_0424.csv).
+Fifteen rows are new: with its heading legible, the masthead of a roll-call table
+is now recognised in three sittings where it used to be lost, and one of those
+fifteen still reads "V otación Nominal", because that page draws the capital from
+a font of its own. The audit's whole output side is identical on every count,
+the gold set scores exactly as before (F1 = 1.00 on 124 of 125 turns, 0.99
+recall), and the 36 annotated pages still check out against their PDFs.
 
 ### Stenographer notes are events
 
