@@ -300,7 +300,7 @@ the corpus, drawn from 24 of 559 sittings. `scripts/audit_parse.py` covers the
 rest by checking, on every session, things that must never happen. Current
 results:
 
-- **Page apparatus inside a speech turn: 1 occurrence** in 152,550 speech blocks (a
+- **Page apparatus inside a speech turn: 1 occurrence** in 152,549 speech blocks (a
   footer line that landed mid-sentence in the 7 May 2014 sitting). Mastheads,
   datelines, attendance rolls, section headers and the appendix-pointer footnote
   are otherwise absent from speech, which is what the positional header and
@@ -360,15 +360,15 @@ results:
   minority that consist of little but a masthead and a roll.
 - **Letter-spaced typography used to be read as separate words: 189 runs in 50
   sittings, 13 of them inside speech. Repaired in 0.4.24** (see "The word whose
-  letters were read as words" below). What is left is 11 runs of lone letters,
+  letters were read as words" below). What is left is 9 runs of lone letters,
   and 6 of them are the page's own doing: four are real enumerations a senator
   spoke ("los incisos a) y b) y c)"), and two are sittings whose file stores a
   space between every letter of "D E C R E T A", which is how that page reads.
-  The other 5 come from a different fault and are still open: on a handful of
-  pages the file gives every character its own vertical position, so the parser
-  reads each as a new line and separates them — the link back to the appendix in
-  two sittings of 2013, and three fragments of a roll-call masthead of 18
-  November 2009.
+  The other 3 are one line of one roll-call masthead of 18 November 2009, set in
+  Tahoma, where the file measures some pairs of letters as touching and others as
+  spaced, so the row of alike gaps the repair looks for is broken into pieces
+  too short to recognise. Page matter, and the only place in the corpus where
+  it happens.
 - **Turns that do not begin or end the way speech does: 5 open mid-word under a
   new speaker**, and all 5 are printed that way — the record really does write
   "Sr. Presidente (Pinedo).- informo a la Cámara…". This check was added last and
@@ -902,6 +902,36 @@ fifteen still reads "V otación Nominal", because that page draws the capital fr
 a font of its own. The audit's whole output side is identical on every count,
 the gold set scores exactly as before (F1 = 1.00 on 124 of 125 turns, 0.99
 recall), and the 36 annotated pages still check out against their PDFs.
+
+### Text drawn outside the page (dropped in 0.4.25)
+
+A PDF can place text beyond the edges of its own sheet. Nothing prints there and
+nobody reading the record can see it, but the extractor hands it over like any
+other text, and the corpus was carrying it. Across all 559 files it is **3,246
+characters on 264 pages of 49 sittings**, and 0.4.25 drops them: a character is
+kept only if some part of its box falls inside the page, so one straddling an
+edge — part of it does print — still counts.
+
+Most of it is runs of spaces, but two cases are not. Two sittings of 2013 draw
+"◄ Ver el Apéndice." down a column to the right of the sheet, one letter under
+the next, all at x = 602.8 on a page 595.2 wide; because each letter sits on its
+own line, it arrived as a row of lone letters. And the sitting of 12 September
+2024 draws its "Pág. N" some 170 points past the right edge on all 187 pages,
+which is why that record shows no page number when you look at it.
+
+That last one is the reason this repair had to be checked rather than assumed:
+the rule that strips the running head off each page finds it by looking for
+"Pág. N", so dropping what is off the sheet takes that marker away from that
+sitting. It strips 189 pages instead of 192, and **its output is identical block
+for block**, because the other rule — a line that repeats at the same height on
+five pages or more is a running head — catches the rest.
+
+Corpus-wide the repair removes 13 rows. Nine are the invisible text itself; the
+other four are rows that had been split around it and are now whole — a turn of
+the sitting of 4 September 2013 that was broken in two mid-sentence, and three
+headings of roll-call tables that read "Volver" and "Acta Nº 9" separately and
+now read as one. The only text lost anywhere is two "(cid:9)", the marker for a
+glyph no font declares, in the two sittings that are scans.
 
 ### Stenographer notes are events
 

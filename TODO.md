@@ -826,20 +826,41 @@ seven found something.
       1.00 (124/125), annotations 36/36, 152,550 speech blocks, 1,204 rows
       unattributed, 5 turns opening mid-word.
 
+## Phase 20 — text drawn outside the page (August 2026 — parser 0.4.25)
+
+- [x] **What a file draws beyond the edges of its own sheet is no longer in the
+      corpus.** 3,246 characters on 264 pages of 49 sittings, mostly runs of
+      spaces. Two cases are not: two sittings of 2013 draw "◄ Ver el Apéndice."
+      down a column to the right of the page, one letter under the next, which is
+      where three of the lone-letter runs came from; and the sitting of 12
+      September 2024 draws its "Pág. N" 170 points past the right edge on all 187
+      pages, which is why that record shows no page number. A character is kept
+      if any part of its box is on the sheet, so one straddling an edge survives.
+- [x] **Verified, and the 2024 sitting is why it needed verifying.** The header
+      strip finds the running head by looking for "Pág. N", so that sitting loses
+      the marker: it strips 189 pages instead of 192 and its output is identical
+      block for block, the repeated-line rule catching the rest. Corpus-wide the
+      change is 13 rows fewer — 9 of invisible text, and 4 rows that had been
+      split around it and are now whole, including a turn of 4 September 2013
+      broken in two mid-sentence. The only text lost anywhere is two "(cid:9)"
+      in the two sittings that are scans. Gold F1 1.00 (124/125), annotations
+      36/36, the audit identical on every count but the one turn that rejoined
+      (152,549 speech blocks), 1,204 unattributed, 5 turns opening mid-word.
+
 ## Next
 
-- [ ] **The lone letters that are left, and what they are.** 11 runs remain
+- [ ] **The lone letters that are left, and what they are.** 9 runs remain
       against 189, and 6 are the page's own doing: four are enumerations a
       senator really spoke ("los incisos a) y b)"), two are "D E C R E T A" in
-      files that store a space between every letter. The other 5 are a different
-      fault — the file gives each character its own vertical position, so the
-      parser reads every one as a new line and separates them: the appendix link
-      of two sittings of 2013 and three fragments of a masthead of 18 November
-      2009. Page matter in every case, but the mechanism could reach speech.
-- [ ] **One new heading reads "V otación Nominal".** Of the 15 rows the repair
-      added, one draws its capital from a font of its own, so the block grouping
-      splits it off and rejoins it with a space. One sitting, 4 March 2009, page
-      matter.
+      files that store a space between every letter. The other 3 are one line of
+      one roll-call masthead of 18 November 2009, set in Tahoma, where the file
+      measures some pairs of letters as touching and others as spaced, so the row
+      of alike gaps the repair looks for breaks into pieces shorter than the four
+      it asks for. Page matter, and the only place it happens.
+- [ ] **One heading reads "V otación Nominal".** Of the 15 rows the letter-spacing
+      repair added, one draws its capital from a font of its own, so the block
+      grouping splits it off and rejoins it with a space. One sitting, 4 March
+      2009, page matter.
 
 ## Explicitly not building
 

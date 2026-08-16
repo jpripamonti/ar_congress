@@ -18,8 +18,8 @@ text blocks, and analysis.
   the files on disk by `scripts/make_manifest.py`. The 90 sessions fetched
   in January 2025 predate the download-timestamp field, so theirs is blank
   rather than guessed.
-- Corpus parsed (parser 0.4.24): 152,550 speaker-attributed speech blocks
-  and 31,928 typed stenographer events in 237,323 rows, as per-session
+- Corpus parsed (parser 0.4.25): 152,549 speaker-attributed speech blocks
+  and 31,928 typed stenographer events in 237,310 rows, as per-session
   Parquet under `data/processed/senado/`. One session fails to parse — a
   November 2001 sitting that never reached quorum, so it has no session
   opening to find. Text the parser cannot attribute to a speaker is 1,204
@@ -66,7 +66,7 @@ text blocks, and analysis.
   turn to begin "ilencio durante la exposición". 0.4.16 repairs all three: 14
   names rejoined, 165 labels split from the speech stuck to them (69 more than
   the dash alone allowed), 82 words made whole again. Found by a new check that
-  asks of all 152,550 speech blocks whether each begins and ends the way speech
+  asks of all 152,549 speech blocks whether each begins and ends the way speech
   does — turns opening mid-word under a new speaker fall from 44 to 5, and those
   5 are printed that way.
 - **A note is no longer put in somebody's mouth.** The page prints "— Se practica
@@ -140,6 +140,18 @@ text blocks, and analysis.
   With its heading legible, the masthead of a roll-call table is recognised in
   three sittings where it used to be lost, which is 15 new rows. Every output
   check of the audit is identical, and the gold set scores exactly as before.
+- **What the file draws outside the page is no longer in the corpus.** A PDF can
+  place text beyond the edges of its own sheet, where nothing prints and nobody
+  reading the record can see it, and the extractor hands it over like any other
+  text: 3,246 characters on 264 pages of 49 sittings
+  ([reference/verification/offpage_text_0425.csv](reference/verification/offpage_text_0425.csv)).
+  Mostly runs of spaces, but two sittings of 2013 draw "◄ Ver el Apéndice." down
+  a column to the right of the sheet, one letter under the next, and the sitting
+  of 12 September 2024 draws its "Pág. N" 170 points past the right edge on all
+  187 pages — which is why that record shows no page number. 0.4.25 keeps a
+  character only if some part of it is on the sheet. It removes 13 rows: 9 of
+  invisible text, and 4 that had been split around it and are now whole,
+  including a turn of 4 September 2013 that was broken in two mid-sentence.
 - Two layers of verification, because they answer different questions.
   **On a hand-annotated sample** — 36 stratified pages spanning 2003–2024 —
   utterance boundary+attribution F1 = 1.00 (124 of 125 turns), event
@@ -149,7 +161,7 @@ text blocks, and analysis.
   independent human audit. **On all 558 sessions that parse** (`scripts/audit_parse.py`):
   no turn carries a second speaker's label, no label is absorbed by the section
   title above it, one page's footer leaks into speech, no text is written out
-  twice, 5 turns of 152,553 open mid-word and every one of them is printed that
+  twice, 5 turns of 152,549 open mid-word and every one of them is printed that
   way, and a median 79.2% of each document's printed text is kept (the rest —
   contents pages, attendance rolls, appendices — is dropped by design). Two
   sittings of November 2001 are scans with OCR text and should be excluded from

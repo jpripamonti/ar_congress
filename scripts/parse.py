@@ -53,7 +53,7 @@ from pathlib import Path
 import pandas as pd
 import pdfplumber
 
-PARSER_VERSION = "0.4.24"
+PARSER_VERSION = "0.4.25"
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
@@ -275,6 +275,7 @@ def extract_all_characters(pdf_path, max_pages=None):
     scanned_pages = 0
     restored = 0
     suppressed = 0
+    off_page = 0
     with pdfplumber.open(pdf_path) as pdf:
         pages = pdf.pages if max_pages is None else pdf.pages[:max_pages]
         prev_raw = prev_out = None
@@ -282,7 +283,8 @@ def extract_all_characters(pdf_path, max_pages=None):
             page_heights[i + 1] = page.height
             if page_is_scanned(page):
                 scanned_pages += 1
-            page_chars = page.chars
+            page_chars = [c for c in page.chars if on_the_page(c, page)]
+            off_page += len(page.chars) - len(page_chars)
             tracked = letter_spacing_gaps(page_chars)
             for j, c in enumerate(page_chars):
                 family = SUBSET_RE.sub("", c["fontname"])
@@ -325,6 +327,9 @@ def extract_all_characters(pdf_path, max_pages=None):
     if suppressed:
         print(f"No se repusieron {suppressed} huecos que son el espaciado de "
               f"letras de una palabra destacada, no un espacio.")
+    if off_page:
+        print(f"Se descartaron {off_page} caracteres que el archivo dibuja "
+              f"fuera de la hoja, donde la página no imprime nada.")
     if remapped:
         print(f"Se repararon {remapped} caracteres de una fuente de símbolos mal mapeada.")
     if scanned_share:
@@ -444,6 +449,22 @@ def letter_spaced_run(run, gaps, page_chars):
     if run[-1] + 1 < len(gaps) and is_tight(gaps[run[-1] + 1]):
         edges.append(run[-1])
     return [j for j in alike if j not in edges]
+
+
+# A PDF can place text beyond the edges of its own sheet, where nothing prints
+# and nobody can read it, and the extractor still hands it over. Two sittings of
+# 2013 draw "◄ Ver el Apéndice." down a column to the right of the page — one
+# letter under the next, all at x = 602.8 on a sheet 595.2 wide — so it arrived
+# as a row of lone letters; the sitting of 12 September 2024 draws its "Pág. N"
+# 170 points past the edge on all 187 pages, which is why that record shows no
+# page number when you look at it. Across the corpus it is 3,246 characters on
+# 264 pages of 49 sittings, most of them runs of spaces. A character that
+# straddles an edge is kept: part of it does print.
+def on_the_page(char, page):
+    """Is this character inside the sheet the page is printed on?"""
+    left, top, right, bottom = page.bbox
+    return (char["x1"] > left and char["x0"] < right
+            and char["bottom"] > top and char["top"] < bottom)
 
 
 def page_is_scanned(page):
