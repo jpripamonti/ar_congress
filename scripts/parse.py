@@ -53,7 +53,7 @@ from pathlib import Path
 import pandas as pd
 import pdfplumber
 
-PARSER_VERSION = "0.4.26"
+PARSER_VERSION = "0.4.27"
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
@@ -485,13 +485,20 @@ def letter_spaced_run(run, gaps, page_chars):
     # "Set tight" means what the rest of the page does — a gap of about nothing —
     # not merely narrower than a space: inside a spaced word one pair of letters
     # can fall just under the threshold and end the run without ending the word.
+    # None of this applies where the file already stores a space of its own at
+    # that end of the word: nothing is missing there, and putting a second one
+    # back cuts the word open at its first letter ("V otación Nominal").
     def is_tight(gap):
         return gap is not None and gap < GAP_IS_A_SPACE and gap < 0.5 * typical
 
+    def stored_space(j):
+        return 0 <= j < len(page_chars) and page_chars[j]["text"].isspace()
+
     edges = []
-    if is_tight(gaps[run[0] - 1]):
+    if is_tight(gaps[run[0] - 1]) and not stored_space(run[0] - 2):
         edges.append(run[0])
-    if run[-1] + 1 < len(gaps) and is_tight(gaps[run[-1] + 1]):
+    if (run[-1] + 1 < len(gaps) and is_tight(gaps[run[-1] + 1])
+            and not stored_space(run[-1] + 1)):
         edges.append(run[-1])
     return [j for j in alike if j not in edges]
 

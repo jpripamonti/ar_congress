@@ -867,12 +867,26 @@ seven found something.
       enumerations a senator spoke, two files that store a space between every
       letter of "D E C R E T A".
 
+## Phase 22 — the space the file had already stored (August 2026 — parser 0.4.27)
+
+- [x] **The last spaced-out heading reads as one word.** Where a word is spaced
+      out so widely that its own gaps are as wide as a space, the space in front
+      of it measures no wider than they do; 0.4.24 kept it by reading the
+      character before the word, and that rule had no exception for a page that
+      had already stored a space there, so it put a second one in, one letter
+      inside the word. It now applies only where nothing is stored at that edge:
+      a space already in the file is not a space that is missing.
+- [x] **Verified.** One block, one sitting, page matter, spacing only — the
+      heading of 4 March 2009, now "Votación Nominal" for "V otación Nominal".
+      Every other row of the corpus is byte-identical; the audit's output side is
+      unchanged on every count (152,549 speech blocks, 1,204 unattributed, 5
+      turns opening mid-word, 130 ending on a dash or comma); gold F1 1.00
+      (124/125); annotations 36/36.
+
 ## Next
 
-- [ ] **One heading reads "V otación Nominal".** Of the 15 rows the letter-spacing
-      repair added, one draws its capital from a font of its own, so the block
-      grouping splits it off and rejoins it with a space. One sitting, 4 March
-      2009, page matter.
+- [ ] Nothing outstanding in the parser. The next decisions are the licence for
+      the derived tables and whether to mint a DOI, both of them the author's.
 
 ## Explicitly not building
 

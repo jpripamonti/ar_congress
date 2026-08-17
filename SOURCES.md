@@ -893,9 +893,8 @@ sittings, and in all 115 the letters are the same and only the spacing moved** �
 and after in
 [reference/verification/letter_spacing_0424.csv](reference/verification/letter_spacing_0424.csv).
 Fifteen rows are new: with its heading legible, the masthead of a roll-call table
-is now recognised in three sittings where it used to be lost, and one of those
-fifteen still reads "V otación Nominal", because that page draws the capital from
-a font of its own. The audit's whole output side is identical on every count,
+is now recognised in three sittings where it used to be lost. The audit's whole
+output side is identical on every count,
 the gold set scores exactly as before (F1 = 1.00 on 124 of 125 turns, 0.99
 recall), and the 36 annotated pages still check out against their PDFs.
 
@@ -917,6 +916,23 @@ above, which now reads "DE LA CIUDAD DE SANTA ROSA, LA PAMPA" instead of "DE LA
 CI U D A D D E SANT A ROS A , L A PA M PA", and a heading of 7 November 2007
 twice, "NACIONES U NIDAS" for "NACIONES UNIDAS". The audit's output side is
 byte-identical and the gold set is unchanged.
+
+**A space the file had already stored (0.4.27).** Where a word is spaced out so
+widely that its own gaps are as wide as a space, the space in front of it
+measures no wider than they do and would be swallowed with them, gluing it to
+the word before ("…Aires.Esos expedientes"). 0.4.24 kept that space by reading
+the character before the word: if it is set tight against its own neighbour it
+belongs to a word set normally, so the gap between the two is a real space. That
+rule had no exception for the case where the file has already stored a space
+there — and then it put a second one in, one letter inside the spaced word,
+which is why a heading of 4 March 2009 read "V otación Nominal". The rule now
+applies only where nothing is stored at that edge, since a space that is already
+in the file is not a space that is missing. Across all 559 files this changes
+**one block, in one sitting, page matter, spacing only**: that heading, which
+now reads "Votación Nominal". Every other row in the corpus is byte-identical,
+the audit's output side is unchanged on every count, the gold set scores as
+before (F1 = 1.00 on 124 of 125 turns) and the 36 annotated pages still check
+out.
 
 ### Text drawn outside the page (dropped in 0.4.25)
 
