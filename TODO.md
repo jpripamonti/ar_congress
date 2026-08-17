@@ -847,16 +847,28 @@ seven found something.
       36/36, the audit identical on every count but the one turn that rejoined
       (152,549 speech blocks), 1,204 unattributed, 5 turns opening mid-word.
 
+## Phase 21 — the line whose own widths are wrong (August 2026 — parser 0.4.26)
+
+- [x] **The last of the letter-spacing fault is closed.** A roll-call masthead of
+      18 November 2009 is set in a Tahoma whose declared widths belong, for about
+      half its letters, to the letter beside them, so an evenly spaced line
+      arrives with 33 of its 78 gaps measuring nothing and 35 measuring the 0.15
+      of the spacing, and the row of alike gaps breaks into pieces of two and
+      three. A line is now taken as spaced end to end when the middle of its gaps
+      is wider than a space, at least eight measure alike, those are two fifths
+      of the line or more, and the line stores its own spaces — the last
+      condition being what makes suppressing every gap safe, since the word
+      boundaries are then the file's own.
+- [x] **Verified.** 3 blocks in 2 sittings, all page matter, all of them spacing
+      only: the masthead, and a heading of 7 November 2007 twice ("NACIONES U
+      NIDAS"). No row, turn, speaker or section moves anywhere; the audit's output
+      side is byte-identical; gold F1 1.00 (124/125); annotations 36/36. **The 6
+      runs of lone letters left in the corpus are all correct as printed** — four
+      enumerations a senator spoke, two files that store a space between every
+      letter of "D E C R E T A".
+
 ## Next
 
-- [ ] **The lone letters that are left, and what they are.** 9 runs remain
-      against 189, and 6 are the page's own doing: four are enumerations a
-      senator really spoke ("los incisos a) y b)"), two are "D E C R E T A" in
-      files that store a space between every letter. The other 3 are one line of
-      one roll-call masthead of 18 November 2009, set in Tahoma, where the file
-      measures some pairs of letters as touching and others as spaced, so the row
-      of alike gaps the repair looks for breaks into pieces shorter than the four
-      it asks for. Page matter, and the only place it happens.
 - [ ] **One heading reads "V otación Nominal".** Of the 15 rows the letter-spacing
       repair added, one draws its capital from a font of its own, so the block
       grouping splits it off and rejoins it with a space. One sitting, 4 March

@@ -53,7 +53,7 @@ from pathlib import Path
 import pandas as pd
 import pdfplumber
 
-PARSER_VERSION = "0.4.25"
+PARSER_VERSION = "0.4.26"
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
@@ -408,14 +408,59 @@ def letter_spacing_gaps(page_chars):
         gaps.append((cur["x0"] - prev["x1"]) / size)
 
     run = []
+    line = []
     for j in range(1, len(gaps) + 1):
         gap = gaps[j] if j < len(gaps) else None
-        if gap is not None and GAP_IS_A_SPACE <= gap <= LETTER_SPACING_CEIL:
-            run.append(j)
+        if gap is None:                                  # the line ends here
+            spaced.update(letter_spaced_run(run, gaps, page_chars))
+            spaced.update(letter_spaced_line(line, gaps, page_chars))
+            run, line = [], []
             continue
-        spaced.update(letter_spaced_run(run, gaps, page_chars))
-        run = []
+        line.append(j)
+        if GAP_IS_A_SPACE <= gap <= LETTER_SPACING_CEIL:
+            run.append(j)
+        else:
+            spaced.update(letter_spaced_run(run, gaps, page_chars))
+            run = []
     return spaced
+
+
+# The rule above reads the gaps between one character's box and the next one's,
+# and that is not always what the typesetter set. One roll-call masthead of 18
+# November 2009 is set in a Tahoma the file describes badly: the width it gives
+# some letters is the width of the letter beside them, so the same evenly spaced
+# line arrives with some pairs touching and others twice as far apart as they
+# are printed, and the row of alike gaps breaks into pieces too short to
+# recognise. Read as a whole line the spacing is still plain — most of its gaps
+# do measure alike — so a line whose gaps are mostly one width, wider than a
+# space, is set with letter spacing from end to end, and none of them is a space.
+# This is only allowed where the line stores its own spaces, so that reading it
+# this way cannot glue two words together; where it does not, the rule above
+# still decides gap by gap.
+LETTER_SPACED_LINE_SHARE = 0.4    # in that Tahoma, half the pairs measure as
+                                  # touching, so "most" cannot be the test
+LETTER_SPACED_LINE_MIN_ALIKE = 8  # a spaced line, not a chance pair of gaps
+
+
+def letter_spaced_line(line, gaps, page_chars):
+    """Every gap of a line set with letter spacing from one end to the other."""
+    if len(line) < LETTER_SPACING_MIN_GAPS:
+        return ()
+    widths = sorted(gaps[j] for j in line)
+    typical = widths[len(widths) // 2]
+    if not GAP_IS_A_SPACE <= typical <= LETTER_SPACING_CEIL:
+        return ()
+    alike = [j for j in line
+             if abs(gaps[j] - typical) <= LETTER_SPACING_TOLERANCE * typical]
+    if (len(alike) < LETTER_SPACED_LINE_MIN_ALIKE
+            or len(alike) < LETTER_SPACED_LINE_SHARE * len(line)):
+        return ()
+    text = "".join(c["text"] for c in page_chars[line[0] - 1:line[-1] + 1])
+    if sum(c.isalnum() for c in text) < LETTER_SPACING_MIN_ALPHA * max(len(text), 1):
+        return ()
+    if not any(c.isspace() for c in text):
+        return ()
+    return line
 
 
 def letter_spaced_run(run, gaps, page_chars):

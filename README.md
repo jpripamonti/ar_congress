@@ -18,7 +18,7 @@ text blocks, and analysis.
   the files on disk by `scripts/make_manifest.py`. The 90 sessions fetched
   in January 2025 predate the download-timestamp field, so theirs is blank
   rather than guessed.
-- Corpus parsed (parser 0.4.25): 152,549 speaker-attributed speech blocks
+- Corpus parsed (parser 0.4.26): 152,549 speaker-attributed speech blocks
   and 31,928 typed stenographer events in 237,310 rows, as per-session
   Parquet under `data/processed/senado/`. One session fails to parse — a
   November 2001 sitting that never reached quorum, so it has no session
@@ -140,6 +140,18 @@ text blocks, and analysis.
   With its heading legible, the masthead of a roll-call table is recognised in
   three sittings where it used to be lost, which is 15 new rows. Every output
   check of the audit is identical, and the gold set scores exactly as before.
+  One line needed more than that, and 0.4.26 gave it: a roll-call masthead of 18
+  November 2009 is set in a Tahoma whose declared widths belong, for half its
+  letters, to the letter beside them, so an evenly spaced line arrives with half
+  its gaps measuring nothing and half measuring the spacing, and the row of alike
+  gaps breaks into pieces of two and three. A line is now taken as spaced from
+  end to end when most of what can be measured says so and the line stores its
+  own spaces — which is what makes it safe, since the word boundaries are then
+  the file's own. It changes 3 blocks in 2 sittings, both page matter. **No
+  spaced-out word is read as separate words anywhere in the corpus now:** the 6
+  rows of lone letters left are all correct as printed — four enumerations a
+  senator spoke, two files that store a space between every letter of
+  "D E C R E T A".
 - **What the file draws outside the page is no longer in the corpus.** A PDF can
   place text beyond the edges of its own sheet, where nothing prints and nobody
   reading the record can see it, and the extractor hands it over like any other

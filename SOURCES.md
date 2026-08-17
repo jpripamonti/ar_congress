@@ -360,15 +360,11 @@ results:
   minority that consist of little but a masthead and a roll.
 - **Letter-spaced typography used to be read as separate words: 189 runs in 50
   sittings, 13 of them inside speech. Repaired in 0.4.24** (see "The word whose
-  letters were read as words" below). What is left is 9 runs of lone letters,
-  and 6 of them are the page's own doing: four are real enumerations a senator
-  spoke ("los incisos a) y b) y c)"), and two are sittings whose file stores a
-  space between every letter of "D E C R E T A", which is how that page reads.
-  The other 3 are one line of one roll-call masthead of 18 November 2009, set in
-  Tahoma, where the file measures some pairs of letters as touching and others as
-  spaced, so the row of alike gaps the repair looks for is broken into pieces
-  too short to recognise. Page matter, and the only place in the corpus where
-  it happens.
+  letters were read as words" below). **Nothing of the kind is left**: the 6 runs
+  of lone letters still in the corpus are all the page's own doing — four are
+  real enumerations a senator spoke ("los incisos a) y b) y c)"), and two are
+  sittings whose file stores a space between every letter of "D E C R E T A",
+  which is how those pages read.
 - **Turns that do not begin or end the way speech does: 5 open mid-word under a
   new speaker**, and all 5 are printed that way — the record really does write
   "Sr. Presidente (Pinedo).- informo a la Cámara…". This check was added last and
@@ -902,6 +898,25 @@ fifteen still reads "V otación Nominal", because that page draws the capital fr
 a font of its own. The audit's whole output side is identical on every count,
 the gold set scores exactly as before (F1 = 1.00 on 124 of 125 turns, 0.99
 recall), and the 36 annotated pages still check out against their PDFs.
+
+**A line whose own widths are wrong (0.4.26).** The rule reads the gap between
+one character's box and the next one's, and a file can describe those boxes
+badly. One roll-call masthead of 18 November 2009 is set in a Tahoma whose
+declared widths belong, for about half its letters, to the letter beside them:
+the same evenly spaced line arrives with 33 of its 78 gaps measuring nothing at
+all and 35 measuring the 0.15 of the spacing, so the row of alike gaps the
+repair looks for is chopped into pieces of two and three, none long enough to
+recognise. Read as a whole line the spacing is still plain, so a line is taken
+as spaced from end to end when the middle of its gaps is wider than a space, at
+least eight of them measure alike, those are at least two fifths of the line,
+and the line stores its own spaces — that last condition is what makes it safe,
+because the word boundaries are then the file's own and suppressing every gap
+cannot glue two words together. Across the corpus this changes **3 blocks in 2
+sittings, all of them page matter and all of them only spacing**: the masthead
+above, which now reads "DE LA CIUDAD DE SANTA ROSA, LA PAMPA" instead of "DE LA
+CI U D A D D E SANT A ROS A , L A PA M PA", and a heading of 7 November 2007
+twice, "NACIONES U NIDAS" for "NACIONES UNIDAS". The audit's output side is
+byte-identical and the gold set is unchanged.
 
 ### Text drawn outside the page (dropped in 0.4.25)
 
