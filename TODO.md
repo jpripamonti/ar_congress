@@ -384,10 +384,11 @@ keeps them — glued the last word of one line to the first of the next.
       later files, which number with a full stop, the next section is the
       previous plus one in 284 of 290 cases. One scanned November 2001 sitting
       numbers too erratically to follow and now carries no sections.
-- [ ] The section TITLE for those years still stops where the style changes
+- [x] The section TITLE for those years stopped where the style changes
       ("7 Orden del Día N"), because the "º 522" that follows is set in another
-      style. The section number and its turns are right; only the title text is
-      cut short.
+      style. The section number and its turns were right; only the title text was
+      cut short. **Closed in 0.4.28** — see Phase 23. What is left is one sitting
+      whose ordinal is not in the file at all.
 
 ## Phase 10 — read 500 more, against the new parse (done, August 2026 — parser 0.4.12)
 
@@ -421,10 +422,10 @@ already read would have looked new.
 - [x] Nothing else moved: gold set unchanged (F1 = 1.00, 124 of 125 turns), audit
       unchanged on every invariant, and all 2,348 answers recorded across the five
       blind reads still stand under 0.4.12, checked row by row.
-- [ ] The mis-mapped degree sign itself is still there — the notes read "Acta NE
-      13" rather than "Acta N° 13" in those 2004-2005 sittings. It is apparatus,
-      not speech, and repairing it needs the same font-by-font work as the
-      2004-10-20 symbol font.
+- [x] The mis-mapped degree sign — the notes read "Acta NE 13" rather than
+      "Acta N° 13" in those 2004-2005 sittings. **Closed by the glyph work of
+      0.4.21/0.4.22 without anyone noticing**; not one is left in the corpus,
+      confirmed by counting in Phase 23.
 
 ## Phase 11 — read 1,000 more (done, August 2026 — parser 0.4.13)
 
@@ -883,10 +884,79 @@ seven found something.
       turns opening mid-word, 130 ending on a dash or comma); gold F1 1.00
       (124/125); annotations 36/36.
 
+## Phase 23 — the letters the fonts declared wrong (August 2026 — parser 0.4.28 to 0.4.30)
+
+Two items were still marked open in the phases above, below the "Next" line
+that claimed nothing was outstanding. One had closed itself; the other was
+much larger than its note said, and pulling it turned up a third fault that
+had reached the spoken word.
+
+- [x] **The mis-mapped degree sign of 2004–2005 is gone** — the notes that read
+      "Acta NE 13" now read "Acta N° 13", and there is not one left in the
+      corpus. Closed by the glyph work of 0.4.21/0.4.22 without anyone noticing;
+      confirmed by counting.
+- [x] **The section titles cut short were not a title problem.** 8,523 rows in
+      64 sittings carried "10 Orden del Día N" for a page printing "10 Orden del
+      Día N° 248 Día Internacional de la Juventud". The ordinal comes from a
+      WordPerfect font that declares no character map, so it arrives as a
+      meaningless token carrying the name of ITS font — never the bold of the
+      heading — and the title breaks in two around it. The half after the break
+      opens with the bill's number and was thrown away as a bill number out of
+      sequence. 0.4.28 reads the 24 font-and-glyph combinations off the printed
+      page at 600 dpi (each blank or boxed one rendered again with a second,
+      independent renderer), and gives a mark read this way the weight and size
+      of the word beside it, which is what puts the heading back together.
+      Ten are dropped rather than translated: the file has no glyph to draw and
+      both renderers print an empty box, and what the page fails to print is not
+      a character this corpus can supply.
+- [x] **The repair introduced a fault and it was caught before release.** The
+      double space that separates a heading from the label after it is where the
+      LINE ended, and the line can end inside the label — "…Armas Convencionales
+      Sr." then "Presidente. — Corresponde considerar…". Cutting there left half
+      a label behind and 49 turns of four 2003 sittings became nobody's. Those
+      halves are now rejoined first.
+- [x] **The third fault, and the one that reached the spoken word (0.4.29,
+      0.4.30).** The same fonts declare the WRONG letter for the ordinal, the
+      quotation marks, the dashes and the question marks, so the extraction
+      hands back a plain, legible, incorrect character and nothing downstream
+      can tell. The corpus published "el artículo 1E del proyecto", "la Ley N1
+      25.673", "en llamar Aprotocolo facultativo de la cedaw@", ")Qué trató el
+      Congreso" — about 3,700 characters across 163 sittings, most of it inside
+      debate. All fourteen readings taken from the printed page at 500 dpi. The
+      guard is measured rather than assumed: these two fonts draw 2 and 14
+      distinct characters in the whole corpus and never carry running text, so
+      there is no word for a substitution to break. One rule came with it —
+      these files paint a mark several times over itself to make it heavier (the
+      dash of a speaker's label is four glyphs stacked within a tenth of a point),
+      so a repetition standing exactly where the mark before it stands is read
+      once.
+      The two fonts sit on opposite sides of the line between transcription and
+      reconstruction, and both are declared in SOURCES.md: the typographic-symbol
+      font is drawn correctly on the page, so reading it recovers what the page
+      shows; WP-MathA is not — the page itself prints "artículo 1E" — so putting
+      the ordinal back reconstructs a document broken in print, the same decision
+      already made for the 2004 Courier file.
+- [x] **Verified.** 164 sittings change, 394 untouched, nothing lost: the 3,820
+      "words" that disappear are the broken forms themselves (1E, NE, 2E, N1),
+      and the 72 speech blocks that disappear are two-character scraps ("E 1",
+      "E 4") that were the tails of "Artículo 1°" standing as turns credited to a
+      senator. Unattributed text 1,204 → 1,121 rows; turns of three characters or
+      fewer 71 → 46; gold F1 1.00 (124/125); annotations 36/36; no turn carries
+      another speaker's label; the 5 opening mid-word are printed that way.
+- [ ] **What is left, measured.** 185 titles are still cut and 181 of them are in
+      one sitting, 17 September 2003, where the ordinal is not in the file in any
+      form, so there is nothing to read; the other four are in three sittings of
+      2011 and 2020. 21 wrong letters remain in three sittings that draw the same
+      ordinal from SimSun, Tahoma and plain Times New Roman — fonts that also set
+      ordinary text, where an "E" or a "1" may be a real letter and a real digit,
+      so substituting could break a word the page prints correctly.
+
 ## Next
 
-- [ ] Nothing outstanding in the parser. The next decisions are the licence for
-      the derived tables and whether to mint a DOI, both of them the author's.
+- [ ] The parser's open items are the two measured leftovers above, both small
+      and both recorded rather than guessed at. The next decisions are the
+      licence for the derived tables and whether to mint a DOI, both the
+      author's.
 
 ## Explicitly not building
 

@@ -53,7 +53,7 @@ from pathlib import Path
 import pandas as pd
 import pdfplumber
 
-PARSER_VERSION = "0.4.27"
+PARSER_VERSION = "0.4.30"
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
@@ -130,6 +130,112 @@ GLYPH_MEANING = {
 }
 
 
+# The other half of the same fault. Where a font declares no mapping at all,
+# the extraction hands back the literal token "(cid:47)" instead of a
+# codepoint, so these never went through the map above and stayed in the text.
+# They are worse than ugly: the token carries the name of ITS font, which is
+# never the bold of the heading it sits in, so a section title breaks in two
+# around it and the half after the break is read as a bill number and dropped —
+# "10 Orden del Día N" for a page that prints "10 Orden del Día N° 248 Día
+# Internacional de la Juventud". 8,523 rows of 64 sittings carried a title cut
+# off that way.
+#
+# Every reading below was taken from the printed page at 600 dpi, one
+# occurrence of each rendered and looked at, and every one that came out blank
+# or boxed was rendered a second time with an independent renderer before being
+# decided. Keyed on the font by name, because the same number means different
+# things in different fonts.
+CID_MEANING = {
+    # the ordinal ring: "1° de marzo", "13° Reunión", "artículo 4°", "Ley N°
+    # 26.075". 1,249 occurrences, 2003-2008, and the whole of the cut-title
+    # fault
+    ("WPMultinationalARoman", 47): "°",
+    ("WPMultinationalARoman,Italic", 47): "°",
+    ("WPMultinationalAHelve", 47): "°",
+    ("WPMultinationalAHelve,Italic", 47): "°",
+    ("Symbol", 176): "°",
+    # the apostrophe: "años'30", "Moliné O'Connor". 155 occurrences. The page
+    # draws the straight tick this typeface uses for it, and the rest of the
+    # corpus spells that name the same way 296 times
+    ("WPMultinationalARoman", 39): "'",
+    ("WPMultinationalARoman,Italic", 39): "'",
+    ("WPMultinationalAHelve", 39): "'",
+    ("WPMultinationalAHelve,Italic", 39): "'",
+    # the bullet of a printed list, round in one font and square in the other
+    ("Symbol", 183): "•",
+    ("WPMathA", 67): "•",
+    ("Wingdings", 167): "▪",
+    ("Wingdings-Regular", 131): "▪",
+    # the tick of the cover-page form that says what kind of sitting it was:
+    # "Secreta -- Pública ✓ Ej. de Acuerdos". One sitting of 2006 also uses it
+    # as a list bullet
+    ("Wingdings-Regular", 57): "✓",
+    ("Wingdings", 252): "✓",
+    # the tab of the two 2001 sittings that are scans, standing between the
+    # running head and what is printed to its right. Nothing is drawn and the
+    # character has no width; what it does is separate, so it is read as the
+    # space it separates with. 366 occurrences, both of them scans
+    ("Times-Roman", 9): " ",
+    ("Times-Bold", 9): " ",
+    ("Times-Italic", 9): " ",
+    ("Helvetica", 9): " ",
+    ("Helvetica-Oblique", 9): " ",
+    # dropped, not translated: the file has no glyph to draw. Two renderers
+    # print the empty box of a missing character ("artículo 3□ de la Ley",
+    # "1□ Congreso"), or nothing at all — the 2014 one has no width either.
+    # What the page itself fails to print is not a character this corpus can
+    # supply
+    ("TimesNewRoman", 31): "",
+    ("WPTypographicSymbols", 31): "",
+    ("TimesNewRoman", 16): "",
+    ("Calibri", 2): "",
+}
+CID_NUM_RE = re.compile(r"^\(cid:(\d+)\)$")
+
+
+# The third face of the same fault, and the one that reached the spoken word.
+# These WordPerfect fonts DO declare a mapping — it is simply the wrong one, so
+# the extraction hands back a plain, legible, incorrect letter and nothing
+# downstream can tell it is wrong. The corpus carried "el artículo 1E del
+# proyecto", "la Ley N1 25.673", "en llamar Aprotocolo facultativo@", ")Qué
+# trató el Congreso" — 3,600 characters of it, inside 144 sittings of debate.
+#
+# Every reading was checked against the printed page at 500 dpi. Two different
+# situations, both kept here and told apart in SOURCES.md:
+#
+#   The typographic-symbol font is drawn CORRECTLY on the page — it really
+#   prints the quotation marks, the inverted question mark, the dash — so
+#   reading it is recovering what the page shows, nothing more.
+#
+#   WP-MathA is NOT. The page itself prints "artículo 1E", the capital E is on
+#   the paper, and every one of its 3,229 occurrences stands where an ordinal
+#   belongs. Putting the ordinal back is reconstructing a document broken in
+#   print, the same decision this parser already made for the 2004 Courier
+#   file, and it is declared as such rather than passed off as transcription.
+SYMBOL_FONT_LETTERS = {
+    ("WPMathA", "E"): "\u00b0",          # "artículo 1E" for "artículo 1°"
+    ("WPTypographicSymbols", "A"): "\u201c",   # opening quotation
+    ("WPTypographicSymbols", "@"): "\u201d",   # closing quotation
+    ("WPTypographicSymbols", ")"): "\u00bf",   # inverted question mark
+    ("WPTypographicSymbols", "1"): "\u00ba",   # the ordinal of "Ley Nº 25.673"
+    ("WPTypographicSymbols", "0"): "\u00aa",   # its feminine, "la 28ª sesión"
+    ("WPTypographicSymbols", "B"): "\u2013",   # "Un alumno – un profesor"
+    ("WPTypographicSymbols", "S"): "\u2013",   # the dash opening a listed item
+    ("WPTypographicSymbols", "C"): "\u2014",   # the dash of a speaker's label
+    ("WPTypographicSymbols", "("): "\u00a1",   # inverted exclamation mark
+    ("WPTypographicSymbols", "Y"): "\u2026",   # the ellipsis of a trailing quotation
+    ("WPTypographicSymbols", "="): "\u2019",   # the apostrophe of "del '80"
+    ("WingdingsRegular", "!"): "\u25aa",      # the square bullet of a list
+    ("WPTypographicSymbols", "<"): "\u2018",   # opening single quotation
+    ("WPTypographicSymbols", ">"): "\u2019",   # its closing half
+}
+# the same font is named four ways across the files — with a hyphen, with a
+# space, without either, and its italic under a name of its own — and none of
+# that changes what it draws
+SYMBOL_FONT_ALIAS = re.compile(r"[\s-]|,(?:Italic|Bold|BoldItalic|Oblique)$")
+
+
+
 # 2000–2013 layouts split the chair label across styles:
 #   bold "Sr. Presidente" + normal "(Pampuro)" + bold ". –"
 # The shards need reassembly (identify_speakers) instead of the bold
@@ -156,6 +262,8 @@ MAX_LABEL_TAIL = 70
 # so the label can be glued straight onto the heading with no separator.
 FUSED_LABEL_RE = re.compile(r"\s?(?=(?:Sr|Sra|Srta|Sres)\.\s)")
 LABEL_FRAGMENT_RE = re.compile(r"^[.\s]*(?:Sr|Sra|Srta|Sres)$")  # shattered label: reset, not heading
+# a heading that ends on the opening word of a label — the line broke there
+LABEL_OPENER_TAIL_RE = re.compile(r"(?:^|\s)(?:Sr|Sra|Srta|Sres)\.$")
 LEAD_JUNK_RE = re.compile(r'^[\s.:;,\-–—−…"“”«»]+')  # bold-glued tail of the previous sentence
 PAREN_LABEL_RE = re.compile(r"^\(([^()]{1,60})\)[\s.\-–—−:]*$")  # bare "(Rojkés de Alperovich).-" chair label
 DGT_RE = re.compile(r"^Dirección General de Taquígrafos\b")
@@ -276,6 +384,9 @@ def extract_all_characters(pdf_path, max_pages=None):
     restored = 0
     suppressed = 0
     off_page = 0
+    cids_read = 0
+    letters_read = 0
+    stacked = 0
     with pdfplumber.open(pdf_path) as pdf:
         pages = pdf.pages if max_pages is None else pdf.pages[:max_pages]
         prev_raw = prev_out = None
@@ -306,13 +417,49 @@ def extract_all_characters(pdf_path, max_pages=None):
                         chars.append(dict(prev_out, text=" "))
                         restored += 1
                 text = GLYPH_MEANING.get(c["text"], c["text"])
+                size = round(c["size"], 1)
+                letter = SYMBOL_FONT_LETTERS.get(
+                    (SYMBOL_FONT_ALIAS.sub("", family), text))
+                if letter is not None:
+                    # These files paint one mark several times over itself to
+                    # make it heavier: the dash of "Sr. Gómez Diez. —" is four
+                    # glyphs stacked at the same place on the line. Read one
+                    # per place, or the label comes out with four dashes.
+                    if (prev_raw is not None and prev_raw["text"] == c["text"]
+                            and abs(prev_raw["x0"] - c["x0"]) < 1
+                            and prev_raw["page"] == i + 1):
+                        prev_raw = dict(c, page=i + 1)
+                        stacked += 1
+                        continue
+                    text = letter
+                    if (prev_out is not None and prev_out["page"] == i + 1
+                            and abs(prev_out["top"] - c["top"]) < 3):
+                        style, size = prev_out["font_style"], prev_out["size"]
+                    letters_read += 1
+                cid = CID_NUM_RE.match(text)
+                if cid:
+                    read = CID_MEANING.get((family, int(cid.group(1))))
+                    if read is not None:
+                        text = read
+                        # and it stops standing apart from the line it is in.
+                        # A font brought in for one mark of punctuation
+                        # declares a weight and a size of its own, and the
+                        # grouping reads those as a change of style: an
+                        # ordinal set this way cuts its own heading in half.
+                        # The mark belongs to the word beside it, so it is
+                        # given that word's weight and size — never across a
+                        # line, where there is no word beside it.
+                        if (prev_out is not None and prev_out["page"] == i + 1
+                                and abs(prev_out["top"] - c["top"]) < 3):
+                            style, size = prev_out["font_style"], prev_out["size"]
+                        cids_read += 1
                 if text == "":
                     continue
                 out = {
                     "text": text,
                     "font": family,
                     "font_style": style,
-                    "size": round(c["size"], 1),
+                    "size": size,
                     "page": i + 1,
                     "top": c["top"],
                 }
@@ -332,6 +479,15 @@ def extract_all_characters(pdf_path, max_pages=None):
               f"fuera de la hoja, donde la página no imprime nada.")
     if remapped:
         print(f"Se repararon {remapped} caracteres de una fuente de símbolos mal mapeada.")
+    if cids_read:
+        print(f"Se leyeron {cids_read} glifos que la fuente no declara, "
+              f"según lo que imprime la página.")
+    if letters_read:
+        print(f"Se corrigieron {letters_read} caracteres que una fuente de "
+              f"símbolos declara como otra letra.")
+    if stacked:
+        print(f"Se descartaron {stacked} repeticiones de un mismo signo "
+              f"dibujado varias veces en el mismo lugar.")
     if scanned_share:
         print(f"=== Advertencia: {scanned_share:.0%} de las páginas son imágenes "
               f"escaneadas; el texto proviene de OCR y no es fiable ===")
@@ -1223,6 +1379,19 @@ def assign_chapter_to_blocks(blocks, body_size):
         elif numbered:
             # split fused "N. Título  Sra. Presidenta..." blocks on double spaces
             parts = [p.strip() for p in t.split("  ") if p.strip()] if "  " in t else [t]
+            # that double space is where the line ended, and the line can end
+            # in the MIDDLE of the label — "…Armas Convencionales Sr." then
+            # "Presidente. — Corresponde considerar…". Cutting there leaves half
+            # a label behind, so the chair opens no turn and everything said
+            # under the heading is recorded as nobody's. Put those halves back
+            # together before anything else looks at them.
+            rejoined = []
+            for p in parts:
+                if rejoined and LABEL_OPENER_TAIL_RE.search(rejoined[-1]):
+                    rejoined[-1] = f"{rejoined[-1]} {p}"
+                else:
+                    rejoined.append(p)
+            parts = rejoined
             # 2000–2013 fuses with single spaces: cut a trailing speaker label
             # off each part so it can open its own turn downstream
             fission = []
