@@ -53,7 +53,7 @@ from pathlib import Path
 import pandas as pd
 import pdfplumber
 
-PARSER_VERSION = "0.4.30"
+PARSER_VERSION = "0.4.31"
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
@@ -226,6 +226,16 @@ SYMBOL_FONT_LETTERS = {
     ("WPTypographicSymbols", "Y"): "\u2026",   # the ellipsis of a trailing quotation
     ("WPTypographicSymbols", "="): "\u2019",   # the apostrophe of "del '80"
     ("WingdingsRegular", "!"): "\u25aa",      # the square bullet of a list
+    # the same ordinal again, from two fonts an inventory built on font NAMES
+    # could never have found. WPMultinationalARoman is the font whose unmapped
+    # twin is read through the map above: where the file declares nothing the
+    # ordinal arrives as "(cid:47)", and where it declares the slot's ASCII
+    # meaning it arrives as "/". The page prints "22° Reunión - 13°".
+    # SimSun is a Chinese text font one 2005 sitting borrows for the same mark,
+    # and there the page really does print "el artículo 1E del", so that one is
+    # reconstruction like WPMathA rather than transcription
+    ("WPMultinationalARoman", "/"): "\u00b0",
+    ("SimSun", "E"): "\u00b0",
     ("WPTypographicSymbols", "<"): "\u2018",   # opening single quotation
     ("WPTypographicSymbols", ">"): "\u2019",   # its closing half
 }
@@ -233,6 +243,14 @@ SYMBOL_FONT_LETTERS = {
 # space, without either, and its italic under a name of its own — and none of
 # that changes what it draws
 SYMBOL_FONT_ALIAS = re.compile(r"[\s-]|,(?:Italic|Bold|BoldItalic|Oblique)$")
+# and the map above is keyed the same way, for the same reason: five sittings
+# declare WP-MultinationalARoman with a hyphen where thirty-nine spell it
+# without one. Nothing in the corpus turns on it today — those five files
+# happen to declare their characters properly — but a lookup that misses
+# because of a hyphen is the very fault this map exists to repair.
+CID_MEANING = {(SYMBOL_FONT_ALIAS.sub("", font), num): read
+               for (font, num), read in CID_MEANING.items()}
+SYMBOL_FONT_FAMILIES = {font for font, _ in SYMBOL_FONT_LETTERS}
 
 
 
@@ -389,6 +407,22 @@ def extract_all_characters(pdf_path, max_pages=None):
     stacked = 0
     with pdfplumber.open(pdf_path) as pdf:
         pages = pdf.pages if max_pages is None else pdf.pages[:max_pages]
+        # Which fonts may have their letters read as something else, in THIS
+        # document. A font brought in to draw one mark of punctuation never
+        # sets a word, and that is checkable rather than assumed: if it draws
+        # so much as one lower-case letter anywhere in the sitting it is
+        # setting text, and nothing of its is touched. Without this the map
+        # would rest on a hand-written list of font names, and a text font
+        # that happens to share a name with a symbol one — Tahoma sets 96
+        # different characters and close to a million of them in these files —
+        # could have its words rewritten.
+        sets_words = set()
+        for page in pages:
+            for c in page.chars:
+                if c["text"].islower():
+                    fam = SYMBOL_FONT_ALIAS.sub("", SUBSET_RE.sub("", c["fontname"]))
+                    if fam in SYMBOL_FONT_FAMILIES:
+                        sets_words.add(fam)
         prev_raw = prev_out = None
         for i, page in enumerate(pages):
             page_heights[i + 1] = page.height
@@ -418,9 +452,9 @@ def extract_all_characters(pdf_path, max_pages=None):
                         restored += 1
                 text = GLYPH_MEANING.get(c["text"], c["text"])
                 size = round(c["size"], 1)
-                letter = SYMBOL_FONT_LETTERS.get(
-                    (SYMBOL_FONT_ALIAS.sub("", family), text))
-                if letter is not None:
+                normalised = SYMBOL_FONT_ALIAS.sub("", family)
+                letter = SYMBOL_FONT_LETTERS.get((normalised, text))
+                if letter is not None and normalised not in sets_words:
                     # These files paint one mark several times over itself to
                     # make it heavier: the dash of "Sr. Gómez Diez. —" is four
                     # glyphs stacked at the same place on the line. Read one
@@ -438,7 +472,8 @@ def extract_all_characters(pdf_path, max_pages=None):
                     letters_read += 1
                 cid = CID_NUM_RE.match(text)
                 if cid:
-                    read = CID_MEANING.get((family, int(cid.group(1))))
+                    read = CID_MEANING.get(
+                        (SYMBOL_FONT_ALIAS.sub("", family), int(cid.group(1))))
                     if read is not None:
                         text = read
                         # and it stops standing apart from the line it is in.

@@ -1005,7 +1005,7 @@ time with an independent renderer before being decided: 1,249 are the ordinal
 ring, 155 the apostrophe, 67 a round bullet, 68 the tick of the form that
 says whether the sitting was secret or public, 4 a square bullet, and 366 the
 tab of the two 2001 sittings that are scans, which draws nothing and has no
-width and is read as the space it separates with. **Ten are dropped rather
+width and is read as the space it separates with. **Ten occurrences, in four font-and-glyph combinations, are dropped rather
 than translated**: the file has no glyph to draw, both renderers print the
 empty box of a missing character ("artículo 3□ de la Ley", "1□ Congreso") or
 nothing at all, and what the page itself fails to print is not a character
@@ -1030,9 +1030,11 @@ together before anything else looks at them.
 Measured across all 559 files against the 0.4.27 corpus: 59 sittings change
 and 499 are untouched. **Nothing is lost.** The 581 rows that disappear are
 the orphaned second halves of the titles, and 576 of them are found again
-inside their own section's title. Of the other five, two are a page number
-and a rule in the two sittings that are scans, and three are the half labels
-this repair put back together — "Presidente. —", "Pichetto. —",
+inside their own section's title. Of the rest, eight are page matter in
+the two sittings that are scans — seven bare page numbers and a rule, each of
+them a row that held nothing but the number and the tab beside it, so once the
+tab is read as the space it separates with the row has no word left in it — and
+three are the half labels this repair put back together — "Presidente. —", "Pichetto. —",
 "Presidente (Guinle). —" — which is why those three sittings now open turns
 for those speakers instead of leaving a fragment sitting on its own. The 850 "words" that disappear are halves
 that now form one word — the "O" and the "Connor" of "O'Connor", the "N" and
@@ -1043,65 +1045,86 @@ mid-word, 71 of three characters or fewer, 130 ending on a dash or comma,
 every (session, label) pair resolving to exactly one person). Gold set
 F1 = 1.00 on 124 of 125 turns; the 36 annotated pages still check out.
 
-**The letter the font declared wrong, and the words it changed (0.4.29–0.4.30).**
-The two repairs above dealt with fonts that declare no character map at all.
-There is a third case, and it is the one that reached the spoken word. The
-WordPerfect-era fonts of 2003–2009 DO declare a mapping for the ordinal, the
-quotation marks, the dashes and the question marks — it is simply the wrong
+**The letter the font declared wrong, and the words it changed (0.4.29 to
+0.4.31).** The two repairs above dealt with fonts that declare no character map
+at all. There is a third case, and it is the one that reached the spoken word.
+The WordPerfect-era fonts of 2003–2009 DO declare a mapping for the ordinal,
+the quotation marks, the dashes and the question marks — it is simply the wrong
 one. What comes out of the extraction is a plain, legible, incorrect letter,
 and nothing downstream can tell that it is wrong. The corpus published "el
 artículo 1E del proyecto", "la Ley N1 25.673", "en llamar Aprotocolo
-facultativo de la cedaw@", ")Qué trató el Congreso", "Un alumno B un
-profesor", "la 280 (vigésima octava) sesión" — **about 3,700 characters
-across 163 sittings, most of them inside debate rather than page matter**.
+facultativo de la cedaw@", ")Qué trató el Congreso", "Un alumno B un profesor",
+"la 280 (vigésima octava) sesión", and — in the sitting of 17 September 2003 —
+"22/ Reunión - 13/ Sesión ordinaria", where the ordinal arrives as a slash.
 
-A scan of all 559 files closes the list: these fonts draw **2 and 14 distinct
-characters in the whole corpus** — WP-MathA nothing but "E" and a space,
-WPTypographicSymbols fourteen marks of punctuation. They never carry running
-text anywhere, which is what makes reading them safe: there is no word for
-the substitution to break.
+**Seventeen readings, each taken from the printed page** at 500 to 600 dpi, one
+occurrence rendered and looked at, and every one that came out blank or boxed
+rendered a second time with an independent renderer before being decided.
 
-Every one of the fourteen readings was taken from the printed page at 500 dpi,
-one occurrence rendered and looked at. The two fonts sit on opposite sides of
-the line this corpus draws between transcription and reconstruction, and both
-are recorded here rather than blurred together:
+The guard is not a list of font names. A font brought in to draw one mark of
+punctuation never sets a word, and the parser now checks that per document
+rather than trusting a name: if the font draws so much as one lower-case letter
+anywhere in the sitting it is setting text, and nothing of its is touched. That
+matters — Tahoma draws 96 different characters and close to a million of them
+in these same files, and a rule keyed on names had already let two fonts
+through unexamined for exactly that reason. Measured over the whole corpus, the
+fonts this map does read draw two distinct characters each in the sittings that
+use them for a mark, except the typographic-symbol font, which draws fourteen
+marks of punctuation and never a word.
 
-* **The typographic-symbol font is drawn correctly on the page.** It really
-  prints "en llamar "protocolo facultativo…"", "¿Qué trató el Congreso", "Un
-  alumno – un profesor", "la 28ª (vigésima octava)", "del '80", "Ley Nº
-  25.673". Reading it recovers what the page shows and nothing more.
-* **WP-MathA is not.** The page itself prints "el artículo 1E del" and
-  "Criminal NE 21 de la Capital" — the capital E is on the paper, checked at
-  600 dpi. All 3,229 of its occurrences stand where an ordinal belongs, and
-  the ordinal is put back. That is a reconstruction of a document broken in
-  print, the same decision this parser already made for the 2004 Courier file,
-  and it is declared as such rather than passed off as transcription.
+The two sides of the line this corpus draws between transcription and
+reconstruction are now measured rather than asserted, and they do not fall
+where the font is but where the FILE is:
 
-One rule had to come with it. These files paint a single mark several times
-over itself to make it heavier — the dash of "Sr. Gómez Diez. —" is four
-glyphs stacked at the same place on the line, measured to within a tenth of a
-point — so a repetition standing exactly where the mark before it stands is
-read once.
+* **Where the file embeds the font, the page prints the mark correctly** and
+  reading it recovers what the page shows. The typographic-symbol font is
+  always in this position: it really prints "en llamar "protocolo
+  facultativo…"", "¿Qué trató el Congreso", "Un alumno – un profesor", "la 28ª
+  (vigésima octava)", "del '80", "Ley Nº 25.673". So is the ordinal of the
+  17 September 2003 sitting, which prints "22° Reunión - 13°", and the ordinal
+  in the **6 sittings, 223 occurrences**, that embed the mathematical font.
+* **Where the file does NOT embed it — 152 sittings and 3,006 occurrences —
+  nothing on the page is the file's own.** Every reader substitutes a font of
+  its own choosing, and each one tried here draws a capital E: "el artículo 1E
+  del", "Criminal NE 21 de la Capital". Putting the ordinal back there
+  reconstructs a document that cannot be printed as it was meant, the same
+  decision this parser already made for the 2004 Courier file, and it is
+  declared as such rather than passed off as transcription.
 
-Measured across all 559 files against the 0.4.28 corpus: **164 sittings change
-and 394 are untouched, and nothing is lost.** The 3,820 "words" that disappear
-are the broken forms themselves — 1E, NE, 2E, N1 — replaced by 1°, N°, 2°.
-The 72 speech blocks that disappear are scraps of two characters ("E 1",
-"E 4", "E 5"): the tails of "Artículo 1°" that the broken glyph had cut off
-and left standing as turns credited to a senator, now back inside the note
-they belong to. Text the parser cannot attribute to anyone falls from 1,183
-rows to 1,121, and turns of three characters or fewer from 71 to 46. Gold set
-F1 = 1.00 on 124 of 125 turns; the 36 annotated pages still check out; no turn
-carries another speaker's label; the 5 turns that open mid-word are printed
-that way.
+One rule came with all this. These files paint a single mark several times over
+itself to make it heavier — the dash of "Sr. Gómez Diez. —" is four glyphs
+stacked at the same place on the line, measured to within a tenth of a point —
+so a repetition standing exactly where the mark before it stands is read once.
 
-**What is left, measured.** 185 titles are still cut and 181 of them are in
-one sitting, 17 September 2003, where the ordinal is not in the file in any
-form — neither as a character nor as an unmapped glyph — so there is nothing
-to read; the other four are in three sittings of 2011 and 2020. 21 wrong
-letters remain, in three sittings that draw the same ordinal from SimSun,
-Tahoma and plain Times New Roman: in a font that sets ordinary text an "E" or
-a "1" may be a real letter and a real digit, and substituting there could
-break a word the page prints correctly, so they are left as they are and
-counted here.
+**Measured across all 559 files against the 0.4.27 corpus**, rebuilt from that
+version's own code for the comparison: **198 sittings change and 360 are
+untouched, and nothing is lost.** Of the 5,812 word-forms that disappear, 5,666
+are the broken forms themselves — 1E, NE, 2E, N1, the bare N left where a title
+was cut, the lone slash — and of the 146 that are ordinary words, every one is
+a half that now forms a single word ("Connor" inside "O'Connor", "Ccomo" for
+"— como", "ALey" for ""Ley") or a name a list's bullet now sits against. Rows
+fall from 237,310 to 235,761: 1,006 fewer headings, because the second half of
+a cut title now lives inside the title itself; 361 fewer rows of page matter,
+because 225 rows that held nothing but a lone slash rejoin the words they
+belong to; and 83 fewer speech blocks, which were two-character scraps ("E 1",
+"E 4") — the tails of "Artículo 1°" left standing as turns credited to a
+senator. Text the parser cannot attribute to anyone falls from 1,204 rows to
+1,121, and turns of three characters or fewer from 71 to 46. Gold set F1 = 1.00
+on 124 of 125 turns; the 36 annotated pages still check out; no turn carries
+another speaker's label; the 5 turns that open mid-word are printed that way.
+
+**What is left, measured.** Four cut titles remain, in three sittings, and each
+has its own cause, none of them a glyph: the title of 13 April 2011 runs across
+a page break, which the parser rejoins within a page but not across one; the
+one of 2 November 2011 carries a double space inside itself, which the rule
+that separates a heading from the label printed after it reads as the end of
+the heading; and the two of 3 September 2020 set the "N" in bold and the "º"
+that follows in the plain face, so the style grouping cuts between them — the
+page is right and the file is inconsistent. Seven wrong letters remain, all in
+two sittings that draw the ordinal from plain Times New Roman: that font sets
+the body text of those same sittings, so an "E" or a "1" there may be a real
+letter and a real digit, and the per-document guard refuses them for that
+reason. And 47 places in three sittings show a bullet or a tick standing
+against the word after it with no space — 43 of them in the two sittings that
+are scans, where the mark is not a bullet at all but noise the OCR read.
 

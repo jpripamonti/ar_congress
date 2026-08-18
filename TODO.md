@@ -906,7 +906,8 @@ had reached the spoken word.
       page at 600 dpi (each blank or boxed one rendered again with a second,
       independent renderer), and gives a mark read this way the weight and size
       of the word beside it, which is what puts the heading back together.
-      Ten are dropped rather than translated: the file has no glyph to draw and
+      Ten occurrences, in four font-and-glyph combinations, are dropped rather
+      than translated: the file has no glyph to draw and
       both renderers print an empty box, and what the page fails to print is not
       a character this corpus can supply.
 - [x] **The repair introduced a fault and it was caught before release.** The
@@ -943,20 +944,90 @@ had reached the spoken word.
       senator. Unattributed text 1,204 → 1,121 rows; turns of three characters or
       fewer 71 → 46; gold F1 1.00 (124/125); annotations 36/36; no turn carries
       another speaker's label; the 5 opening mid-word are printed that way.
-- [ ] **What is left, measured.** 185 titles are still cut and 181 of them are in
-      one sitting, 17 September 2003, where the ordinal is not in the file in any
-      form, so there is nothing to read; the other four are in three sittings of
-      2011 and 2020. 21 wrong letters remain in three sittings that draw the same
-      ordinal from SimSun, Tahoma and plain Times New Roman — fonts that also set
-      ordinary text, where an "E" or a "1" may be a real letter and a real digit,
-      so substituting could break a word the page prints correctly.
+- [x] **What was thought to be left.** 185 titles still cut, 181 of them in the
+      sitting of 17 September 2003 "where the ordinal is not in the file in any
+      form"; and 21 wrong letters in three sittings. **Both claims were wrong,
+      and Phase 24 says how** — the ordinal is in that file, drawn as a slash,
+      and fourteen of the twenty-one letters were safe to read after all.
+
+## Phase 24 — five readers sent to break Phase 23 (August 2026 — parser 0.4.31)
+
+Phase 23 was checked only by its author, so five readers were sent after it,
+each with a different angle and each told to assume the repair was wrong until
+proved right. Four of the five found something, and one of the findings undid
+the phase's main excuse.
+
+- [x] **Seven wrong claims of the author's, each verified before being changed.**
+      The README said two sittings were left untouched where there are three;
+      three event-subtype counts in the data dictionary were stale; the row loss
+      in the two 2001 scans was eight rows and not two (the diff method used to
+      count it aligns rows, so a row that changed at all was counted as changed
+      rather than gone); the mathematical font was said to draw "nothing but an
+      E and a space" when it draws five things; and Tahoma was named as one of
+      the fonts that break the ordinal when Tahoma sets running text in those
+      same sittings — 96 distinct characters, close to a million of them.
+- [x] **The phase's main excuse was false, and the fix was one line.** Phase 23
+      said the 181 cut titles of 17 September 2003 could not be repaired because
+      the ordinal "is not in the file in any form". It is: the file draws it as
+      an ASCII slash from a font whose name carries a hyphen, and the page
+      prints "22° Reunión - 13° Sesión ordinaria". The font draws two characters
+      in the whole corpus — that slash and an apostrophe — so reading it cannot
+      break a real one. **185 cut titles fall to 4**, and 225 rows that held
+      nothing but a lone slash rejoin the words they belong to.
+- [x] **Fourteen of the twenty-one wrong letters left were safe after all.**
+      They come from SimSun, a Chinese text font one 2005 sitting borrows for
+      the ordinal, and it draws exactly two characters in that whole sitting —
+      the same safety signature already accepted for the other fonts. Seven
+      remain, in two sittings whose ordinal comes from the Times New Roman that
+      also sets their body text; those are refused, and counted.
+- [x] **The guard stopped being a hand-written list of font names.** That list is
+      exactly what had left both of the fonts above unexamined, and no amount of
+      careful reading of its output could have found them. The parser now checks
+      each document for itself: a font that draws so much as one lower-case
+      letter anywhere in the sitting is setting text, and nothing of its is
+      touched.
+- [x] **A landmine defused.** The map of unmapped glyphs was keyed on the raw
+      font name while its sibling map normalised the name first, and five
+      sittings spell that font with a hyphen. Nothing turned on it today — those
+      five declare their characters properly — but it is the very fault the map
+      exists to repair, waiting for the file that would trip it.
+- [x] **The transcription/reconstruction line was drawn in the wrong place, and
+      is now measured.** Phase 23 said reading the mathematical font's ordinal
+      was reconstruction everywhere. It depends on the file, and the split is
+      clean: where the file does not embed the font — **152 sittings, 3,006
+      occurrences** — nothing on the page is the file's own, every reader
+      substitutes and each one draws a capital E, and putting the ordinal back
+      is reconstruction; where the file does embed it — **6 sittings, 223
+      occurrences** — the page prints the ring and reading it is transcription.
+- [x] **What the readers checked and found sound**, each on its own evidence:
+      that no real speech text was lost anywhere (a reader rebuilt the previous
+      corpus from its own code and compared 58 sittings word by word); that the
+      style inheritance cannot take the weight of the wrong run; that the
+      stacked-glyph rule drops nothing but genuine over-painting (3 drops in
+      3,707 matches, all four copies of one dash); that the letter-spacing
+      indices stay aligned; that the label rejoin never glues two headings (all
+      11,078 titles checked); and that no unrelated font collides with a map key.
+- [x] **Re-measured from scratch.** The 0.4.27 corpus was rebuilt from that
+      version's own code and the whole journey measured against it with a method
+      that counts a vanished row as vanished: 198 sittings change, 360 are
+      untouched, and of the 5,812 word-forms that disappear only 146 are
+      ordinary words, every one of them a half that now forms a single word.
+      Gold F1 1.00 (124/125), annotations 36/36, no turn carrying another
+      speaker's label, unattributed text 1,204 → 1,121 rows.
+- [ ] **What is left, measured.** Four cut titles in three sittings, each with
+      its own cause and none of them a glyph: a title running across a page
+      break (13 Apr 2011), a double space inside a heading (2 Nov 2011), and an
+      "N" in bold whose "º" is not (3 Sep 2020, twice). Seven wrong letters in
+      two sittings, refused by the guard because the font also sets their body
+      text. And 47 places where a bullet or tick stands against the next word
+      with no space, 43 of them in the two sittings that are scans, where the
+      mark is OCR noise rather than a bullet.
 
 ## Next
 
-- [ ] The parser's open items are the two measured leftovers above, both small
-      and both recorded rather than guessed at. The next decisions are the
-      licence for the derived tables and whether to mint a DOI, both the
-      author's.
+- [ ] The parser's open items are the three measured leftovers above, all small
+      and all recorded rather than guessed at. The next decisions are the licence
+      for the derived tables and whether to mint a DOI, both the author's.
 
 ## Explicitly not building
 

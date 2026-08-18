@@ -18,8 +18,8 @@ text blocks, and analysis.
   the files on disk by `scripts/make_manifest.py`. The 90 sessions fetched
   in January 2025 predate the download-timestamp field, so theirs is blank
   rather than guessed.
-- Corpus parsed (parser 0.4.30): 152,503 speaker-attributed speech blocks
-  and 31,936 typed stenographer events in 236,211 rows, as per-session
+- Corpus parsed (parser 0.4.31): 152,466 speaker-attributed speech blocks
+  and 31,936 typed stenographer events in 235,761 rows, as per-session
   Parquet under `data/processed/senado/`. One session fails to parse — a
   November 2001 sitting that never reached quorum, so it has no session
   opening to find. Text the parser cannot attribute to a speaker is 1,121
@@ -172,25 +172,26 @@ text blocks, and analysis.
 - **The letters the fonts declared wrong are the page's letters again.** The
   WordPerfect-era sittings of 2003–2009 draw their ordinals, quotation marks,
   dashes and question marks with symbol fonts, and those fonts tell the file the
-  wrong thing about what they draw. Two kinds of damage came out of it. Where
-  the font declares nothing at all, the mark arrived as a meaningless token that
-  also carried the name of its own font — never the bold of the heading it sat
-  in — so a section title broke in two around the ordinal and the half after the
-  break, which starts with the bill's number, was thrown away as a bill number
-  out of sequence: **8,523 rows in 64 sittings carried a title cut off that
-  way**, "10 Orden del Día N" for a page that prints "10 Orden del Día N° 248
-  Día Internacional de la Juventud". Where the font declares the wrong letter,
-  the damage reached the spoken word: the corpus published "el artículo 1E del
-  proyecto", "la Ley N1 25.673", "en llamar Aprotocolo facultativo de la
-  cedaw@", ")Qué trató el Congreso" — about **3,700 characters across 163
-  sittings**, most of it inside debate. 0.4.28 to 0.4.30 read every one of the
-  38 font-and-mark combinations off the printed page, at 500 to 600 dpi, and
-  each one that came out blank or boxed was rendered again with a second,
-  independent renderer before being decided. Nothing unreadable is left in the
-  corpus anywhere. Two sittings' worth is deliberately not touched and counted
-  instead: where the ordinal comes from a font that also sets ordinary text, an
-  "E" or a "1" may be a real letter and a real digit, and substituting there
-  could break a word the page prints correctly.
+  wrong thing about what they draw. Where the font declares nothing at all, the
+  mark arrived as a meaningless token that also carried the name of its own font
+  — never the bold of the heading it sat in — so a section title broke in two
+  around the ordinal and the half after the break, which starts with the bill's
+  number, was thrown away as a bill number out of sequence: **8,523 rows in 64
+  sittings carried a title cut off that way**. Where the font declares the wrong
+  letter, the damage reached the spoken word: the corpus published "el artículo
+  1E del proyecto", "la Ley N1 25.673", "en llamar Aprotocolo facultativo de la
+  cedaw@", ")Qué trató el Congreso", and "22/ Reunión - 13/ Sesión ordinaria"
+  where the ordinal comes out as a slash. 0.4.28 to 0.4.31 read every one of the
+  37 font-and-mark combinations off the printed page, at 500 to 600 dpi, and
+  rendered again with a second, independent renderer every one that came out
+  blank or boxed. Nothing unreadable is left in the corpus anywhere, and 185 cut
+  titles fall to 4. The guard is no longer a hand-written list of font names —
+  that list is precisely what had left two of these fonts unexamined. The parser
+  now checks each document for itself: a font that draws so much as one
+  lower-case letter anywhere in the sitting is setting text, and nothing of its
+  is touched. Seven wrong letters are deliberately left and counted, in two
+  sittings whose ordinal comes from the same Times New Roman that sets their
+  body text, where an "E" or a "1" may be a real letter and a real digit.
 - Two layers of verification, because they answer different questions.
   **On a hand-annotated sample** — 36 stratified pages spanning 2003–2024 —
   utterance boundary+attribution F1 = 1.00 (124 of 125 turns), event
@@ -200,7 +201,7 @@ text blocks, and analysis.
   independent human audit. **On all 558 sessions that parse** (`scripts/audit_parse.py`):
   no turn carries a second speaker's label, no label is absorbed by the section
   title above it, one page's footer leaks into speech, no text is written out
-  twice, 5 turns of 152,503 open mid-word and every one of them is printed that
+  twice, 5 turns of 152,466 open mid-word and every one of them is printed that
   way, and a median 79.2% of each document's printed text is kept (the rest —
   contents pages, attendance rolls, appendices — is dropped by design). Two
   sittings of November 2001 are scans with OCR text and should be excluded from

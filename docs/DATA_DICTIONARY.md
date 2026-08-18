@@ -28,9 +28,9 @@ the normal way to work with it.
 
 | Column | Meaning |
 | --- | --- |
-| `type` | `speech` — words somebody said (152,503). `event` — the stenographer's note about something that happened (31,936). `heading` — a section title. `furniture` — printed page matter kept only for tracing; not speech. `inline_italic` — an italicised fragment that had no turn to belong to. `other` — text the parser could not attribute to anyone (1,121, 0.5%). |
+| `type` | `speech` — words somebody said (152,466). `event` — the stenographer's note about something that happened (31,936). `heading` — a section title. `furniture` — printed page matter kept only for tracing; not speech. `inline_italic` — an italicised fragment that had no turn to belong to. `other` — text the parser could not attribute to anyone (1,121, 0.5%). |
 | `text` | The words themselves, as printed. Spelling, punctuation and the edition's own mistakes are preserved: where a page misspells a senator's surname, so does this. |
-| `event_type` | Only for notes. `vote` (17,400), `incident` (4,093, disorder in the chamber), `applause` (3,755), `unspecified` (1,723), `laughter` (1,395), `pause` (1,378), `stage` (1,179, someone entering, leaving or taking the chair), `timestamp` (1,005, the clock time the record prints). |
+| `event_type` | Only for notes. `vote` (17,412), `incident` (4,093, disorder in the chamber), `applause` (3,755), `unspecified` (1,720), `laughter` (1,395), `pause` (1,378), `stage` (1,178, someone entering, leaving or taking the chair), `timestamp` (1,005, the clock time the record prints). |
 | `seq` | Position within the sitting. Sorting by it gives the order the words were printed in, which is the order they were spoken. |
 | `pages` | The printed page or pages the passage came from, as a list. |
 
