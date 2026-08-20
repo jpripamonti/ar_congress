@@ -18,7 +18,7 @@ text blocks, and analysis.
   the files on disk by `scripts/make_manifest.py`. The 90 sessions fetched
   in January 2025 predate the download-timestamp field, so theirs is blank
   rather than guessed.
-- Corpus parsed (parser 0.4.31): 152,466 speaker-attributed speech blocks
+- Corpus parsed (parser 0.4.32): 152,466 speaker-attributed speech blocks
   and 31,936 typed stenographer events in 235,761 rows, as per-session
   Parquet under `data/processed/senado/`. One session fails to parse — a
   November 2001 sitting that never reached quorum, so it has no session
@@ -152,15 +152,17 @@ text blocks, and analysis.
   keeps the space in front of a spaced-out word had no exception for a page that
   had already stored that space and so put a second one in, one letter inside the
   word; 0.4.27 applies that rule only where nothing is stored at that edge, which
-  changes that single block and nothing else in the corpus. Six rows of lone
-  letters are left. Four are a senator's own enumeration, spoken that way and
-  correct as printed. The other two are not: both files print the same
-  resolving clause every decree in the corpus uses — "…D E C R E T A :" — spaced
-  out for emphasis exactly like every heading this fix collapses elsewhere, but
-  spaced by storing a literal space between each letter rather than by widening
-  the gap, which is a form the classifier does not yet see through. A later
-  review found it (see `TODO.md`, Phase 25); the two blocks — `2003-06-25_r13`
-  and `2004-02-24_r43`, both quoted decree text — still ship broken.
+  changes that single block and nothing else in the corpus. Four rows of lone
+  letters are left, all a senator's own enumeration, spoken that way and
+  correct as printed. Two more looked the same and were not: both files print
+  the same resolving clause every decree in the corpus uses — "…D E C R E T A
+  :" — spaced out for emphasis exactly like every heading this fix collapses
+  elsewhere, but by storing a literal space between each letter rather than by
+  widening the gap, a form the classifier could not yet see through. Found by
+  a later review (`TODO.md`, Phase 25) and closed by 0.4.32 (`TODO.md`, Phase
+  26): the two blocks — `2003-06-25_r13` and `2004-02-24_r43`, both quoted
+  decree text — now read "DECRETA," and a corpus-wide scan for the same shape
+  finds nothing else of the kind left.
 - **What the file draws outside the page is no longer in the corpus.** A PDF can
   place text beyond the edges of its own sheet, where nothing prints and nobody
   reading the record can see it, and the extractor hands it over like any other

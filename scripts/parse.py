@@ -53,7 +53,7 @@ from pathlib import Path
 import pandas as pd
 import pdfplumber
 
-PARSER_VERSION = "0.4.31"
+PARSER_VERSION = "0.4.32"
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
@@ -405,6 +405,7 @@ def extract_all_characters(pdf_path, max_pages=None):
     cids_read = 0
     letters_read = 0
     stacked = 0
+    unspaced = 0
     with pdfplumber.open(pdf_path) as pdf:
         pages = pdf.pages if max_pages is None else pdf.pages[:max_pages]
         # Which fonts may have their letters read as something else, in THIS
@@ -430,8 +431,12 @@ def extract_all_characters(pdf_path, max_pages=None):
                 scanned_pages += 1
             page_chars = [c for c in page.chars if on_the_page(c, page)]
             off_page += len(page.chars) - len(page_chars)
-            tracked = letter_spacing_gaps(page_chars)
+            stored_drop, stored_tracked = stored_space_letter_spacing(page_chars)
+            tracked = letter_spacing_gaps(page_chars) | stored_tracked
+            unspaced += len(stored_drop)
             for j, c in enumerate(page_chars):
+                if j in stored_drop:
+                    continue
                 family = SUBSET_RE.sub("", c["fontname"])
                 low = family.lower()
                 if "bold" in low:
@@ -509,6 +514,9 @@ def extract_all_characters(pdf_path, max_pages=None):
     if suppressed:
         print(f"No se repusieron {suppressed} huecos que son el espaciado de "
               f"letras de una palabra destacada, no un espacio.")
+    if unspaced:
+        print(f"Se quitaron {unspaced} espacios que el archivo guarda entre "
+              f"las letras de una palabra destacada, no entre palabras.")
     if off_page:
         print(f"Se descartaron {off_page} caracteres que el archivo dibuja "
               f"fuera de la hoja, donde la página no imprime nada.")
@@ -692,6 +700,100 @@ def letter_spaced_run(run, gaps, page_chars):
             and not stored_space(run[-1] + 1)):
         edges.append(run[-1])
     return [j for j in alike if j not in edges]
+
+
+# The rule above reads the gap between two glyphs, which is nothing where a
+# document spaces a word's letters apart by storing a real space character
+# between each one rather than by widening the advance width — "D E C R E T A"
+# closing a decree, "A U T O R I D A D E S" on a 2024 cover page. There is no
+# gap left to measure: the space glyph fills the width itself, so every pair
+# on either side of it reads as touching, and the run never becomes a
+# candidate above. What still marks such a run as one word's own letters, not
+# a run of short words, is that a real word capitalises only once — all its
+# letters alike, or one capital and the rest lower, exactly as the word is
+# spelt — while a run built from Spanish's own one-letter words (a, o, y, u,
+# e) or single-digit numbers never keeps one case for four letters running.
+# Measured over the whole corpus at this rule: 22 runs, all six-page
+# spellings of one roll-call masthead, fourteen cover-page headings, and the
+# two decree closings — and, checked and rejected by the same rule, every
+# acronym that runs into "y a" or "o a" (137 of them, one corpus-wide pass:
+# "la AFIP y a los propios empleados" is not "AFIPYALOS"), every lettered
+# subsection read the way the law numbers it ("inciso a y b"), and a broken
+# citation whose font drops its own periods ("O.D. N° 560" printed as
+# "O d D N.I. 560", two abbreviations short enough that neither reaches four
+# letters on its own). A run glued to the letter before or after it — the
+# tail of an acronym, a digit set beside a broken ordinal — is refused before
+# its case is even read: a letter-spaced word starts and ends at a boundary
+# nothing else touches.
+def stored_space_letter_spacing(page_chars):
+    """Which stored spaces are a word's own letter spacing, not a word gap?
+
+    Returns (drop, extra_tracked): drop is the indices of the interior stored
+    spaces to omit from the output; extra_tracked is the indices of the
+    letters that follow one, so the gap left by dropping it is never read by
+    space_is_missing as a missing space either.
+    """
+    drop = set()
+    extra_tracked = set()
+    run = []  # alternating [letter_idx, space_idx, letter_idx, space_idx, ...]
+
+    def is_alnum(idx):
+        return 0 <= idx < len(page_chars) and page_chars[idx]["text"].isalnum()
+
+    def valid_word(w):
+        return w.isupper() or (w[:1].isupper() and w[1:].islower())
+
+    def split_words(letters):
+        words, start = [], 0
+        for k in range(1, len(letters)):
+            if letters[k].isupper() and letters[k - 1].islower():
+                words.append((start, k))
+                start = k
+        words.append((start, len(letters)))
+        return words
+
+    def flush():
+        r = run[:-1] if len(run) % 2 == 0 else run  # drop a trailing, unconfirmed space
+        letter_idx = r[0::2]
+        space_idx = r[1::2]  # space_idx[k] is between letter_idx[k] and letter_idx[k+1]
+        if len(letter_idx) < LETTER_SPACING_MIN_GAPS:
+            return
+        if is_alnum(letter_idx[0] - 1) or is_alnum(letter_idx[-1] + 1):
+            return
+        letters = "".join(page_chars[idx]["text"] for idx in letter_idx)
+        words = split_words(letters)
+        if not all(b - a >= LETTER_SPACING_MIN_GAPS and valid_word(letters[a:b])
+                   for a, b in words):
+            return
+        for a, b in words:
+            drop.update(space_idx[a:b - 1])
+            extra_tracked.update(letter_idx[a + 1:b])
+
+    prev_idx = None
+    for j, c in enumerate(page_chars):
+        text = c["text"]
+        is_letter = len(text) == 1 and text.isalpha()
+        is_lone_space = text == " "
+        same_line = (prev_idx is not None and
+                     abs(c["top"] - page_chars[prev_idx]["top"]) <=
+                     0.5 * max(c["size"], page_chars[prev_idx]["size"], 1))
+        if run:
+            expect_space = len(run) % 2 == 1
+            if expect_space and is_lone_space and same_line:
+                run.append(j)
+                prev_idx = j
+                continue
+            if not expect_space and is_letter and same_line:
+                run.append(j)
+                prev_idx = j
+                continue
+            flush()
+            run = []
+        if is_letter:
+            run = [j]
+        prev_idx = j
+    flush()
+    return drop, extra_tracked
 
 
 # A PDF can place text beyond the edges of its own sheet, where nothing prints

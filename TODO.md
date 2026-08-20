@@ -1104,15 +1104,63 @@ about the font-safety guard.
       in 43 sittings — was checked against the file the corpus actually
       publishes, and it reproduces exactly.
 
+## Phase 26 — a stored space read as letter spacing too (August 2026 — parser 0.4.32)
+
+- [x] **The letter-spacing fix now sees the form Phase 19 could not.** A word
+      set apart by widening the gap between its letters is one thing; a word
+      set apart by storing a literal space character between each letter is
+      another, and the first fix only ever measured the gap, which does not
+      exist where a space glyph fills it. What still marks such a run as one
+      word's own letters, not a run of short words, is that a real word
+      capitalises only once — all its letters alike, or one capital and the
+      rest lower, exactly as spelt — while a run of Spanish's own one-letter
+      words (a, o, y, u, e) or single-digit numbers never keeps one case for
+      four letters running. A run glued to the letter before or after it is
+      refused before its case is even read, so the tail of an acronym can
+      never be mistaken for the head of a spelled-out word.
+- [x] **Measured over the whole corpus three times, because the first two
+      rules were each wrong in a different way.** A first version, run over
+      all 559 source files, collapsed 153 runs: sixteen were true headings —
+      the two decree closings and the fourteen cover pages — and 137 shared
+      the same false shape, an acronym's own last letter sitting right before
+      "y a" or "o a," which is how spoken Spanish constantly runs one word
+      into the next ("la AFIP y a los propios empleados" read as "AFIPYALOS").
+      The rule had no notion of where a word starts, so it began counting
+      wherever a capital happened to sit. It also missed one heading
+      entirely — "Votación Nominal," six pages of one roll-call masthead —
+      because it required a single capital for the whole run, and that
+      heading is two words, each capitalised on its own. Fixing the word
+      boundary and letting a run hold more than one word found all 22 true
+      headings and cut the false matches to one: "O.D. N° 560" printed with
+      its periods missing as "O d D N.I. 560," two abbreviations short of a
+      word each, joined only because the length was checked for the whole
+      run and not for each word in it. A third pass, checking each word's own
+      length, found exactly the 22 genuine headings and nothing else.
+- [x] **Only the two already-broken blocks change in what ships.** Of the 22
+      runs, 20 sit in text that something else in the pipeline already cuts
+      before publication — the masthead as a repeating page header, the
+      cover-page headings as front matter — exactly as Phase 25 found. The
+      two decree closings do not, and now read "DECRETA" in the published
+      corpus for the first time.
+- [x] **Verified.** Full corpus reprocessed at 0.4.32 (559 sittings, the one
+      known no-quorum failure of November 2001 unaffected). Gold F1 1.00
+      (124/125), annotations 36/36, both unchanged from 0.4.31. The audit's
+      every named count — 1,121 unattributed rows, 5 turns opening mid-word,
+      0 turns carrying a second speaker's label, 0 sessions written out
+      twice — is unchanged, and none of the 17 affected sittings appears in
+      any of its flagged lists. A corpus-wide scan for the same shape of
+      run — four or more single characters joined by real spaces — finds the
+      62 genuine short-word runs the rule was built to leave alone (spoken
+      enumerations, lettered subsections, arithmetic) untouched, and the two
+      "D E C R E T A" rows gone.
+      (`reference/verification/stored_space_letter_spacing_0432.csv`)
+
 ## Next
 
 - [ ] The parser's open items are the three measured leftovers of Phase 24, all
-      small and all recorded rather than guessed at, and the two "D E C R E T
-      A" blocks Phase 25 found still broken. Teaching the letter-spacing
-      classifier to see through a stored space is a piece of work in the same
-      league as Phase 19 itself and deserves the same corpus-wide measurement
-      before it changes anything. The next decisions are the licence for the
-      derived tables and whether to mint a DOI, both the author's.
+      small and all recorded rather than guessed at. The next decisions are
+      the licence for the derived tables and whether to mint a DOI, both the
+      author's.
 
 ## Explicitly not building
 
