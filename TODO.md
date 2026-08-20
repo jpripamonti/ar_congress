@@ -1023,11 +1023,96 @@ the phase's main excuse.
       with no space, 43 of them in the two sittings that are scans, where the
       mark is OCR noise rather than a bullet.
 
+## Phase 25 — five readers sent to check Phases 19-22 (August 2026)
+
+Phases 19 through 22 — the letter-spacing collapse, the off-page filter, the
+Tahoma width fix, the stored-space edge case — had each been checked only by
+whoever wrote it. Five readers were sent after them: one hunting false
+positives and negatives in the letter-spacing classifier, one attacking the
+off-page filter from both directions, one re-measuring every numeric claim of
+the four phases at their exact historical commits, one checking Phases 23 and
+24 hadn't quietly broken either fix, and one chasing a specific hypothesis
+about the font-safety guard.
+
+- [x] **A real gap in the letter-spacing classifier, and it is not only
+      dormant.** The classifier reasons about the gap between two glyphs; where
+      a page spaces a word's letters apart by storing a real space
+      **character** between each one, instead of just pushing the glyphs
+      further apart, the check that tells letter spacing from a missing space
+      is never reached at all — it returns immediately whenever either side of
+      a gap already is a space. Found live in the "Votación Nominal" masthead
+      of one 2005 sitting and, complete, in the "AUTORIDADES" cover heading of
+      all 13 sittings the corpus holds from 2024, apparently a different export
+      tool starting that year — but neither survives into what ships: the 2005
+      masthead is stripped as a repeating page header, the 2024 heading is cut
+      with the rest of the cover page before the session opens.
+- [x] **Phase 21 was wrong about "D E C R E T A," and the corpus has shipped it
+      broken since.** Phase 21 said the six remaining runs of lone letters were
+      "all correct as printed," four of them a senator's own enumeration and
+      two a file that stores a space between every letter of "D E C R E T A."
+      Rendering both pages shows the same resolving clause every decree in the
+      corpus prints — "EL PRESIDENTE DEL H. SENADO DE LA NACIÓN, D E C R E T A
+      :" — spaced out for emphasis exactly like every heading Phase 19 was
+      built to fix, and Phase 19's own pre-fix scan had already logged it that
+      way (`letter_spacing_0423.csv`, "as the page reads: DECRETA"). It is the
+      same fault Phase 19 closed, arriving by the stored-space route this
+      round's reading found, and it was never checked against the page before
+      being called correct. Confirmed as the *only* two blocks left of this
+      kind anywhere: a scan of the pattern across all 558 published sessions
+      finds exactly these two and nothing else.
+      `2003-06-25_r13`, page 3, and `2004-02-24_r43`, page 3, both quoted decree
+      text, not attributed speech.
+- [x] **A landmine in the font-safety guard, defused.** The check that decides
+      whether a symbol font is setting real words scanned every character on
+      the page before the filter that drops text drawn off the sheet ever ran,
+      so an invisible lower-case letter in one of those fonts could in
+      principle poison the guard for the whole document. Checked directly
+      against all 559 source files: it never has — every lower-case letter
+      those fonts draw is either printed on the page or the font never
+      appears. Moved the scan to run after the off-page filter. Confirmed
+      inert on the current corpus by reprocessing a sitting that uses one of
+      the guarded fonts and diffing the output byte for byte.
+- [x] **The off-page filter held, over the whole corpus, not a sample.** Zero
+      of the corpus's 45,687 pages are rotated, and the character coordinates
+      would stay correct even if one were — checked by reading pdfplumber's
+      own rotation transform and by building three synthetic rotated PDFs and
+      running the real filter against them. No page's crop box differs from
+      its media box, which closes the other way a page could hide printed text
+      from the filter. The headline count — 3,246 characters on 264 pages of
+      49 sittings — reproduces exactly from the raw files, and the 30
+      characters dropped closest to a page edge are all blank space or a
+      zero-width tab, never ink.
+- [x] **No regression from Phases 23 and 24.** 30 fixes sampled across both —
+      15 letter-spacing collapses, 15 off-page drops, 30 different sittings
+      from 2001 to 2023 — all still hold exactly as the verification records
+      describe, checked against the rendered page and not only the record.
+- [x] **Most of the four phases' own numbers re-measured exact; one will not
+      reproduce.** Running each historical parser version at its own commit
+      reproduced, to the exact figure: 670,660 spaces restored against 39,380
+      now read as letter spacing (Phase 19); 3,246 off-page characters on 264
+      pages of 49 sittings (Phase 20); the two Tahoma blocks of Phase 21 and
+      the one stored-space block of Phase 22, each on the sitting named. Phase
+      19's own opening count will not reproduce: "189 runs in 50 sittings, 13
+      inside speech, 2,697 words." A fresh count against the real parser,
+      corpus-wide, finds letter-spacing activity in 156 sittings, not 50; the
+      file already on record from the commit before the fix counts a related
+      pass at 177 runs in 45 sittings. Neither the code that produced 189/50
+      nor the one that produced 177/45 was kept, and the two commits already
+      disagree with each other by these numbers — two informal measurements of
+      the problem's scope taken while the fix was being built, not a claim
+      about what the corpus holds. What the corpus holds — 115 blocks changed
+      in 43 sittings — was checked against the file the corpus actually
+      publishes, and it reproduces exactly.
+
 ## Next
 
-- [ ] The parser's open items are the three measured leftovers above, all small
-      and all recorded rather than guessed at. The next decisions are the licence
-      for the derived tables and whether to mint a DOI, both the author's.
+- [ ] The parser's open items are the three measured leftovers of Phase 24, all
+      small and all recorded rather than guessed at, and the two "D E C R E T
+      A" blocks Phase 25 found still broken. Teaching the letter-spacing
+      classifier to see through a stored space is a piece of work in the same
+      league as Phase 19 itself and deserves the same corpus-wide measurement
+      before it changes anything. The next decisions are the licence for the
+      derived tables and whether to mint a DOI, both the author's.
 
 ## Explicitly not building
 

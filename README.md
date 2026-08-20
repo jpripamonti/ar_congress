@@ -152,11 +152,15 @@ text blocks, and analysis.
   keeps the space in front of a spaced-out word had no exception for a page that
   had already stored that space and so put a second one in, one letter inside the
   word; 0.4.27 applies that rule only where nothing is stored at that edge, which
-  changes that single block and nothing else in the corpus. **No spaced-out word
-  is read as separate words anywhere in the corpus now:** the 6
-  rows of lone letters left are all correct as printed — four enumerations a
-  senator spoke, two files that store a space between every letter of
-  "D E C R E T A".
+  changes that single block and nothing else in the corpus. Six rows of lone
+  letters are left. Four are a senator's own enumeration, spoken that way and
+  correct as printed. The other two are not: both files print the same
+  resolving clause every decree in the corpus uses — "…D E C R E T A :" — spaced
+  out for emphasis exactly like every heading this fix collapses elsewhere, but
+  spaced by storing a literal space between each letter rather than by widening
+  the gap, which is a form the classifier does not yet see through. A later
+  review found it (see `TODO.md`, Phase 25); the two blocks — `2003-06-25_r13`
+  and `2004-02-24_r43`, both quoted decree text — still ship broken.
 - **What the file draws outside the page is no longer in the corpus.** A PDF can
   place text beyond the edges of its own sheet, where nothing prints and nobody
   reading the record can see it, and the extractor hands it over like any other

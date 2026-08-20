@@ -419,7 +419,7 @@ def extract_all_characters(pdf_path, max_pages=None):
         sets_words = set()
         for page in pages:
             for c in page.chars:
-                if c["text"].islower():
+                if c["text"].islower() and on_the_page(c, page):
                     fam = SYMBOL_FONT_ALIAS.sub("", SUBSET_RE.sub("", c["fontname"]))
                     if fam in SYMBOL_FONT_FAMILIES:
                         sets_words.add(fam)
