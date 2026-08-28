@@ -18,8 +18,8 @@ text blocks, and analysis.
   the files on disk by `scripts/make_manifest.py`. The 90 sessions fetched
   in January 2025 predate the download-timestamp field, so theirs is blank
   rather than guessed.
-- Corpus parsed (parser 0.4.32): 152,466 speaker-attributed speech blocks
-  and 31,936 typed stenographer events in 235,761 rows, as per-session
+- Corpus parsed (parser 0.4.33): 152,465 speaker-attributed speech blocks
+  and 31,936 typed stenographer events in 235,743 rows, as per-session
   Parquet under `data/processed/senado/`. One session fails to parse — a
   November 2001 sitting that never reached quorum, so it has no session
   opening to find. Text the parser cannot attribute to a speaker is 1,121
@@ -198,6 +198,27 @@ text blocks, and analysis.
   is touched. Seven wrong letters are deliberately left and counted, in two
   sittings whose ordinal comes from the same Times New Roman that sets their
   body text, where an "E" or a "1" may be a real letter and a real digit.
+  Four cut titles remained after this pass; a later and unrelated fault
+  behind two of them is closed by 0.4.33 (`TODO.md`, Phase 27), leaving two.
+- **A ring mark that Unicode calls a letter isn't one, and 226 of them were
+  missing.** "1º," "2ª": the ordinal ring is sometimes drawn in a slightly
+  different style than the number and word around it, which a block-smoothing
+  pass exists to repair by welding a lone, differently-styled character back
+  into its neighbours — except that pass skips anything it reads as a real
+  letter, so as not to swallow a genuine one-letter word, and Unicode counts
+  "º" and "ª" as letters even though they read as punctuation everywhere a
+  person would read them. The mark's own block was never absorbed, and was
+  then read as junk and dropped. A corpus-wide scan for the same shape found
+  231 of them; 226, in nine sittings from 2008 to 2023, share their
+  neighbour's exact type size and are restored by 0.4.33 — "el artículo 9"
+  is "el artículo 9º" again, "Orden del Día N" is "Orden del Día Nº" again.
+  One was worse than a missing mark: a stage direction of 6 August 2008 broke
+  at the ring and its second half was credited to the previous speaker as if
+  he had said it himself; that sitting now reads the stage direction whole,
+  with no senator saying words that were never his. Five more marks in four
+  more sittings sit next to a neighbour of a different type size and are
+  measured but not yet reached
+  (`TODO.md`, Phase 27; [reference/verification/ordinal_marks_0433.csv](reference/verification/ordinal_marks_0433.csv)).
 - Two layers of verification, because they answer different questions.
   **On a hand-annotated sample** — 36 stratified pages spanning 2003–2024 —
   utterance boundary+attribution F1 = 1.00 (124 of 125 turns), event

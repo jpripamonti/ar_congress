@@ -1155,12 +1155,76 @@ about the font-safety guard.
       "D E C R E T A" rows gone.
       (`reference/verification/stored_space_letter_spacing_0432.csv`)
 
+## Phase 27 — a letter that isn't one, and the merge it defeated (August 2026 — parser 0.4.33)
+
+Two of the four cut titles Phase 24 left open — both in one 2020 sitting,
+both reading "…Orden del Día N" and stopping there — turned out to share a
+single, narrow cause worth reading more than the titles alone.
+
+- [x] **The ring after an "N" breaks a heading that never meant to break.**
+      "Orden del Día Nº 117/20" prints its "N" and its "117/20" in the same
+      bold as the rest of the heading, but the ring mark between them — "º" —
+      comes out of the file in plain roman. That flip is exactly the fault a
+      block-smoothing pass already exists to repair: a single character set
+      in a different style than its neighbours is folded back into them,
+      because on the page it is never a heading, a sentence, or a word of its
+      own — it is one mark, sitting inside whichever word or number surrounds
+      it. That pass excludes anything it reads as a real letter, so as not to
+      absorb a genuine one-letter word standing alone. "º" is not a real
+      letter by that test, but Unicode disagrees: it is coded as one (the
+      same is true of "ª"), even though it reads exactly like the punctuation
+      it is — "1º," "2ª" — everywhere a person would read it. The exclusion
+      let every one of these marks slip past the pass meant to catch it, so
+      the heading stayed broken at the "N" and the ring, wherever it landed,
+      was read as its own island and thrown out as junk.
+- [x] **The same fault is not two titles, it is 226 marks in nine sittings.**
+      A corpus-wide scan for the same shape — a lone "º" or "ª," in a
+      different style than both neighbours, sitting where an ordinal reads —
+      found 231 of them. 226 share their neighbour's exact type size and are
+      picked up by the fix: two in the 2020 sitting's own titles, and 224
+      more scattered through ordinary speech and stage directions in eight
+      other sittings from 2008 to 2023 — "el artículo 9" restored to "el
+      artículo 9º," "Orden del Día N" restored to "Orden del Día Nº," a
+      dozen years of senators reading article numbers and order-of-business
+      numbers aloud, each missing its mark until now.
+- [x] **One of the 226 was not a dropped character, it was a stolen line.**
+      In the sitting of 6 August 2008, the stage direction "— Ocupa la
+      Presidencia la señora vicepresidenta 2º del H. Senado, senadora
+      Liliana T. Negre de Alonso." broke at the ring exactly like the
+      titles did — but stage directions sit between speakers, not inside one
+      person's own speech, so the second half of the line did not simply
+      vanish. It landed as an orphaned turn, credited to whichever senator
+      happened to be speaking just before, sandwiched between two of his own
+      real remarks: senator Marín's turn read as if he had said "2º del H.
+      Senado, senadora Liliana T. Negre de Alonso." himself. The fix makes
+      this one whole stage direction again, and the misattributed row is
+      gone.
+- [x] **What is left, measured.** Five more marks of the same shape, in four
+      more sittings — 2012-10-25, 2013-10-09, 2018-11-14, 28-09-2023 — sit
+      next to a neighbour of a slightly different type size, so the same
+      smoothing pass still will not reach them; widening the pass to ignore
+      size too risks welding unrelated text together, and nothing here
+      justifies that risk yet. The other two cut titles Phase 24 left open —
+      one heading broken across a page (13 April 2011) and one broken by a
+      double space that happens to sit inside the heading's own text
+      (2 November 2011) — are a different fault and untouched by this one.
+- [x] **Verified.** Full corpus reprocessed at 0.4.33 (559 sittings, the one
+      known no-quorum failure of November 2001 unaffected). Gold F1 1.00
+      (124/125), annotations 36/36, unchanged from 0.4.32. The audit's every
+      named count — 1,121 unattributed rows, 5 turns opening mid-word, 0
+      turns carrying a second speaker's label, 0 sessions written out twice
+      — is unchanged, and none of the nine affected sittings appears as an
+      outlier in the audit's source-fidelity check.
+      (`reference/verification/ordinal_marks_0433.csv`)
+
 ## Next
 
-- [ ] The parser's open items are the three measured leftovers of Phase 24, all
-      small and all recorded rather than guessed at. The next decisions are
-      the licence for the derived tables and whether to mint a DOI, both the
-      author's.
+- [ ] The parser's open items are Phase 24's three measured leftovers, now
+      down to two cut titles instead of four, plus the five ordinal marks
+      Phase 27 found but a neighbouring size mismatch keeps out of reach.
+      All are small and all recorded rather than guessed at. The next
+      decisions are the licence for the derived tables and whether to mint
+      a DOI, both the author's.
 
 ## Explicitly not building
 

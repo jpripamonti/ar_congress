@@ -53,7 +53,7 @@ from pathlib import Path
 import pandas as pd
 import pdfplumber
 
-PARSER_VERSION = "0.4.32"
+PARSER_VERSION = "0.4.33"
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
@@ -259,6 +259,12 @@ SYMBOL_FONT_FAMILIES = {font for font, _ in SYMBOL_FONT_LETTERS}
 # The shards need reassembly (identify_speakers) instead of the bold
 # punctuation becoming a heading that resets the running speaker.
 BOLD_JUNK_RE = re.compile(r'^[\s.:;,\-–—−…"“”«»ºª°()]+$')
+# "º" and "ª" read like the punctuation of an ordinal ("1º", "1ª"), but Unicode
+# counts them as letters, not symbols — unlike "°", which is a true symbol and
+# already reads as punctuation everywhere this matters. Anything that checks
+# for a letterless run has to name them explicitly, or a stray "º" left in its
+# own tiny style-shift block is read as text and never swept up with the rest.
+ORDINAL_MARKS = "ºª"
 PAREN_ONLY_RE = re.compile(r"^\([^()]{1,60}\)$")
 # "(Estrada). — Por Secretaría…": the parenthetical belongs to the label,
 # the terminator is punctuation, and only what follows is speech.
@@ -1092,13 +1098,20 @@ def smooth_micro_islands(blocks):
     "Presidente" in the 2006–2009 files. Absorb the island into the
     preceding block and, when the following block resumes the preceding
     block's style, rejoin that continuation too.
+
+    "Letterless" excludes ORDINAL_MARKS on purpose: a bold heading's own "N"
+    followed by a roman "º" ("...del Orden del Día Nº 117/20") is exactly this
+    same style-flip fault, but Unicode marks "º" a letter, so a plain
+    isalpha() check waved it through as real text and left the heading itself
+    cut at the "N" — found in two headings of one 2020 sitting.
     """
     out = []
     merged = 0
     resume_key = None
     for b in blocks:
         t = b["text"].strip()
-        if out and b["text"] and len(t) <= 2 and not any(ch.isalpha() for ch in t) \
+        if out and b["text"] and len(t) <= 2 \
+                and not any(ch.isalpha() and ch not in ORDINAL_MARKS for ch in t) \
                 and b["size"] == out[-1]["size"]:
             out[-1]["text"] += b["text"]
             out[-1]["pages"] = sorted(set(out[-1]["pages"]) | set(b["pages"]))
