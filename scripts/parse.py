@@ -53,7 +53,7 @@ from pathlib import Path
 import pandas as pd
 import pdfplumber
 
-PARSER_VERSION = "0.4.33"
+PARSER_VERSION = "0.4.34"
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
@@ -288,6 +288,32 @@ FUSED_LABEL_RE = re.compile(r"\s?(?=(?:Sr|Sra|Srta|Sres)\.\s)")
 LABEL_FRAGMENT_RE = re.compile(r"^[.\s]*(?:Sr|Sra|Srta|Sres)$")  # shattered label: reset, not heading
 # a heading that ends on the opening word of a label — the line broke there
 LABEL_OPENER_TAIL_RE = re.compile(r"(?:^|\s)(?:Sr|Sra|Srta|Sres)\.$")
+# a heading that ends mid-citation ("26 O.D. N°", "65 Expte Nro.") — the page
+# leaves two spaces after the mark before the bill number that completes it
+REFERENCE_TAIL_RE = re.compile(r"(?:N[°º]|Nro\.|N\.)$")
+# a part that opens in lower case is not a new unit, it is where a wrapped
+# line happened to end mid-sentence ("...Fortín histórico Huitrú" / "y
+# Estancia Villaverde..."); nothing that starts a title, a label or an
+# appendix item is ever spelt starting with a lower-case letter
+LOWERCASE_CONTINUATION_RE = re.compile(r"^[a-záéíóúñ]")
+# a part that is nothing but the section's own leading number ("21  Subsidio
+# para..." split at the double space right after "21") is never a title on
+# its own — the number always belongs to whatever follows it
+BARE_NUMBER_RE = re.compile(r"^\d{1,4}\.?$")
+# a part that is nothing but the section's own number plus a bill's own
+# citation — a roman-numeral ordinal ("67 II" of "II Foro Internacional..."),
+# or a reference code like "S.-272/09" or "C.D.-23/12" — is a citation, not
+# yet the title it introduces
+BILL_REFERENCE_ONLY_RE = re.compile(
+    r"^\d{1,4}\.?\s+(?:[IVXLCDM]+|(?:[A-ZÑ]{1,4}\.?-?){1,3}\s?\d[\d./-]*\.?)$")
+# a part that OPENS with a bill's own citation ("P.E.- 22/12 EMBAJADOR...",
+# "O.D. N° 812/12. PROCURADOR...") is completing whatever word sits before
+# the double space ("17 ACUERDO", "13 ACUERDO"), not opening a new unit —
+# nothing that starts a label or an appendix item is ever spelt as an
+# abbreviation running straight into a case number, with or without the
+# "N°"/"Nro." mark some citations spell out before the number itself
+BILL_REFERENCE_OPENER_RE = re.compile(
+    r"^(?:[A-ZÑ]{1,4}\.?-?){1,3}\s?(?:N[°º]|Nro\.|N\.)?\s?\d[\d./-]*(?:\.|\s)")
 LEAD_JUNK_RE = re.compile(r'^[\s.:;,\-–—−…"“”«»]+')  # bold-glued tail of the previous sentence
 PAREN_LABEL_RE = re.compile(r"^\(([^()]{1,60})\)[\s.\-–—−:]*$")  # bare "(Rojkés de Alperovich).-" chair label
 DGT_RE = re.compile(r"^Dirección General de Taquígrafos\b")
@@ -1154,7 +1180,7 @@ def cut_front_matter(blocks, body_size):
     return [], "none"
 
 
-def cut_apparatus_text(blocks):
+def cut_apparatus_text(blocks, body_size):
     """Cut printed apparatus out of the middle of a speech turn.
 
     Three kinds reach the body text because they are set in the body font at
@@ -1171,13 +1197,27 @@ def cut_apparatus_text(blocks):
       that keys on the printed dateline therefore cannot find it.
 
     Removing them also repairs the sentence they had been dropped into.
+
+    A block that is nothing but a bare number reads exactly like a page
+    number leaking into the text — except where a page break lands the
+    number in the middle of a section's own two-part heading, the same way
+    a page's own apparatus can. Where the shape ahead is right for that —
+    an unnumbered bold heading, not a speaker's label — the number is left
+    standing for assign_chapter_to_blocks to weigh against the count.
     """
     cut = 0
-    for b in blocks:
+    for i, b in enumerate(blocks):
         text, n = FOOTNOTE_TEXT_RE.subn(" ", b["text"])
         cut += n
         if PAGENUM_ONLY_RE.match(CID_UNMAPPED_RE.sub("", text)):
-            text, cut = "", cut + 1
+            heading_ahead = any(
+                bb["font_style"] == "bold" and bb["size"] == body_size
+                and bb["text"].strip() and not bb["text"].strip()[:1].isdigit()
+                and not SPEAKER_RE.match(bb["text"].strip())
+                and len(bb["text"].split()) >= 4
+                for bb in blocks[i + 1:i + 6])
+            if not heading_ahead:
+                text, cut = "", cut + 1
         if text != b["text"]:
             b["text"] = re.sub(r"\s{2,}", " ", text)
     if cut:
@@ -1517,9 +1557,28 @@ def assign_chapter_to_blocks(blocks, body_size):
             # where it continues the count, so a figure that merely happens to
             # end a sentence is not read as a section number — and never onto a
             # speaker's label, which is bold too and follows the same notes.
-            stray = re.search(r"(?:^|\s)(\d{1,3}\.)\s*$", out[-1]["text"])
+            # The 2000–2013 layouts drop the full stop, so the trailing digits
+            # alone are just as good a claim as "N." is — continues_the_count
+            # already withholds trust from a dotless number until it proves
+            # itself against the running count, exactly the same gate a
+            # dotless heading passes through below.
+            # A footnote marker ("1") can land between the number and the
+            # title it opens, standing alone as its own tiny scrap — when
+            # that scrap carries nothing the count will take, look past it
+            # to the block underneath it too.
+            idx = -1
+            stray = re.search(r"(?:^|\s)(\d{1,3}\.?)\s*$", out[idx]["text"])
+            if (not stray or not continues_the_count(stray.group(1), current)) \
+                    and len(out[-1]["text"].strip()) <= 3 and len(out) >= 2:
+                idx = -2
+                stray = re.search(r"(?:^|\s)(\d{1,3}\.?)\s*$", out[idx]["text"])
             if stray and continues_the_count(stray.group(1), current):
-                out[-1]["text"] = out[-1]["text"][:stray.start(1)].rstrip() + " "
+                out[idx]["text"] = out[idx]["text"][:stray.start(1)].rstrip() + " "
+                if not out[idx]["text"].strip():
+                    # the whole block was the number — a page break can leave
+                    # a section's own number standing alone, with nothing of
+                    # a turn left behind once it is claimed
+                    del out[idx]
                 t = f"{stray.group(1)} {t}"
                 b["text"] = t
                 numbers_recovered += 1
@@ -1534,10 +1593,21 @@ def assign_chapter_to_blocks(blocks, body_size):
             # "Presidente. — Corresponde considerar…". Cutting there leaves half
             # a label behind, so the chair opens no turn and everything said
             # under the heading is recorded as nobody's. Put those halves back
-            # together before anything else looks at them.
+            # together before anything else looks at them. The same double
+            # space is sometimes just where a wrapped line of the title
+            # itself happened to end — mid-citation ("26 O.D. N°" / "523 /11
+            # INCORPORACIÓN...") or mid-sentence ("...Fortín histórico
+            # Huitrú" / "y Estancia Villaverde...") — and cutting there
+            # leaves the section correctly numbered but permanently missing
+            # the rest of its own title.
             rejoined = []
             for p in parts:
-                if rejoined and LABEL_OPENER_TAIL_RE.search(rejoined[-1]):
+                if rejoined and (LABEL_OPENER_TAIL_RE.search(rejoined[-1])
+                                  or REFERENCE_TAIL_RE.search(rejoined[-1])
+                                  or LOWERCASE_CONTINUATION_RE.match(p)
+                                  or BARE_NUMBER_RE.match(rejoined[-1])
+                                  or BILL_REFERENCE_ONLY_RE.match(rejoined[-1])
+                                  or BILL_REFERENCE_OPENER_RE.match(p)):
                     rejoined[-1] = f"{rejoined[-1]} {p}"
                 else:
                     rejoined.append(p)
@@ -2037,7 +2107,7 @@ def process_pdf(pdf_path):
         stats["error"] = "no_opening_found"
         return [], {}, stats
 
-    blocks, apparatus_cut = cut_apparatus_text(blocks)
+    blocks, apparatus_cut = cut_apparatus_text(blocks, body_size)
     stats["apparatus_text_cut"] = apparatus_cut
 
     blocks, empty_removed = remove_empty_blocks(blocks)

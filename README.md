@@ -4,7 +4,7 @@ Corpus of Argentine Senate stenographic session transcripts ("versiones
 taquigráficas"): acquisition, parsing into structured speaker-attributed
 text blocks, and analysis.
 
-## Status (July 2026)
+## Status (August 2026)
 
 - 559 session transcripts held, spanning 2000–2024. Coverage is complete
   from 2004 onward — every session the portal lists for those years is
@@ -18,11 +18,11 @@ text blocks, and analysis.
   the files on disk by `scripts/make_manifest.py`. The 90 sessions fetched
   in January 2025 predate the download-timestamp field, so theirs is blank
   rather than guessed.
-- Corpus parsed (parser 0.4.33): 152,465 speaker-attributed speech blocks
-  and 31,936 typed stenographer events in 235,743 rows, as per-session
+- Corpus parsed (parser 0.4.34): 152,514 speaker-attributed speech blocks
+  and 31,936 typed stenographer events in 235,402 rows, as per-session
   Parquet under `data/processed/senado/`. One session fails to parse — a
   November 2001 sitting that never reached quorum, so it has no session
-  opening to find. Text the parser cannot attribute to a speaker is 1,121
+  opening to find. Text the parser cannot attribute to a speaker is 1,109
   rows (0.5%), and a handful of sessions account for most of it: sittings
   whose record is mostly an inserted document (two impeachment dossiers, a
   printed bill text, a list of judicial appointments) rather than floor
@@ -199,7 +199,9 @@ text blocks, and analysis.
   sittings whose ordinal comes from the same Times New Roman that sets their
   body text, where an "E" or a "1" may be a real letter and a real digit.
   Four cut titles remained after this pass; a later and unrelated fault
-  behind two of them is closed by 0.4.33 (`TODO.md`, Phase 27), leaving two.
+  behind two of them is closed by 0.4.33 (`TODO.md`, Phase 27), and the last
+  two — a title broken across a page and one broken by a double space
+  inside its own text — are closed by 0.4.34 (`TODO.md`, Phase 28).
 - **A ring mark that Unicode calls a letter isn't one, and 226 of them were
   missing.** "1º," "2ª": the ordinal ring is sometimes drawn in a slightly
   different style than the number and word around it, which a block-smoothing
@@ -219,6 +221,21 @@ text blocks, and analysis.
   more sittings sit next to a neighbour of a different type size and are
   measured but not yet reached
   (`TODO.md`, Phase 27; [reference/verification/ordinal_marks_0433.csv](reference/verification/ordinal_marks_0433.csv)).
+- **The last two cut titles were each the edge of a corpus-wide fault, not
+  a one-off.** A heading's own double space usually marks where a
+  speaker's label or a new appendix item starts, so the parser cuts there
+  — but sometimes the two spaces just sit where a line wrapped, mid-citation
+  or mid-sentence, and cutting there throws away the rest of the title. A
+  full-corpus diff against the pre-fix parser, run after every new rule
+  added to tell the two cases apart, found the fault in 94 sittings, not
+  one: 660 section titles recovered where none had been found before, 87
+  more completed from a bare number to their full title, zero lost. A
+  second, separate fault — a section's own number surviving as a
+  footnote-sized scrap and then read as a leaked page number and deleted —
+  closes the other cut title (13 April 2011) and, in one 2001 sitting,
+  recovers 92 sections at once by letting the running section count pick
+  back up after two numbers it had lost outright. 0.4.34
+  (`TODO.md`, Phase 28; [reference/verification/heading_recovery_0434.csv](reference/verification/heading_recovery_0434.csv)).
 - Two layers of verification, because they answer different questions.
   **On a hand-annotated sample** — 36 stratified pages spanning 2003–2024 —
   utterance boundary+attribution F1 = 1.00 (124 of 125 turns), event
@@ -228,8 +245,8 @@ text blocks, and analysis.
   independent human audit. **On all 558 sessions that parse** (`scripts/audit_parse.py`):
   no turn carries a second speaker's label, no label is absorbed by the section
   title above it, one page's footer leaks into speech, no text is written out
-  twice, 5 turns of 152,466 open mid-word and every one of them is printed that
-  way, and a median 79.2% of each document's printed text is kept (the rest —
+  twice, 5 turns of 152,514 open mid-word and every one of them is printed that
+  way, and a median 79.0% of each document's printed text is kept (the rest —
   contents pages, attendance rolls, appendices — is dropped by design). Two
   sittings of November 2001 are scans with OCR text and should be excluded from
   any text analysis; the parser flags them. **On 5,413 pages read blind** — every

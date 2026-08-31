@@ -1217,14 +1217,95 @@ single, narrow cause worth reading more than the titles alone.
       outlier in the audit's source-fidelity check.
       (`reference/verification/ordinal_marks_0433.csv`)
 
+## Phase 28 — the last two cut titles, and the fault behind both of them (August 2026 — parser 0.4.34)
+
+The two cut titles Phase 24 counted and Phase 27 left standing — a title
+broken across a page (13 April 2011) and a title broken by a double space
+inside its own text (2 November 2011) — turned out not to be two odd cases.
+Each was the visible edge of a fault reaching back across the whole
+2000–2013 portion of the corpus.
+
+- [x] **13 April 2011 was three faults stacked, not one.** The section's own
+      number sits on the line above its title, in the body face rather than
+      the title's bold, so the style grouping splits them — a shape Phase 13
+      already recovers by reading a trailing "N." off the block above and
+      splicing it onto the title below. Here the number was never adjacent:
+      a footnote marker's own tiny scrap of text sat between the number and
+      the title, one block further down than the recovery step looked. And
+      the 2000–2013 layouts print that number without its full stop, which
+      the recovery step required. And the page-apparatus cleanup that
+      strips leaked page numbers read the now-unclaimed number as exactly
+      that — a leaked page number — and deleted it before the recovery step
+      ever ran. Fixing all three (looking past a footnote-sized scrap to the
+      block under it, trusting a dotless number exactly as far as
+      `continues_the_count` already trusts a dotless heading, and leaving a
+      bare number standing when an unnumbered bold heading follows it) gives
+      chapter 32 of that sitting its number back.
+- [x] **2 November 2011 was one occurrence of a corpus-wide fault, not a
+      one-off.** A heading's own two spaces are read as a printed line
+      break — because that is what usually separates a heading from the
+      speaker's label or appendix item glued to its own end — and the text
+      is cut there. Here the two spaces sat inside one continuous bold run
+      with nothing on either side that was a label or a new item; the title
+      was simply the page's own line wrap, and cutting there threw its
+      second half away. A full-corpus scan for the same shape — not a
+      sample, all 559 sittings, read by diffing every recovered section
+      against what the pre-session parser produced for the same file — found
+      it was not one sitting, or one shape of double space either.
+- [x] **The double space is not one shape, it turned out to be five, and
+      each was found by the same full-corpus diff coming back with a new
+      kind of wrong answer.** A part that opens in lower case is a wrapped
+      sentence, not a new unit ("...Fortín histórico Huitrú" / "y Estancia
+      Villaverde..."). A part that is nothing but the section's own leading
+      number belongs to the title that follows it, never stands alone
+      ("21" / "Subsidio para..."). A part that is the number plus a bare
+      citation — a roman numeral or a bill reference code — is not yet the
+      title it introduces ("67 II" of "II Foro Internacional...", "9
+      S.-272/09" of "USO EFICIENTE DE LA ENERGÍA"). A part that opens with a
+      bill's own citation is completing the word before it, not starting
+      something new ("17 ACUERDO" / "P.E.- 22/12 EMBAJADOR..."). And the
+      same shape recurs with the citation spelled "O.D. N° 812/12." instead
+      of a bare dash-and-number, caught only on a second look at a title
+      that had already been flagged short but not yet checked against the
+      page ("13 ACUERDO" / "O.D. N° 812/12. PROCURADOR GENERAL DE LA
+      NACIÓN"). Each rule was checked against the full corpus before the
+      next was added, precisely because the first four each looked complete
+      until the next sitting proved otherwise.
+- [x] **What changed, measured against the pre-session parser on all 559
+      sittings, twice — once to confirm the fifth rule was needed, once
+      after adding it:** 660 section titles recovered where the parser
+      previously found nothing, 87 more completed from a bare number to
+      their full title, across 94 sittings. Zero sections present before and
+      missing after, in either pass. Every title under two words among the
+      recovered and completed ones — 17 of them, from "Manifestaciones" and
+      "Juramentos" to "APÉNDICE" — was read against its own printed page and
+      is the section's whole and genuine title, not a truncation. One
+      sitting shows the scale a few small breaks can reach: in
+      **2001-07-18**, a handful of section numbers — 6 and 9 among them —
+      were lost outright, their own number set in the body face and
+      dropped the same way chapter 32 of 13 April 2011 was; a numbered
+      heading is only trusted as continuing the count when it lands within
+      three of the last one recognized, so each loss left the running count
+      too far behind to trust the genuine, undamaged headings that followed.
+      Closing both faults together recovers chapter 6 and every one from 9
+      through 99 — 92 sections in one sitting, every title built only from
+      characters the file already carried, none of them invented.
+- [x] **Verified.** Full corpus reprocessed at 0.4.34 (559 sittings; the one
+      known no-quorum failure of November 2001 unaffected). Gold F1 1.00
+      (124/125), annotations 36/36, both unchanged from 0.4.33. The audit's
+      every named count holds or improves — unattributed rows 1,121 → 1,109,
+      5 turns opening mid-word, 0 turns carrying a second speaker's label, 0
+      sessions written out twice, all unchanged — and none of the 94
+      affected sittings appears as a new outlier in the audit's
+      source-fidelity check.
+      (`reference/verification/heading_recovery_0434.csv`)
+
 ## Next
 
-- [ ] The parser's open items are Phase 24's three measured leftovers, now
-      down to two cut titles instead of four, plus the five ordinal marks
-      Phase 27 found but a neighbouring size mismatch keeps out of reach.
-      All are small and all recorded rather than guessed at. The next
-      decisions are the licence for the derived tables and whether to mint
-      a DOI, both the author's.
+- [ ] The parser's only open item is the five ordinal marks Phase 27 found
+      but a neighbouring size mismatch keeps out of reach — small and
+      recorded rather than guessed at. The next decisions are the licence
+      for the derived tables and whether to mint a DOI, both the author's.
 
 ## Explicitly not building
 
