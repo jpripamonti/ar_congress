@@ -270,9 +270,10 @@ text blocks, and analysis.
   way, and a median 79.0% of each document's printed text is kept (the rest —
   contents pages, attendance rolls, appendices — is dropped by design). Two
   sittings of November 2001 are scans with OCR text and should be excluded from
-  any text analysis; the parser flags them. **On 5,413 pages read blind** — every
+  any text analysis; the parser flags them. **On 5,463 turns read blind** — every
   page rendered as an image and read by an agent that was never shown the
   parser's answer, then compared — the two agree on who is speaking in
+  [50 of 50](reference/verification/blind_read_50.csv),
   [300 of 300](reference/verification/blind_read_300.csv),
   [497 of 500](reference/verification/blind_read_500.csv),
   [993 of 998](reference/verification/blind_read_1000.csv),
@@ -280,10 +281,15 @@ text blocks, and analysis.
   [1,000 of 1,000](reference/verification/blind_read_1000_0412.csv),
   [998 of 1,000](reference/verification/blind_read_1000_0413.csv),
   [1,000 of 1,000](reference/verification/blind_read_1000_0413b.csv) and
-  [105 of 115](reference/verification/blind_read_115_0418.csv) on eight
-  samples that do not overlap, spread across every year of the span. Every case
-  left over was checked afterwards against the page image and the parser is right
-  in all of them — pages that print the quoted phrase twice, so the reader could
+  [105 of 115](reference/verification/blind_read_115_0418.csv) on nine
+  samples that do not overlap, spread across every year of the span. All 5,463
+  answers are re-asked of the current corpus by `scripts/check_blind_reads.py`,
+  which is what makes them a check rather than a record: 5,459 still resolve to
+  the person the round named, 4 cannot be re-asked — two quotes are all an
+  unmapped font left of a passage, two are notes a repair has since moved out
+  of speech — and none resolves to anybody else. Every case left over from the
+  rounds themselves was checked afterwards against the page image and the
+  parser is right in all of them — pages that print the quoted phrase twice, so the reader could
   not know which occurrence was meant, and, in the ninth round, ten pages that
   carry no printed label at all — nine because the speech began pages earlier and
   the reader rightly refused to guess a name, one a reader's own slip. **Who is speaking is settled; what the turn
@@ -408,7 +414,7 @@ it brackets a change between two dates and never fixes one to the day.
   leaking into speech, undetected speaker changes, duplicated or invented
   text, coverage, scans. `--sample N` also writes a review sheet of N turns
   to be checked by eye against the printed page.
-- `reference/verification/` — the eight blind reads: what the parser said, what
+- `reference/verification/` — the nine blind reads: what the parser said, what
   an independent reader saw on the page, and whether they agree. 1,000 pages in
   each of the last three rounds, 500 before them, 998 before that, then 500, 300
   and 50 in the first.

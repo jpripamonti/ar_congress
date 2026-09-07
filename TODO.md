@@ -1404,12 +1404,63 @@ mis-measured, and one of those turned out to be a sixth of what was there.
       same staleness as the speakers table and has the same fix: re-execute
       it in the release run, which the checklist already requires.
 
+## Phase 30 — the blind reads re-asked, by something other than hand (September 2026)
+
+The release checklist has required since Phase 15 that every answer recorded
+in the blind reads still resolve to the same speaker in the re-parsed corpus.
+Nothing implemented it: the nine rounds were run by hand, months and a dozen
+parser versions ago, and the requirement had never been anything but a
+sentence in a document. Two corpus changes in one day — 753 speech fragments
+rejoined into their turns — is exactly the situation it exists for.
+
+- [x] **`scripts/check_blind_reads.py`.** Re-asks all 5,463 records across 506
+      sittings: is the passage the reader quoted still attributed to the person
+      the parser named at the time? **5,459 hold, none resolves to anybody
+      else.** The 4 that cannot be re-asked are recorded as such: two quotes
+      are the three characters an unmapped font left of a passage ("E 26"),
+      which nothing can locate; two are notes a repair has since moved out of
+      speech — "— Se practica la votación por medios electrónicos.", which the
+      corpus once had the chair saying out loud.
+- [x] **The check had to be built to survive the project's own repairs.** The
+      quoted words are a snapshot of what the parser held on the day of each
+      round, and the rounds are what prompted the repairs that followed: a
+      record from before 0.4.22 quotes "artículo 3(cid:47)", one from before
+      0.4.33 quotes "artículo 7E" for the same ordinal, ones from before 0.4.16
+      carry a letter cut off the front of the speech ("C En consideración...")
+      or a section number glued to the end. A naive re-check reports 21 of
+      those as failures, which would be reporting progress as damage. So the
+      known artefacts are cut out, the longest surviving fragment becomes the
+      key, and it is looked up in three windows so that whatever a repair took
+      off either end does not defeat it.
+- [x] **And to handle the short turns, which are not damage at all.** 96
+      records quote a whole one-word turn — "Sí.", "Aprobado.", "Afirmativo.",
+      "¡Sí, juro!" — and the chamber says those on every other page, so the
+      words alone cannot pin the turn down. Matched as the whole turn on the
+      page the round wrote down, which is exact: 94 of the 96 resolve, and the
+      two that do not are the "E 26" fragments.
+- [x] **The check can fail, which was tested rather than assumed.** On 40
+      records of one sitting: as shipped, 40 hold; with every label in the
+      sitting replaced, 40 report CHANGED; **with every label shifted by one
+      position** — the subtlest realistic regression, each turn credited to its
+      neighbour — 40 report CHANGED; with speech removed entirely, 36 report
+      the passage missing. A check that cannot fail is not a check.
+- [x] **The count of rounds was wrong in two places.** README and RELEASE.md
+      both said eight blind reads and 5,413 pages; there are nine and 5,463
+      turns. The missing one is `blind_read_50.csv`, the first round of all,
+      50 of 50 in agreement. The data dictionary had it right.
+
 ## Next
 
 - [ ] The parser's only open item is the five ordinal marks Phase 27 found
       but a neighbouring size mismatch keeps out of reach — small and
       recorded rather than guessed at. Whether to mint a DOI is the author's
       call; the licence is settled (CC BY 4.0, `LICENSE-DATA`).
+- [ ] The audit's source-fidelity probe has a blind spot on short blocks that
+      legitimately join two pages: all three of its windows land on the seam,
+      so the block reads as text from nowhere. **2014-03-12** sits at 10% (2 of
+      20 blocks) for exactly this, both halves verified against the printed
+      page. Taking a window from inside each joined segment rather than across
+      the block would close it.
 
 ## Explicitly not building
 

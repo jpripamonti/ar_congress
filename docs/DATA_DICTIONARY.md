@@ -199,4 +199,11 @@ Three layers, described in full in [SOURCES.md](../SOURCES.md):
   shown the parser's answer: agreement on who is speaking in all but twenty-two,
   and all twenty-two resolved in the parser's favour afterwards — pages that print
   the quoted phrase more than once, and pages that print no label at all because
-  the speech began earlier.
+  the speech began earlier. Every one of those answers is re-asked of the
+  current corpus on each release (`scripts/check_blind_reads.py`), because the
+  rounds were run months and a dozen parser versions ago and a repair could
+  quietly move a passage to somebody else: 5,459 still resolve to the person
+  the round named, none resolves to anybody else, and the 4 left cannot be
+  re-asked at all — two quotes are all an unmapped font left of a passage, two
+  are notes that a repair has since moved out of speech. This is the only check
+  in the project whose ground truth was produced without sight of the parser.

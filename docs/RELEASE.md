@@ -16,7 +16,7 @@ so a release is a separate, frozen bundle.
 | The parse record | `data/processed/senado/parse_stats.csv` | 40 counts per sitting of what the parser did to it, so every repair can be recomputed rather than trusted. |
 | The provenance manifest | `raw_data_manifest.csv` | Checksum, source URL and download time of every source file. |
 | The reference tables | `reference/senado/` | Roster snapshots, hand-dated caucuses, observed authorities. |
-| The verification records | `reference/verification/`, `reference/gold/` | The eight blind reads and the hand-annotated pages, so the accuracy claims can be re-checked and not merely believed. |
+| The verification records | `reference/verification/`, `reference/gold/` | The nine blind reads and the hand-annotated pages, so the accuracy claims can be re-checked and not merely believed. |
 | The documentation | `docs/DATA_DICTIONARY.md`, `SOURCES.md`, `README.md` | What the columns mean, where it came from, what its limits are. |
 | The licence | `LICENSE-DATA` | What the data may be used for. The code's MIT licence does not cover it. |
 
@@ -52,6 +52,10 @@ uv run scripts/eval_gold.py && uv run scripts/check_gold.py
 uv run scripts/audit_parse.py
 ```
 
+```bash
+uv run scripts/check_blind_reads.py
+```
+
 - The parse finishes with one known failure — a November 2001 sitting that never
   reached quorum, so it has no opening to find.
 - Boundary and attribution against the hand-annotated pages: F1 = 0.996 (124
@@ -67,8 +71,13 @@ uv run scripts/audit_parse.py
   the only ones outside their mandate are the two known cases of the page
   lagging the chamber. `build_bloc_observations.py` stops if a name resolves to
   nobody and prints the lagging ones on every run.
-- Every answer recorded in the eight blind reads still resolves to the same
-  speaker in the re-parsed corpus.
+- Every answer recorded in the nine blind reads still resolves to the same
+  speaker in the re-parsed corpus: `check_blind_reads.py` re-asks all 5,463 and
+  exits on the number that do not. It tolerates the repairs the rounds
+  themselves prompted — a quote carrying an unmapped glyph, an ordinal read as
+  a capital E, a letter cut off a label — because those are the project's own
+  progress and not damage; what it will not tolerate is the passage still being
+  there under somebody else's name.
 - The notebook re-executes with no errors and its figures are regenerated.
 - `README.md`, `SOURCES.md` and `docs/DATA_DICTIONARY.md` carry the new parser
   version and the new row counts.
