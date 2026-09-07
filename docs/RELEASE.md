@@ -107,7 +107,7 @@ A citation should name the corpus, its version, the span it covers and where it
 lives, for example:
 
 > Ripamonti, J. (2026). *Argentine Senate stenographic transcripts, 2000–2024:
-> a speaker-attributed corpus* (version 0.4.35) [Data set].
+> a speaker-attributed corpus* (version 0.4.36) [Data set].
 
 ## Where to put it
 

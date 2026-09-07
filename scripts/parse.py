@@ -53,7 +53,7 @@ from pathlib import Path
 import pandas as pd
 import pdfplumber
 
-PARSER_VERSION = "0.4.35"
+PARSER_VERSION = "0.4.36"
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
@@ -1267,13 +1267,18 @@ def clean_final_speech(blocks):
             markers += m
         if text != b["text"]:
             b["text"] = text
+    # A heading with no word in it is not a title. Four of them survive the
+    # whitespace sweep further up, because the heading passes run after it and
+    # type a bold space — left where a page header was cut — as a section
+    # title: a row that says a section began and cannot say which.
     kept = [b for b in blocks
-            if b.get("type") != "speech" or WORD_CHAR_RE.search(b["text"])]
+            if b.get("type") not in ("speech", "heading")
+            or WORD_CHAR_RE.search(b["text"])]
     dropped = len(blocks) - len(kept)
     if links or markers or dropped:
         print(f"Enlaces al sumario removidos: {links}. "
               f"Marcadores de nota al pie sueltos removidos: {markers}. "
-              f"Turnos sin ninguna palabra descartados: {dropped}.")
+              f"Bloques sin ninguna palabra descartados: {dropped}.")
     return kept, links, markers, dropped
 
 

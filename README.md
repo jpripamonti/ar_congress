@@ -18,8 +18,8 @@ text blocks, and analysis.
   the files on disk by `scripts/make_manifest.py`. The 90 sessions fetched
   in January 2025 predate the download-timestamp field, so theirs is blank
   rather than guessed.
-- Corpus parsed (parser 0.4.35): 151,761 speaker-attributed speech blocks
-  and 31,955 typed stenographer events in 233,415 rows, as per-session
+- Corpus parsed (parser 0.4.36): 151,761 speaker-attributed speech blocks
+  and 31,955 typed stenographer events in 233,408 rows, as per-session
   Parquet under `data/processed/senado/`. One session fails to parse — a
   November 2001 sitting that never reached quorum, so it has no session
   opening to find. Text the parser cannot attribute to a speaker is 1,109
@@ -250,7 +250,10 @@ text blocks, and analysis.
   the 7 May 2014 sitting — and the only speech the corpus loses is the four
   words the footer had put in Sanz's mouth. The audit had been reporting this
   page on every run and still exiting clean, because its page-apparatus check
-  was printed and never counted; it counts now. 0.4.35 (`TODO.md`, Phase 29).
+  was printed and never counted; it counts now. And a heading with no word in
+  it is not a title: seven bold blocks — a space left where a page header was
+  cut, three of them OCR noise — were typed as section titles, rows saying a
+  section began that cannot say which. 0.4.35 and 0.4.36 (`TODO.md`, Phase 29).
 - Two layers of verification, because they answer different questions.
   **On a hand-annotated sample** — 36 stratified pages spanning 2003–2024 —
   utterance boundary+attribution F1 = 0.996 (124 of 125 turns), event

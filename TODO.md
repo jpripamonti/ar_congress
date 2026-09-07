@@ -1300,7 +1300,7 @@ Each was the visible edge of a fault reaching back across the whole
       source-fidelity check.
       (`reference/verification/heading_recovery_0434.csv`)
 
-## Phase 29 — five readers sent at the finished corpus, and what survived checking (September 2026 — parser 0.4.35)
+## Phase 29 — five readers sent at the finished corpus, and what survived checking (September 2026 — parser 0.4.35 and 0.4.36)
 
 A review of the release candidate raised five defects. Each was re-derived
 from the data before anything was changed, and each was real; two were
@@ -1383,6 +1383,16 @@ mis-measured, and one of those turned out to be a sixth of what was there.
       with only the footnote markers and the footer between them. It is the
       probe's known blind spot on short blocks with legitimate joins, not
       text from nowhere.
+- [x] **A heading with no word in it, found in the review's own evidence and
+      not in its report.** Four rows typed `heading` whose whole text is a
+      space: the whitespace sweep runs before the heading passes, and those
+      passes then make a bold space — left where a page header was cut — into
+      a section title, a row that says a section began and cannot say which.
+      The sweep is repeated at the end of the pipeline, where headings are
+      already typed, and takes seven: the four plus three in **2001-11-29_r74**,
+      one of the two OCR scans, that carry no alphanumeric character at all.
+      Nothing else moves: 233,408 rows against 233,415, the difference is the
+      seven. 0.4.36.
 - [x] **One drift the review did not find.** The README put provincial and
       other alliances at "27-46% of floor words to 2016" by ticket; the
       notebook it cites has printed 30-46% since it was last run, and prints
