@@ -53,7 +53,7 @@ from pathlib import Path
 import pandas as pd
 import pdfplumber
 
-PARSER_VERSION = "0.4.34"
+PARSER_VERSION = "0.4.35"
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
@@ -317,6 +317,14 @@ BILL_REFERENCE_OPENER_RE = re.compile(
 LEAD_JUNK_RE = re.compile(r'^[\s.:;,\-–—−…"“”«»]+')  # bold-glued tail of the previous sentence
 PAREN_LABEL_RE = re.compile(r"^\(([^()]{1,60})\)[\s.\-–—−:]*$")  # bare "(Rojkés de Alperovich).-" chair label
 DGT_RE = re.compile(r"^Dirección General de Taquígrafos\b")
+# The same sign-off as a page footer, printed alone at the foot of every page.
+# Three sittings set it a little higher than the rest, above the band the
+# positional strip looks in, and there it survives to be glued onto whatever
+# sentence the page break interrupted — which is how Sanz came to say the words
+# in the middle of a question. Matched on its own wording, and only where it is
+# the whole line, so it can be cut wherever the page puts it without the band
+# growing and taking real text with it.
+PAGE_SIGNOFF_RE = re.compile(r"^Dirección General de Taquígrafos\s*$")
 # The footnote that points at the appendix is printed at body size, below the
 # rule at the foot of the page, so neither the size test nor the positional
 # footer strip catches it and it reads as something a senator said. Its own
@@ -989,19 +997,28 @@ def strip_page_footers(chars, page_heights):
     A bottom-band line carrying no letters at all is a bare page number
     ("- 1 -", "2") — the way the appended roll-call plates number their
     own pages — and is cut on the same terms.
+
+    The band is the last 70 points, which is where the footer sits in every
+    sitting but three. Those three print it a little higher, where it used to
+    survive the strip; a line that is nothing but the sign-off is therefore cut
+    anywhere in the bottom fifth, on its wording rather than its position.
     """
     lines = {}
     for c in chars:
         h = page_heights.get(c["page"], 842)
-        if c["top"] > h - 70:
+        if c["top"] > h * 0.8:
             lines.setdefault((c["page"], round(c["top"] / 3)), []).append(c)
 
     cutoffs = {}
     for (page, _), line_chars in sorted(lines.items()):
         text = "".join(ch["text"] for ch in line_chars)
+        top = min(ch["top"] for ch in line_chars)
+        h = page_heights.get(page, 842)
         page_number = text.strip() and not any(ch.isalpha() for ch in text)
-        if page_number or "Taquígrafo" in text or "Direcci" in text:
-            y = min(ch["top"] for ch in line_chars) - 0.5
+        near_foot = top > h - 70
+        if ((near_foot and (page_number or "Taquígrafo" in text or "Direcci" in text))
+                or PAGE_SIGNOFF_RE.match(text.strip())):
+            y = top - 0.5
             cutoffs[page] = min(cutoffs.get(page, y), y)
 
     kept = [c for c in chars if not (c["page"] in cutoffs and c["top"] >= cutoffs[c["page"]])]

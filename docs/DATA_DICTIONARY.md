@@ -13,7 +13,7 @@ spanning 2000 to 2024, 21.5 million words.
 
 | File | One row is | Rows |
 | --- | --- | --- |
-| `data/processed/senado/blocks/<sitting>.parquet` | a passage of one sitting — a turn of speech, a stenographer's note, a heading, or page matter | 237,308 across 558 files (one sitting fails to parse) |
+| `data/processed/senado/blocks/<sitting>.parquet` | a passage of one sitting — a turn of speech, a stenographer's note, a heading, or page matter | 233,415 across 558 files (one sitting fails to parse) |
 | `data/processed/senado/speakers.parquet` | one printed speaker label in one sitting, resolved to a person and to the caucus they sat with | one per (sitting, label) pair |
 | `data/processed/senado/parse_stats.csv` | one sitting, with 40 counts of what the parser did to it | 559 |
 | `reference/senado/bloque_observado.csv` | one day the chamber's composition was actually recorded, for one senator | 23,325 over 336 dates, 2000–2024 |
@@ -28,9 +28,9 @@ the normal way to work with it.
 
 | Column | Meaning |
 | --- | --- |
-| `type` | `speech` — words somebody said (152,466). `event` — the stenographer's note about something that happened (31,936). `heading` — a section title. `furniture` — printed page matter kept only for tracing; not speech. `inline_italic` — an italicised fragment that had no turn to belong to. `other` — text the parser could not attribute to anyone (1,121, 0.5%). |
+| `type` | `speech` — words somebody said (151,761). `event` — the stenographer's note about something that happened (31,955). `heading` — a section title. `furniture` — printed page matter kept only for tracing; not speech. `inline_italic` — an italicised fragment that had no turn to belong to. `other` — text the parser could not attribute to anyone (1,109, 0.5%). |
 | `text` | The words themselves, as printed. Spelling, punctuation and the edition's own mistakes are preserved: where a page misspells a senator's surname, so does this. |
-| `event_type` | Only for notes. `vote` (17,412), `incident` (4,093, disorder in the chamber), `applause` (3,755), `unspecified` (1,720), `laughter` (1,395), `pause` (1,378), `stage` (1,178, someone entering, leaving or taking the chair), `timestamp` (1,005, the clock time the record prints). |
+| `event_type` | Only for notes. `vote` (17,417), `incident` (4,097, disorder in the chamber), `applause` (3,755), `unspecified` (1,721), `laughter` (1,395), `pause` (1,378), `stage` (1,180, someone entering, leaving or taking the chair), `timestamp` (1,012, the clock time the record prints). |
 | `seq` | Position within the sitting. Sorting by it gives the order the words were printed in, which is the order they were spoken. |
 | `pages` | The printed page or pages the passage came from, as a list. |
 
@@ -48,7 +48,7 @@ To get from a label to a person, join `speakers.parquet` on
 
 | Column | Meaning |
 | --- | --- |
-| `chapter`, `chapter_title` | The numbered section of the sitting's agenda the passage falls under, and its title. Present in 530 of the 559 sittings; the rest print no section numbering the parser can read. |
+| `chapter`, `chapter_title` | The numbered section of the sitting's agenda the passage falls under, and its title. Present in 538 of the 558 sittings that parse; the rest print no section numbering the parser can read. |
 | `session_id` | The sitting: date plus its number within the year, e.g. `2014-05-07_r07`. |
 | `session_date` | The date of the sitting, `YYYY-MM-DD`. |
 | `session_type` | What kind of sitting, as the Senate names it: `ORDINARIA` (158,994 rows), `ESPECIAL` (42,040), `EXTRAORDINARIA` (12,285), `INFORMATIVA ESPECIAL` (7,095 — the cabinet chief's report to the chamber), `TRIBUNAL DE JUICIO POLITICO` (6,792 — impeachment trials, where the speakers are largely not senators), `ASAMBLEA` (5,875 — both chambers together, where the President of the Nation speaks), `PREPARATORIA` (2,357), and five smaller kinds. **Mixing them without thinking will mislead you**: an impeachment trial and an ordinary sitting are not the same kind of speech. |
@@ -78,8 +78,8 @@ people in different sittings, and sometimes within one sitting.
 | `elected_ticket` | **The list the senator STOOD ON, not the caucus they sat with.** One value per mandate, taken from the roster. See the two-affiliations note below before using it. |
 | `province` | The province the senator represents. |
 | `bloc` | **The caucus the senator SAT WITH.** Taken from the nearest day the chamber's composition was actually recorded — see below. |
-| `bloc_status` | How far that caucus can be trusted: `confirmed` (83.4% of senators' floor words), `anachronistic` (13.0% — the source names a caucus that did not exist on that date), `undatable` (1.1% — the caucus has no established start, so nothing can be checked). Empty where there is no caucus at all (2.4%). |
-| `bloc_basis` | Where the caucus came from: `roll call` (79.9% of senators' floor words) or `archived roster` (17.7%, the pre-2005 years). |
+| `bloc_status` | How far that caucus can be trusted, **judged on the date of the sitting, not on the day the caucus was recorded**: `confirmed` (83.3% of senators' floor words), `anachronistic` (13.1% — the record names a caucus that did not exist on the day of the sitting), `undatable` (1.1% — the caucus has no established start, so nothing can be checked). Empty where there is no caucus at all (2.4%). |
+| `bloc_basis` | Where the caucus came from: `roll call` (79.7% of senators' floor words) or `archived roster` (17.9%, the pre-2005 years). |
 | `bloc_observed` | The date the caucus was actually recorded on. |
 | `bloc_gap_days` | How many days that is from the sitting. Median 0 — most sittings are themselves roll-call days. Rows further than 200 days from any observation get no caucus. |
 | `match_status` | How the label was resolved. This is the field to filter on, and its values are not interchangeable — see below. |
@@ -115,9 +115,23 @@ later. Frente de Todos, formed in December 2019, is stamped on votes going back
 to 2010; Pichetto's whole 2013–2019 term is filed under a caucus he founded in
 2019 on leaving. Every reading is checked against the caucus's own dated life
 in `reference/senado/blocs_manual.csv`, and the ones that fail are **kept and
-marked, never corrected or dropped** — 13.0% of senators' floor words. Dropping
+marked, never corrected or dropped** — 13.1% of senators' floor words. Dropping
 them would hide how much of the Senate's own record is like this. Filter on
 `bloc_status == "confirmed"` for any claim about *when* the chamber realigned.
+
+The check is made twice, and the second time is the one this column reports. A
+reading is first checked against the day it was recorded; then, because a
+sitting can be up to 200 days from the nearest record, it is checked again
+against the day of the sitting. The two answers differ: the roll call of 21
+December 2005 rightly reads "PJ Frente para la Victoria", a caucus formed that
+month, and the nearest sitting to it is in June, six months before the caucus
+existed. Ninety-nine passages used to come out `confirmed` that way.
+
+Only roll-call readings are re-checked. The dates on an archived roster page
+are the days the page was **captured**, a floor on the caucus's life rather
+than a claim about when it began, so a sitting before the earliest capture is
+expected — twelve passages, all from 2000–2004 — and marking them would report
+the gaps in the Internet Archive as a fact about the chamber.
 
 ### The chair carries a caucus, and that is a trap
 
@@ -172,7 +186,12 @@ what the analysis in this repository does, and it says so.
 Three layers, described in full in [SOURCES.md](../SOURCES.md):
 
 - **36 pages annotated by hand**, spanning 2003–2024: boundary and attribution
-  score 1.00, 124 of 125 turns.
+  F1 = 0.996, 124 of 125 turns and 29 of 31 stenographer's notes. Scored twice
+  — on the printed label alone, and on the label together with the turn's own
+  opening words — because a page where the chair speaks four times has four
+  identical labels, and counting labels alone cannot tell a parser that found
+  those turns from one that found four turns in the wrong places. Both scores
+  are the same on this set. Neither checks the order the turns came out in.
 - **All 558 parsed sittings audited against their source files**: no turn carries a
   second speaker's label, no text is written out twice, and every turn is
   checked for beginning and ending the way speech does.

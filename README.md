@@ -4,7 +4,7 @@ Corpus of Argentine Senate stenographic session transcripts ("versiones
 taquigráficas"): acquisition, parsing into structured speaker-attributed
 text blocks, and analysis.
 
-## Status (August 2026)
+## Status (September 2026)
 
 - 559 session transcripts held, spanning 2000–2024. Coverage is complete
   from 2004 onward — every session the portal lists for those years is
@@ -18,8 +18,8 @@ text blocks, and analysis.
   the files on disk by `scripts/make_manifest.py`. The 90 sessions fetched
   in January 2025 predate the download-timestamp field, so theirs is blank
   rather than guessed.
-- Corpus parsed (parser 0.4.34): 152,514 speaker-attributed speech blocks
-  and 31,936 typed stenographer events in 235,402 rows, as per-session
+- Corpus parsed (parser 0.4.35): 151,761 speaker-attributed speech blocks
+  and 31,955 typed stenographer events in 233,415 rows, as per-session
   Parquet under `data/processed/senado/`. One session fails to parse — a
   November 2001 sitting that never reached quorum, so it has no session
   opening to find. Text the parser cannot attribute to a speaker is 1,109
@@ -35,8 +35,8 @@ text blocks, and analysis.
   and the corpus rises from 21.07 to 21.48 million words (+2.0% overall, +4%
   to +6.5% in every year from 2003 to 2009, under 0.1% elsewhere). Every word
   count in the analysis was that much low. It also makes those years' section
-  numbering readable for the first time: 530 sittings now carry the section
-  each turn belongs to, against 443 before.
+  numbering readable for the first time: the sittings carrying the section each
+  turn belongs to went from 443 to 530, and stand at 538 today.
 - **Punctuation belonging to the editorial matter no longer counts as speech.**
   A stenographer's note is printed "— Se vota.", but in many files that opening
   dash is stored at the end of the line above, so the turn before it came out
@@ -236,16 +236,34 @@ text blocks, and analysis.
   recovers 92 sections at once by letting the running section count pick
   back up after two numbers it had lost outright. 0.4.34
   (`TODO.md`, Phase 28; [reference/verification/heading_recovery_0434.csv](reference/verification/heading_recovery_0434.csv)).
+- **The stenographers' sign-off is out of the senators' mouths.** Every page of
+  the 2013-onward format is signed "Dirección General de Taquígrafos" at the
+  foot, and the strip that removes it looked only in the last 70 points of the
+  page. Fourteen sittings print it a little higher, where it survived — and
+  wherever it sat between the last word of one page and the first of the next,
+  it was glued into whatever sentence the page break had interrupted. Sanz, on
+  7 May 2014, came out saying it in the middle of a question. The line is now
+  cut on its own wording anywhere in the bottom fifth of the page, so the band
+  did not have to grow and take real text with it: 1,250 pieces of page
+  furniture gone, 753 speech fragments rejoined into the turns they belong to,
+  19 stenographer's notes recovered from under it — including the opening of
+  the 7 May 2014 sitting — and the only speech the corpus loses is the four
+  words the footer had put in Sanz's mouth. The audit had been reporting this
+  page on every run and still exiting clean, because its page-apparatus check
+  was printed and never counted; it counts now. 0.4.35 (`TODO.md`, Phase 29).
 - Two layers of verification, because they answer different questions.
   **On a hand-annotated sample** — 36 stratified pages spanning 2003–2024 —
-  utterance boundary+attribution F1 = 1.00 (124 of 125 turns), event
-  precision 1.00 and recall 0.94, no speech leaking onto contents pages. The
+  utterance boundary+attribution F1 = 0.996 (124 of 125 turns), event
+  precision 1.00 and recall 0.935, no speech leaking onto contents pages.
+  Scored a second time with each turn's own opening words carried alongside
+  its label, so that four turns by the same chair cannot be matched in the
+  wrong places, it comes out the same: 124 of 125. The
   annotations have themselves been checked back against the source PDFs
   (`scripts/check_gold.py`, 36 of 36 pass) — a second machine reading, not an
   independent human audit. **On all 558 sessions that parse** (`scripts/audit_parse.py`):
   no turn carries a second speaker's label, no label is absorbed by the section
-  title above it, one page's footer leaks into speech, no text is written out
-  twice, 5 turns of 152,514 open mid-word and every one of them is printed that
+  title above it, no page apparatus leaks into speech, no text is written out
+  twice, 5 turns of 151,761 open mid-word and every one of them is printed that
   way, and a median 79.0% of each document's printed text is kept (the rest —
   contents pages, attendance rolls, appendices — is dropped by design). Two
   sittings of November 2001 are scans with OCR text and should be excluded from
@@ -312,7 +330,7 @@ text blocks, and analysis.
 
 - **What moved is mostly the labels, and the caucus data now shows it rather
   than merely warning about it.** By ticket, provincial and other alliances
-  held 27–46% of floor words to 2016 and 13–15% from 2020, while the
+  held 30–46% of floor words to 2016 and 13–15% from 2020, while the
   radical/Cambiemos family went the other way (9–27% before 2019, 30–39%
   after) — a chamber that looks realigned at a stroke. Group the identical
   speech by caucus and the step disappears: radical/Cambiemos sits at 23–37%
@@ -321,7 +339,12 @@ text blocks, and analysis.
   been elected on consolidated into two national coalitions. All 62 caucuses are
   dated by hand ([blocs_manual.csv](reference/senado/blocs_manual.csv)), each
   against the sitting that attests it, because the Senate records a caucus once
-  per mandate and backdates it over the whole term.
+  per mandate and backdates it over the whole term. `bloc_status` says whether
+  the caucus existed **on the day of the sitting**, which is not the same
+  question as whether it existed on the day it was recorded: a sitting can be
+  up to 200 days from the nearest record, and 99 passages used to come out
+  `confirmed` because the check had only ever been made at the other end of
+  that gap. 0.4.35 re-checks at the sitting's own date.
 - The 2020–2023 collapse was mostly fewer sittings, not quieter ones. Floor
   words fell 6.4-fold, which splits into a 3.9-fold fall in sittings held
   (31 to 8) and only a 1.65-fold fall in words per sitting. By 2024 a

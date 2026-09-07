@@ -292,6 +292,21 @@ speaker label was being prepended to the speaker's first words throughout
 the pre-2010 files, and a parenthetical surname was landing in the speech
 instead of the label.
 
+**What the score measures, and what it does not.** `eval_gold.py` compares the
+turns starting on a page as a multiset: every gold turn is matched to a parser
+turn with the same speaker label and, since September 2026, the same opening
+words — by prefix, because the annotation writes as many words as it took to
+identify the turn. The opening words were recorded from the start and the
+evaluator threw them away, so until then a page where the chair speaks four
+times could match four identical labels in any order. Adding them changed
+nothing on this set: 124 of 125 either way, which is evidence that the weaker
+measure had not been hiding anything, not evidence that it could not. Neither
+score checks the ORDER the turns came out in — `check_gold.py` checks order on
+the annotation side, against the printed page, and nothing checks it on the
+parser side. F1 is 0.996 and is reported to three places: the single missed
+turn is a secretary's "(Lee:)" on page 3 of 20 August 2003, and rounding it to
+1.00 said the parser had missed nothing.
+
 ## Corpus-wide audit
 
 The gold set answers a narrow question well — did the parser read *these 36

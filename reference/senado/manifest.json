@@ -30,7 +30,7 @@
         "bloque_por_foto.csv": {
             "file": "bloque_por_foto.csv",
             "source_url": "https://web.archive.org/web/*/http://www.senado.gov.ar/web/senadores/m_bloques.html",
-            "fetched_at_utc": "2026-08-08T13:36:06+00:00",
+            "fetched_at_utc": "2026-09-07T20:23:22+00:00",
             "sha256": "f28ec0f506e4e19186b17c3df82580ba8808aaa0c6080a7af34f2c93f0ecb557",
             "size_bytes": 183867,
             "row_count": 1112,

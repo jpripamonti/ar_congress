@@ -7,7 +7,9 @@ checked everywhere, by looking for things that must never happen:
 1. LEAKAGE — page apparatus inside a speech turn. Mastheads, datelines,
    attendance rolls and the stenographers' office line are printed furniture;
    a speaker never utters them, so finding one inside a turn means the
-   header/footer strip missed a page.
+   header/footer strip missed a page. Counted as a fault, not merely printed:
+   the one page whose footer landed inside a senator's question was on the
+   screen for weeks while the audit went on reporting nothing wrong.
 2. GLUED LABELS — a complete printed speaker label sitting inside a turn's
    text. This is the worst error the parser can make: it means a change of
    speaker went undetected, so one senator is credited with another's words.
@@ -186,9 +188,11 @@ def check_output_only(corpus, scanned):
 
     print("\n1. Page apparatus found inside a speech turn (must be 0 outside the scans):")
     worst = []
+    leaked = 0
     for name, rx in FURNITURE.items():
         hit = speech[speech.text.astype(str).str.contains(rx, na=False)]
         clean = hit[~hit.session_id.isin(scanned)]
+        leaked += len(clean)
         print(f"   {len(clean):6}  {name}"
               f"{f'  (+{len(hit) - len(clean)} in scanned sessions)' if len(hit) != len(clean) else ''}")
         hit = clean
@@ -214,7 +218,7 @@ def check_output_only(corpus, scanned):
     top = other.groupby("session_id").size().sort_values(ascending=False).head(5)
     for sess, n in top.items():
         print(f"          {n:5}  {sess}")
-    return len(glued)
+    return leaked + len(glued)
 
 
 def check_turn_shape(corpus, scanned):

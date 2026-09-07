@@ -18,6 +18,7 @@ so a release is a separate, frozen bundle.
 | The reference tables | `reference/senado/` | Roster snapshots, hand-dated caucuses, observed authorities. |
 | The verification records | `reference/verification/`, `reference/gold/` | The eight blind reads and the hand-annotated pages, so the accuracy claims can be re-checked and not merely believed. |
 | The documentation | `docs/DATA_DICTIONARY.md`, `SOURCES.md`, `README.md` | What the columns mean, where it came from, what its limits are. |
+| The licence | `LICENSE-DATA` | What the data may be used for. The code's MIT licence does not cover it. |
 
 The source PDFs are **not** redistributed. They are the Senate's to publish, the
 manifest identifies each one by checksum and URL, and `scripts/download.py`
@@ -53,10 +54,15 @@ uv run scripts/audit_parse.py
 
 - The parse finishes with one known failure — a November 2001 sitting that never
   reached quorum, so it has no opening to find.
-- Boundary and attribution against the hand-annotated pages: 1.00.
+- Boundary and attribution against the hand-annotated pages: F1 = 0.996 (124
+  of 125 turns), on the label alone and on the label with the turn's opening
+  words alike. Events: precision 1.00, recall 0.935 (29 of 31).
 - The annotations themselves still check out against the source files: 36 of 36.
-- The audit's invariants hold: no turn carries a second speaker's label, no text
-  is written out twice, and the turns that open mid-word are printed that way.
+- The audit's invariants hold: no page apparatus inside a speech turn, no turn
+  carrying a second speaker's label, no text written out twice, and the turns
+  that open mid-word are printed that way. The apparatus check counts toward
+  the exit status; it used to be printed and not counted, and a leaked footer
+  sat in the corpus for weeks while the audit reported nothing wrong.
 - Every name on an archived bloc-roster page still resolves to a senator, and
   the only ones outside their mandate are the two known cases of the page
   lagging the chamber. `build_bloc_observations.py` stops if a name resolves to
@@ -66,6 +72,10 @@ uv run scripts/audit_parse.py
 - The notebook re-executes with no errors and its figures are regenerated.
 - `README.md`, `SOURCES.md` and `docs/DATA_DICTIONARY.md` carry the new parser
   version and the new row counts.
+- `speakers.parquet` was rebuilt from the same parse as the blocks. It is
+  derived from them and goes stale silently: `n_blocks` once disagreed with
+  the passages in 35 (sitting, label) pairs because a parser repair had landed
+  and the table had not been regenerated. Run the command above in order.
 
 ## Versioning
 
@@ -87,16 +97,17 @@ information law (Ley 27.275), which obliges publication in formats that permit
 reuse and redistribution. The full reasoning is in [SOURCES.md](../SOURCES.md).
 
 **This corpus** — the parsing, the speaker resolution, the hand-dated caucuses
-and the verification — is the work in this repository. The code is MIT-licensed.
-The derived tables and reference data should carry a licence that keeps them
-reusable and asks for attribution; **CC BY 4.0** is the fitting choice and is
-what the release should state.
+and the verification — is the work in this repository. The code is MIT-licensed
+([LICENSE](../LICENSE)). The derived tables and the reference data are licensed
+**CC BY 4.0**: reusable, including commercially, on condition of attribution.
+The terms and the exact list of what they cover are in
+[LICENSE-DATA](../LICENSE-DATA), and every release must carry that file.
 
 A citation should name the corpus, its version, the span it covers and where it
 lives, for example:
 
 > Ripamonti, J. (2026). *Argentine Senate stenographic transcripts, 2000–2024:
-> a speaker-attributed corpus* (version 0.4.34) [Data set].
+> a speaker-attributed corpus* (version 0.4.35) [Data set].
 
 ## Where to put it
 

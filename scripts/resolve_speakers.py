@@ -42,6 +42,7 @@ Output:  data/processed/senado/speakers.parquet — one row per
          bloc_gap_days, role, match_status — plus a printed summary.
 """
 
+import csv
 import difflib
 import json
 import re
@@ -64,6 +65,7 @@ OBSERVED = REPO_ROOT / "reference" / "senado" / "authorities_observed.csv"
 # officers in the corpus share a surname (checked when the table is built).
 OBSERVED_PAD_DAYS = 200
 BLOC_OBS = REPO_ROOT / "reference" / "senado" / "bloque_observado.csv"
+BLOC_LIVES = REPO_ROOT / "reference" / "senado" / "blocs_manual.csv"
 # How far a sitting may sit from the nearest day the chamber's composition was
 # recorded. The composition is only ever observed on particular days: roll
 # calls every few weeks from 2005 (longest gap 168 days, an election-year
@@ -546,8 +548,54 @@ def load_bloc_observations():
     return obs
 
 
-def bloc_on(person_id, when, obs):
-    """The caucus recorded nearest to `when`, or empty fields if none is close."""
+def load_bloc_lives():
+    """The hand-dated caucus lives, as {caucus: [(start, end), ...]}.
+
+    The same table `build_bloc_observations.py` checks each reading against.
+    A blank start or end is open on that side; a caucus dated with no
+    confidence, or absent from the table altogether, is not checkable.
+    """
+    lives = {}
+    with BLOC_LIVES.open(encoding="utf-8") as fh:
+        for r in csv.DictReader(fh):
+            if r["confidence"] == "none":
+                continue
+            lives.setdefault(r["bloc"], []).append(
+                (parse_date(r["period_start"]), parse_date(r["period_end"])))
+    return lives
+
+
+def bloc_alive_on(bloc, when, lives):
+    """Whether the caucus's own dated life covers `when`.
+
+    True where nothing can be checked — an undated caucus is not evidence
+    that it did not exist, and saying so would turn silence into a finding.
+    """
+    spans = lives.get(bloc)
+    if not spans:
+        return True
+    return any((s is None or when >= s) and (e is None or when <= e)
+               for s, e in spans)
+
+
+def bloc_on(person_id, when, obs, lives):
+    """The caucus recorded nearest to `when`, or empty fields if none is close.
+
+    The reading was checked against the caucus's dated life on the day it was
+    RECORDED. Carrying it up to 200 days to a sitting re-opens the same
+    question for the sitting's date, and a reading can be sound where it was
+    taken and anachronistic where it is used: the roll call of 21 Dec 2005
+    rightly reads "PJ Frente para la Victoria", a caucus formed that month,
+    and the sitting nearest to it is in June, six months before the caucus
+    existed. So the check is made again here, against the date being asked
+    about, which is the date `bloc_status` has always claimed to speak for.
+
+    Only roll-call readings are re-checked. An archived roster page's dates
+    are the days the page was CAPTURED — a floor on the caucus's life, not a
+    claim about when it began — so a sitting before the earliest capture is
+    expected rather than wrong, and marking it would report the gaps in the
+    Internet Archive as a fact about the chamber.
+    """
     rows = obs.get(person_id) if person_id is not None else None
     if not rows:
         return {}
@@ -555,6 +603,9 @@ def bloc_on(person_id, when, obs):
     gap = abs((d - when).days)
     if gap > BLOC_MAX_GAP_DAYS:
         return {}
+    if (status == "confirmed" and basis == "roll call"
+            and not bloc_alive_on(bloc, when, lives)):
+        status = "anachronistic"
     return {"bloc": bloc, "bloc_status": status, "bloc_basis": basis,
             "bloc_observed": d.isoformat(), "bloc_gap_days": gap}
 
@@ -569,6 +620,7 @@ def main():
     auth = load_authorities() + load_observed_authorities(mandates)
     print(f"{len(mandates)} mandate rows, {len(auth)} authority rows")
     bloc_obs = load_bloc_observations()
+    bloc_lives = load_bloc_lives()
 
     corpus = pd.concat([pd.read_parquet(p) for p in sorted(BLOCKS_DIR.glob("*.parquet"))],
                        ignore_index=True)
@@ -593,7 +645,7 @@ def main():
             "elected_ticket": res.get("party"),
             "province": res.get("province"),
             "match_status": res["match_status"],
-            **bloc_on(res.get("person_id"), d, bloc_obs),
+            **bloc_on(res.get("person_id"), d, bloc_obs, bloc_lives),
         })
 
     df = pd.DataFrame(out)

@@ -1,0 +1,43 @@
+# Licence for the data
+
+Two different things live in this repository and they are not under the same
+terms.
+
+## The code — MIT
+
+Everything under `scripts/` and `notebooks/`, and the repository's prose, is
+MIT-licensed. See [LICENSE](LICENSE).
+
+## The derived data — CC BY 4.0
+
+The corpus this repository produces, and the reference tables it was built
+from, are licensed **Creative Commons Attribution 4.0 International
+(CC BY 4.0)**: <https://creativecommons.org/licenses/by/4.0/>
+
+That covers:
+
+- `data/processed/senado/` — the per-sitting Parquet tables, the resolved
+  speakers, the parse record
+- `reference/senado/` — the roster snapshots, the caucus observations, the
+  hand-dated caucus lives, the observed authorities
+- `reference/gold/`, `reference/verification/` — the annotated pages and the
+  blind-read records
+- `raw_data_manifest.csv` — the provenance manifest
+
+You may copy, redistribute and build on this material, including commercially,
+provided you give attribution. The citation to use is in
+[docs/RELEASE.md](docs/RELEASE.md).
+
+## What is not covered
+
+The source transcripts are the Argentine Senate's, not this project's, and are
+not relicensed here. They are not redistributed either: the manifest identifies
+each PDF by checksum and URL, and `scripts/download.py` fetches them again. The
+Senate's portal publishes no licence page; the governing framework is
+Argentina's access-to-information law (Ley 27.275), and the reasoning is set
+out in [SOURCES.md](SOURCES.md).
+
+The archived bloc-roster pages under `data/raw/senado/bloques_archivados/` are
+Internet Archive captures of a Senate page that no longer exists. They are kept
+because the pre-2005 caucus cannot be rebuilt without them; each row derived
+from them carries the archive URL it came from.

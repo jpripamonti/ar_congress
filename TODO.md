@@ -1300,12 +1300,106 @@ Each was the visible edge of a fault reaching back across the whole
       source-fidelity check.
       (`reference/verification/heading_recovery_0434.csv`)
 
+## Phase 29 — five readers sent at the finished corpus, and what survived checking (September 2026 — parser 0.4.35)
+
+A review of the release candidate raised five defects. Each was re-derived
+from the data before anything was changed, and each was real; two were
+mis-measured, and one of those turned out to be a sixth of what was there.
+
+- [x] **The stenographers' sign-off, inside a senator's question.** Every page
+      of the 2013-onward format is signed "Dirección General de Taquígrafos"
+      at the foot, and `strip_page_footers` looked only in the last 70 points
+      of the page. Fourteen sittings set it a few points higher, where it
+      survived the strip; a backstop then typed it as furniture wherever it
+      formed a block of its own, which is why only the cases where it was
+      glued mid-sentence ever showed. The review found one — Sanz, 7 May
+      2014, "Usted habló del grupo Clarín; Dirección General de Taquígrafos
+      ¿cuál más…?" — and a corpus-wide scan found six: that one and five
+      stenographer's notes, two of them cut in half by it. The line is now
+      matched on its own wording and cut anywhere in the bottom fifth of the
+      page, so the band did not have to grow and take real text with it.
+- [x] **What the repair moved, measured on all 559 sittings.** 233,415 rows
+      against 235,402: 1,250 pieces of page furniture gone; 753 speech
+      fragments rejoined into the turns they belong to (turn count and speaker
+      count unchanged, so nothing was re-attributed); 19 stenographer's notes
+      recovered from under the footer, including the opening event of the
+      7 May 2014 sitting and the two notes it had cut in half; the section each
+      turn belongs to now readable in 538 sittings against 530. **No speech
+      lost**: per-sitting speech word counts are identical across all 558
+      parsed sittings but one, and that one loses exactly the four words of the
+      footer. Fourteen sittings changed at all. The two headings
+      that disappear are single letters off an appendix signature block.
+- [x] **The audit had been reporting it every run and still exiting clean.**
+      `check_output_only` printed the page-apparatus count and returned only
+      the glued-label count, so the one leaked footer never reached the exit
+      status. It is counted now. All seven apparatus patterns report 0
+      outside the two OCR scans.
+- [x] **A caucus confirmed for the day it was recorded, not the day of the
+      sitting.** `bloc_on` takes the observation nearest the sitting — up to
+      200 days away — and passed its `fiabilidad` through untouched. The
+      reading is checked against the caucus's dated life on the day of the
+      VOTE, so the roll call of 21 Dec 2005 rightly reads "PJ Frente para la
+      Victoria", a caucus formed that month; carried back to the nearest
+      sitting in June it says a caucus that did not yet exist, and said it
+      under `confirmed`. 73 (sitting, label) pairs, 99 passages. The check is
+      now made again against the sitting's own date, which is what the column
+      has always claimed to report. Roll-call readings only: an archived
+      roster page's dates are the days it was CAPTURED, a floor on the
+      caucus's life and not a claim about its start, so the 6 pre-2005 pairs
+      below their caucus's earliest capture are left as they are — marking
+      them would report gaps in the Internet Archive as facts about the
+      chamber. `confirmed` falls from 83.4% to 83.3% of senators' floor words.
+- [x] **The speakers table was a parser version behind.** 35 (sitting, label)
+      pairs whose `n_blocks` no longer matched the passages — 152,466 stored
+      against 152,514 present. Nothing missing and nothing extra, only counts
+      left over from before Phases 26-28; regenerating it closes all 35. Now
+      0 mismatches, and the release checklist runs `resolve_speakers.py`
+      after every parse for exactly this reason.
+- [x] **A gold score that could not tell a right label in the wrong place.**
+      `eval_gold.py` compared a multiset of normalized speaker labels per
+      page and threw away the opening words the annotation records beside
+      each one, so a page where the chair speaks four times could match four
+      identical labels in any order. It now scores twice, the second time
+      pairing each gold turn with a parser turn on label AND opening words,
+      matched by prefix because the annotation writes as many words as it
+      took to identify the turn. **The two scores are the same** — 124 of 125
+      — so the weaker measure had not been hiding anything, but it could
+      have been. F1 is printed to three places: 0.996, not the 1.00 that
+      `:.2f` had been rounding it to, and the docs now say 0.996.
+- [x] **Documentation and licence.** `docs/DATA_DICTIONARY.md` still declared
+      237,308 rows against 235,402 present, and stale type and event-type
+      counts; all now regenerated at 0.4.35. The derived tables' licence had
+      stood as a recommendation inside `docs/RELEASE.md` since Phase 15 —
+      "CC BY 4.0 is the fitting choice and is what the release should state"
+      — and is now declared in `LICENSE-DATA`, which every release carries.
+- [x] **What the review got wrong, recorded so it is not re-litigated.** The
+      footer count was 1, not 6. The gold evaluator compares label STRINGS as
+      a multiset, not "quantities of labels per page" — order and opening
+      words are what it misses, not the names. And one session,
+      **2014-03-12**, now appears in the audit's source-fidelity check at
+      10% (2 of 20 blocks): both are turns the footer used to split, whose
+      three probe windows all straddle the join now that they are one block.
+      Every half was read against the printed page and is there, in order,
+      with only the footnote markers and the footer between them. It is the
+      probe's known blind spot on short blocks with legitimate joins, not
+      text from nowhere.
+- [x] **One drift the review did not find.** The README put provincial and
+      other alliances at "27-46% of floor words to 2016" by ticket; the
+      notebook it cites has printed 30-46% since it was last run, and prints
+      it still. Corrected. Everything else in Results was re-derived and
+      holds, including the incident rate — 12.33 per 10,000 floor words in
+      2023, against 0.96 through the 2000s. The committed notebook had also
+      been a corpus behind (237,343 rows in its own output against the
+      237,308 the dictionary declared and the 235,402 present), which is the
+      same staleness as the speakers table and has the same fix: re-execute
+      it in the release run, which the checklist already requires.
+
 ## Next
 
 - [ ] The parser's only open item is the five ordinal marks Phase 27 found
       but a neighbouring size mismatch keeps out of reach — small and
-      recorded rather than guessed at. The next decisions are the licence
-      for the derived tables and whether to mint a DOI, both the author's.
+      recorded rather than guessed at. Whether to mint a DOI is the author's
+      call; the licence is settled (CC BY 4.0, `LICENSE-DATA`).
 
 ## Explicitly not building
 
