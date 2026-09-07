@@ -1449,18 +1449,40 @@ rejoined into their turns — is exactly the situation it exists for.
       turns. The missing one is `blind_read_50.csv`, the first round of all,
       50 of 50 in agreement. The data dictionary had it right.
 
+## Phase 31 — the audit's own blind spot (September 2026)
+
+The source-fidelity check looks a block up by three 40-character windows taken
+from inside it, and had been reporting about 470 blocks as text found nowhere
+in the PDF they came from. The figure had been going UP as the parser improved,
+and the project had written that down as the price of repairing text. It was
+the check.
+
+- [x] **Why three windows can all miss.** A block carries cuts of its own, most
+      often the footnote marker taken out of the middle of a sentence — which is
+      why "…el proyecto de ley.3 Se comunicará…" comes out joined, reading as
+      printed but no longer a literal stretch of the page. Where the pieces on
+      either side of such a cut are each shorter than 40 characters — 38 and 25,
+      in **2014-03-12**, the sitting that made this visible at 10% of its blocks
+      — no window of that size can sit inside one, however the three are placed.
+      All three straddle the cut. A block that fails is now looked up again by
+      shorter windows swept across it, which lands one inside a piece.
+      **0.422% unlocated becomes 0.009%, and 40 sittings above 1% become none.**
+- [x] **Verified as a fallback and not a loosening.** The strict probe still
+      decides 99.5% of blocks; only a failure reaches the shorter windows. Each
+      rescued block was then rebuilt from the source greedily — take the longest
+      run of it that appears in the PDF, continue from there — and every one is
+      covered in full, at a median of TWO pieces, which is the shape of a
+      passage with a single cut in it. Blocks located by the strict probe need
+      one piece; text invented by shuffling the sitting's own words into
+      sentences it never printed needs forty, one per word, and is what the
+      check must keep catching.
+
 ## Next
 
 - [ ] The parser's only open item is the five ordinal marks Phase 27 found
       but a neighbouring size mismatch keeps out of reach — small and
       recorded rather than guessed at. Whether to mint a DOI is the author's
       call; the licence is settled (CC BY 4.0, `LICENSE-DATA`).
-- [ ] The audit's source-fidelity probe has a blind spot on short blocks that
-      legitimately join two pages: all three of its windows land on the seam,
-      so the block reads as text from nowhere. **2014-03-12** sits at 10% (2 of
-      20 blocks) for exactly this, both halves verified against the printed
-      page. Taking a window from inside each joined segment rather than across
-      the block would close it.
 
 ## Explicitly not building
 

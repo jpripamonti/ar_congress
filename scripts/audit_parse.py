@@ -15,7 +15,11 @@ checked everywhere, by looking for things that must never happen:
    speaker went undetected, so one senator is credited with another's words.
 3. CONSERVATION — every block's text must be findable in the source PDF, and
    no document may yield more text than it prints. This catches text invented
-   or written out twice by the block splitting and merging.
+   or written out twice by the block splitting and merging. A block is looked
+   up by windows taken from inside it, and a block that fails is looked up
+   again by shorter ones, because a block carries cuts of its own — the
+   footnote marker taken out of the middle of a sentence, most often — and
+   three long windows can all land on the same cut.
 4. COVERAGE — how much of each document's printed text survives into the
    output. Front matter, attendance rolls and appendices are dropped on
    purpose, so this is a distribution to inspect, not a pass/fail.
@@ -110,6 +114,29 @@ def block_probes(text, width=40):
     return [flat[i:i + width] for i in sorted(spots)]
 
 
+def rescue_probes(text, width=24):
+    """Shorter windows, swept across the block, for one the three could not find.
+
+    A block carries joins of its own, and three windows can all land on one.
+    The commonest is not a page break but the footnote marker the parser cuts
+    from inside a sentence: the page prints "...el proyecto de ley.3 Se
+    comunicará...", the output holds the sentence without the 3, and the
+    source still has it. Where the pieces on either side of such a cut are
+    each shorter than a 40-character window — 38 and 25 characters, in the
+    sitting that made this visible — no window of that size can sit inside one,
+    however they are placed, so the block reads as text from nowhere.
+
+    Only a block that has already failed reaches this, so the strict probe
+    stays the measure: this decides whether the miss was real, and 24
+    characters of exact text is still a passage, not a coincidence.
+    """
+    flat = flatten(text)
+    if len(flat) < width + 12:
+        return []
+    step = max(1, width // 2)
+    return [flat[i:i + width] for i in range(0, len(flat) - width + 1, step)]
+
+
 def audit_source(args):
     """One session: is its output text really the source's text?"""
     session_id, pdf_name, texts = args
@@ -126,7 +153,8 @@ def audit_source(args):
         if not windows:
             continue
         probed += 1
-        if any(w in src for w in windows):
+        if any(w in src for w in windows) or \
+                any(w in src for w in rescue_probes(t)):
             located += 1
         elif not example:
             example = windows[0]

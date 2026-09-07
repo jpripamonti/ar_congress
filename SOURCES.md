@@ -315,11 +315,16 @@ the corpus, drawn from 24 of 559 sittings. `scripts/audit_parse.py` covers the
 rest by checking, on every session, things that must never happen. Current
 results:
 
-- **Page apparatus inside a speech turn: 1 occurrence** in 152,549 speech blocks (a
-  footer line that landed mid-sentence in the 7 May 2014 sitting). Mastheads,
-  datelines, attendance rolls, section headers and the appendix-pointer footnote
-  are otherwise absent from speech, which is what the positional header and
-  footer strips are for.
+- **Page apparatus inside a speech turn: 0** in 151,761 speech blocks. It stood
+  at 1 until September 2026 — a footer line that landed mid-sentence in the
+  7 May 2014 sitting, printed by the audit on every run and counted by none of
+  them, because the check reported its findings and returned only the
+  glued-label count to the exit status. Closing that showed the fault was six
+  rows, not one, and the repair is in parser 0.4.35: the stenographers'
+  sign-off is now cut on its own wording rather than only where it sits.
+  Mastheads, datelines, attendance rolls, section headers and the
+  appendix-pointer footnote are absent from speech too, which is what the
+  positional header and footer strips are for.
 - **The footnote that points at the appendix: 0 occurrences.** It is printed at
   body size in the body font, below the rule at the foot of the page, so neither
   the size test nor the positional footer strip reached it: 809 turns were
@@ -357,19 +362,23 @@ results:
   positive.
 - **Text written out twice: 0 sessions.** No document yields more text than it
   prints.
-- **Blocks not findable in the source PDF: 0.422% on average**, 29 sessions above
-  1%, the worst of them the 20 October 2004 file whose mis-mapped symbol font the
-  parser deliberately repairs. This figure went UP as the parser improved, and
-  the reason is worth stating plainly: where a footnote had been dropped into the
+- **Blocks not findable in the source PDF: 0.009% on average**, 0 sessions above
+  1%. This figure used to be 0.422%, and it used to go UP as the parser
+  improved — which was read as the price of repairing the text and was in fact
+  a fault in the check. Where a footnote marker had been dropped from the
   middle of a sentence, removing it joins "…el proyecto de ley." to "Se
-  comunicará…", which reads as printed but is no longer a literal stretch of the
-  page. The check measures faithfulness to the character stream, and a repair is
-  by definition a departure from it. The rest are turns that span a seam the
-  parser makes on purpose: it merges a speaker's consecutive paragraphs and drops
-  the section heading printed between them. Sessions with very few probed blocks
-  (a short sitting in minority may have twenty) turn one miss into several
-  percent.
-- **Share of each document's printed text kept:** median 79.2%, quartiles 69%
+  comunicará…"; the block is then looked up by three 40-character windows, and
+  where the pieces on either side of that cut are each shorter than 40
+  characters — 38 and 25, in the sitting that made it visible — no window of
+  that size can sit inside one, however they are placed. All three straddle the
+  cut and the block reads as text from nowhere. A block that fails is now
+  looked up again by shorter windows swept across it, which lands one inside a
+  piece. That is a fallback, not a loosening: the strict probe still decides
+  99.5% of blocks, and the ~470 rescued were checked by rebuilding each from
+  the source greedily — every one is covered in full, at a median of two
+  pieces, exactly the shape of a passage with one cut in it, where invented
+  text of the same length needs forty.
+- **Share of each document's printed text kept:** median 79.0%, quartiles 69%
   and 87%. The rest is dropped by design — contents pages, attendance rolls,
   appendices and inserted documents. The lowest figures are short sittings in
   minority that consist of little but a masthead and a roll.
@@ -387,8 +396,8 @@ results:
   than inside it, which is where every text fault found so far has lived. It
   began at 44 and the difference was faults of one family, all repaired in
   0.4.15–0.4.23 and described below. It also reports two counts kept as
-  observations rather than faults: 71 turns of three characters or fewer (a
-  senator answering "20." or the chair "E") and 130 that end on a dash or comma,
+  observations rather than faults: 46 turns of three characters or fewer (a
+  senator answering "20." or the chair "Sí,") and 94 that end on a dash or comma,
   most of them in the 2003 impeachment sittings, where a turn interrupted by a
   page break comes out as two rows instead of one.
 
