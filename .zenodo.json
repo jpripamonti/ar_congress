@@ -7,7 +7,8 @@
   "license": "cc-by-4.0",
   "creators": [
     {
-      "name": "Ripamonti, Juan"
+      "name": "Ripamonti, Juan",
+      "orcid": "0009-0007-5755-883X"
     }
   ],
   "description": "<p>Every stenographic record (<em>versión taquigráfica</em>) the Argentine Senate serves for its sittings from February 2000 to December 2024, parsed from the chamber's own PDFs into speaker-attributed passages.</p><p>559 sittings held (558 parse; the 29 November 2001 sitting never reached quorum and has no opening to find), 233,408 rows, 151,761 passages of speech, 31,955 typed stenographer's notes, 21.46 million words. Each passage carries the printed speaker label, the senator it resolves to, and the caucus that senator sat with on the day of the sitting. Coverage is complete from 2004 on; 2000-2003 thins out because the portal lists those sittings but no longer serves the files.</p><p>The bundle holds the per-sitting Parquet tables, the resolved speakers, the parse record, the reference tables (roster snapshots, hand-dated caucuses, observed authorities), the verification records (36 hand-annotated pages and nine blind reads of 5,463 turns), the provenance manifest, and the documentation. Accuracy figures, the checks behind them and the known limits are in the release notes inside the bundle.</p><p>The source PDFs are <strong>not</strong> redistributed: they are the Senate's to publish. <code>raw_data_manifest.csv</code> identifies each one by SHA-256 and source URL, and <code>scripts/download.py</code> in the project repository fetches them again, so the corpus can be rebuilt from the sources.</p><p><strong>Licence.</strong> The derived tables and reference data in this deposit are CC BY 4.0. The code that produces them is MIT (<code>LICENSE</code> in the bundle). The transcripts themselves are the Senate's and are not relicensed here; cite the chamber as publisher, with the sitting date and the per-sitting URL from the manifest.</p>",
