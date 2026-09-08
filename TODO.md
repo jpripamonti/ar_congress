@@ -1497,15 +1497,37 @@ kind, because a check that passes wrongly is invisible.
       Replaced by asking whether the WHOLE block can be rebuilt from the
       source, walking it from the start and each time taking the longest
       stretch still printed at or after where the last one was found. It
-      separates cleanly: the blocks the long windows miss rebuild in two runs
-      and four at worst, wrong-sitting text needs six or more, a genuine
-      opening with an invented tail needs 150. **The corpus passes the honest
-      test everywhere** — 0.009% unlocated becomes 0.120%, still no sitting
-      above 1% outside the two scans. A side effect worth recording: because
-      each run must be found at or after the last, the rebuild also notices a
-      block whose own sentences came out shuffled, which no window test could —
-      of 623 real multi-sentence turns shuffled as a test, 612 rebuild intact
-      and only 30 rebuild shuffled.
+      separates: 98.4% of the blocks the long windows miss rebuild inside the
+      eight runs allowed, most in two, while a genuine opening with an invented
+      tail never does — 0 of 572. **The corpus passes the honest test
+      everywhere** — 0.009% unlocated becomes 0.120%, still no sitting above 1%
+      outside the two scans. A side effect worth recording: because each run
+      must be found after the last one ENDS, the rebuild also notices a block
+      whose own sentences came out shuffled, which no window test could —
+      shuffling every turn of three or more sentences in 258 sittings, 12,987
+      of them, 98.8% rebuild in their printed order and 3.6% shuffled, almost
+      all of that the three-sentence turns (15.9%, against 1 in 7,463 for turns
+      of six or more).
+- [x] **And the first version of that walk did not do what its own docstring
+      said.** It set the next run's starting point to where the last run
+      BEGAN, not where it ended, so a run could be found inside the one before
+      it and the ordering barely bound anything. Measured with the bug in
+      place, 44.6% of shuffled turns still rebuilt; with the next run required
+      to start after the last one ends, 3.6% do. It changes nothing about
+      which blocks the corpus reports — the rate is 0.120% either way — and
+      everything about what the test would let through.
+- [x] **What the rebuild is honest about rather than good at.** Given the
+      WRONG sitting's text it rejects 99.6% of blocks of 150 flattened
+      characters or more, and accepts 46% of shorter ones — which is correct,
+      not a failure: a short block holds a standing formula of the chamber and
+      those words really are printed in the other sitting. And 2 of 243
+      genuine blocks in the sample need more than eight runs and are reported
+      as text from nowhere; one is a sentence whose printed ordinals the
+      extractor renders as a stray capital E after each number, so the
+      parser's repair and the extraction disagree four times in one line.
+      Raising the cap to sixteen recovers them and takes the shuffle residue
+      from 3.6% to 7.0%. The cap stays at eight: a block wrongly shown to a
+      human costs less than an order fault passing unseen.
 - [x] **The blind-read re-check could say "holds" of a passage that had
       moved.** It collected every block on the page that any window of the
       quoted words touched, pooled their labels, and asked only whether the

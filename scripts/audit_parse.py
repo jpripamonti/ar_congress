@@ -132,12 +132,21 @@ def reconstructs(text, src, max_pieces=8):
     This asks the property the check is actually for — every character of the
     block is printed in the source, in the order printed — by walking the
     block from the start, each time taking the longest stretch that still
-    appears in the source at or after where the last one was found. A block
-    that survives a cut of its own needs one run per cut: the footnote marker
-    taken out of a sentence costs one, a page break costs one. Measured, the
-    blocks the long windows miss and this recognises rebuild in two runs
-    typically and four at worst, while text from the wrong sitting needs six
-    or more and a genuine opening with an invented tail needs 150.
+    appears in the source AFTER the last one ended. Ending, not beginning: an
+    earlier version continued from where the last run started, so a run could
+    be found inside the one before it and the ordering bound almost nothing —
+    44.6% of turns with their sentences shuffled still rebuilt, against 3.6%
+    once the position advances properly.
+
+    A block that survives a cut of its own needs one run per cut: the footnote
+    marker taken out of a sentence costs one, a page break costs one. Measured,
+    98.4% of the blocks the long windows miss rebuild inside the eight allowed,
+    most of them in two, while a genuine opening followed by an invented tail
+    never does. The 1.6% that do not are genuine too — a line whose printed
+    ordinals the extractor renders as a stray capital E after each number needs
+    fourteen — and are reported rather than passed: raising the cap to recover
+    them would let the shuffle residue up to 7.0%, and a block wrongly shown to
+    a human costs less than an order fault passing unseen.
 
     Running out of runs, or stalling on a character the source does not have,
     reports the block as foreign — the check errs towards showing a human one
@@ -167,7 +176,7 @@ def reconstructs(text, src, max_pieces=8):
             else:
                 lo, at = mid, found
         i += lo
-        pos = at
+        pos = at + lo                     # continue AFTER the run, not inside it
         pieces += 1
     return True
 

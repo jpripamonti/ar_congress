@@ -390,17 +390,32 @@ results:
   because of it: measured, genuine text checked against the WRONG sitting
   passed that test 28% of the time, and 24 real characters vouched for an
   invented tail of any length. Rebuilding the whole block separates cleanly —
-  the blocks the long windows miss rebuild in two runs and four at worst,
-  wrong-sitting text needs six or more, and a genuine opening followed by an
-  invented tail needs 150. The corpus passes the honest test everywhere: the
-  rate goes from 0.009% to 0.120%, and no sitting outside the two scans is
+  98.4% of the blocks the long windows miss rebuild inside the eight runs
+  allowed, most of them in two; a genuine opening followed by an invented tail
+  never does, 0 of 572 tried. The corpus passes the honest test everywhere:
+  the rate goes from 0.009% to 0.120%, and no sitting outside the two scans is
   above 1%.
 
-  Because each run has to be found at or after the last one, the rebuild also
+  Because each run has to be found after the last one ends, the rebuild also
   notices a block whose own sentences came out in the wrong sequence, which no
-  window test ever could: shuffling the sentences of 623 real multi-sentence
-  turns, 612 rebuild intact and 30 still rebuild shuffled — it catches 95% of
-  them. That is a side effect worth stating rather than a check to lean on.
+  window test could. Shuffling the sentences of every turn in 258 sittings that
+  has three or more — 12,987 of them — 98.8% rebuild in their printed order and
+  3.6% still rebuild shuffled, and that residue is almost entirely the shortest
+  turns: 15.9% of three-sentence turns slip through, 3.0% of four, and 1 of the
+  7,463 turns with six or more.
+
+  Two things it is honest about rather than good at. Given the WRONG sitting's
+  text, it rejects 99.6% of blocks of 150 flattened characters or more, but
+  accepts 46% of shorter ones — and that is right, not a failure: what a short
+  block holds is the chamber's standing formula, and those words really are
+  printed in the other sitting too. And a handful of genuine blocks need more
+  than eight runs — 2 of 243 in the sample, one of them a line whose printed
+  ordinals the extractor renders as a stray capital E after each number, so the
+  parser's own repair and the extraction disagree at four places in one
+  sentence. Those are reported as text from nowhere when they are nothing of
+  the kind. Raising the cap to sixteen would recover them and let the shuffle
+  residue up from 3.6% to 7.0%; the cap stays at eight, because a block wrongly
+  shown to a human costs less than an order fault passing unseen.
 - **Share of each document's printed text kept:** median 79.0%, quartiles 69%
   and 87%. The rest is dropped by design — contents pages, attendance rolls,
   appendices and inserted documents. The lowest figures are short sittings in

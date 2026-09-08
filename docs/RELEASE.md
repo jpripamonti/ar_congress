@@ -81,9 +81,13 @@ uv run scripts/check_blind_reads.py
   there, which was not a second chance but a hole: measured, genuine text
   checked against the WRONG sitting passed that test 28% of the time, and 24
   real characters vouched for an invented tail of any length. The test that
-  replaced it separates cleanly — the blocks the long windows miss rebuild in
-  two runs and four at worst, wrong-sitting text needs six or more, a genuine
-  opening with an invented tail needs 150.
+  replaced it separates: 98.4% of the blocks the long windows miss rebuild
+  inside the eight runs allowed, most in two, and a genuine opening with an
+  invented tail never does. Because each run must start after the last one
+  ends, it also notices a turn whose own sentences came out shuffled — 98.8%
+  of 12,987 real multi-sentence turns rebuild in their printed order and 3.6%
+  shuffled. Two blocks in 243 need more runs than the cap allows and are
+  reported though they are genuinely printed; that is the trade the cap makes.
 - Every name on an archived bloc-roster page still resolves to a senator, and
   the only ones outside their mandate are the two known cases of the page
   lagging the chamber. `build_bloc_observations.py` stops if a name resolves to
