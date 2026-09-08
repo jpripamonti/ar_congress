@@ -1510,15 +1510,20 @@ kind, because a check that passes wrongly is invisible.
       moved.** It collected every block on the page that any window of the
       quoted words touched, pooled their labels, and asked only whether the
       recorded name was somewhere in the pool — so a coincidental match further
-      down the page masked a genuine reattribution. **160 of the 5,365 keyed
-      records** are decided by a lookup that reaches more than one speaker. Each
-      record is now settled against the ONE turn that best carries the words —
-      the whole quote first, then the number of windows — and a genuine tie,
-      where the chamber's formula really is printed by several turns, is
-      recorded as such in the output. Control: planting 19 reattributions in
-      turns whose words a second turn on the page also matches, **the pooled
-      version caught 10 and this one catches all 19.** The corpus is unchanged:
-      5,459 hold, 0 changed.
+      down the page masked a genuine reattribution. **136 of the 5,090 records
+      the window lookup settles** were decided by a pool reaching more than one
+      speaker. Each record is now settled against the ONE turn that best
+      carries the words — the whole quote first, then the number of windows —
+      and where several turns carry it equally well, **every one of them must
+      carry the recorded name.** Asking for one match was still a hole: where a
+      page prints the same formula twice and only one of the two is
+      reattributed, the untouched twin answered for it. Control on all 380
+      records whose words more than one turn prints, reattributing one of the
+      tied turns: **the old rule noticed 6, this one notices all 380.** Where
+      the tied turns already carry different names the reader recorded one of
+      them and the record does not say which — 43 records, now reported as
+      unaskable rather than as holding. The corpus is unchanged: 5,416 hold,
+      0 changed.
 - [x] **The caucus was projected across disagreements.** `bloc_on` takes the
       observation nearest the sitting, and where the sitting falls BETWEEN two
       records naming different caucuses the switch happened somewhere in

@@ -297,10 +297,12 @@ text blocks, and analysis.
   [105 of 115](reference/verification/blind_read_115_0418.csv) on nine
   samples that do not overlap, spread across every year of the span. All 5,463
   answers are re-asked of the current corpus by `scripts/check_blind_reads.py`,
-  which is what makes them a check rather than a record: 5,459 still resolve to
-  the person the round named, 4 cannot be re-asked — two quotes are all an
-  unmapped font left of a passage, two are notes a repair has since moved out
-  of speech — and none resolves to anybody else. Every case left over from the
+  which is what makes them a check rather than a record: 5,416 still resolve to
+  the person the round named, 47 cannot be re-asked — 43 quote words the page
+  prints under two different names, so the record cannot say which turn the
+  reader meant; two quotes are all an unmapped font left of a passage; two are
+  notes a repair has since moved out of speech — and none resolves to anybody
+  else. Every case left over from the
   rounds themselves was checked afterwards against the page image and the
   parser is right in all of them — pages that print the quoted phrase twice, so the reader could
   not know which occurrence was meant, and, in the ninth round, ten pages that

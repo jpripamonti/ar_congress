@@ -90,17 +90,32 @@ uv run scripts/check_blind_reads.py
   nobody and prints the lagging ones on every run.
 - Every answer recorded in the nine blind reads still resolves to the same
   speaker in the re-parsed corpus: `check_blind_reads.py` re-asks all 5,463 and
-  exits on the number that do not. Each record is settled against the ONE turn
-  that best carries the quoted words, not against every turn any window of
-  them touches: the earlier version pooled the labels and asked only whether
-  the recorded name was somewhere in the pool, so a coincidental match further
-  down the page could mask a genuine reattribution. Planting 19 reattributions
-  in turns whose words a second turn on the page also matches, the pooled
-  version caught 10 and this one catches all 19. It tolerates the repairs the
-  rounds themselves prompted — a quote carrying an unmapped glyph, an ordinal read as
-  a capital E, a letter cut off a label — because those are the project's own
-  progress and not damage; what it will not tolerate is the passage still being
-  there under somebody else's name.
+  exits on the number that do not. Each record is settled against the turn that
+  best carries the quoted words, not against every turn any window of them
+  touches: the earlier version pooled the labels and asked only whether the
+  recorded name was somewhere in the pool, so a coincidental match further down
+  the page could mask a genuine reattribution — 136 of the 5,090 records this
+  lookup settles were decided by such a pool. Where several turns carry the
+  words equally well, every one of them must carry the recorded name: asking
+  for one was still a hole, because a page that prints the same formula twice
+  answers for a reattributed turn with its untouched twin. Reattributing one
+  of the tied turns in all 380 records whose words more than one turn prints,
+  the old rule noticed 6 and this one notices all 380.
+
+  It tolerates the repairs the rounds themselves prompted — a quote carrying an
+  unmapped glyph, an ordinal read as a capital E, a letter cut off a label —
+  because those are the project's own progress and not damage; what it will not
+  tolerate is the passage still being there under somebody else's name. The
+  letter cut off a label is accepted only in the shape a repair actually leaves
+  ("Sr. Presidente (Pinedo).- C", the terminator then a letter or two), not on
+  any prefix: accepting any prefix would have read "Sra. González" and
+  "Sra. González MT" — two senators the record disambiguates by initials — as
+  one person.
+
+  43 records cannot be re-asked because the page prints their words under two
+  different names, and the record says which page and which words but never
+  which of two identical turns the reader was looking at. Those are reported
+  as unaskable, not as holding.
 - The notebook re-executes with no errors and its figures are regenerated.
 - `README.md`, `SOURCES.md` and `docs/DATA_DICTIONARY.md` carry the new parser
   version and the new row counts.

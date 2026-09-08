@@ -107,17 +107,23 @@ def probes(key):
     return [key[i:i + WINDOW] for i in spots]
 
 
-def same_person(recorded, found):
-    """Whether the label found is the one the round recorded.
+# The one shape a repair leaves behind on a label: the round recorded it as it
+# then stood, with a letter or two of the speech still glued past its
+# terminator ("Sr. Presidente (Pinedo).- C"), which 0.4.16 gave back to the
+# sentence. The punctuation is required: accepting any prefix instead let
+# "Sr. Martí" stand for "Sr. Martinazzo", and would have read "Sra. González"
+# and "Sra. González MT" — two senators the record disambiguates by initials —
+# as the same person.
+GLUED_TAIL_RE = re.compile(r"^(.*[.\-–—−─])\s*[A-Za-zÁÉÍÓÚÑáéíóúñ]{1,2}$")
 
-    Not string equality: before 0.4.16 a label could keep a letter that
-    belonged to the speech after it, and the round recorded the label as it
-    then stood ("Sr. Presidente (Pinedo).- C"). The repair gave the letter
-    back to the sentence, so the recorded label starts with the current one
-    and names the same person.
-    """
+
+def same_person(recorded, found):
+    """Whether the label found is the one the round recorded."""
     a, b = flatten(recorded), flatten(found)
-    return a == b or a.startswith(b) or b.startswith(a)
+    if a == b:
+        return True
+    m = GLUED_TAIL_RE.match(str(recorded or "").strip())
+    return bool(m) and flatten(m.group(1)) == b
 
 
 def load_records():
@@ -134,9 +140,25 @@ def load_records():
 
 
 def verdict_for(record, found, where):
-    """Whether the people now credited include the one the round recorded."""
-    if any(same_person(record["parser_speaker"], s) for s in found):
+    """Whether the people now credited are the one the round recorded.
+
+    EVERY turn that carries the passage must carry the recorded name, not just
+    one of them. Where the words are printed twice on a page and only one of
+    the two is reattributed, asking for one match found the other and called
+    it unchanged — the record names a page and the words, never which of two
+    identical turns the reader was looking at, so the passage as a whole is
+    the most the record can speak for.
+
+    Where the tied turns already carry DIFFERENT names, the reader recorded
+    one of them and nothing in the record says which. That is not a failure
+    and not a hold: it is a record that cannot be re-asked.
+    """
+    hits = [same_person(record["parser_speaker"], s) for s in found]
+    if all(hits):
         return "holds", record["parser_speaker"], where
+    if any(hits):
+        return ("printed on the page under more than one name",
+                " | ".join(sorted(str(s) for s in found)), where)
     # a speech row always carries a label — the audit checks that — but the
     # verdict must survive one that does not rather than stop the whole run
     return "CHANGED", " | ".join(sorted(str(s) for s in found)), where
@@ -182,8 +204,8 @@ def judge(record, blocks):
         recorded name — and the earlier version, which pooled the labels of
         every block any window landed on and asked only whether the recorded
         one was somewhere in the pool, could not tell a genuine reattribution
-        from a coincidental match further down the page. It affected 160 of
-        the 5,365 records whose lookup reaches more than one speaker.
+        from a coincidental match further down the page. Of the 5,090 records
+        this lookup settles, 136 reached more than one speaker that way.
 
         Fit is how much of the passage one block holds: the whole key first,
         then the number of windows. Where several blocks hold the passage
@@ -278,11 +300,13 @@ def main():
         print("\nEvery answer still resolves to the person the round recorded.")
 
     soft = (verdicts["quote too damaged to locate"] + verdicts["moved out of speech"]
-            + verdicts["no words recorded"])
+            + verdicts["no words recorded"]
+            + verdicts["printed on the page under more than one name"])
     if soft:
         print(f"\n{soft} record(s) could not be re-asked, and are not failures: a "
               f"passage quoted as the few characters an unmapped font left of it, "
-              f"or one a repair has since moved out of speech. They are listed in "
+              f"one a repair has since moved out of speech, or one whose words "
+              f"the page prints under two different names. They are listed in "
               f"the output with their reason.")
 
     print(f"\nPer-record detail: {args.out}")
