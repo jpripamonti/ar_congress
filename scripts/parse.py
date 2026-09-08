@@ -998,10 +998,13 @@ def strip_page_footers(chars, page_heights):
     ("- 1 -", "2") — the way the appended roll-call plates number their
     own pages — and is cut on the same terms.
 
-    The band is the last 70 points, which is where the footer sits in every
-    sitting but three. Those three print it a little higher, where it used to
-    survive the strip; a line that is nothing but the sign-off is therefore cut
-    anywhere in the bottom fifth, on its wording rather than its position.
+    The band is the last 70 points, which is where the footer sits in all but
+    18 of the 559 sittings. Those 18 print it a little higher — a few pages in
+    some, every page in others — where it used to survive the strip; a line
+    that is nothing but the sign-off is therefore cut anywhere in the bottom
+    fifth, on its wording rather than its position. Counted directly off the
+    PDFs: 18 sittings carry at least one sign-off line above the 70-point band,
+    and the change alters the shipped blocks of 14 of them.
     """
     lines = {}
     for c in chars:

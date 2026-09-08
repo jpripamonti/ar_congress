@@ -259,15 +259,20 @@ text blocks, and analysis.
   utterance boundary+attribution F1 = 0.996 (124 of 125 turns), event
   precision 1.00 and recall 0.935, no speech leaking onto contents pages.
   Scored a second time with each turn's own opening words carried alongside
-  its label, so that four turns by the same chair cannot be matched in the
-  wrong places, it comes out the same: 124 of 125. The
+  its label, so that a label moved onto another speaker's words cannot pass as
+  a match on the strength of the name alone, it comes out the same: 124 of
+  125. Neither score sees the ORDER of the turns on the page — both compare
+  what is there, not where — so a page whose turns came out shuffled would
+  still score full marks; that is a gap in the measure, not a claim about the
+  corpus. The
   annotations have themselves been checked back against the source PDFs
   (`scripts/check_gold.py`, 36 of 36 pass) — a second machine reading, not an
   independent human audit. **On all 558 sessions that parse** (`scripts/audit_parse.py`):
   no turn carries a second speaker's label, no label is absorbed by the section
-  title above it, no page apparatus leaks into speech, no text is written out
-  twice, every one of 98,601 probed blocks is found in the PDF it came from
-  (0.009% not located, no sitting above 1%), 5 turns of 151,761 open mid-word
+  title above it, no page apparatus leaks into speech outside the two scans,
+  no text is written out twice, every one of 98,601 probed blocks is found in
+  the PDF it came from (0.120% not located, no sitting above 1%), 5 turns of
+  151,761 open mid-word
   and every one of them is printed that way, and a median 79.0% of each
   document's printed text is kept (the rest — contents pages, attendance rolls,
   appendices — is dropped by design). Two
@@ -316,7 +321,7 @@ text blocks, and analysis.
   office-known-person-unstated. Another 1.3% is correctly out of scope —
   parties and witnesses at the impeachment trials, deputies, foreign heads
   of state, officials of other institutions. **Genuine lookup failures are
-  down to 0.1%** (218 blocks), nearly all of them invited outside speakers
+  down to 0.1%** (215 blocks), nearly all of them invited outside speakers
   at public hearings, named by surname alone.
 - **What every column holds and what not to assume about it**:
   [docs/DATA_DICTIONARY.md](docs/DATA_DICTIONARY.md) — written for someone who
@@ -355,7 +360,13 @@ text blocks, and analysis.
   question as whether it existed on the day it was recorded: a sitting can be
   up to 200 days from the nearest record, and 99 passages used to come out
   `confirmed` because the check had only ever been made at the other end of
-  that gap. 0.4.35 re-checks at the sitting's own date.
+  that gap. 0.4.35 re-checks at the sitting's own date. A second reading of
+  the same gap is now marked too: where the sitting falls between two records
+  naming DIFFERENT caucuses, the switch happened somewhere in between and the
+  record does not say on which side, so taking the nearer of the two projected
+  one reading across a disagreement. Those 2,049 passages — 2.5% of senators'
+  floor words, of which 90 cross a party family — read `disputed` rather than
+  `confirmed`.
 - The 2020–2023 collapse was mostly fewer sittings, not quieter ones. Floor
   words fell 6.4-fold, which splits into a 3.9-fold fall in sittings held
   (31 to 8) and only a 1.65-fold fall in words per sitting. By 2024 a

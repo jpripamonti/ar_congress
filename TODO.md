@@ -1355,16 +1355,23 @@ mis-measured, and one of those turned out to be a sixth of what was there.
       left over from before Phases 26-28; regenerating it closes all 35. Now
       0 mismatches, and the release checklist runs `resolve_speakers.py`
       after every parse for exactly this reason.
-- [x] **A gold score that could not tell a right label in the wrong place.**
+- [x] **A gold score that could not tell a right label on the wrong words.**
       `eval_gold.py` compared a multiset of normalized speaker labels per
       page and threw away the opening words the annotation records beside
-      each one, so a page where the chair speaks four times could match four
-      identical labels in any order. It now scores twice, the second time
+      each one, so two labels swapped between two turns left the multiset
+      untouched and scored full marks. It now scores twice, the second time
       pairing each gold turn with a parser turn on label AND opening words,
       matched by prefix because the annotation writes as many words as it
-      took to identify the turn. **The two scores are the same** — 124 of 125
-      — so the weaker measure had not been hiding anything, but it could
-      have been. F1 is printed to three places: 0.996, not the 1.00 that
+      took to identify the turn. Swapping one pair of labels on each of the
+      23 annotated pages that have two differently-named turns, as a test,
+      leaves the old score at a perfect 125 of 125 and takes the new one to
+      79. **The two scores are the same on the real corpus** — 124 of 125 —
+      so the weaker measure had not been hiding anything, but it could have
+      been.
+      What the second score does NOT add is any sense of position: both
+      compare bags of turns, so four turns by the same chair coming out in
+      the wrong order would still score full marks. An earlier version of
+      this entry and of the README claimed otherwise. F1 is printed to three places: 0.996, not the 1.00 that
       `:.2f` had been rounding it to, and the docs now say 0.996.
 - [x] **Documentation and licence.** `docs/DATA_DICTIONARY.md` still declared
       237,308 rows against 235,402 present, and stale type and event-type
@@ -1467,15 +1474,97 @@ the check.
       All three straddle the cut. A block that fails is now looked up again by
       shorter windows swept across it, which lands one inside a piece.
       **0.422% unlocated becomes 0.009%, and 40 sittings above 1% become none.**
-- [x] **Verified as a fallback and not a loosening.** The strict probe still
-      decides 99.5% of blocks; only a failure reaches the shorter windows. Each
-      rescued block was then rebuilt from the source greedily — take the longest
-      run of it that appears in the PDF, continue from there — and every one is
-      covered in full, at a median of TWO pieces, which is the shape of a
-      passage with a single cut in it. Blocks located by the strict probe need
-      one piece; text invented by shuffling the sitting's own words into
-      sentences it never printed needs forty, one per word, and is what the
-      check must keep catching.
+- [x] ~~**Verified as a fallback and not a loosening.**~~ **It was a
+      loosening**, and Phase 32 replaced it. The reasoning here — that the
+      rescued blocks rebuild from the source in two pieces — was a check on the
+      blocks that happened to pass, not on what the test would let through. See
+      Phase 32.
+
+## Phase 32 — the second round, and the two checks that were not checking (September 2026)
+
+Five more readers sent at Phase 29-31's own work, with the standing brief to
+refute rather than confirm. Three of the five landed something real, and two of
+those were faults in the verification rather than in the corpus — the worse
+kind, because a check that passes wrongly is invisible.
+
+- [x] **The audit's second chance was a hole, not a fallback.** A block the
+      three 40-character windows could not find was accepted if any ONE
+      24-character window of it appeared anywhere in the PDF. Measured against
+      the corpus: genuine text checked against the WRONG sitting passed that
+      test **28% of the time** (2.8% under the strict probe alone), and a
+      genuine opening of **24 characters vouched for an invented tail of any
+      length** — the anchor needed had fallen from about 50 characters to 24.
+      Replaced by asking whether the WHOLE block can be rebuilt from the
+      source, walking it from the start and each time taking the longest
+      stretch still printed at or after where the last one was found. It
+      separates cleanly: the blocks the long windows miss rebuild in two runs
+      and four at worst, wrong-sitting text needs six or more, a genuine
+      opening with an invented tail needs 150. **The corpus passes the honest
+      test everywhere** — 0.009% unlocated becomes 0.120%, still no sitting
+      above 1% outside the two scans. A side effect worth recording: because
+      each run must be found at or after the last, the rebuild also notices a
+      block whose own sentences came out shuffled, which no window test could —
+      of 623 real multi-sentence turns shuffled as a test, 612 rebuild intact
+      and only 30 rebuild shuffled.
+- [x] **The blind-read re-check could say "holds" of a passage that had
+      moved.** It collected every block on the page that any window of the
+      quoted words touched, pooled their labels, and asked only whether the
+      recorded name was somewhere in the pool — so a coincidental match further
+      down the page masked a genuine reattribution. **160 of the 5,365 keyed
+      records** are decided by a lookup that reaches more than one speaker. Each
+      record is now settled against the ONE turn that best carries the words —
+      the whole quote first, then the number of windows — and a genuine tie,
+      where the chamber's formula really is printed by several turns, is
+      recorded as such in the output. Control: planting 19 reattributions in
+      turns whose words a second turn on the page also matches, **the pooled
+      version caught 10 and this one catches all 19.** The corpus is unchanged:
+      5,459 hold, 0 changed.
+- [x] **The caucus was projected across disagreements.** `bloc_on` takes the
+      observation nearest the sitting, and where the sitting falls BETWEEN two
+      records naming different caucuses the switch happened somewhere in
+      between — the record does not say on which side. Taking the nearer of the
+      two carried one reading across the disagreement, sometimes backwards onto
+      a day an earlier record contradicts. Those rows now read `disputed`:
+      **141 (sitting, label) pairs, 2,049 passages, 2.5% of senators' floor
+      words**, and `confirmed` falls from 83.3% to 80.8%. Most of it is one
+      caucus being renamed — 1,959 of the 2,049 have the same party family on
+      both sides, largely the justicialist caucus becoming "PJ Frente para la
+      Victoria" across 2004 and 2005 — and **90 passages cross a party family**,
+      which is where it changes what someone would conclude: Morales in
+      Jujuy 2003-2004, Falco in Río Negro, Conti and Ibarra in 2004.
+- [x] **What the new gold score does and does not do, corrected.** Phase 30
+      claimed that carrying each turn's opening words alongside its label stops
+      four turns by the same chair matching in the wrong places. It does not:
+      both scores compare bags of turns and neither sees position, so a page
+      whose turns came out shuffled still scores full marks. What it does catch
+      is a label moved onto another speaker's words — swapping one pair of
+      labels on each of the 23 annotated pages that have two differently-named
+      turns leaves the old score at a perfect **125 of 125** and takes the new
+      one to **79**. The claim in README and TODO is now what the measure
+      actually does.
+- [x] **Documentation caught up with the data.** `session_type`'s seven row
+      counts in the dictionary no longer summed to the corpus's own total;
+      `unmatched` was 218 where it is 215; median coverage 79.2% where it is
+      79.0%; the three largest `match_status` shares off by a tenth of a point;
+      "twelve passages, all from 2000-2004" for the archived-roster rows before
+      the earliest capture, where it is 22 passages and all of them from the
+      first months of 2000. In SOURCES, the caucus shares, and the claim that
+      **most years keep over 98%** of their floor words in the caucus view —
+      only **seven of the twenty** do, and 2006, 2007, 2019 and 2022 sit well
+      below without being mentioned. The 0.4.11 entry's 710,039 spaces and its
+      "F1 = 1.00" are left standing as what was measured then, with a note that
+      Phase 19 put the count at 670,660 and the F1 is 0.996.
+- [x] **What this round got wrong, recorded so it is not re-litigated.** One
+      reader put the ticket-versus-caucus split at 22.3%/68.5% against the
+      published 18.9%/72.0%, using a coarser classifier of its own and saying
+      so; reconstructed with the notebook's own `family()` the published
+      figures reproduce to a tenth of a point. Another reported the masthead
+      leaking into speech in two scanned sittings, 11 rows and 2 — it is 5 rows
+      in one of them, which the audit already prints and excludes by design.
+      And the count of sittings whose text the footer fix touches is 14 as
+      claimed at the block level, though 19 differ at the character level, four
+      of them on front matter that is discarded anyway and one a separate
+      footnote bug the restructuring fixed in passing.
 
 ## Next
 

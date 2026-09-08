@@ -606,6 +606,15 @@ def bloc_on(person_id, when, obs, lives):
     if (status == "confirmed" and basis == "roll call"
             and not bloc_alive_on(bloc, when, lives)):
         status = "anachronistic"
+    elif status == "confirmed":
+        near = [r for r in rows if abs((r[0] - when).days) <= BLOC_MAX_GAP_DAYS]
+        before = [r for r in near if r[0] <= when]
+        after = [r for r in near if r[0] >= when]
+        if before and after:
+            last = max(before)[1]
+            first = min(after, key=lambda r: r[0])[1]
+            if last != first:
+                status = "disputed"
     return {"bloc": bloc, "bloc_status": status, "bloc_basis": basis,
             "bloc_observed": d.isoformat(), "bloc_gap_days": gap}
 

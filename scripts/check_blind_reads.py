@@ -175,18 +175,44 @@ def judge(record, blocks):
     windows = probes(key)
 
     def matches(rows):
-        return [(row.speaker_raw, row.type) for row in rows
-                if any(w in row.flat_text for w in windows)]
+        """The blocks that carry the quoted passage, the best fit first.
+
+        Not every block any window touches. A record is a claim about one
+        printed turn, so the question is whether THAT turn still carries the
+        recorded name — and the earlier version, which pooled the labels of
+        every block any window landed on and asked only whether the recorded
+        one was somewhere in the pool, could not tell a genuine reattribution
+        from a coincidental match further down the page. It affected 160 of
+        the 5,365 records whose lookup reaches more than one speaker.
+
+        Fit is how much of the passage one block holds: the whole key first,
+        then the number of windows. Where several blocks hold the passage
+        equally well the words really are printed more than once — the
+        chamber's formulas are — and the record cannot choose between them,
+        so they are weighed together and the tie is recorded.
+        """
+        best, scored = (), []
+        for row in rows:
+            score = (key in row.flat_text, sum(w in row.flat_text for w in windows))
+            if not score[1]:
+                continue
+            if score > best:
+                best, scored = score, []
+            if score == best:
+                scored.append(row)
+        return scored
 
     for where, pool in (("page", on_page), ("sitting", speech)):
         hits = matches(pool)
         if hits:
-            return verdict_for(record, {s for s, _ in hits}, where)
+            if len(hits) > 1:
+                where += f" ({len(hits)} turns print it)"
+            return verdict_for(record, {r.speaker_raw for r in hits}, where)
 
     # not speech any more: a repair moved it to the stenographer's notes
     elsewhere = matches([b for b in blocks if b.type != "speech"])
     if elsewhere:
-        return "moved out of speech", elsewhere[0][1], "sitting"
+        return "moved out of speech", elsewhere[0].type, "sitting"
     return "passage not found", "", ""
 
 

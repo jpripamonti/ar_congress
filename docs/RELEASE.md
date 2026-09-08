@@ -12,7 +12,7 @@ so a release is a separate, frozen bundle.
 | The passages, one file per sitting | `data/processed/senado/blocks/*.parquet` | The corpus itself. |
 | The resolved speakers | `data/processed/senado/speakers.parquet` | Turns a printed label into a person, and into the caucus they sat with. |
 | The caucus observations | `reference/senado/bloque_observado.csv` | Every day one senator's caucus was actually recorded, with the record it came from and how far it can be trusted. |
-| The archived bloc-roster pages | `data/raw/senado/bloques_archivados/` | HTML, 16 captures. The only copies of a Senate page that no longer exists; the pre-2005 caucus cannot be rebuilt without them. |
+| The archived bloc-roster pages | `data/raw/senado/bloques_archivados/` | HTML, 17 captures, of which 16 carry names — the seventeenth (14 June 2002) is a truncated Wayback snapshot with no roster in it, kept because it is evidence of the gap. The only copies of a Senate page that no longer exists; the pre-2005 caucus cannot be rebuilt without them. |
 | The parse record | `data/processed/senado/parse_stats.csv` | 40 counts per sitting of what the parser did to it, so every repair can be recomputed rather than trusted. |
 | The provenance manifest | `raw_data_manifest.csv` | Checksum, source URL and download time of every source file. |
 | The reference tables | `reference/senado/` | Roster snapshots, hand-dated caucuses, observed authorities. |
@@ -62,19 +62,35 @@ uv run scripts/check_blind_reads.py
   of 125 turns), on the label alone and on the label with the turn's opening
   words alike. Events: precision 1.00, recall 0.935 (29 of 31).
 - The annotations themselves still check out against the source files: 36 of 36.
-- The audit's invariants hold: no page apparatus inside a speech turn, no turn
-  carrying a second speaker's label, no text written out twice, and the turns
-  that open mid-word are printed that way. The apparatus check counts toward
-  the exit status; it used to be printed and not counted, and a leaked footer
-  sat in the corpus for weeks while the audit reported nothing wrong.
+- The audit's invariants hold: no page apparatus inside a speech turn outside
+  the two scanned sittings, no turn carrying a second speaker's label, no text
+  written out twice, and the turns that open mid-word are printed that way.
+  The apparatus check counts toward the exit status; it used to be printed and
+  not counted, and a leaked footer sat in the corpus for weeks while the audit
+  reported nothing wrong.
+- A block the audit's three long windows cannot find in the source is asked
+  whether the whole of it can be rebuilt from the source in a handful of runs.
+  It used to be asked only whether any one 24-character window of it was
+  there, which was not a second chance but a hole: measured, genuine text
+  checked against the WRONG sitting passed that test 28% of the time, and 24
+  real characters vouched for an invented tail of any length. The test that
+  replaced it separates cleanly — the blocks the long windows miss rebuild in
+  two runs and four at worst, wrong-sitting text needs six or more, a genuine
+  opening with an invented tail needs 150.
 - Every name on an archived bloc-roster page still resolves to a senator, and
   the only ones outside their mandate are the two known cases of the page
   lagging the chamber. `build_bloc_observations.py` stops if a name resolves to
   nobody and prints the lagging ones on every run.
 - Every answer recorded in the nine blind reads still resolves to the same
   speaker in the re-parsed corpus: `check_blind_reads.py` re-asks all 5,463 and
-  exits on the number that do not. It tolerates the repairs the rounds
-  themselves prompted — a quote carrying an unmapped glyph, an ordinal read as
+  exits on the number that do not. Each record is settled against the ONE turn
+  that best carries the quoted words, not against every turn any window of
+  them touches: the earlier version pooled the labels and asked only whether
+  the recorded name was somewhere in the pool, so a coincidental match further
+  down the page could mask a genuine reattribution. Planting 19 reattributions
+  in turns whose words a second turn on the page also matches, the pooled
+  version caught 10 and this one catches all 19. It tolerates the repairs the
+  rounds themselves prompted — a quote carrying an unmapped glyph, an ordinal read as
   a capital E, a letter cut off a label — because those are the project's own
   progress and not damage; what it will not tolerate is the passage still being
   there under somebody else's name.

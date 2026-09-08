@@ -16,10 +16,14 @@ checked everywhere, by looking for things that must never happen:
 3. CONSERVATION — every block's text must be findable in the source PDF, and
    no document may yield more text than it prints. This catches text invented
    or written out twice by the block splitting and merging. A block is looked
-   up by windows taken from inside it, and a block that fails is looked up
-   again by shorter ones, because a block carries cuts of its own — the
-   footnote marker taken out of the middle of a sentence, most often — and
-   three long windows can all land on the same cut.
+   up by windows taken from inside it, and a block that fails is asked instead
+   whether the whole of it can be rebuilt from the source in a handful of
+   runs, because a block carries cuts of its own — the footnote marker taken
+   out of the middle of a sentence, most often — and three long windows can
+   all land on the same cut. Rebuilding the whole block, rather than finding
+   one short window of it anywhere, is what keeps that second chance from
+   being a hole: a single 24-character match used to vouch for an invented
+   tail of any length.
 4. COVERAGE — how much of each document's printed text survives into the
    output. Front matter, attendance rolls and appendices are dropped on
    purpose, so this is a distribution to inspect, not a pass/fail.
@@ -114,27 +118,58 @@ def block_probes(text, width=40):
     return [flat[i:i + width] for i in sorted(spots)]
 
 
-def rescue_probes(text, width=24):
-    """Shorter windows, swept across the block, for one the three could not find.
+def reconstructs(text, src, max_pieces=8):
+    """Can the whole block be rebuilt from the source, in a handful of runs?
 
-    A block carries joins of its own, and three windows can all land on one.
-    The commonest is not a page break but the footnote marker the parser cuts
-    from inside a sentence: the page prints "...el proyecto de ley.3 Se
-    comunicará...", the output holds the sentence without the 3, and the
-    source still has it. Where the pieces on either side of such a cut are
-    each shorter than a 40-character window — 38 and 25 characters, in the
-    sitting that made this visible — no window of that size can sit inside one,
-    however they are placed, so the block reads as text from nowhere.
+    Asked only of a block the three long windows could not find, and it
+    replaces asking whether any ONE short window is somewhere in the source.
+    That earlier test vouched for the whole block on the strength of a single
+    24-character match, which is not a fallback but a hole: measured against
+    the corpus, genuine text checked against the wrong sitting passed it 28%
+    of the time, and 24 real characters were enough to carry an invented tail
+    of any length.
 
-    Only a block that has already failed reaches this, so the strict probe
-    stays the measure: this decides whether the miss was real, and 24
-    characters of exact text is still a passage, not a coincidence.
+    This asks the property the check is actually for — every character of the
+    block is printed in the source, in the order printed — by walking the
+    block from the start, each time taking the longest stretch that still
+    appears in the source at or after where the last one was found. A block
+    that survives a cut of its own needs one run per cut: the footnote marker
+    taken out of a sentence costs one, a page break costs one. Measured, the
+    blocks the long windows miss and this recognises rebuild in two runs
+    typically and four at worst, while text from the wrong sitting needs six
+    or more and a genuine opening with an invented tail needs 150.
+
+    Running out of runs, or stalling on a character the source does not have,
+    reports the block as foreign — the check errs towards showing a human one
+    block too many rather than passing text that is not there.
     """
     flat = flatten(text)
-    if len(flat) < width + 12:
-        return []
-    step = max(1, width // 2)
-    return [flat[i:i + width] for i in range(0, len(flat) - width + 1, step)]
+    i = pieces = pos = 0
+    while i < len(flat):
+        if pieces >= max_pieces:
+            return False
+        span, at = 0, -1
+        step = 1
+        while i + step <= len(flat):      # grow the run while it is still there
+            found = src.find(flat[i:i + step], pos)
+            if found < 0:
+                break
+            span, at = step, found
+            step *= 2
+        if span == 0:
+            return False                  # a character the source does not print
+        lo, hi = span, min(len(flat) - i, span * 2)
+        while lo < hi:                    # then settle on the longest that fits
+            mid = (lo + hi + 1) // 2
+            found = src.find(flat[i:i + mid], pos)
+            if found < 0:
+                hi = mid - 1
+            else:
+                lo, at = mid, found
+        i += lo
+        pos = at
+        pieces += 1
+    return True
 
 
 def audit_source(args):
@@ -153,8 +188,7 @@ def audit_source(args):
         if not windows:
             continue
         probed += 1
-        if any(w in src for w in windows) or \
-                any(w in src for w in rescue_probes(t)):
+        if any(w in src for w in windows) or reconstructs(t, src):
             located += 1
         elif not example:
             example = windows[0]

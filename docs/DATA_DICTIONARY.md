@@ -51,7 +51,7 @@ To get from a label to a person, join `speakers.parquet` on
 | `chapter`, `chapter_title` | The numbered section of the sitting's agenda the passage falls under, and its title. Present in 538 of the 558 sittings that parse; the rest print no section numbering the parser can read. |
 | `session_id` | The sitting: date plus its number within the year, e.g. `2014-05-07_r07`. |
 | `session_date` | The date of the sitting, `YYYY-MM-DD`. |
-| `session_type` | What kind of sitting, as the Senate names it: `ORDINARIA` (158,994 rows), `ESPECIAL` (42,040), `EXTRAORDINARIA` (12,285), `INFORMATIVA ESPECIAL` (7,095 — the cabinet chief's report to the chamber), `TRIBUNAL DE JUICIO POLITICO` (6,792 — impeachment trials, where the speakers are largely not senators), `ASAMBLEA` (5,875 — both chambers together, where the President of the Nation speaks), `PREPARATORIA` (2,357), and five smaller kinds. **Mixing them without thinking will mislead you**: an impeachment trial and an ordinary sitting are not the same kind of speech. |
+| `session_type` | What kind of sitting, as the Senate names it: `ORDINARIA` (156,382 rows), `ESPECIAL` (41,691), `EXTRAORDINARIA` (12,298), `TRIBUNAL DE JUICIO POLITICO` (6,649 — impeachment trials, where the speakers are largely not senators), `INFORMATIVA ESPECIAL` (6,582 — the cabinet chief's report to the chamber), `ASAMBLEA` (5,846 — both chambers together, where the President of the Nation speaks), `PREPARATORIA` (2,342), and five smaller kinds (`EN MINORÍA` 528, `ORDINARIA CONTINUACIÓN` 461, `ESPECIAL EXTRAORDINARIA` 287, `ESPECIAL EN MINORÍA` 196, `REUNIÓN CONJ.AMBAS CÁMARAS` 146). **Mixing them without thinking will mislead you**: an impeachment trial and an ordinary sitting are not the same kind of speech. |
 | `sesion`, `reunion` | The Senate's own two numberings of the sitting, as printed on its cover. |
 
 **Where it came from**
@@ -78,7 +78,7 @@ people in different sittings, and sometimes within one sitting.
 | `elected_ticket` | **The list the senator STOOD ON, not the caucus they sat with.** One value per mandate, taken from the roster. See the two-affiliations note below before using it. |
 | `province` | The province the senator represents. |
 | `bloc` | **The caucus the senator SAT WITH.** Taken from the nearest day the chamber's composition was actually recorded — see below. |
-| `bloc_status` | How far that caucus can be trusted, **judged on the date of the sitting, not on the day the caucus was recorded**: `confirmed` (83.3% of senators' floor words), `anachronistic` (13.1% — the record names a caucus that did not exist on the day of the sitting), `undatable` (1.1% — the caucus has no established start, so nothing can be checked). Empty where there is no caucus at all (2.4%). |
+| `bloc_status` | How far that caucus can be trusted, **judged on the date of the sitting, not on the day the caucus was recorded**: `confirmed` (80.8% of senators' floor words), `anachronistic` (13.1% — the record names a caucus that did not exist on the day of the sitting), `disputed` (2.5% — the records on either side of the sitting name different caucuses, so which one held that day is not established), `undatable` (1.1% — the caucus has no established start, so nothing can be checked). Empty where there is no caucus at all (2.4%). |
 | `bloc_basis` | Where the caucus came from: `roll call` (79.7% of senators' floor words) or `archived roster` (17.9%, the pre-2005 years). |
 | `bloc_observed` | The date the caucus was actually recorded on. |
 | `bloc_gap_days` | How many days that is from the sitting. Median 0 — most sittings are themselves roll-call days. Rows further than 200 days from any observation get no caucus. |
@@ -127,10 +127,23 @@ December 2005 rightly reads "PJ Frente para la Victoria", a caucus formed that
 month, and the nearest sitting to it is in June, six months before the caucus
 existed. Ninety-nine passages used to come out `confirmed` that way.
 
+A second thing the nearest reading cannot settle: where the sitting falls
+between two records that name DIFFERENT caucuses, the switch happened
+somewhere in between and the record does not say on which side of the sitting.
+Taking the nearer of the two, as the column used to, projected one reading
+across a disagreement — sometimes backwards, onto a day an earlier record
+contradicts. Those rows are now `disputed`: 141 (sitting, label) pairs, 2.5% of
+senators' floor words. Most of it is one caucus being renamed — 1,959 of those
+2,049 passages have the same party family on both sides, largely the
+justicialist caucus becoming "PJ Frente para la Victoria" over 2004 and 2005 —
+and the 90 passages that do cross a party family are the ones to care about if
+the question is which side of the chamber someone was on.
+
 Only roll-call readings are re-checked. The dates on an archived roster page
 are the days the page was **captured**, a floor on the caucus's life rather
 than a claim about when it began, so a sitting before the earliest capture is
-expected — twelve passages, all from 2000–2004 — and marking them would report
+expected — twenty-two passages, all from the first months of 2000 — and
+marking them would report
 the gaps in the Internet Archive as a fact about the chamber.
 
 ### The chair carries a caucus, and that is a trap
@@ -145,12 +158,12 @@ chair from anything about party positions.
 
 | Value | Share of speech | What it means |
 | --- | --- | --- |
-| `matched_senator` | 37.6% | A named senator, resolved against the roster and their mandate dates. |
-| `office_only` | 28.1% | **A chamber office speaking under its bare title** — "Sr. Presidente", "Sr. Secretario", with no surname printed. This is how the record was printed before about 2016. **These are deliberately left without a person.** The chair changes hands during a sitting and the page does not say who holds it; the cover names two or more presiding officers in 340 of the 545 sittings whose cover says who presided. Any name here would be a guess. |
-| `matched_senator_chair` | 17.1% | A senator speaking from the chair, where the page names them. |
+| `matched_senator` | 37.4% | A named senator, resolved against the roster and their mandate dates. |
+| `office_only` | 28.3% | **A chamber office speaking under its bare title** — "Sr. Presidente", "Sr. Secretario", with no surname printed. This is how the record was printed before about 2016. **These are deliberately left without a person.** The chair changes hands during a sitting and the page does not say who holds it; the cover names two or more presiding officers in 340 of the 545 sittings whose cover says who presided. Any name here would be a guess. |
+| `matched_senator_chair` | 17.2% | A senator speaking from the chair, where the page names them. |
 | `matched_authority` | 15.5% | Someone holding a national or chamber office, resolved against a hand-compiled table of office-holders. |
 | `out_of_scope` | 1.3% | Correctly not a senator: parties and witnesses at the impeachment trials, deputies, foreign heads of state, officials of other institutions. |
-| `unmatched` | 0.1% | A genuine failure: 218 passages, nearly all invited outside speakers at public hearings, named by surname alone. |
+| `unmatched` | 0.1% | A genuine failure: 215 passages, nearly all invited outside speakers at public hearings, named by surname alone. |
 | `collective` | 0.1% | "Varios señores senadores" — the record attributing words to several people at once. |
 | `ambiguous` | 0.0% | A surname more than one person could hold at that date. |
 
@@ -177,7 +190,7 @@ what the analysis in this repository does, and it says so.
   across that boundary are comparisons of what survives, not of what happened.
 - **Roughly a fifth of each document is dropped on purpose**: contents pages,
   attendance rolls, appendices and inserted documents that were never spoken.
-  The median sitting keeps 79.2% of its printed text.
+  The median sitting keeps 79.0% of its printed text.
 - **One sitting fails to parse**: a November 2001 sitting that never reached
   quorum and therefore has no opening for the parser to find.
 

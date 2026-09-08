@@ -145,8 +145,9 @@ nothing and collapses nothing into spells. `resolve_speakers.py` then takes,
 for each sitting, the observation nearest that senator — writing the caucus,
 its status, its basis, the day it was observed and the distance in days, so any
 stricter reading costs one filter. Of the floor speech by identified senators,
-83.4% gets a confirmed caucus, 13.0% one marked anachronistic, 1.1% one that
-cannot be checked, and 2.4% none at all.
+80.8% gets a confirmed caucus, 13.1% one marked anachronistic, 2.5% one the
+records on either side of the sitting disagree about, 1.1% one that cannot be
+checked, and 2.4% none at all.
 
 ### Dating the caucuses by hand
 
@@ -226,8 +227,11 @@ rather than guessed, which is why **6.9% of floor words end up with no caucus**
 and are left out of the caucus view entirely.
 
 That loss is **not spread evenly**, and the figure says so per year. 2017 and
-2018 keep about three quarters of their floor words, 2005 keeps 72%, while most
-years keep over 98%. Almost all of the 2016–2019 hole is one thing: 392,000
+2018 keep about three quarters of their floor words and 2005 keeps 72%, while
+seven years — 2009, 2011 through 2015, and 2024 — keep over 98%. Half the span
+sits between: 2006 and 2007 near 89%, 2019 at 86%, 2022 at 91%. An earlier
+version of this sentence said most years cleared 98%, which was never true of
+more than seven of the twenty. Almost all of the 2016–2019 hole is one thing: 392,000
 words by the sixteen senators whose 2015–2021 mandate the Senate files under
 Frente de Todos, a caucus formed in 2019. Thirteen of the sixteen were elected
 on a Frente para la Victoria ticket and the other three on peronist provincial
@@ -362,22 +366,37 @@ results:
   positive.
 - **Text written out twice: 0 sessions.** No document yields more text than it
   prints.
-- **Blocks not findable in the source PDF: 0.009% on average**, 0 sessions above
-  1%. This figure used to be 0.422%, and it used to go UP as the parser
-  improved — which was read as the price of repairing the text and was in fact
-  a fault in the check. Where a footnote marker had been dropped from the
-  middle of a sentence, removing it joins "…el proyecto de ley." to "Se
-  comunicará…"; the block is then looked up by three 40-character windows, and
-  where the pieces on either side of that cut are each shorter than 40
-  characters — 38 and 25, in the sitting that made it visible — no window of
-  that size can sit inside one, however they are placed. All three straddle the
-  cut and the block reads as text from nowhere. A block that fails is now
-  looked up again by shorter windows swept across it, which lands one inside a
-  piece. That is a fallback, not a loosening: the strict probe still decides
-  99.5% of blocks, and the ~470 rescued were checked by rebuilding each from
-  the source greedily — every one is covered in full, at a median of two
-  pieces, exactly the shape of a passage with one cut in it, where invented
-  text of the same length needs forty.
+- **Blocks not findable in the source PDF: 0.120% on average**, 0 sessions above
+  1% once the two scans are set aside. This figure used to be 0.422%, and it
+  used to go UP as the parser improved — which was read as the price of
+  repairing the text and was in fact a fault in the check. Where a footnote
+  marker had been dropped from the middle of a sentence, removing it joins
+  "…el proyecto de ley." to "Se comunicará…"; the block is then looked up by
+  three 40-character windows, and where the pieces on either side of that cut
+  are each shorter than 40 characters — 38 and 25, in the sitting that made it
+  visible — no window of that size can sit inside one, however they are placed.
+  All three straddle the cut and the block reads as text from nowhere.
+
+  A block that fails the three windows is now asked a different question: can
+  the WHOLE of it be rebuilt from the source, walking it from the start and
+  each time taking the longest stretch still printed at or after where the last
+  one was found? The first attempt at a second chance instead swept short
+  windows across the block and accepted it if any one of them was found
+  anywhere. That was not a fallback, it was a hole, and it reported 0.009%
+  because of it: measured, genuine text checked against the WRONG sitting
+  passed that test 28% of the time, and 24 real characters vouched for an
+  invented tail of any length. Rebuilding the whole block separates cleanly —
+  the blocks the long windows miss rebuild in two runs and four at worst,
+  wrong-sitting text needs six or more, and a genuine opening followed by an
+  invented tail needs 150. The corpus passes the honest test everywhere: the
+  rate goes from 0.009% to 0.120%, and no sitting outside the two scans is
+  above 1%.
+
+  Because each run has to be found at or after the last one, the rebuild also
+  notices a block whose own sentences came out in the wrong sequence, which no
+  window test ever could: shuffling the sentences of 623 real multi-sentence
+  turns, 612 rebuild intact and 30 still rebuild shuffled — it catches 95% of
+  them. That is a side effect worth stating rather than a check to lean on.
 - **Share of each document's printed text kept:** median 79.0%, quartiles 69%
   and 87%. The rest is dropped by design — contents pages, attendance rolls,
   appendices and inserted documents. The lowest figures are short sittings in
@@ -864,6 +883,13 @@ own reading fell from 3.0% to 0.06%. Nothing that had already been verified
 moved: the gold set scores exactly as before (F1 = 1.00 on 124 of 125 turns),
 the audit is unchanged on every invariant, and all 1,848 answers recorded in
 the four blind reads still stand in the new parse, checked row by row.
+
+Two figures in that paragraph have since been superseded and are left as they
+stood, because this is what was measured at the time. Phase 19 found that
+39,380 of the 710,039 were not word gaps at all but the spacing inside a
+letter-spaced word, and put the count at 670,660 in 482 sittings. And that F1
+is 0.996; `:.2f` had been rounding it to 1.00 in every printout until Phase 30
+made the evaluator print three places.
 
 Two things followed from it, both checked. **Section numbering now works for
 2003–2009**: those sittings number their sections without a full stop ("2
