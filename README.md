@@ -444,7 +444,7 @@ it brackets a change between two dates and never fixes one to the day.
   and 50 in the first.
 - `reference/` — versioned reference data: roster snapshots, authorities
   tables, gold evaluation set. Provenance: [SOURCES.md](SOURCES.md).
-- `data/` — symlink to the OneDrive working copy; not in git (see
+- `data/` — symlink to the working copy kept outside Git (see
   [DATA.md](DATA.md)).
 
 ## Setup
@@ -459,8 +459,7 @@ The pipeline runs in this order: `download.py` → `parse.py` →
 `extract_authorities.py` → `resolve_speakers.py`, then `eval_gold.py` and
 `check_gold.py` to verify.
 
-On a new machine, re-create the `~/PARA/_working-data` symlink first (see
-DATA.md).
+On a new machine, re-create the working-data symlink first (see DATA.md).
 
 ## Source
 

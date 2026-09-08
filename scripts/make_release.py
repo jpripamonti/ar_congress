@@ -20,20 +20,36 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 PROCESSED = REPO_ROOT / "data" / "processed" / "senado"
+RAW = REPO_ROOT / "data" / "raw" / "senado"
 RELEASES = REPO_ROOT / "data" / "releases"
 
 # (source, destination directory inside the bundle). A source may be a file, a
 # glob, or a directory — a directory is copied whole and keeps its own name, so
 # its destination here is the parent it should sit in.
 PARTS = [
-    (PROCESSED / "blocks" / "*.parquet", "blocks"),
-    (PROCESSED / "speakers.parquet", ""),
-    (PROCESSED / "parse_stats.csv", ""),
-    (REPO_ROOT / "data" / "raw" / "senado" / "bloques_archivados", ""),
+    # The corpus and the working data, at the paths the documentation names.
+    (PROCESSED / "blocks", "data/processed/senado"),
+    (PROCESSED / "logs", "data/processed/senado"),
+    (PROCESSED / "speakers.parquet", "data/processed/senado"),
+    (PROCESSED / "parse_stats.csv", "data/processed/senado"),
+    (PROCESSED / "gold_eval.csv", "data/processed/senado"),
+    (PROCESSED / "blind_read_check.csv", "data/processed/senado"),
+    (PROCESSED / "audit_source.csv", "data/processed/senado"),
+    (PROCESSED / "review_sheet.csv", "data/processed/senado"),
+    (RAW / "bloques_archivados", "data/raw/senado"),
+    (RAW / "listings", "data/raw/senado"),
+    # The pipeline that produced it, and the environment it was pinned to.
+    (REPO_ROOT / "scripts" / "*.py", "scripts"),
+    (REPO_ROOT / "pyproject.toml", ""),
+    (REPO_ROOT / "uv.lock", ""),
+    (REPO_ROOT / "notebooks" / "analysis.ipynb", "notebooks"),
+    (REPO_ROOT / "figures" / "*.png", "figures"),
+    # The reference tables and the verification records.
     (REPO_ROOT / "reference" / "senado", "reference"),
     (REPO_ROOT / "reference" / "gold", "reference"),
     (REPO_ROOT / "reference" / "verification", "reference"),
     (REPO_ROOT / "raw_data_manifest.csv", ""),
+    # The documentation and the terms.
     (REPO_ROOT / "README.md", ""),
     (REPO_ROOT / "SOURCES.md", ""),
     (REPO_ROOT / "TODO.md", ""),
@@ -42,9 +58,6 @@ PARTS = [
     (REPO_ROOT / "CITATION.cff", ""),
     (REPO_ROOT / "docs" / "DATA_DICTIONARY.md", "docs"),
     (REPO_ROOT / "docs" / "RELEASE.md", "docs"),
-    (REPO_ROOT / "notebooks" / "analysis.ipynb", "notebooks"),
-    (REPO_ROOT / "figures" / "floor_words_by_year.png", "figures"),
-    (REPO_ROOT / "figures" / "ticket_vs_caucus.png", "figures"),
 ]
 
 # The release notes of every version, at the path the repository gives them, so
@@ -55,9 +68,21 @@ NOTES_GLOB = (REPO_ROOT / "docs" / "releases" / "*.md", "docs/releases")
 # Each must match exactly once, or the build stops: a rewrite that silently
 # matches nothing is how the links rotted in the first place.
 REWRITES = [
+    # The two places the README speaks to whoever works in the repository
+    # rather than to whoever unpacks the bundle. Each must match exactly once,
+    # or the build stops: a rewrite that silently matches nothing is how the
+    # links rotted in the first place.
     ("README.md",
-     "[DATA.md](DATA.md)",
-     "`DATA.md` in the project repository"),
+     "- `data/` — symlink to the working copy kept outside Git (see\n"
+     "  [DATA.md](DATA.md)).",
+     "- `data/` — the parsed corpus, the per-sitting logs, the archived\n"
+     "  bloc-roster pages and the portal listings. In the repository this is a\n"
+     "  symlink to a working copy kept outside Git; here it is a real directory."),
+    ("README.md",
+     "On a new machine, re-create the working-data symlink first (see DATA.md).",
+     "The corpus is already under `data/` in this bundle. Only the steps that\n"
+     "read the source PDFs need `download.py` run first: the PDFs are not\n"
+     "redistributed here, and `raw_data_manifest.csv` says which ones they are."),
 ]
 
 LINK_RE = re.compile(r"!?\[[^\]]*\]\(([^)]+)\)")
