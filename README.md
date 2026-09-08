@@ -277,8 +277,8 @@ text blocks, and analysis.
   no turn carries a second speaker's label, no label is absorbed by the section
   title above it, no page apparatus leaks into speech outside the two scans,
   no text is written out twice, every one of 98,601 probed blocks is found in
-  the PDF it came from (0.120% not located, no sitting above 1%), 5 turns of
-  151,761 open mid-word
+  the PDF it came from (0.120% not located, and no sitting above 1% once the
+  two scans are set aside), 5 turns of 151,761 open mid-word
   and every one of them is printed that way, and a median 79.0% of each
   document's printed text is kept (the rest — contents pages, attendance rolls,
   appendices — is dropped by design). Two
@@ -373,7 +373,7 @@ text blocks, and analysis.
   could each describe that day and name DIFFERENT caucuses, the switch happened
   somewhere in between and the record does not say on which side, so taking the
   nearer of the two projected one reading across a disagreement. Those 113
-  passages — 0.1% of senators' floor words, of which 36 cross a party family —
+  passages — 0.1% of senators' floor passages, of which 36 cross a party family —
   read `disputed` rather than `confirmed`.
 - The 2020–2023 collapse was mostly fewer sittings, not quieter ones. Floor
   words fell 6.4-fold, which splits into a 3.9-fold fall in sittings held

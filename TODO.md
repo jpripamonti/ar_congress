@@ -1364,8 +1364,8 @@ mis-measured, and one of those turned out to be a sixth of what was there.
       matched by prefix because the annotation writes as many words as it
       took to identify the turn. Swapping one pair of labels on each of the
       23 annotated pages that have two differently-named turns, as a test,
-      leaves the old score at a perfect 125 of 125 and takes the new one to
-      79. **The two scores are the same on the real corpus** — 124 of 125 —
+      leaves the old score exactly where it started, 124 of 125, and takes the
+      new one to 79. **The two scores are the same on the real corpus** — 124 of 125 —
       so the weaker measure had not been hiding anything, but it could have
       been.
       What the second score does NOT add is any sense of position: both
@@ -1601,7 +1601,8 @@ kind, because a check that passes wrongly is invisible.
 - [x] **Documentation caught up with the data.** `session_type`'s seven row
       counts in the dictionary no longer summed to the corpus's own total;
       `unmatched` was 218 where it is 215; median coverage 79.2% where it is
-      79.0%; the three largest `match_status` shares off by a tenth of a point;
+      79.0%; the three largest `match_status` shares off by up to two tenths
+      of a point;
       "twelve passages, all from 2000-2004" for the archived-roster rows before
       the earliest capture, where it is 22 passages and all of them from the
       first months of 2000. In SOURCES, the caucus shares, and the claim that
@@ -1624,13 +1625,30 @@ kind, because a check that passes wrongly is invisible.
       0.956 to 0.999, the 125 turns come from only 24 documents, and 24 of the
       36 pages are 2020 or later — the pre-2016 record rests on twelve pages.
 
+- [x] **A third round, on the second round's own work.** The rebuild's position
+      bug, the caucus rule disputing against records already flagged, the
+      annotation check that never checked adjacency, and the count of records
+      the old pooled lookup decided on more than one name all came out of it
+      and are above. Four more corrections it found in the prose: the caucus
+      shares are of PASSAGES and were labelled "floor words" — counted by words
+      anachronistic is 12.1%, not 13.1%; README dropped the "once the two scans
+      are set aside" qualifier from the sitting-above-1% claim, which is
+      literally false without it; the swapped-label demonstration leaves the
+      old score at its baseline 124 of 125, not at a perfect 125 (a multiset of
+      labels cannot beat the baseline by permuting, which is the point); and
+      two of the three `match_status` shares moved by two tenths, not one. The
+      0.4.11 and Phase 19 entries also disagree by one about how many spaces
+      0.4.11 restored, 710,039 against 710,040, and neither is recomputable —
+      both are left as measured and the clash is noted where it matters.
+
 - [x] **What this round got wrong, recorded so it is not re-litigated.** One
       reader put the ticket-versus-caucus split at 22.3%/68.5% against the
       published 18.9%/72.0%, using a coarser classifier of its own and saying
       so; reconstructed with the notebook's own `family()` the published
       figures reproduce to a tenth of a point. Another reported the masthead
       leaking into speech in two scanned sittings, 11 rows and 2 — it is 5 rows
-      in one of them, which the audit already prints and excludes by design.
+      in one of them and none at all in the other, and the audit already prints
+      and excludes them by design.
       And the count of sittings whose text the footer fix touches is 14 as
       claimed at the block level, though 19 differ at the character level, four
       of them on front matter that is discarded anyway and one a separate

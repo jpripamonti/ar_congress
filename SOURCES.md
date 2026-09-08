@@ -145,9 +145,11 @@ nothing and collapses nothing into spells. `resolve_speakers.py` then takes,
 for each sitting, the observation nearest that senator — writing the caucus,
 its status, its basis, the day it was observed and the distance in days, so any
 stricter reading costs one filter. Of the floor speech by identified senators,
-83.2% gets a confirmed caucus, 13.1% one marked anachronistic, 1.1% one that
-cannot be checked, 0.1% one that two usable records on either side of the
-sitting disagree about, and 2.4% none at all.
+83.2% of the PASSAGES get a confirmed caucus, 13.1% one marked anachronistic,
+1.1% one that cannot be checked, 0.1% one that two usable records on either
+side of the sitting disagree about, and 2.4% none at all. Counted by words
+rather than passages the shares move — anachronistic falls to 12.1% — because
+a back-labelled caucus attaches to shorter turns on average.
 
 ### Dating the caucuses by hand
 
@@ -912,8 +914,11 @@ the four blind reads still stand in the new parse, checked row by row.
 
 Two figures in that paragraph have since been superseded and are left as they
 stood, because this is what was measured at the time. Phase 19 found that
-39,380 of the 710,039 were not word gaps at all but the spacing inside a
-letter-spaced word, and put the count at 670,660 in 482 sittings. And that F1
+39,380 of them were not word gaps at all but the spacing inside a
+letter-spaced word, and put the count at 670,660 in 482 sittings. The two
+entries do not quite reconcile — Phase 19 subtracts its 39,380 from 710,040
+where this one says 710,039 — and neither can be recomputed now, so both are
+left as each was measured. And that F1
 is 0.996; `:.2f` had been rounding it to 1.00 in every printout until Phase 30
 made the evaluator print three places.
 

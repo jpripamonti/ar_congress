@@ -78,8 +78,8 @@ people in different sittings, and sometimes within one sitting.
 | `elected_ticket` | **The list the senator STOOD ON, not the caucus they sat with.** One value per mandate, taken from the roster. See the two-affiliations note below before using it. |
 | `province` | The province the senator represents. |
 | `bloc` | **The caucus the senator SAT WITH.** Taken from the nearest day the chamber's composition was actually recorded — see below. |
-| `bloc_status` | How far that caucus can be trusted, **judged on the date of the sitting, not on the day the caucus was recorded**: `confirmed` (83.2% of senators' floor words), `anachronistic` (13.1% — the record names a caucus that did not exist on the day of the sitting), `undatable` (1.1% — the caucus has no established start, so nothing can be checked), `disputed` (0.1% — two records that could each describe the day name different caucuses, so which one held is not established). Empty where there is no caucus at all (2.4%). |
-| `bloc_basis` | Where the caucus came from: `roll call` (79.7% of senators' floor words) or `archived roster` (17.9%, the pre-2005 years). |
+| `bloc_status` | How far that caucus can be trusted, **judged on the date of the sitting, not on the day the caucus was recorded**: `confirmed` (83.2% of senators' floor passages), `anachronistic` (13.1% — the record names a caucus that did not exist on the day of the sitting), `undatable` (1.1% — the caucus has no established start, so nothing can be checked), `disputed` (0.1% — two records that could each describe the day name different caucuses, so which one held is not established). Empty where there is no caucus at all (2.4%). |
+| `bloc_basis` | Where the caucus came from: `roll call` (79.7% of senators' floor passages) or `archived roster` (17.9%, the pre-2005 years). |
 | `bloc_observed` | The date the caucus was actually recorded on. |
 | `bloc_gap_days` | How many days that is from the sitting. Median 0 — most sittings are themselves roll-call days. Rows further than 200 days from any observation get no caucus. |
 | `match_status` | How the label was resolved. This is the field to filter on, and its values are not interchangeable — see below. |
@@ -115,7 +115,7 @@ later. Frente de Todos, formed in December 2019, is stamped on votes going back
 to 2010; Pichetto's whole 2013–2019 term is filed under a caucus he founded in
 2019 on leaving. Every reading is checked against the caucus's own dated life
 in `reference/senado/blocs_manual.csv`, and the ones that fail are **kept and
-marked, never corrected or dropped** — 13.1% of senators' floor words. Dropping
+marked, never corrected or dropped** — 13.1% of senators' floor passages. Dropping
 them would hide how much of the Senate's own record is like this. Filter on
 `bloc_status == "confirmed"` for any claim about *when* the chamber realigned.
 
