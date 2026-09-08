@@ -172,7 +172,7 @@ the author, not something the pipeline should do on its own.
 
 The bundle is roughly 100 MB of Parquet plus a few MB of reference tables and
 records — small enough that it needs no special handling. 0.4.37 came out at
-87 MB across 665 files, 63 MB packed.
+87 MB across 666 files, 63 MB packed.
 
 Build it from the repository root, after the checks above have passed:
 

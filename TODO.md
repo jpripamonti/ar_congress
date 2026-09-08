@@ -1703,6 +1703,20 @@ label was therefore written nowhere at all.
 - [x] **0.4.37 is cut.** Notes in `docs/releases/0.4.37.md`, bundle built and
       checksummed beside the data, tag `v0.4.37`. Minting a DOI on Zenodo is
       the author's, and is the only step left to make it citable.
+- [ ] **At least 42 passages are real floor speech that lost its label.** They
+      sit in the 1,109 rows the parser gives no speaker, which is otherwise
+      inserted documents and scan damage: 362 rows are the two November 2001
+      scans, 321 are three sittings whose record is mostly a list of judicial
+      appointments or a decree text, and 155 of the remaining 426 are a word or
+      less (a stray full stop, a single letter, an orphan "(Guinle)", a
+      contents-page "Volver"). The 42 are not any of that. They read
+      "Señor presidente: voy a ser muy breve porque hemos acordado que sea el
+      presidente de nue…", "Pido la palabra.", "Quiero manifestar mi más hondo
+      pesar por la lamentable desaparición física de Su Santida…". The count
+      comes from matching how a turn opens, so it is a floor, not a total; the
+      65 rows over 50 words outside the five known sittings are worth reading
+      before deciding. Worth a look because these are senators speaking with no
+      name on them, unlike everything else in that number.
 - [ ] The parser's open items are the five ordinal marks Phase 27 found but a
       neighbouring size mismatch keeps out of reach, and the secretary reading
       a document into the record. The page prints "Sr. Secretario (Estrada). —
