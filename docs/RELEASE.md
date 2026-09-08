@@ -171,4 +171,27 @@ humanities datasets are normally cited from. Publishing there is a decision for
 the author, not something the pipeline should do on its own.
 
 The bundle is roughly 100 MB of Parquet plus a few MB of reference tables and
-records — small enough that it needs no special handling.
+records — small enough that it needs no special handling. 0.4.37 came out at
+87 MB across 665 files, 63 MB packed.
+
+Build it from the repository root, after the checks above have passed:
+
+```bash
+OUT=data/releases/ar_congress_senado_$(grep -oE '0\.[0-9.]+' <(grep PARSER_VERSION scripts/parse.py | head -1))
+mkdir -p "$OUT"/{blocks,reference,docs,bloques_archivados}
+cp data/processed/senado/blocks/*.parquet "$OUT/blocks/"
+cp data/processed/senado/speakers.parquet data/processed/senado/parse_stats.csv "$OUT/"
+cp data/raw/senado/bloques_archivados/* "$OUT/bloques_archivados/"
+cp -R reference/senado reference/gold reference/verification "$OUT/reference/"
+cp raw_data_manifest.csv README.md SOURCES.md LICENSE LICENSE-DATA "$OUT/"
+cp docs/DATA_DICTIONARY.md docs/RELEASE.md docs/releases/*.md "$OUT/docs/"
+(cd "$OUT" && find . -type f ! -name CHECKSUMS.sha256 | sort | xargs shasum -a 256 > CHECKSUMS.sha256)
+```
+
+`CHECKSUMS.sha256` goes in the bundle so a downloader can verify every file,
+and the release notes carry the checksum of the archive itself. The bundle
+lives outside the repository, beside the data it is cut from, because `data/`
+is not in Git.
+
+Release notes go in `docs/releases/<version>.md` and travel inside the bundle.
+The version is tagged in Git as `v<version>` once the notes are committed.

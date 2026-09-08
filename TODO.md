@@ -1700,6 +1700,9 @@ label was therefore written nowhere at all.
 
 ## Next
 
+- [x] **0.4.37 is cut.** Notes in `docs/releases/0.4.37.md`, bundle built and
+      checksummed beside the data, tag `v0.4.37`. Minting a DOI on Zenodo is
+      the author's, and is the only step left to make it citable.
 - [ ] The parser's open items are the five ordinal marks Phase 27 found but a
       neighbouring size mismatch keeps out of reach, and the secretary reading
       a document into the record. The page prints "Sr. Secretario (Estrada). —
