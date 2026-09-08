@@ -185,4 +185,8 @@ covers.
 > 2000–2024: a speaker-attributed corpus* (version 0.4.37) [Data set]. Zenodo.
 > <https://doi.org/10.5281/zenodo.22661020>
 
-[CITATION.cff](CITATION.cff) carries the same in machine-readable form.
+Version 0.4.37 has its own DOI, above. To cite the corpus rather than one
+release of it, use the concept DOI, which always resolves to the latest:
+<https://doi.org/10.5281/zenodo.22661019>.
+
+[CITATION.cff](CITATION.cff) carries both in machine-readable form.

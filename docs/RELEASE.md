@@ -173,6 +173,10 @@ lives, for example:
 > a speaker-attributed corpus* (version 0.4.37) [Data set]. Zenodo.
 > <https://doi.org/10.5281/zenodo.22661020>
 
+Version 0.4.37 has its own DOI, above. To cite the corpus rather than one
+release of it, use the concept DOI, which always resolves to the latest:
+<https://doi.org/10.5281/zenodo.22661019>.
+
 ## Where to put it
 
 A release needs a permanent identifier, which GitHub alone does not give.

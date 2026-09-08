@@ -37,8 +37,10 @@ keywords:
   - digital humanities
 identifiers:
   - type: doi
-    value: 10.5281/zenodo.22661020
+    value: 10.5281/zenodo.22661019
     description: >-
-      The DOI of version 0.4.37 on Zenodo. Zenodo also mints a concept DOI, which
-      always resolves to the latest version; it is shown on the record once the
-      deposit is published, and belongs here beside this one.
+      The concept DOI, which always resolves to the latest version. Cite this
+      one unless the exact bytes matter.
+  - type: doi
+    value: 10.5281/zenodo.22661020
+    description: The DOI of version 0.4.37.

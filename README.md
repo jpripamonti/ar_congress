@@ -482,6 +482,10 @@ To cite the corpus:
 > a speaker-attributed corpus* (version 0.4.37) [Data set]. Zenodo.
 > <https://doi.org/10.5281/zenodo.22661020>
 
+Version 0.4.37 has its own DOI, above. To cite the corpus rather than one
+release of it, use the concept DOI, which always resolves to the latest:
+<https://doi.org/10.5281/zenodo.22661019>.
+
 [CITATION.cff](CITATION.cff) carries the same in the form a reference manager
 reads. [docs/RELEASE.md](docs/RELEASE.md) says how a version is cut, checked,
 and deposited on Zenodo, where the DOI to add to that citation comes from.

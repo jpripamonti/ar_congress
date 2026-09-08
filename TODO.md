@@ -632,13 +632,11 @@ phase brings the caucus up to that standard.
 - [x] **Decide the licence for the derived tables** — settled: CC BY 4.0 for the
       corpus and the reference tables, MIT for the code, with the split and the
       exact list of what each side covers in `LICENSE-DATA`.
-- [ ] **Mint a DOI.** Zenodo is the fitting home: it versions, it keeps one
-      identifier that always points at the latest, and it is where datasets like
-      this are cited from. Publishing is the author's call, not the pipeline's.
-      The deposit itself is prepared: `CITATION.cff` and `.zenodo.json` hold the
-      metadata, and `docs/RELEASE.md` has the order of operations — reserve the
-      DOI in the upload form first, put it in the four documents that carry the
-      citation, rebuild the bundle, then upload.
+- [x] **Mint a DOI.** Published on Zenodo, 8 September 2026:
+      10.5281/zenodo.22661019 is the concept DOI and 10.5281/zenodo.22661020 is
+      version 0.4.37. The deposit is the dataset, the pipeline that makes it and
+      what a stranger needs to use and cite it; the repository's working records
+      stay here.
 
 ## Later
 
@@ -1705,9 +1703,9 @@ label was therefore written nowhere at all.
 
 ## Next
 
-- [x] **0.4.37 is cut.** Notes in `docs/releases/0.4.37.md`, bundle built and
-      checksummed beside the data, tag `v0.4.37`. Minting a DOI on Zenodo is
-      the author's, and is the only step left to make it citable.
+- [x] **0.4.37 is cut and deposited.** Notes in `docs/releases/0.4.37.md`,
+      bundle built by `scripts/make_release.py` and checksummed beside the data,
+      tag `v0.4.37`, published on Zenodo under 10.5281/zenodo.22661019.
 - [ ] **At least 42 passages are real floor speech that lost its label.** They
       sit in the 1,109 rows the parser gives no speaker, which is otherwise
       inserted documents and scan damage: 362 rows are the two November 2001
