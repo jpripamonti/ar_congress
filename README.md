@@ -480,7 +480,8 @@ and the per-sitting URL in [raw_data_manifest.csv](raw_data_manifest.csv).
 To cite the corpus:
 
 > Ripamonti, J. (2026). *Argentine Senate stenographic transcripts, 2000–2024:
-> a speaker-attributed corpus* (version 0.4.37) [Data set].
+> a speaker-attributed corpus* (version 0.4.37) [Data set]. Zenodo.
+> <https://doi.org/10.5281/zenodo.22661020>
 
 [CITATION.cff](CITATION.cff) carries the same in the form a reference manager
 reads. [docs/RELEASE.md](docs/RELEASE.md) says how a version is cut, checked,
