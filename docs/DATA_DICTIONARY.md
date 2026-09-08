@@ -2,8 +2,9 @@
 
 Written for someone who has never seen this project. It says what each field
 holds, what its values mean, and — where it matters — what you must not assume
-about it. The provenance of the underlying files, and every limit measured on
-them, is in [SOURCES.md](../SOURCES.md).
+about it. The provenance of every source file is in `raw_data_manifest.csv`,
+one row per PDF, and the limits measured on them are summarised in the
+[README](../README.md).
 
 The corpus is the stenographic record of the Argentine Senate: what was said on
 the floor, who said it, and what the stenographer noted around it. 559 sittings
@@ -199,7 +200,7 @@ what the analysis in this repository does, and it says so.
 
 ## How far it has been checked
 
-Three layers, described in full in [SOURCES.md](../SOURCES.md):
+Three layers, summarised in the [README](../README.md):
 
 - **36 pages annotated by hand**, spanning 2003–2024: boundary and attribution
   F1 = 0.996, 124 of 125 turns and 29 of 31 stenographer's notes. Scored twice
@@ -216,7 +217,7 @@ Three layers, described in full in [SOURCES.md](../SOURCES.md):
   and all twenty-two resolved in the parser's favour afterwards — pages that print
   the quoted phrase more than once, and pages that print no label at all because
   the speech began earlier. Every one of those answers is re-asked of the
-  current corpus on each release (`scripts/check_blind_reads.py`), because the
+  current corpus on each release, by the project's own release checks, because the
   rounds were run months and a dozen parser versions ago and a repair could
   quietly move a passage to somebody else: 5,459 still resolve to the person
   the round named, none resolves to anybody else, and the 4 left cannot be

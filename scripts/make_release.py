@@ -1,14 +1,20 @@
 """Build the frozen release bundle, its checksums and its archive.
 
-What goes in is listed in docs/RELEASE.md; PARTS below is that table in code.
-Three things this does that a hand-run copy did not. It keeps each file at the
-path the repository gives it, so the relative links inside the shipped Markdown
-still resolve. It rewrites the one link that cannot survive the move — the
-README's pointer to DATA.md, which is about the author's working copy and has
-no place in a bundle — and stops if that link is no longer there to rewrite.
-And it walks every shipped Markdown file afterwards, asking of each relative
-link whether the file it names is actually in the bundle: the 0.4.37 bundle
-went out with eight links that pointed at nothing.
+What goes out is the dataset, the code that produces it, and what a stranger
+needs to use, check and cite it — nothing else. The repository's own working
+documents (TODO.md, the release process, the parse logs, the blind-read
+records, the notebook) stay in the repository: they are how the corpus was
+made, not part of what is being published.
+
+Two things this does beyond copying. It keeps every file at the path the
+repository gives it, so the relative links and the paths named in the shipped
+documentation still resolve. And it walks every shipped Markdown file
+afterwards, refusing to write the archive if any relative link points at a file
+the bundle does not carry.
+
+The bundle's README is docs/DEPOSIT_README.md, written for whoever unpacks the
+archive. The repository's own README is not shipped: it is written for whoever
+works in the repository, and it showed.
 """
 
 import argparse
@@ -26,63 +32,43 @@ RELEASES = REPO_ROOT / "data" / "releases"
 # (source, destination directory inside the bundle). A source may be a file, a
 # glob, or a directory — a directory is copied whole and keeps its own name, so
 # its destination here is the parent it should sit in.
+# (source, destination directory inside the bundle[, name it takes there]).
+# A source may be a file, a glob, or a directory — a directory is copied whole
+# and keeps its own name, so its destination here is the parent it sits in.
 PARTS = [
-    # The corpus and the working data, at the paths the documentation names.
+    # The corpus.
     (PROCESSED / "blocks", "data/processed/senado"),
-    (PROCESSED / "logs", "data/processed/senado"),
     (PROCESSED / "speakers.parquet", "data/processed/senado"),
     (PROCESSED / "parse_stats.csv", "data/processed/senado"),
-    (PROCESSED / "gold_eval.csv", "data/processed/senado"),
-    (PROCESSED / "blind_read_check.csv", "data/processed/senado"),
-    (PROCESSED / "audit_source.csv", "data/processed/senado"),
-    (PROCESSED / "review_sheet.csv", "data/processed/senado"),
+    # The one input that cannot be fetched again: captures of a dead page.
     (RAW / "bloques_archivados", "data/raw/senado"),
-    (RAW / "listings", "data/raw/senado"),
-    # The pipeline that produced it, and the environment it was pinned to.
-    (REPO_ROOT / "scripts" / "*.py", "scripts"),
-    (REPO_ROOT / "pyproject.toml", ""),
-    (REPO_ROOT / "uv.lock", ""),
-    (REPO_ROOT / "notebooks" / "analysis.ipynb", "notebooks"),
-    (REPO_ROOT / "figures" / "*.png", "figures"),
-    # The reference tables and the verification records.
+    # What the pipeline resolves against, and what the accuracy figure is
+    # measured on.
     (REPO_ROOT / "reference" / "senado", "reference"),
     (REPO_ROOT / "reference" / "gold", "reference"),
-    (REPO_ROOT / "reference" / "verification", "reference"),
     (REPO_ROOT / "raw_data_manifest.csv", ""),
+    # The pipeline, and the environment it was calibrated in.
+    (REPO_ROOT / "pyproject.toml", ""),
+    (REPO_ROOT / "uv.lock", ""),
     # The documentation and the terms.
-    (REPO_ROOT / "README.md", ""),
-    (REPO_ROOT / "SOURCES.md", ""),
-    (REPO_ROOT / "TODO.md", ""),
+    (REPO_ROOT / "docs" / "DEPOSIT_README.md", "", "README.md"),
+    (REPO_ROOT / "docs" / "DATA_DICTIONARY.md", "docs"),
     (REPO_ROOT / "LICENSE", ""),
     (REPO_ROOT / "LICENSE-DATA", ""),
     (REPO_ROOT / "CITATION.cff", ""),
-    (REPO_ROOT / "docs" / "DATA_DICTIONARY.md", "docs"),
-    (REPO_ROOT / "docs" / "RELEASE.md", "docs"),
 ]
 
-# The release notes of every version, at the path the repository gives them, so
-# that their own links to ../RELEASE.md and ../../SOURCES.md still resolve.
-NOTES_GLOB = (REPO_ROOT / "docs" / "releases" / "*.md", "docs/releases")
-
-# Links that cannot come along, and what the bundle's copy should say instead.
-# Each must match exactly once, or the build stops: a rewrite that silently
-# matches nothing is how the links rotted in the first place.
-REWRITES = [
-    # The two places the README speaks to whoever works in the repository
-    # rather than to whoever unpacks the bundle. Each must match exactly once,
-    # or the build stops: a rewrite that silently matches nothing is how the
-    # links rotted in the first place.
-    ("README.md",
-     "- `data/` — symlink to the working copy kept outside Git (see\n"
-     "  [DATA.md](DATA.md)).",
-     "- `data/` — the parsed corpus, the per-sitting logs, the archived\n"
-     "  bloc-roster pages and the portal listings. In the repository this is a\n"
-     "  symlink to a working copy kept outside Git; here it is a real directory."),
-    ("README.md",
-     "On a new machine, re-create the working-data symlink first (see DATA.md).",
-     "The corpus is already under `data/` in this bundle. Only the steps that\n"
-     "read the source PDFs need `download.py` run first: the PDFs are not\n"
-     "redistributed here, and `raw_data_manifest.csv` says which ones they are."),
+# The pipeline, script by script, so that adding one to the repository is a
+# decision about the release rather than an accident of a glob. Left out:
+# make_release.py (this file — packaging, not the dataset), count_presiding.py
+# (an analysis helper), check_blind_reads.py (its records stay in the
+# repository, so the script would have nothing to read here).
+SCRIPTS = [
+    "download.py", "parse.py", "make_manifest.py",
+    "fetch_roster.py", "fetch_blocs.py", "fetch_archived_blocs.py",
+    "build_bloc_observations.py", "map_blocs.py", "extract_authorities.py",
+    "resolve_speakers.py",
+    "eval_gold.py", "check_gold.py", "audit_parse.py",
 ]
 
 LINK_RE = re.compile(r"!?\[[^\]]*\]\(([^)]+)\)")
@@ -96,7 +82,7 @@ def parser_version():
     return match.group(1)
 
 
-def copy_part(source, dest_dir):
+def copy_part(source, dest_dir, name=None):
     dest_dir.mkdir(parents=True, exist_ok=True)
     if "*" in source.name:
         sources = sorted(source.parent.glob(source.name))
@@ -113,19 +99,7 @@ def copy_part(source, dest_dir):
                 ignore=shutil.ignore_patterns(".DS_Store", "__pycache__"),
             )
         else:
-            shutil.copy2(item, dest_dir / item.name)
-
-
-def apply_rewrites(out_dir):
-    for relative, old, new in REWRITES:
-        path = out_dir / relative
-        text = path.read_text(encoding="utf-8")
-        if text.count(old) != 1:
-            raise SystemExit(
-                f"{relative}: expected exactly one occurrence of {old!r}, "
-                f"found {text.count(old)}. Update REWRITES in this script."
-            )
-        path.write_text(text.replace(old, new), encoding="utf-8")
+            shutil.copy2(item, dest_dir / (name or item.name))
 
 
 def broken_links(out_dir):
@@ -170,21 +144,17 @@ def main():
     name = f"ar_congress_senado_{version}"
     out_dir = RELEASES / name
 
-    notes = REPO_ROOT / "docs" / "releases" / f"{version}.md"
-    if not notes.exists():
-        raise SystemExit(f"No release notes at {notes.relative_to(REPO_ROOT)}")
-
     if out_dir.exists():
         if not args.force:
             raise SystemExit(f"{out_dir} exists. Pass --force to replace it.")
         shutil.rmtree(out_dir)
     out_dir.mkdir(parents=True)
 
-    for source, dest in PARTS:
-        copy_part(source, out_dir / dest if dest else out_dir)
-    copy_part(NOTES_GLOB[0], out_dir / NOTES_GLOB[1])
-
-    apply_rewrites(out_dir)
+    for source, dest, *rename in PARTS:
+        copy_part(source, out_dir / dest if dest else out_dir,
+                  rename[0] if rename else None)
+    for script in SCRIPTS:
+        copy_part(REPO_ROOT / "scripts" / script, out_dir / "scripts")
 
     broken = broken_links(out_dir)
     if broken:
