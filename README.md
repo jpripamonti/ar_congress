@@ -264,7 +264,13 @@ text blocks, and analysis.
   125. Neither score sees the ORDER of the turns on the page — both compare
   what is there, not where — so a page whose turns came out shuffled would
   still score full marks; that is a gap in the measure, not a claim about the
-  corpus. The
+  corpus. **Read that 0.996 as the small sample it is**: one miss in 125 turns
+  puts the 95% interval on recall at 0.956 to 0.999, and the 125 turns come
+  from only 24 documents, so errors could arrive in clusters the interval does
+  not allow for. The 36 pages cover eight kinds of sitting and thirteen years
+  from 2003 to 2024, but two thirds of them are 2020 or later; on the
+  pre-2016 record, where the printed conventions are least like today's, it
+  rests on twelve pages. The
   annotations have themselves been checked back against the source PDFs
   (`scripts/check_gold.py`, 36 of 36 pass) — a second machine reading, not an
   independent human audit. **On all 558 sessions that parse** (`scripts/audit_parse.py`):
@@ -361,12 +367,12 @@ text blocks, and analysis.
   up to 200 days from the nearest record, and 99 passages used to come out
   `confirmed` because the check had only ever been made at the other end of
   that gap. 0.4.35 re-checks at the sitting's own date. A second reading of
-  the same gap is now marked too: where the sitting falls between two records
-  naming DIFFERENT caucuses, the switch happened somewhere in between and the
-  record does not say on which side, so taking the nearer of the two projected
-  one reading across a disagreement. Those 2,049 passages — 2.5% of senators'
-  floor words, of which 90 cross a party family — read `disputed` rather than
-  `confirmed`.
+  the same gap is marked too: where the sitting falls between two records that
+  could each describe that day and name DIFFERENT caucuses, the switch happened
+  somewhere in between and the record does not say on which side, so taking the
+  nearer of the two projected one reading across a disagreement. Those 113
+  passages — 0.1% of senators' floor words, of which 36 cross a party family —
+  read `disputed` rather than `confirmed`.
 - The 2020–2023 collapse was mostly fewer sittings, not quieter ones. Floor
   words fell 6.4-fold, which splits into a 3.9-fold fall in sittings held
   (31 to 8) and only a 1.65-fold fall in words per sitting. By 2024 a

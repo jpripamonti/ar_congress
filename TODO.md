@@ -1525,13 +1525,37 @@ kind, because a check that passes wrongly is invisible.
       between — the record does not say on which side. Taking the nearer of the
       two carried one reading across the disagreement, sometimes backwards onto
       a day an earlier record contradicts. Those rows now read `disputed`:
-      **141 (sitting, label) pairs, 2,049 passages, 2.5% of senators' floor
-      words**, and `confirmed` falls from 83.3% to 80.8%. Most of it is one
-      caucus being renamed — 1,959 of the 2,049 have the same party family on
-      both sides, largely the justicialist caucus becoming "PJ Frente para la
-      Victoria" across 2004 and 2005 — and **90 passages cross a party family**,
-      which is where it changes what someone would conclude: Morales in
-      Jujuy 2003-2004, Falco in Río Negro, Conti and Ibarra in 2004.
+      **29 (sitting, label) pairs, 113 passages, eleven senators**, of which
+      **36 passages cross a party family** — Morales between the radicals and
+      the Frente Cívico Jujeño in 2002-2004, Falco between the radicals and the
+      Radical Rionegrino in February 2004.
+- [x] **The first version of that rule disputed 2,049 passages, and was wrong
+      about 1,936 of them.** It treated ANY record within 200 days as evidence
+      of a switch, including records the pipeline had already flagged. The
+      largest cluster — 1,816 passages, 88% of the whole set — disputed
+      "JUSTICIALISTA" for sittings of August to October 2004 against a roll
+      call of 3 February 2005 reading "PJ Frente para la Victoria". All 21 of
+      that day's readings are recorded `acta_anacronica`, and `blocs_manual.csv`
+      dates that caucus from 10 December 2005: it is not a competing account of
+      2004, it is the back-labelling that `anachronistic` exists to mark, and
+      the check simply failed to re-apply its own neighbouring test. One more
+      row disputed a caucus against itself in different capitalisation. Only a
+      record that could itself describe the day now counts as the other side of
+      a disagreement, and the caucus names are compared normalised. `confirmed`
+      goes back to 83.2%.
+- [x] **The gold annotations were being checked more weakly than claimed.**
+      `check_gold.py` verifies that each annotated turn's opening words really
+      are printed under that speaker's label on that page — except it looked
+      the label and the words up as two independent searches, so the words only
+      had to appear SOMEWHERE at or after the label. Moving one turn's words
+      onto another speaker's label on each of the 23 usable annotated pages,
+      **the old check caught 0 of 23 and the fixed one catches 23 of 23** —
+      and this is precisely the error the gold set exists to rule out. It also
+      mispaired 10 of the 125 real turns, on pages where one label repeats:
+      it took the first "Sr. Presidente" on the page and words printed up to
+      514 characters further down, and in one case words printed 333 characters
+      BEFORE the label it credited them to. The words must now start where the
+      label ends, and all 36 pages still pass.
 - [x] **What the new gold score does and does not do, corrected.** Phase 30
       claimed that carrying each turn's opening words alongside its label stops
       four turns by the same chair matching in the wrong places. It does not:
@@ -1554,6 +1578,20 @@ kind, because a check that passes wrongly is invisible.
       below without being mentioned. The 0.4.11 entry's 710,039 spaces and its
       "F1 = 1.00" are left standing as what was measured then, with a note that
       Phase 19 put the count at 670,660 and the F1 is 0.996.
+- [x] **The gold pairing could undercount, and the score was reported without
+      its uncertainty.** `opening_overlap` paired each annotated turn with a
+      parser turn greedily, longest annotation first. That loses a match where
+      one speaker has two turns whose openings run together and then part —
+      "Señor presidente: el proyecto a…" and "…el proyecto b…" — and the parser
+      has a turn shorter than both, which opens either: the first annotation
+      takes it and the second finds nothing left, scoring 1 where 2 was
+      available. Replaced by a full pairing that re-routes an earlier choice.
+      **The 36 pages score the same either way, 124 of 125**, so this is about
+      what the measure would do on a differently shaped page. Reported with
+      the sample now: one miss in 125 turns is a 95% interval on recall of
+      0.956 to 0.999, the 125 turns come from only 24 documents, and 24 of the
+      36 pages are 2020 or later — the pre-2016 record rests on twelve pages.
+
 - [x] **What this round got wrong, recorded so it is not re-litigated.** One
       reader put the ticket-versus-caucus split at 22.3%/68.5% against the
       published 18.9%/72.0%, using a coarser classifier of its own and saying
@@ -1568,9 +1606,17 @@ kind, because a check that passes wrongly is invisible.
 
 ## Next
 
-- [ ] The parser's only open item is the five ordinal marks Phase 27 found
-      but a neighbouring size mismatch keeps out of reach — small and
-      recorded rather than guessed at. Whether to mint a DOI is the author's
+- [ ] The parser's open items are the five ordinal marks Phase 27 found but a
+      neighbouring size mismatch keeps out of reach, and the secretary reading
+      a document into the record. The page prints "Sr. Secretario (Estrada). —
+      (Lee:)", and the parser types the parenthetical as a stenographer's note
+      and drops the printed label with it, so the secretary's taking the floor
+      goes unrecorded — 265 blocks in 99 sittings. It is not simply a bug: the
+      parenthetical really is the stenographer saying he read, not words he
+      spoke. But 12 identical constructions elsewhere come out as speech WITH
+      the label, so whatever the right answer is, the corpus does not give the
+      same one twice. This is the one gold turn of 125 the parser misses.
+      Deciding it changes 265 blocks and needs a re-parse. Whether to mint a DOI is the author's
       call; the licence is settled (CC BY 4.0, `LICENSE-DATA`).
 
 ## Explicitly not building

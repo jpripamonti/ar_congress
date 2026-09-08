@@ -145,9 +145,9 @@ nothing and collapses nothing into spells. `resolve_speakers.py` then takes,
 for each sitting, the observation nearest that senator — writing the caucus,
 its status, its basis, the day it was observed and the distance in days, so any
 stricter reading costs one filter. Of the floor speech by identified senators,
-80.8% gets a confirmed caucus, 13.1% one marked anachronistic, 2.5% one the
-records on either side of the sitting disagree about, 1.1% one that cannot be
-checked, and 2.4% none at all.
+83.2% gets a confirmed caucus, 13.1% one marked anachronistic, 1.1% one that
+cannot be checked, 0.1% one that two usable records on either side of the
+sitting disagree about, and 2.4% none at all.
 
 ### Dating the caucuses by hand
 
@@ -268,8 +268,12 @@ the session date and the per-session source URL from the manifest.
 
 ## Gold evaluation set
 
-[reference/gold/](reference/gold/) holds 36 stratified page annotations
-covering 2003–2024: the original 24 (12 sessions × 2 pages, every year
+[reference/gold/](reference/gold/) holds 36 page annotations covering
+2003–2024. They are stratified by kind of sitting — eight kinds — but
+back-loaded in time: 24 of the 36 are 2020 or later, and the 125 turns come
+from only 24 documents, so the 95% interval on recall runs from 0.956 to
+0.999, and even that assumes the turns are independent draws, which turns
+sharing a page are not. The set is: the original 24 (12 sessions × 2 pages, every year
 2020–2024, all major session types and known-hard formats) plus 12 added
 when the corpus was extended backwards — two pages from each of the eras
 2000–2003, 2004–2006, 2007–2009, 2010–2013, 2014–2016 and 2017–2019, with

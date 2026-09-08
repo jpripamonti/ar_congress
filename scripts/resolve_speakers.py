@@ -607,13 +607,29 @@ def bloc_on(person_id, when, obs, lives):
             and not bloc_alive_on(bloc, when, lives)):
         status = "anachronistic"
     elif status == "confirmed":
-        near = [r for r in rows if abs((r[0] - when).days) <= BLOC_MAX_GAP_DAYS]
+        # Only a reading that could itself describe the caucus on THIS day can
+        # contradict another. A reading the source already flagged, or a roll
+        # call naming a caucus that did not exist on the day of the sitting, is
+        # not evidence of a switch — it is the very thing `anachronistic`
+        # exists to mark. Reading the roll call of 3 Feb 2005 as "PJ Frente
+        # para la Victoria" against a September 2004 sitting disputed 1,816
+        # passages away from a caucus nobody disagrees they sat in: that roll
+        # call is one of 21 the Senate re-labelled with a name the caucus only
+        # took on 10 Dec 2005. An archived roster page is exempt from the
+        # date test for the same reason as above — its date is when the page
+        # was captured, not when the caucus began.
+        near = [r for r in rows
+                if abs((r[0] - when).days) <= BLOC_MAX_GAP_DAYS
+                and r[2] == "confirmed"
+                and (r[3] != "roll call" or bloc_alive_on(r[1], when, lives))]
         before = [r for r in near if r[0] <= when]
         after = [r for r in near if r[0] >= when]
         if before and after:
             last = max(before)[1]
             first = min(after, key=lambda r: r[0])[1]
-            if last != first:
+            # compared on the name, not its spelling: one pair differed only in
+            # capitalisation ("Bloque Cruzada Renovadora De San Juan")
+            if norm(last) != norm(first):
                 status = "disputed"
     return {"bloc": bloc, "bloc_status": status, "bloc_basis": basis,
             "bloc_observed": d.isoformat(), "bloc_gap_days": gap}

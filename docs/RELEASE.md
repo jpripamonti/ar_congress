@@ -62,6 +62,13 @@ uv run scripts/check_blind_reads.py
   of 125 turns), on the label alone and on the label with the turn's opening
   words alike. Events: precision 1.00, recall 0.935 (29 of 31).
 - The annotations themselves still check out against the source files: 36 of 36.
+  What that check asks is that each annotated turn's opening words are printed
+  on the page immediately after that speaker's own label. It used to look the
+  label and the words up separately, so the words only had to appear somewhere
+  further down — which passed an annotation crediting one senator's words to
+  another, the error the gold set exists to rule out. Moving one turn's words
+  onto another speaker's label on each of the 23 usable pages, the old check
+  caught none of them and this one catches all 23.
 - The audit's invariants hold: no page apparatus inside a speech turn outside
   the two scanned sittings, no turn carrying a second speaker's label, no text
   written out twice, and the turns that open mid-word are printed that way.

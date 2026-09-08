@@ -72,18 +72,35 @@ def opening_overlap(parser_pairs, gold_pairs):
     Compared by prefix, not over a fixed window: the annotation writes as many
     opening words as it took to identify the turn — four on one page, fifteen
     on the next — so a parser turn answers a gold one when the labels agree and
-    the shorter opening opens the longer. The longest annotations are matched
-    first, so a short one cannot take a turn that a fuller one identifies.
+    the shorter opening opens the longer.
+
+    Pairing them off greedily can leave a turn unmatched that some other
+    pairing would have matched. It takes two turns by the same speaker whose
+    openings run together and then part — "Señor presidente: el proyecto a…"
+    and "Señor presidente: el proyecto b…" — and a parser turn shorter than
+    both, which opens either. The first annotation takes the short turn, the
+    second finds nothing left it opens, and the page scores 1 where 2 was
+    available. So the pairing is found in full instead: every turn that CAN be
+    matched in some pairing is, by re-routing an earlier choice when a later
+    turn has no other partner. On the 36 annotated pages the two agree — 124
+    of 125 either way — so this is what the score would do on a page shaped
+    differently, not a correction to it.
     """
-    left = list(parser_pairs)
-    hits = 0
-    for lab, op in sorted(gold_pairs, key=lambda p: -len(p[1])):
-        for i, (plab, pop) in enumerate(left):
-            if plab == lab and (pop.startswith(op) or op.startswith(pop)):
-                del left[i]
-                hits += 1
-                break
-    return hits
+    def answers(p, g):
+        return p[0] == g[0] and (p[1].startswith(g[1]) or g[1].startswith(p[1]))
+
+    taken = {}                                   # parser turn -> gold turn
+    def route(g, seen):
+        for i, p in enumerate(parser_pairs):
+            if i in seen or not answers(p, gold_pairs[g]):
+                continue
+            seen.add(i)
+            if i not in taken or route(taken[i], seen):
+                taken[i] = g
+                return True
+        return False
+
+    return sum(route(g, set()) for g in range(len(gold_pairs)))
 
 
 def norm_event(s):

@@ -78,18 +78,31 @@ def check(gold_path):
     problems = []
     cursor = 0
     for u in gold["utterance_starts"]:
-        found = False
+        found = printed_somewhere = False
         for drop in (False, True):                  # retry ignoring footnote digits
             flat = squash(text, drop)
             label = squash(re.sub(r"[.:\s–—−\-─]+$", "", u["speaker_label"]), drop)
             words = squash(u["first_words"], drop)[:40]
-            at_label = flat.find(label, cursor)
-            at_words = flat.find(words, cursor) if words else at_label
-            if at_label >= 0 and at_words >= 0:
-                cursor, found = at_label, True      # order check: turns advance
+            # The words must start where THIS label ends, not merely appear
+            # somewhere further down the page. Searching for the two
+            # independently passed an utterance whose words belong to another
+            # speaker's turn — which is the error the gold set exists to rule
+            # out — and on a page where one label repeats it paired the first
+            # occurrence with words printed hundreds of characters later.
+            # A page whose chair speaks eight times has eight "Sr. Presidente"
+            # to choose from; the right one is the one the words follow.
+            at = flat.find(label, cursor)
+            printed_somewhere |= at >= 0
+            while at >= 0:
+                end = at + len(label)
+                if not words or flat.startswith(words, end):
+                    cursor, found = end, True       # order check: turns advance
+                    break
+                at = flat.find(label, at + 1)
+            if found:
                 break
         if not found:
-            where = "label not printed on the page" if at_label < 0 else \
+            where = "label not printed on the page" if not printed_somewhere else \
                     "opening words do not follow the label"
             problems.append(f"{where}: {u['speaker_label']!r} -> {u['first_words'][:45]!r}")
 
