@@ -86,8 +86,10 @@ uv run scripts/check_blind_reads.py
   invented tail never does. Because each run must start after the last one
   ends, it also notices a turn whose own sentences came out shuffled — 98.8%
   of 12,987 real multi-sentence turns rebuild in their printed order and 3.6%
-  shuffled. Two blocks in 243 need more runs than the cap allows and are
-  reported though they are genuinely printed; that is the trade the cap makes.
+  shuffled. A few genuinely printed blocks are reported anyway — two in 243
+  merely exceed the cap, and a line whose four ordinals the extractor cannot
+  map cannot be rebuilt at any cap. They are a handful on a review list, and
+  SOURCES.md works the case through.
 - Every name on an archived bloc-roster page still resolves to a senator, and
   the only ones outside their mandate are the two known cases of the page
   lagging the chamber. `build_bloc_observations.py` stops if a name resolves to

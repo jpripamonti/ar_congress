@@ -408,14 +408,21 @@ results:
   text, it rejects 99.6% of blocks of 150 flattened characters or more, but
   accepts 46% of shorter ones — and that is right, not a failure: what a short
   block holds is the chamber's standing formula, and those words really are
-  printed in the other sitting too. And a handful of genuine blocks need more
-  than eight runs — 2 of 243 in the sample, one of them a line whose printed
-  ordinals the extractor renders as a stray capital E after each number, so the
-  parser's own repair and the extraction disagree at four places in one
-  sentence. Those are reported as text from nowhere when they are nothing of
-  the kind. Raising the cap to sixteen would recover them and let the shuffle
-  residue up from 3.6% to 7.0%; the cap stays at eight, because a block wrongly
-  shown to a human costs less than an order fault passing unseen.
+  printed in the other sitting too.
+
+  The other is that a few genuine blocks are reported as text from nowhere. Two
+  of 243 in the sample simply need more than the eight runs allowed; raising
+  the cap to sixteen recovers those and lets the shuffle residue up from 3.6%
+  to 7.0%, so the cap stays at eight — a block wrongly shown to a human costs
+  less than an order fault passing unseen. But some no cap recovers, and the
+  clearest is worth stating because it is the project's own repair colliding
+  with the check. Page 76 of 23 November 2005 prints "Sí, menos los artículos
+  4E, 5E, 6E y 7E", where each E is the ordinal mark in a font the extractor
+  cannot map; the corpus rightly stores "4°, 5°, 6° y 7°", and the comparison
+  key keeps digits and letters but drops the degree sign, so one side reads
+  "456y7" and the other "4e5e6ey7e". Rebuilding that needs a run per digit, and
+  the walk takes the longest stretch available at each step rather than the one
+  that leaves the rest reachable, so it strands itself and fails at any cap.
 - **Share of each document's printed text kept:** median 79.0%, quartiles 69%
   and 87%. The rest is dropped by design — contents pages, attendance rolls,
   appendices and inserted documents. The lowest figures are short sittings in

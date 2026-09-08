@@ -142,11 +142,14 @@ def reconstructs(text, src, max_pieces=8):
     marker taken out of a sentence costs one, a page break costs one. Measured,
     98.4% of the blocks the long windows miss rebuild inside the eight allowed,
     most of them in two, while a genuine opening followed by an invented tail
-    never does. The 1.6% that do not are genuine too — a line whose printed
-    ordinals the extractor renders as a stray capital E after each number needs
-    fourteen — and are reported rather than passed: raising the cap to recover
-    them would let the shuffle residue up to 7.0%, and a block wrongly shown to
-    a human costs less than an order fault passing unseen.
+    never does. Some of the 1.6% that do not are genuine and are reported
+    anyway: raising the cap to recover the ones merely over it would let the
+    shuffle residue up to 7.0%, and a block wrongly shown to a human costs less
+    than an order fault passing unseen. Others no cap reaches, because this
+    takes the longest stretch available at each step rather than the one that
+    leaves the rest reachable — a line printing four ordinals the extractor
+    cannot map needs a run per digit and strands itself. SOURCES.md carries the
+    worked example.
 
     Running out of runs, or stalling on a character the source does not have,
     reports the block as foreign — the check errs towards showing a human one

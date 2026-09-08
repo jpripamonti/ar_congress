@@ -1520,14 +1520,19 @@ kind, because a check that passes wrongly is invisible.
       WRONG sitting's text it rejects 99.6% of blocks of 150 flattened
       characters or more, and accepts 46% of shorter ones — which is correct,
       not a failure: a short block holds a standing formula of the chamber and
-      those words really are printed in the other sitting. And 2 of 243
-      genuine blocks in the sample need more than eight runs and are reported
-      as text from nowhere; one is a sentence whose printed ordinals the
-      extractor renders as a stray capital E after each number, so the
-      parser's repair and the extraction disagree four times in one line.
-      Raising the cap to sixteen recovers them and takes the shuffle residue
-      from 3.6% to 7.0%. The cap stays at eight: a block wrongly shown to a
-      human costs less than an order fault passing unseen.
+      those words really are printed in the other sitting. And a few genuine
+      blocks are reported as text from nowhere. Two of 243 in the sample just
+      need more than the eight runs allowed; raising the cap to sixteen
+      recovers those and takes the shuffle residue from 3.6% to 7.0%, so the
+      cap stays at eight — a block wrongly shown to a human costs less than an
+      order fault passing unseen. Others no cap recovers: page 76 of
+      **2005-11-23** prints "Sí, menos los artículos 4E, 5E, 6E y 7E", each E
+      an unmappable ordinal mark, and the corpus rightly stores "4°, 5°, 6° y
+      7°" — the comparison key drops the degree sign and keeps the E, so one
+      side reads "456y7" and the other "4e5e6ey7e". That needs a run per digit,
+      and the walk takes the longest stretch available at each step rather than
+      the one leaving the rest reachable, so it strands itself. Recorded, not
+      fixed: it is a handful of blocks on a review list.
 - [x] **The blind-read re-check could say "holds" of a passage that had
       moved.** It collected every block on the page that any window of the
       quoted words touched, pooled their labels, and asked only whether the
