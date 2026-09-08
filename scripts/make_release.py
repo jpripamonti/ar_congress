@@ -153,7 +153,7 @@ def write_checksums(out_dir):
     paths = sorted(
         "./" + str(p.relative_to(out_dir))
         for p in out_dir.rglob("*")
-        if p.is_file() and p.name != "CHECKSUMS.sha256"
+        if p.is_file() and p.name not in ("CHECKSUMS.sha256", ".DS_Store")
     )
     lines = [f"{sha256(out_dir / p)}  {p}\n" for p in paths]
     checksums.write_text("".join(lines), encoding="utf-8")
@@ -193,13 +193,18 @@ def main():
             print(f"  {line}")
         raise SystemExit("Bundle not written to an archive. Fix the links first.")
 
+    # Finder writes .DS_Store into any directory it is pointed at, including
+    # this one between a build and the next. They are never part of a release.
+    for junk in out_dir.rglob(".DS_Store"):
+        junk.unlink()
+
     n_files = write_checksums(out_dir)
 
     archive = RELEASES / f"{name}.tar.gz"
     if archive.exists():
         archive.unlink()
     subprocess.run(
-        ["tar", "-czf", archive.name, name],
+        ["tar", "--exclude", ".DS_Store", "-czf", archive.name, name],
         cwd=RELEASES, check=True,
     )
     digest = sha256(archive)
