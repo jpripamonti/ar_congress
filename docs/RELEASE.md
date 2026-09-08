@@ -161,7 +161,7 @@ The terms and the exact list of what they cover are in
 A citation should name the corpus, its version, the span it covers and where it
 lives, for example:
 
-> Ripamonti, J. (2026). *Argentine Senate stenographic transcripts, 2000–2024:
+> Ripamonti, J. P. (2026). *Argentine Senate stenographic transcripts, 2000–2024:
 > a speaker-attributed corpus* (version 0.4.37) [Data set]. Zenodo.
 > <https://doi.org/10.5281/zenodo.22661020>
 
