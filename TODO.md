@@ -1654,6 +1654,50 @@ kind, because a check that passes wrongly is invisible.
       of them on front matter that is discarded anyway and one a separate
       footnote bug the restructuring fixed in passing.
 
+## Phase 33 — the secretary took the floor and the record did not say so (September 2026 — parser 0.4.37)
+
+The page prints "Sr. Secretario (Estrada). — (Lee:)" as one line: the secretary
+was given the floor and the stenographer wrote down that he read. The
+parenthetical is the stenographer's note, not words spoken, so the parser types
+it as an event and events carry no speaker — but the label was consumed the way
+every printed label is, and the turn it opened held nothing but that note. The
+label was therefore written nowhere at all.
+
+- [x] **265 printed speaker labels opened a turn with no row of its own.** Every
+      one of them is a label whose turn holds only a note. The note now carries
+      the label the page printed above it: **331 event rows gain a
+      `speaker_raw`**, and the labels left unwritten fall from 265 to 91. Types
+      are untouched — 233,408 rows, 151,761 speech, 31,955 events, the same
+      three numbers as 0.4.36 — and `speakers.parquet` is unchanged, because
+      `resolve_speakers.py` reads speech rows only.
+- [x] **The rule is adjacency, not resemblance.** Only the block directly after
+      a consumed label is attributed, so a note further down a turn stays
+      anonymous. That matters: "— La votación resulta afirmativa" is about the
+      chamber, not about whoever spoke last, and only the four notes that a
+      label directly precedes could be read otherwise.
+- [x] **A lone full stop was eating the connection.** The secretary's label
+      arrives as three pieces in the 2000-2013 formats — bold "Sr. Secretario",
+      normal "(Oyarzún)", bold "." — and the shard-of-a-label rule discards the
+      third without emitting it. The first attempt cleared its "a label was
+      just printed" mark on that shard and attributed 162 notes instead of 331;
+      carrying the mark through the shard, as the rule already carries the
+      running speaker through it, is what the fix turned on.
+- [x] **What this does NOT do.** The gold set still scores 124 of 125, because
+      `eval_gold.py` counts speech turns and this turn's one row is an event.
+      The annotation calls the secretary's label a turn and the corpus now
+      records it, but not as speech, and the two will keep disagreeing until
+      somebody decides whether a turn holding only a note is a turn. That is a
+      definitional question, not a defect, and it is written here rather than
+      settled by moving 331 rows into `speech`.
+- [x] **One thing found on the way, not fixed.** 36 of the newly attributed
+      notes read "-Okay", and the page shows "Sra. Presidente.- Okay." — the
+      chair really said it, and the typesetter set it in italics, which is the
+      only thing that makes the parser call a line a stenographer's note. The
+      attribution is now right; the type is arguably not. It is 36 rows across
+      four sittings of 2016 and would need a rule that can tell an italicised
+      word said aloud from an italicised note, which nothing in the file's own
+      styling supports.
+
 ## Next
 
 - [ ] The parser's open items are the five ordinal marks Phase 27 found but a

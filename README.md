@@ -18,9 +18,12 @@ text blocks, and analysis.
   the files on disk by `scripts/make_manifest.py`. The 90 sessions fetched
   in January 2025 predate the download-timestamp field, so theirs is blank
   rather than guessed.
-- Corpus parsed (parser 0.4.36): 151,761 speaker-attributed speech blocks
+- Corpus parsed (parser 0.4.37): 151,761 speaker-attributed speech blocks
   and 31,955 typed stenographer events in 233,408 rows, as per-session
-  Parquet under `data/processed/senado/`. One session fails to parse — a
+  Parquet under `data/processed/senado/`. 331 of those events carry the
+  speaker label the page printed directly above them — "Sr. Secretario
+  (Estrada). — (Lee:)" is one printed line, and without this the secretary's
+  taking the floor was recorded nowhere at all (`TODO.md`, Phase 33). One session fails to parse — a
   November 2001 sitting that never reached quorum, so it has no session
   opening to find. Text the parser cannot attribute to a speaker is 1,109
   rows (0.5%), and a handful of sessions account for most of it: sittings

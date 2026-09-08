@@ -53,7 +53,7 @@ from pathlib import Path
 import pandas as pd
 import pdfplumber
 
-PARSER_VERSION = "0.4.36"
+PARSER_VERSION = "0.4.37"
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
@@ -1866,19 +1866,39 @@ def identify_speakers(blocks, body_size):
     turn_id = 0
     open_turn = None   # turn whose first speech block has already been seen
     speech = 0
+    noted = 0
+    just_labelled = False   # the block before this one was a printed label
     paren_labels = {}  # "(Name)" seen inside a full label -> that full label
     i = 0
     while i < len(blocks):
         b = blocks[i]
         i += 1
+        opened = just_labelled
+        just_labelled = False
         t = b["text"].strip()
         if b.get("type") in ("furniture", "event", "inline"):
+            # "Sr. Secretario (Estrada). — (Lee:)" is one printed line: the
+            # secretary took the floor and the stenographer wrote down that he
+            # read. The note is not speech and stays an event, but the label
+            # is the only place the record says who it is about, and it was
+            # being consumed and written nowhere — 182 printed labels in the
+            # corpus opened a turn whose every row was a note like this one.
+            if b["type"] == "event" and opened and current:
+                b["speaker"] = current
+                b["turn_id"] = turn_id
+                noted += 1
             annotated.append(b)
             continue
         if b["font_style"] == "bold" and b["size"] == body_size:
             if BOLD_JUNK_RE.match(t):
-                continue             # punctuation shard of a split label — not a
-                                     # heading; must not reset the running speaker
+                # A punctuation shard of a split label — not a heading, and it
+                # must not reset the running speaker. It also must not stand
+                # between a label and the note the label opens: the secretary's
+                # label arrives as three pieces ("Sr. Secretario", "(Oyarzún)",
+                # "."), and the lone full stop was swallowing the fact that a
+                # label had just been printed.
+                just_labelled = opened
+                continue
             t = LEAD_JUNK_RE.sub("", t)  # previous sentence's bold-glued period
             if SPEAKER_RE.match(t):
                 label = t
@@ -1925,6 +1945,7 @@ def identify_speakers(blocks, body_size):
                 turn_id += 1         # a printed label opens a NEW turn; speech
                                      # resuming after an event without a label
                                      # stays in the same turn (ParlaMint-style)
+                just_labelled = True
                 pm = re.search(r"\(([^()]{1,60})\)", label)
                 if pm:
                     paren_labels[pm.group(1).strip()] = label
@@ -1933,6 +1954,7 @@ def identify_speakers(blocks, body_size):
                 # bare parenthetical — reuse the full label it belongs to
                 current = paren_labels[pm.group(1).strip()]
                 turn_id += 1
+                just_labelled = True
             elif LABEL_FRAGMENT_RE.match(t):
                 current = None       # shattered label: attribution is lost from
                 b["type"] = "other"  # here — honest debris, not a phantom heading
@@ -1961,6 +1983,8 @@ def identify_speakers(blocks, body_size):
         b.setdefault("type", "other")
         annotated.append(b)
     print(f"Identificación de speakers completa. Se anotaron {speech} bloques con speakers.")
+    if noted:
+        print(f"Notas del taquígrafo bajo una etiqueta impresa, atribuidas: {noted}.")
     return annotated
 
 
@@ -2041,7 +2065,9 @@ def consolidate_speaker_blocks(blocks):
                 b["type"] = "inline_italic"   # orphan: no active turn to join
                 out.append(b)
             continue
-        speaker = b.get("speaker")
+        # an event carries a speaker when a printed label opened it, but it is
+        # not speech and must not swallow the turn's words
+        speaker = b.get("speaker") if b.get("type") != "event" else None
         if not speaker:
             if cur is not None:
                 out.append(cur)
