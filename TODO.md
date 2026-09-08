@@ -629,11 +629,16 @@ phase brings the caucus up to that standard.
 - [x] `docs/RELEASE.md` — what a release bundle contains, the checks that must
       pass before one goes out, how versions are cut, and how the transcripts
       and this corpus are cited separately.
-- [ ] **Decide the licence for the derived tables** — CC BY 4.0 is what the
-      release document proposes; the code stays MIT.
+- [x] **Decide the licence for the derived tables** — settled: CC BY 4.0 for the
+      corpus and the reference tables, MIT for the code, with the split and the
+      exact list of what each side covers in `LICENSE-DATA`.
 - [ ] **Mint a DOI.** Zenodo is the fitting home: it versions, it keeps one
       identifier that always points at the latest, and it is where datasets like
       this are cited from. Publishing is the author's call, not the pipeline's.
+      The deposit itself is prepared: `CITATION.cff` and `.zenodo.json` hold the
+      metadata, and `docs/RELEASE.md` has the order of operations — reserve the
+      DOI in the upload form first, put it in the four documents that carry the
+      citation, rebuild the bundle, then upload.
 
 ## Later
 
@@ -1718,17 +1723,15 @@ label was therefore written nowhere at all.
       before deciding. Worth a look because these are senators speaking with no
       name on them, unlike everything else in that number.
 - [ ] The parser's open items are the five ordinal marks Phase 27 found but a
-      neighbouring size mismatch keeps out of reach, and the secretary reading
-      a document into the record. The page prints "Sr. Secretario (Estrada). —
-      (Lee:)", and the parser types the parenthetical as a stenographer's note
-      and drops the printed label with it, so the secretary's taking the floor
-      goes unrecorded — 265 blocks in 99 sittings. It is not simply a bug: the
-      parenthetical really is the stenographer saying he read, not words he
-      spoke. But 12 identical constructions elsewhere come out as speech WITH
-      the label, so whatever the right answer is, the corpus does not give the
-      same one twice. This is the one gold turn of 125 the parser misses.
-      Deciding it changes 265 blocks and needs a re-parse. Whether to mint a DOI is the author's
-      call; the licence is settled (CC BY 4.0, `LICENSE-DATA`).
+      neighbouring size mismatch keeps out of reach, and the 91 printed labels
+      that still leave no row of their own. The secretary reading a document
+      into the record was the bulk of that second number and 0.4.37 settled it
+      (Phase 33): a note directly under a printed label now carries it, 331
+      event rows gained a speaker, and the labels written nowhere fell from 265
+      to 91. What is left of that case is definitional rather than a defect —
+      `eval_gold.py` counts speech turns and this turn's one row is a note, so
+      the gold set stays at 124 of 125 until somebody decides whether a turn
+      holding only a stenographer's note is a turn.
 
 ## Explicitly not building
 

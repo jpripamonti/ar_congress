@@ -17,7 +17,9 @@ so a release is a separate, frozen bundle.
 | The provenance manifest | `raw_data_manifest.csv` | Checksum, source URL and download time of every source file. |
 | The reference tables | `reference/senado/` | Roster snapshots, hand-dated caucuses, observed authorities. |
 | The verification records | `reference/verification/`, `reference/gold/` | The nine blind reads and the hand-annotated pages, so the accuracy claims can be re-checked and not merely believed. |
-| The documentation | `docs/DATA_DICTIONARY.md`, `SOURCES.md`, `README.md` | What the columns mean, where it came from, what its limits are. |
+| The documentation | `docs/DATA_DICTIONARY.md`, `docs/RELEASE.md`, the release notes, `SOURCES.md`, `README.md`, `TODO.md` | What the columns mean, where it came from, what its limits are. `TODO.md` is in because the README and the release notes cite its phases as the record of what was repaired and on what evidence. |
+| The analysis and its figures | `notebooks/analysis.ipynb`, the two figures the README displays | Without them the shipped README shows missing images and links to a notebook that is not there. |
+| The citation metadata | `CITATION.cff` | Author, title, version and licence in the form a reference manager can read. |
 | The licence | `LICENSE-DATA` | What the data may be used for. The code's MIT licence does not cover it. |
 
 The source PDFs are **not** redistributed. They are the Senate's to publish, the
@@ -170,23 +172,26 @@ latest, accepts files of this size, and is what social-science and digital-
 humanities datasets are normally cited from. Publishing there is a decision for
 the author, not something the pipeline should do on its own.
 
-The bundle is roughly 100 MB of Parquet plus a few MB of reference tables and
-records — small enough that it needs no special handling. 0.4.37 came out at
-87 MB across 666 files, 63 MB packed.
+The bundle is roughly 100 MB of Parquet plus a few MB of reference tables,
+records and documentation — small enough that it needs no special handling.
+0.4.37 came out at 92 MB across 671 files, 67 MB packed.
 
 Build it from the repository root, after the checks above have passed:
 
 ```bash
-OUT=data/releases/ar_congress_senado_$(grep -oE '0\.[0-9.]+' <(grep PARSER_VERSION scripts/parse.py | head -1))
-mkdir -p "$OUT"/{blocks,reference,docs,bloques_archivados}
-cp data/processed/senado/blocks/*.parquet "$OUT/blocks/"
-cp data/processed/senado/speakers.parquet data/processed/senado/parse_stats.csv "$OUT/"
-cp data/raw/senado/bloques_archivados/* "$OUT/bloques_archivados/"
-cp -R reference/senado reference/gold reference/verification "$OUT/reference/"
-cp raw_data_manifest.csv README.md SOURCES.md LICENSE LICENSE-DATA "$OUT/"
-cp docs/DATA_DICTIONARY.md docs/RELEASE.md docs/releases/*.md "$OUT/docs/"
-(cd "$OUT" && find . -type f ! -name CHECKSUMS.sha256 | sort | xargs shasum -a 256 > CHECKSUMS.sha256)
+uv run scripts/make_release.py --force
 ```
+
+The script is the table above in code. It keeps every file at the path the
+repository gives it — the release notes stay under `docs/releases/` — because
+the shipped Markdown links by relative path and flattening the tree breaks
+them. The one link that cannot travel, the README's pointer to `DATA.md`, is
+rewritten to name the repository instead, and the build stops if that link is
+not found rather than passing silently. It then walks every Markdown file in
+the bundle and refuses to write the archive if any relative link points at a
+file the bundle does not carry: the first 0.4.37 bundle went out with eight
+such links, to the notebook, the figures, the roadmap and, from the release
+notes, to the licence.
 
 `CHECKSUMS.sha256` goes in the bundle so a downloader can verify every file,
 and the release notes carry the checksum of the archive itself. The bundle
@@ -195,3 +200,47 @@ is not in Git.
 
 Release notes go in `docs/releases/<version>.md` and travel inside the bundle.
 The version is tagged in Git as `v<version>` once the notes are committed.
+
+## Depositing it on Zenodo
+
+The upload is done by hand. Zenodo can take a release straight from GitHub, but
+only from a public repository, and this one is private; `.zenodo.json` in the
+repository root is written for the day that changes, and until then it is the
+record of what to type into the form.
+
+**Reserve the DOI before publishing, not after.** The upload form has a Reserve
+DOI button, which hands out the version's DOI while the deposit is still a
+draft. Take it before uploading the archive, because four documents in the
+bundle carry the citation and they should carry the DOI with it:
+
+- `CITATION.cff` — the commented `identifiers` block at the end
+- `README.md` — the citation in the Source section
+- `docs/RELEASE.md` — the citation above
+- `docs/releases/<version>.md` — the citation at the end of the notes
+
+Put it in all four, rebuild the bundle so the shipped copies carry it, then
+upload. Zenodo mints two DOIs: the one reserved here belongs to this version,
+and a second, the concept DOI, always resolves to the latest version. Cite the
+concept DOI in prose and the version DOI when the exact bytes matter.
+
+What goes in the form:
+
+| Field | Value |
+| --- | --- |
+| Upload type | Dataset |
+| Title, authors, description, keywords | as in `.zenodo.json` |
+| Version | the parser version, e.g. `0.4.37` |
+| Language | Spanish (the transcripts; the documentation is English) |
+| Licence | **CC BY 4.0** |
+| Files | `ar_congress_senado_<version>.tar.gz` and its `.sha256` |
+
+Zenodo records one licence per deposit, so it says CC BY 4.0, which is what the
+data is under. The code inside the bundle is MIT, and the description and
+`LICENSE-DATA` say so; the transcripts remain the Senate's and are not
+redistributed. Upload the `.sha256` beside the archive because Zenodo's own
+file checksums are MD5, so the SHA-256 is worth keeping where the archive is.
+
+The Git tag `v<version>` marks the commit the notes were cut from. If the DOI
+arrives after that tag was pushed, leave the tag where it is and let the
+deposit be the citable object — a published tag is not worth moving for a line
+of documentation.

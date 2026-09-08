@@ -467,6 +467,21 @@ DATA.md).
 Senado de la Nación Argentina, open-data portal
 (<https://www.senado.gob.ar/micrositios/DatosAbiertos/>).
 
-Code in this repository is MIT-licensed (see [LICENSE](LICENSE)). The
-transcripts themselves are published by the Senate; their terms of use are
-documented separately as part of the corpus work.
+## Licence and citation
+
+The code in this repository is MIT ([LICENSE](LICENSE)). The corpus it produces
+and the reference tables behind it are CC BY 4.0 — reusable, including
+commercially, on condition of attribution — and [LICENSE-DATA](LICENSE-DATA)
+lists exactly what that covers. The transcripts themselves are the Senate's:
+not relicensed here, not redistributed, and cited separately, by sitting date
+and the per-sitting URL in [raw_data_manifest.csv](raw_data_manifest.csv).
+[SOURCES.md](SOURCES.md) works through the terms they are published under.
+
+To cite the corpus:
+
+> Ripamonti, J. (2026). *Argentine Senate stenographic transcripts, 2000–2024:
+> a speaker-attributed corpus* (version 0.4.37) [Data set].
+
+[CITATION.cff](CITATION.cff) carries the same in the form a reference manager
+reads. [docs/RELEASE.md](docs/RELEASE.md) says how a version is cut, checked,
+and deposited on Zenodo, where the DOI to add to that citation comes from.
