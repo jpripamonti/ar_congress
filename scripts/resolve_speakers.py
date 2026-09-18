@@ -7,7 +7,9 @@ Implements the join strategy from the roster research (July 2026):
   Nación, Jefe de Gabinete); collective labels; bare surnames.
 - Chair parentheticals resolve against the authorities table FIRST (VP,
   officer secretaries — non-senators), then the date-filtered senator
-  roster (any senator can preside).
+  roster (any senator can preside). Where the roster leaves two senators of
+  the same surname in window, the sitting's own cover page decides: it names
+  who held the gavel that day, which is the only record that does.
 - Compound surnames match on the FULL surname string, never tokens
   ("Rodríguez Machado" is not "Rodríguez"; "Ledesma Abdala" is not
   "Abdala").
@@ -35,6 +37,7 @@ silently passing them on.
 Inputs:  data/processed/senado/blocks/*.parquet,
          reference/senado/senadores_historico.json,
          reference/senado/authorities_manual.csv,
+         reference/senado/authorities_observed.csv,
          reference/senado/bloque_observado.csv
 Output:  data/processed/senado/speakers.parquet — one row per
          (session_id, speaker_raw) with person_id, name, elected_ticket,
@@ -91,7 +94,11 @@ ROLE_CANON = ["presidente", "presidenta", "vicepresidente", "vicepresidenta",
 # own people, and no roster covers them.
 FOREIGN_OFFICE_RE = re.compile(
     r"c[áa]mara de diputados|rep[úu]blica de|rep[úu]blica del|estado plurinacional"
-    r"|escribano|escribana|secretari[oa] de (?:obras|estado|hacienda|gobierno)",
+    r"|escribano|escribana|secretari[oa] de (?:obras|estado|hacienda|gobierno)"
+    # A minister summoned to the chamber. Singular and followed by its
+    # portfolio, which is what keeps "Jefe de Gabinete de Ministros" — an
+    # office the authorities table does cover — out of this branch.
+    r"|\bministr[oa]\s+de\b",
     re.I,
 )
 
@@ -262,6 +269,58 @@ def load_observed_authorities(mandates):
     return out
 
 
+# Offices the chamber's own members hold in the chair. The vice-presidency of
+# the Nation is left out on purpose: its holder is not a senator, and the
+# authorities table already answers for them.
+PRESIDING_OFFICES = re.compile(r"^(?:president[ea]\s+provisional|vicepresident[ea](?:\s+[123])?)")
+
+
+def load_presiding_by_file():
+    """Which senators each sitting's own cover page names as presiding.
+
+    A chair label gives a surname and nothing else — "Sr. Presidente (Sapag)"
+    — and for four years two senators named Sapag sat at once, so the roster
+    alone cannot say which of them held the gavel. The masthead can: it names
+    the day's presiding officers in full ("del señor vicepresidente 2° del H.
+    Senado, don Felipe R. Sapag"), which settles it from the printed page.
+
+    Keyed by raw file name, not by date, because two sittings can share a day.
+    """
+    if not OBSERVED.exists():
+        return {}
+    df = pd.read_csv(OBSERVED, dtype=str).fillna("")
+    out = {}
+    for _, r in df.iterrows():
+        if not PRESIDING_OFFICES.match(r["office"]) or "de la nacion" in r["office"]:
+            continue
+        if r["person"]:
+            out.setdefault(r["file"], []).append(r["person"])
+    return out
+
+
+def narrow_by_masthead(sens, presiding):
+    """Keep the candidates the masthead names in the chair, if it names any.
+
+    A presiding name only counts for a candidate when it ends in that
+    candidate's own surname: otherwise "Mario A. Losada", sitting in the same
+    masthead, would answer for a senator whose given name happens to be Mario.
+    Initials are ignored, so a masthead that writes "F. R. Sapag" decides
+    nothing and the label stays ambiguous rather than being guessed at.
+    """
+    kept = []
+    for sen in sens:
+        given = {t for t in sen["given_key"].split() if len(t) > 2}
+        for name in presiding:
+            n = norm(name)
+            if n != sen["surname_key"] and not n.endswith(" " + sen["surname_key"]):
+                continue
+            rest = {t.strip(".") for t in n[: len(n) - len(sen["surname_key"])].split()}
+            if given & {t for t in rest if len(t) > 2}:
+                kept.append(sen)
+                break
+    return kept or sens
+
+
 def role_contains(haystack, needle):
     """Is `needle` a whole-word phrase inside `haystack`?
 
@@ -401,7 +460,7 @@ def match_authorities(auth, key, d, role_hint=None):
     return hits
 
 
-def resolve_one(label, session_date, session_type, mandates, auth):
+def resolve_one(label, session_date, session_type, mandates, auth, presiding=()):
     d = session_date
     s = clean_label(label)
 
@@ -427,6 +486,8 @@ def resolve_one(label, session_date, session_type, mandates, auth):
         if FOREIGN_OFFICE_RE.search(m["pre"]):
             return {"match_status": "out_of_scope", "role": m["pre"].strip()}
         sens = match_senators(mandates, key, d, fuzzy=True)
+        if len(sens) > 1 and presiding:
+            sens = narrow_by_masthead(sens, presiding)
         if len(sens) == 1:
             sen = sens[0]
             return {"match_status": "matched_senator_chair", "person_id": sen["person_id"],
@@ -477,7 +538,11 @@ def resolve_one(label, session_date, session_type, mandates, auth):
     if re.match(rf"^{TITLE_RE}\s+diputad", s, re.I):
         return {"match_status": "out_of_scope", "role": "diputado/a"}
 
-    m = re.match(rf"^{TITLE_RE}\s+(?:[Ss]enadora?\s+)?(?P<elect>[Ee]lect[oa]\s+)?(?P<sur>[^,]+?)(?:,\s*(?P<given>.+))?$", s)
+    # (?i:...) on the two title words: the early transcripts write them in
+    # capitals ("Sr. SENADOR ELECTO ALTUNA"), and a case-sensitive class left
+    # the whole phrase sitting in the surname, where nothing could match it.
+    m = re.match(rf"^{TITLE_RE}\s+(?:(?i:senadora?)\s+)?(?P<elect>(?i:elect[oa])\s+)?"
+                 rf"(?P<sur>[^,]+?)(?:,\s*(?P<given>.+))?$", s)
     if m:
         # "Senador electo X" speaks at preparatorias BEFORE the mandate starts
         grace = 300 if m["elect"] else 0
@@ -646,18 +711,23 @@ def main():
     print(f"{len(mandates)} mandate rows, {len(auth)} authority rows")
     bloc_obs = load_bloc_observations()
     bloc_lives = load_bloc_lives()
+    presiding = load_presiding_by_file()
+    print(f"{sum(len(v) for v in presiding.values())} presiding names "
+          f"from the mastheads of {len(presiding)} sittings")
 
     corpus = pd.concat([pd.read_parquet(p) for p in sorted(BLOCKS_DIR.glob("*.parquet"))],
                        ignore_index=True)
     speech = corpus[corpus.type == "speech"]
-    labels = (speech.groupby(["session_id", "session_date", "session_type", "speaker_raw"])
+    labels = (speech.groupby(["session_id", "session_date", "session_type",
+                              "source_file", "speaker_raw"])
               .size().reset_index(name="n_blocks"))
     print(f"{len(labels)} (session, label) pairs across {labels.session_id.nunique()} sessions")
 
     out = []
     for _, r in labels.iterrows():
         d = date.fromisoformat(r.session_date)
-        res = resolve_one(r.speaker_raw, d, r.session_type, mandates, auth)
+        res = resolve_one(r.speaker_raw, d, r.session_type, mandates, auth,
+                          presiding.get(Path(r.source_file).stem, ()))
         out.append({
             "session_id": r.session_id,
             "session_date": r.session_date,

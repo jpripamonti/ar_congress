@@ -11,15 +11,21 @@ who sat at the secretaries' table, with full names —
     D. Gustavo Carlos Vélez
 
 That masthead is the primary source for the officers the speaker labels
-name only by surname ("Sr. Secretario (Estrada)"). This script turns it
-into one row per (session, office, person), which
-`build_authorities.py` folds into tenure windows.
+name only by surname ("Sr. Secretario (Estrada)"), and for which senator
+held the gavel on a day when two senators of the same surname sat. This
+script turns it into one row per (session, office, person), which
+`resolve_speakers.py` folds into tenure windows.
+
+Both formats the portal serves are read: the PDFs of 2000 on through their
+first two pages, the HTML of 1998-2003 through the opening of the document.
+The masthead reads the same in both.
 
 Output: reference/senado/authorities_observed.csv
 """
 
 import csv
 import glob
+import html
 import re
 import sys
 import unicodedata
@@ -55,19 +61,46 @@ def _spaced(word):
 ROLL = "(?:" + "|".join(_spaced(w) for w in
                         ("presentes", "senadores", "sumario", "ausentes")) + \
        r"|orden del d[íi]a|\d+[ªº°]?\s+reuni[óo]n)"
+# An attendance entry shouts the surname and follows it with a comma:
+# "LOSADA, Mario Aníbal". In a two-column roll the right column's first entry
+# is printed BEFORE the "PRESENTES" heading, so the heading alone does not
+# stop the masthead: without this the roll's first surname is glued to the
+# last prosecretary ("Alfredo A. Luques LOSADA") and its given names are
+# recorded as an officer of their own, under a surname that belongs to a
+# sitting senator. Mastheads never take this shape — they write "señor D.
+# Juan Pedro Tunessi", surname last and never shouted before a comma, and the
+# given name after it is Capitalized, not shouted. That last condition is what
+# keeps a shouted masthead intact: from 2018 the Asambleas print the whole
+# cover in capitals, so "SEÑORA VICEPRESIDENTA DE LA NACIÓN, DOCTORA
+# CRISTINA ..." has the roll's shape, and only the case of the word after the
+# comma tells the two apart.
+# (?-i: ...) because the patterns above are compiled case-insensitively and
+# the whole signal here is the case.
+ROLL_ENTRY = (r"(?-i:[A-ZÁÉÍÓÚÑÜ][A-ZÁÉÍÓÚÑÜ'’]+(?:\s+[A-ZÁÉÍÓÚÑÜ'’]+)*"
+              r"\s*,\s*[A-ZÁÉÍÓÚÑÜ][a-záéíóúñü])")
+# The masthead ends at whichever comes first: the next officer line or the
+# roll. The office words are PREFIXES and take no \b — "prosecretari" is
+# followed by a letter in "Prosecretarios:", so a word boundary there can
+# never match, and every line used to run on into the next one: the
+# secretaries' line swallowed the prosecretaries' and lost its own last name
+# to the join ("Jorge Horacio Amarfil Prosecretarios: señor Juan J. Canals"
+# reads as no one). The roll words do take \b, being whole words.
+END = rf"(?=\n?\s*(?:%s|(?:{ROLL})\b|{ROLL_ENTRY})|$)"
 # A masthead line names at most a handful of people; anything longer means the
 # boundary was missed and the attendance roll is bleeding in.
 MAX_LINE = 260
+# How much of an HTML transcript to search for the masthead (see html_cover_text).
+HTML_COVER_CHARS = 8_000
 # The masthead runs "Presidencia ..." until the secretaries' line or the roll.
 COVER_RE = re.compile(
     rf"presidencia\s+(?:de\s+la|del)\s+(?P<pres>.*?)"
-    rf"(?=\n?\s*(?:secretari|prosecretari|{ROLL})\b|$)",
-    re.I | re.S,
-)
+    + END % "secretari|prosecretari", re.I | re.S)
 SEC_RE = re.compile(rf"\bsecretari[oa]s?\s*:\s*(?P<body>.*?)"
-                    rf"(?=\n?\s*(?:prosecretari|{ROLL})\b|$)", re.I | re.S)
+                    + END % "prosecretari", re.I | re.S)
+# (?!) never matches: the prosecretaries are the last officer line, so only
+# the roll ends it.
 PROSEC_RE = re.compile(rf"\bprosecretari[oa]s?\s*:\s*(?P<body>.*?)"
-                       rf"(?=\n?\s*(?:{ROLL})\b|$)", re.I | re.S)
+                       + END % "(?!)", re.I | re.S)
 # A comma-separated fragment that describes the post rather than naming a
 # person: "…, secretario del Honorable Senado".
 POST_RE = re.compile(r"^(?:pro)?secretari[oa]\b|^(?:vice)?president[ea]\b|^del?\b"
@@ -79,9 +112,17 @@ SENTENCE_START = {"se", "ocupa", "ocupan", "y", "en", "el", "la", "los", "que",
 NAME_PARTICLES = {"de", "del", "la", "las", "los", "y", "da", "di", "van", "von", "san"}
 # Offices named inside the presidency sentence, each followed by its holder.
 OFFICE_RE = re.compile(
+    # president[ea], not presidenta? — the latter is "president" plus an
+    # optional "a", which matches "presidenta" and never "presidente", so
+    # every male holder of these three offices went unrecorded.
     r"(?P<office>vicepresident[ea]\s+(?:de\s+la\s+Naci[óo]n|1[ªº°]?|2[ªº°]?|3[ªº°]?)"
-    r"|presidenta?\s+provisional|presidenta?\s+de\s+la\s+Honorable\s+C[áa]mara\s+de\s+Diputados"
-    r"|presidenta?\s+de\s+la\s+Naci[óo]n)"
+    # the chamber's own vice-presidency, which carries no ordinal: it is only
+    # ever written out as "vicepresidente del H. Senado", so the office that
+    # follows is what tells it from a bare word.
+    r"|vicepresident[ea](?=\s+del?\s+(?:H\.?\s*)?Senado)"
+    r"|president[ea]\s+provisional"
+    r"|president[ea]\s+de\s+la\s+Honorable\s+C[áa]mara\s+de\s+Diputados"
+    r"|president[ea]\s+de\s+la\s+Naci[óo]n)"
     r"\s*(?:del?\s+(?:H\.?\s*)?Senado(?:\s+de\s+la\s+Naci[óo]n)?)?\s*,?\s*"
     r"(?P<name>[^,;]{3,90}?)"
     r"(?=\s*(?:,|;|\sy\s(?:del?|de\s+la)\b|$))",
@@ -130,15 +171,38 @@ def split_people(body):
     return [n for n in (clean_name(p) for p in parts) if n]
 
 
-def cover_text(pdf_path):
-    with pdfplumber.open(pdf_path) as pdf:
+def cover_text(path):
+    """The opening text of a held transcript, in whichever format it arrived."""
+    if str(path).lower().endswith(".html"):
+        return html_cover_text(Path(path).read_bytes())
+    with pdfplumber.open(path) as pdf:
         return "\n".join((p.extract_text() or "") for p in pdf.pages[:2])
 
 
-def extract_one(pdf_path):
-    name = Path(pdf_path).stem
+def html_cover_text(raw):
+    """Readable opening text of an HTML transcript (the files are iso-8859-1).
+
+    Case and accents are kept, unlike provenance.py's window: clean_name()
+    reads capitalization to tell a shouted masthead from an ordinary one.
+
+    The window is a guard, not a boundary — the masthead regexes end at the
+    attendance roll on their own. It exists for the one file with no masthead
+    at all (the joint sitting of both chambers, 12-10-2000), where an
+    unbounded search could reach "la presidencia de la Nación" in a speech
+    and record a phrase as an officer. 8,000 characters is twice the furthest
+    masthead in the holdings (4,099, the special sitting of 01-12-1999).
+    """
+    text = raw.decode("latin-1", "replace")
+    text = re.sub(r"(?is)<(script|style).*?</\1>", " ", text)
+    text = re.sub(r"(?i)<(?:p|br|hr|li|tr|div|center|h1|table|multicol)[^>]*>", "\n", text)
+    text = unicodedata.normalize("NFC", html.unescape(re.sub(r"<[^>]+>", " ", text)))
+    return re.sub(r"[ \t]+", " ", text)[:HTML_COVER_CHARS]
+
+
+def extract_one(path):
+    name = Path(path).stem
     try:
-        text = cover_text(pdf_path)
+        text = cover_text(path)
     except Exception as exc:                        # unreadable file: recorded, not fatal
         return [{"file": name, "office": "ERROR", "person": str(exc)[:80]}]
 
@@ -162,9 +226,9 @@ def extract_one(pdf_path):
 
 
 def main():
-    files = sorted(glob.glob(str(RAW_DIR / "*.pdf")))
+    files = sorted(glob.glob(str(RAW_DIR / "*.pdf")) + glob.glob(str(RAW_DIR / "*.html")))
     if not files:
-        sys.exit(f"No PDFs under {RAW_DIR} — is the data/ symlink in place? (see DATA.md)")
+        sys.exit(f"No transcripts under {RAW_DIR} — is the data/ symlink in place? (see DATA.md)")
     out = []
     with ProcessPoolExecutor(max_workers=8) as pool:
         futures = [pool.submit(extract_one, f) for f in files]

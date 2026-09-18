@@ -80,8 +80,8 @@ people in different sittings, and sometimes within one sitting.
 | `elected_ticket` | **The list the senator STOOD ON, not the caucus they sat with.** One value per mandate, taken from the roster. See the two-affiliations note below before using it. |
 | `province` | The province the senator represents. |
 | `bloc` | **The caucus the senator SAT WITH.** Taken from the nearest day the chamber's composition was actually recorded — see below. |
-| `bloc_status` | How far that caucus can be trusted, **judged on the date of the sitting, not on the day the caucus was recorded**: `confirmed` (83.2% of senators' floor passages), `anachronistic` (13.1% — the record names a caucus that did not exist on the day of the sitting), `undatable` (1.1% — the caucus has no established start, so nothing can be checked), `disputed` (0.1% — two records that could each describe the day name different caucuses, so which one held is not established). Empty where there is no caucus at all (2.4%). |
-| `bloc_basis` | Where the caucus came from: `roll call` (79.7% of senators' floor passages) or `archived roster` (17.9%, the pre-2005 years). |
+| `bloc_status` | How far that caucus can be trusted, **judged on the date of the sitting, not on the day the caucus was recorded**: `confirmed` (77.6% of senators' floor passages), `anachronistic` (7.0% — the record names a caucus that did not exist on the day of the sitting), `disputed` (0.8% — two records that could each describe the day name different caucuses, so which one held is not established), `undatable` (0.6% — the caucus has no established start, so nothing can be checked). Empty where there is no caucus at all (14.0%, almost all of it 1998–1999). |
+| `bloc_basis` | Where the caucus came from: `roll call` (45.0% of senators' floor passages) or `archived roster` (40.9%, the pre-2005 years). |
 | `bloc_observed` | The date the caucus was actually recorded on. |
 | `bloc_gap_days` | How many days that is from the sitting. Median 0 — most sittings are themselves roll-call days. Rows further than 200 days from any observation get no caucus. |
 | `match_status` | How the label was resolved. This is the field to filter on, and its values are not interchangeable — see below. |
@@ -159,21 +159,21 @@ are saying is procedural — granting the floor, announcing a count. Reading it
 as partisan speech is a mistake the data cannot prevent for you. Exclude the
 chair from anything about party positions.
 
-### What `match_status` means, and why 28% has no name
+### What `match_status` means, and why 22% has no name
 
 | Value | Share of speech | What it means |
 | --- | --- | --- |
-| `matched_senator` | 37.4% | A named senator, resolved against the roster and their mandate dates. |
-| `office_only` | 28.3% | **A chamber office speaking under its bare title** — "Sr. Presidente", "Sr. Secretario", with no surname printed. This is how the record was printed before about 2016. **These are deliberately left without a person.** The chair changes hands during a sitting and the page does not say who holds it; the cover names two or more presiding officers in 340 of the 545 sittings whose cover says who presided. Any name here would be a guess. |
-| `matched_senator_chair` | 17.2% | A senator speaking from the chair, where the page names them. |
-| `matched_authority` | 15.5% | Someone holding a national or chamber office, resolved against a hand-compiled table of office-holders. |
-| `out_of_scope` | 1.3% | Correctly not a senator: parties and witnesses at the impeachment trials, deputies, foreign heads of state, officials of other institutions. |
-| `unmatched` | 0.1% | A genuine failure: 215 passages, nearly all invited outside speakers at public hearings, named by surname alone. |
+| `matched_senator` | 35.5% | A named senator, resolved against the roster and their mandate dates. |
+| `matched_senator_chair` | 27.3% | A senator speaking from the chair, where the page names them. Where two senators of the same surname sat at once, the sitting's own cover page decides which of them held the gavel that day. |
+| `office_only` | 21.5% | **A chamber office speaking under its bare title** — "Sr. Presidente", "Sr. Secretario", with no surname printed. This is how the record was printed before about 2016. **These are deliberately left without a person.** The chair changes hands during a sitting and the page does not say who holds it; the cover names two or more presiding officers in 522 of the 803 sittings whose cover says who presided. Any name here would be a guess. |
+| `matched_authority` | 14.3% | Someone holding a national or chamber office, resolved against a hand-compiled table of office-holders and the office-holders each sitting's cover page names. |
+| `out_of_scope` | 0.9% | Correctly not a senator: parties and witnesses at the impeachment trials, deputies, ministers of the national executive, foreign heads of state. |
+| `unmatched` | 0.1% | A genuine failure: 276 passages, nearly all invited outside speakers at public hearings, named by surname alone. |
 | `collective` | 0.1% | "Varios señores senadores" — the record attributing words to several people at once. |
-| `ambiguous` | 0.0% | A surname more than one person could hold at that date. |
+| `ambiguous` | 0.1% | A surname more than one person could hold on that date. Almost all of it is one case: Felipe and Silvia Sapag, both senators for Neuquén from November 1998 to December 2001, whom a label reading "Sapag" and nothing else does not distinguish. Where such a label is the chair's, the cover page settles it and the row is `matched_senator_chair` instead. |
 
 **The trap to avoid**: treating `office_only` as missing data and dropping it
-loses 28% of the floor, most of it the chair conducting business. Treating it as
+loses 22% of the floor, most of it the chair conducting business. Treating it as
 one person is worse. For "who spoke most", exclude the chair entirely — that is
 what the analysis in this repository does, and it says so.
 
@@ -184,15 +184,20 @@ what the analysis in this repository does, and it says so.
 - **Two sittings of November 2001 are scans read by character recognition**, and
   their text is unreliable. The parser flags them; exclude them from any text
   analysis. They are `2001-11-21_r72` and `2001-11-29_r74`.
-- **The caucus is observed, never continuous.** It is recorded on 336 days
-  across 25 years — roll-call days from 2005, and sixteen archived captures of
-  the Senate's own bloc-roster page before that. Every row says which day it
-  used and how far that is from the sitting. A senator who changed caucus
-  between two observations changes on the later one, not on the day they moved.
-- **Coverage before 2004 is thin and uneven** — 34 of 47 sittings held for 2003,
-  4 of 47 for 2002, 10 of 83 for 2001, 3 of 75 for 2000 — because the Senate's
-  portal lists them but no longer serves the files. Year-on-year comparisons
-  across that boundary are comparisons of what survives, not of what happened.
+- **The caucus is observed, never continuous.** It is recorded on 357 days
+  from 25 May 2000 to 17 September 2026 — roll-call days from 2005, and sixteen
+  archived captures of the Senate's own bloc-roster page before that. Every row
+  says which day it used and how far that is from the sitting. A senator who
+  changed caucus between two observations changes on the later one, not on the
+  day they moved.
+- **There is no caucus at all for 1998 and most of 1999.** The bloc-roster page
+  is the only record of the chamber's composition before the roll calls begin,
+  and the Internet Archive's earliest capture of it is 25 May 2000; nothing
+  earlier exists. Reaching back from that capture would cross the renewal of
+  December 1998, so those sittings are left without a caucus rather than given
+  one by inference. It is 14% of senators' floor passages, and it is not spread
+  evenly: filter on `session_date >= "1999-11"` for anything comparing caucuses
+  over time.
 - **Roughly a fifth of each document is dropped on purpose**: contents pages,
   attendance rolls, appendices and inserted documents that were never spoken.
   The median sitting keeps 79.0% of its printed text.

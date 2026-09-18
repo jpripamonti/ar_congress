@@ -27,12 +27,16 @@ A sitting whose cover page carries neither form is reported separately and never
 guessed at.
 """
 import glob
+import sys
 import re
 import unicodedata
 import warnings
 from pathlib import Path
 
 import pdfplumber
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from extract_authorities import html_cover_text  # noqa: E402
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
@@ -64,12 +68,18 @@ def flatten(text):
     return re.sub(r"\s+", " ", text)
 
 
-def officers_named(pdf_path):
+def officers_named(path):
     """How many people the cover page says presided, or None if it does not say."""
-    with warnings.catch_warnings():
-        warnings.simplefilter("ignore")
-        with pdfplumber.open(pdf_path) as pdf:
-            text = " ".join((p.extract_text() or "") for p in pdf.pages[:FRONT_PAGES])
+    if str(path).lower().endswith(".html"):
+        # The 1998-2003 holdings are HTML, and read through the same helper the
+        # authorities extraction uses, so the count covers one corpus and not
+        # one format of it.
+        text = html_cover_text(Path(path).read_bytes())
+    else:
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            with pdfplumber.open(path) as pdf:
+                text = " ".join((p.extract_text() or "") for p in pdf.pages[:FRONT_PAGES])
     flat = flatten(text)
 
     start = LIST_START.search(flat)
@@ -94,7 +104,7 @@ def officers_named(pdf_path):
 
 
 def main():
-    files = sorted(glob.glob(str(RAW_DIR / "*.pdf")))
+    files = sorted(glob.glob(str(RAW_DIR / "*.pdf")) + glob.glob(str(RAW_DIR / "*.html")))
     named, silent, multi = 0, 0, 0
     for path in files:
         n = officers_named(path)

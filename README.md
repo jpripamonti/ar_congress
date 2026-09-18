@@ -336,20 +336,35 @@ as its own HTML export for most of 1998–2003; both are read here.
   and the ninth found the punctuation left adrift from italicised words
   (0.4.19, completed in 0.4.20).
   Details and figures: [SOURCES.md](SOURCES.md).
-- Speakers resolved to persons: **70% of all speech blocks name a person**,
-  with the ticket they were elected on and their province. A further 28% is
+- Speakers resolved to persons: **77% of all speech blocks name a person**,
+  with the ticket they were elected on and their province. A further 22% is
   a chamber office speaking under its bare title ("Sr. Presidente", "Sr.
   Secretario", no surname), which is how the transcripts printed it before
   about 2016. **These are deliberately left without a person.** The chair
   changes hands during a sitting and the page does not say who holds it, so
   any name would be a guess; the sitting's own cover page names two or more
-  presiding officers in 340 of the 545 sittings whose cover page says who
+  presiding officers in 522 of the 803 sittings whose cover page says who
   presided at all (`scripts/count_presiding.py`). They are marked as
-  office-known-person-unstated. Another 1.3% is correctly out of scope —
-  parties and witnesses at the impeachment trials, deputies, foreign heads
-  of state, officials of other institutions. **Genuine lookup failures are
-  down to 0.1%** (215 blocks), nearly all of them invited outside speakers
-  at public hearings, named by surname alone.
+  office-known-person-unstated. Another 0.9% is correctly out of scope —
+  parties and witnesses at the impeachment trials, deputies, ministers of
+  the national executive, foreign heads of state. **Genuine lookup failures
+  are 0.2%** (504 blocks): invited outside speakers at public hearings named
+  by surname alone, and the two senators named Sapag who sat together from
+  1998 to 2001, for whom a label reading "Sapag" and nothing else cannot be
+  told apart and is marked ambiguous rather than assigned.
+- The two eras resolve alike: **0.24% of the HTML era's speech is unresolved
+  against 0.18% of the PDF era's**. Getting there took the sittings' own
+  cover pages, which had never been read for 1998–2003 — they name the
+  chamber's secretaries, whom the labels cite by surname alone, and they name
+  which senator held the gavel, which is the only thing that separates Felipe
+  Sapag in the chair from Silvia Sapag on the floor.
+- Caucus attached to **86% of senator speech blocks**. What is missing is
+  almost all 1998–1999 (19,797 of the 21,812 blocks without one): the Senate's
+  bloc-roster page is the only record of the chamber's composition before the
+  roll calls begin in 2005, and the Internet Archive's earliest capture of it
+  is 25 May 2000. There is no capture before that — checked, not assumed — and
+  reaching back from it would cross the December 1998 renewal, which is exactly
+  the kind of inference the caucus data exists to avoid.
 - **What every column holds and what not to assume about it**:
   [docs/DATA_DICTIONARY.md](docs/DATA_DICTIONARY.md) — written for someone who
   has never seen this project. How a version is cut, checked and cited:

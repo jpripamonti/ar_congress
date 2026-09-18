@@ -1745,10 +1745,35 @@ and 21.5 million words of attributed speech become 25.7.
 - [x] `parse_html.py`: 214 files, no errors, 6.5M words of attributed speech
 - [x] Rename `source_pdf`/`pdf_sha256` to `source_file`/`source_sha256`, add
       `source_format`, and re-parse every PDF so the corpus has one schema
-- [ ] Resolve speakers over the HTML era. `speakers.parquet` still holds only
-      the 16,311 rows of the PDF corpus, so the 214 new sittings have a
-      `speaker_raw` and nothing joined to it. The historical roster may not
-      reach 1998-2001 well; find out before trusting any grouping there.
+- [x] Resolve speakers over the whole corpus: 23,711 label-sessions across
+      816 sittings, 488 people. The roster reaches 1998 fine; what was missing
+      was the sittings' own cover pages, which had never been read for
+      1998-2003 and which name the chamber's secretaries and whoever held the
+      gavel. Unresolved speech is 0.24% in the HTML era against 0.18% in the
+      PDF era.
+- [ ] Two senators named Sapag sat for Neuquén together from November 1998 to
+      December 2001, and a label reading "Sapag" alone does not say which. 165
+      blocks are marked ambiguous. The honorific does separate them — the
+      chamber writes "Sra." for Silvia and "Sr." for Felipe — but it is the
+      chamber's own usage and it slips: measured over the whole corpus, about
+      1% of honorifics disagree with the senator the label resolves to. Decide
+      whether a resolution that is right 99 times in 100 belongs in the data
+      under a status of its own, or stays out.
+- [ ] No caucus for 1998 and most of 1999 — 19,797 senator speech blocks. The
+      Internet Archive has no capture of the Senate's bloc-roster page before
+      25 May 2000 (checked, not assumed: its CDX index holds no bloc page at
+      all for the domain before then), and reaching back from that capture
+      would cross the December 1998 renewal. Needs a different source — the
+      chamber's printed roster, a library holding, or the transcripts' own
+      mentions of who spoke for which bloc.
+- [ ] Three sittings of 2003 label the chair "Sr. Presidente (Maqueda)" after
+      Maqueda left the Senate for the Supreme Court on 27 December 2002 — the
+      chamber's own documents carrying a stale label. 15 blocks, left
+      unmatched rather than assigned to a man who was not there.
+- [ ] 39 sittings of 2024-2026 have no readable masthead: the cover page
+      changed again and `extract_authorities.py` does not follow it. It costs
+      nothing today, because the manual authorities table covers those years,
+      and it will cost something the moment it does not.
 - [ ] Two sittings do not parse, both for want of a session opening: the
       November 2001 sitting that never reached quorum, and the 1997
       impeachment tribunal, which does not open like an ordinary sitting. The

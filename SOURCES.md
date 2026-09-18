@@ -93,8 +93,8 @@ The Senate's roll-call records fill most of the gap. Every recorded vote
 publishes the whole chamber — including the members absent for it — with the
 caucus each senator was sitting in, so one record per sitting date is a
 complete snapshot of that day's composition. `scripts/fetch_blocs.py` collects
-one per date (23,007 readings over 320 sitting dates, 287 senators, 62
-caucuses). Neither the caucus nor the votes appear in the open-data portal;
+one per date (24,519 readings over 341 sitting dates, 307 senators, 65
+caucuses, February 2005 to September 2026). Neither the caucus nor the votes appear in the open-data portal;
 both are read from the site's own roll-call pages, and the raw HTML is archived
 so a re-run neither refetches nor depends on the site still answering.
 
@@ -111,8 +111,8 @@ Three limits, all measured:
   bloc throughout. A senator who crossed the floor mid-term therefore shows one
   unbroken spell.
 
-  Checked against the dated caucus lives below, **3,043 of the 22,213 readings
-  that name a caucus (13.7%), spread over 311 of the 320 roll calls, name one
+  Checked against the dated caucus lives below, **3,069 of the 23,701 readings
+  that name a caucus (12.9%), spread over 324 of the 341 roll calls, name one
   that did not exist on the day of the vote.** Every one is kept and marked
   `acta_anacronica` rather than dropped or repaired: dropping them would hide
   how much of the Senate's own record is like this, and repairing them would
@@ -161,18 +161,19 @@ check them against.
 ### One file holds every observation
 
 `scripts/build_bloc_observations.py` puts both sources in
-`reference/senado/bloque_observado.csv`: **23,325 rows, one per day one
-senator's caucus was actually recorded**, over 336 dates and 369 senators, each
+`reference/senado/bloque_observado.csv`: **24,813 rows, one per day one
+senator's caucus was actually recorded**, over 357 dates and 393 senators, each
 with the record it came from and how far it can be trusted. It interpolates
 nothing and collapses nothing into spells. `resolve_speakers.py` then takes,
 for each sitting, the observation nearest that senator — writing the caucus,
 its status, its basis, the day it was observed and the distance in days, so any
 stricter reading costs one filter. Of the floor speech by identified senators,
-83.2% of the PASSAGES get a confirmed caucus, 13.1% one marked anachronistic,
-1.1% one that cannot be checked, 0.1% one that two usable records on either
-side of the sitting disagree about, and 2.4% none at all. Counted by words
-rather than passages the shares move — anachronistic falls to 12.1% — because
-a back-labelled caucus attaches to shorter turns on average.
+77.6% of the PASSAGES get a confirmed caucus, 7.0% one marked anachronistic,
+0.8% one that two usable records on either side of the sitting disagree about,
+0.6% one that cannot be checked, and 14.0% none at all. Counted by words rather
+than passages the shares move — the ones with no caucus fall from 14.0% to
+9.7% — because the years they come from, 1998 and 1999, are years of many
+short procedural turns.
 
 ### Dating the caucuses by hand
 
