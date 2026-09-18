@@ -1751,14 +1751,13 @@ and 21.5 million words of attributed speech become 25.7.
       1998-2003 and which name the chamber's secretaries and whoever held the
       gavel. Unresolved speech is 0.24% in the HTML era against 0.18% in the
       PDF era.
-- [ ] Two senators named Sapag sat for Neuquén together from November 1998 to
-      December 2001, and a label reading "Sapag" alone does not say which. 165
-      blocks are marked ambiguous. The honorific does separate them — the
-      chamber writes "Sra." for Silvia and "Sr." for Felipe — but it is the
-      chamber's own usage and it slips: measured over the whole corpus, about
-      1% of honorifics disagree with the senator the label resolves to. Decide
-      whether a resolution that is right 99 times in 100 belongs in the data
-      under a status of its own, or stays out.
+- [x] Separate the two senators named Sapag. The cover page settles the chair;
+      the courtesy title settles the rest, with which given names the chamber
+      writes as "señora" read off the corpus rather than guessed from the
+      spelling. Every row a tiebreak decided says which one it was, in a new
+      `tiebreak` column, because the title is how the chamber writes and not
+      something it states. On the 69 Sapag turns the chair introduces by name,
+      its wording agrees with the title in all 69.
 - [ ] No caucus for 1998 and most of 1999 — 19,797 senator speech blocks. The
       Internet Archive has no capture of the Senate's bloc-roster page before
       25 May 2000 (checked, not assumed: its CDX index holds no bloc page at

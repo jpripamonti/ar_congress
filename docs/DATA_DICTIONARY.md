@@ -85,6 +85,7 @@ people in different sittings, and sometimes within one sitting.
 | `bloc_observed` | The date the caucus was actually recorded on. |
 | `bloc_gap_days` | How many days that is from the sitting. Median 0 — most sittings are themselves roll-call days. Rows further than 200 days from any observation get no caucus. |
 | `match_status` | How the label was resolved. This is the field to filter on, and its values are not interchangeable — see below. |
+| `tiebreak` | Empty on all but 57 rows. It says what separated two senators the roster left in a tie, and it exists so you can refuse either answer: `masthead` (5 rows, 477 passages) means the sitting's cover page STATES who presided that day; `honorific` (52 rows, 173 passages) means only the courtesy title on the label distinguished them, which is how the chamber writes rather than something it states. Drop `tiebreak == "honorific"` if a courtesy title is not evidence you will accept. |
 
 ### Two political affiliations, and they are not the same
 
@@ -163,14 +164,30 @@ chair from anything about party positions.
 
 | Value | Share of speech | What it means |
 | --- | --- | --- |
-| `matched_senator` | 35.5% | A named senator, resolved against the roster and their mandate dates. |
+| `matched_senator` | 35.6% | A named senator, resolved against the roster and their mandate dates. |
 | `matched_senator_chair` | 27.3% | A senator speaking from the chair, where the page names them. Where two senators of the same surname sat at once, the sitting's own cover page decides which of them held the gavel that day. |
 | `office_only` | 21.5% | **A chamber office speaking under its bare title** — "Sr. Presidente", "Sr. Secretario", with no surname printed. This is how the record was printed before about 2016. **These are deliberately left without a person.** The chair changes hands during a sitting and the page does not say who holds it; the cover names two or more presiding officers in 522 of the 803 sittings whose cover says who presided. Any name here would be a guess. |
 | `matched_authority` | 14.3% | Someone holding a national or chamber office, resolved against a hand-compiled table of office-holders and the office-holders each sitting's cover page names. |
 | `out_of_scope` | 0.9% | Correctly not a senator: parties and witnesses at the impeachment trials, deputies, ministers of the national executive, foreign heads of state. |
 | `unmatched` | 0.1% | A genuine failure: 276 passages, nearly all invited outside speakers at public hearings, named by surname alone. |
 | `collective` | 0.1% | "Varios señores senadores" — the record attributing words to several people at once. |
-| `ambiguous` | 0.1% | A surname more than one person could hold on that date. Almost all of it is one case: Felipe and Silvia Sapag, both senators for Neuquén from November 1998 to December 2001, whom a label reading "Sapag" and nothing else does not distinguish. Where such a label is the chair's, the cover page settles it and the row is `matched_senator_chair` instead. |
+| `ambiguous` | 0.0% | A surname more than one person could hold on that date, with nothing left to separate them: four senators named Martínez and three named González, all of one gender within each group, and the preparatory sittings where the outgoing and the incoming holder of an office are both in window. 55 passages in all. |
+
+**Where a tie was broken, and how.** Two senators named Sapag sat for Neuquén
+together from November 1998 to December 2001, and a label reading "Sapag" and
+nothing else names neither. Two things settle it, and they are not equally
+strong. For the chair, the sitting's cover page names who held the gavel —
+"del señor vicepresidente 2° del H. Senado, don Felipe R. Sapag" — which is
+the chamber stating a fact. For an ordinary turn, only the courtesy title is
+left: "Sra. Sapag" is Silvia, "Sr. Sapag" is Felipe. Which given names the
+chamber writes as "señora" is read off the corpus itself rather than guessed
+from the spelling, and the title is used only where every candidate's given
+name is settled and the title fits exactly one of them. It is not infallible —
+about 1% of courtesy titles in the corpus disagree with the senator the label
+resolves to — so every row it decided carries `tiebreak == "honorific"`. On
+the 69 Sapag turns where the chair's own words introduce the speaker ("tiene
+la palabra la señora senadora Sapag"), that wording agrees with the title in
+all 69.
 
 **The trap to avoid**: treating `office_only` as missing data and dropping it
 loses 22% of the floor, most of it the chair conducting business. Treating it as

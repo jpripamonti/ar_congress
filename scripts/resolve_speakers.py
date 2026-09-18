@@ -305,7 +305,7 @@ def narrow_by_masthead(sens, presiding):
     candidate's own surname: otherwise "Mario A. Losada", sitting in the same
     masthead, would answer for a senator whose given name happens to be Mario.
     Initials are ignored, so a masthead that writes "F. R. Sapag" decides
-    nothing and the label stays ambiguous rather than being guessed at.
+    nothing; the caller uses the result only when it leaves exactly one.
     """
     kept = []
     for sen in sens:
@@ -318,7 +318,96 @@ def narrow_by_masthead(sens, presiding):
             if given & {t for t in rest if len(t) > 2}:
                 kept.append(sen)
                 break
-    return kept or sens
+    return kept
+
+
+# "Sres." is a plural and says nothing about one speaker.
+HONORIFIC_RE = re.compile(r"^(Sres|Srta|Sra|Sr)\.?(?=\s|$)")
+# A given name must be seen this many times, and agree this often, before the
+# corpus is taken to have settled it.
+GENDER_MIN_COUNT, GENDER_MIN_SHARE = 4, 0.8
+
+
+def honorific_is_feminine(label):
+    """True, False, or None for a label's courtesy title."""
+    m = HONORIFIC_RE.match(label)
+    if not m or m.group(1).lower() == "sres":
+        return None
+    return m.group(1).lower() in ("sra", "srta")
+
+
+def first_given(given_key):
+    """The first given name long enough to identify, or "" if there is none."""
+    for t in given_key.split():
+        if len(t) > 2:
+            return t
+    return ""
+
+
+def learn_honorific_gender(labels, resolved):
+    """Which given names the chamber writes as "señora" and which as "señor".
+
+    Read off the corpus, not guessed from the spelling. The rule "ends in -a"
+    would call Beatriz, Nancy, Mabel, Carmen and Mercedes masculine, and
+    Beatriz alone speaks in 2,518 passages here. Instead every label that
+    resolved to exactly one senator lends its courtesy title to that senator's
+    first given name, so a name is settled by the number of times the chamber
+    wrote it.
+
+    The chamber slips: about 1% of titles in the corpus disagree with the
+    senator the label resolves to — "Sr." for a María, "Sra." for a Rubén. A
+    name therefore counts as settled only when it is seen at least
+    GENDER_MIN_COUNT times and at least GENDER_MIN_SHARE of those agree, which
+    keeps a handful of typists' slips from deciding anything. It is a loose
+    threshold and it can afford to be: of the 174 given names seen with a
+    title, 169 clear the count and every one of those lands outside 20-80%,
+    103 of them unanimously. The furthest from unanimous is Olijela at 21 of
+    23. The five left unsettled are seen once or twice each.
+    """
+    tally = {}
+    for row, res in zip(labels, resolved):
+        if res["match_status"] not in ("matched_senator", "matched_senator_chair"):
+            continue
+        fem = honorific_is_feminine(clean_label(row.speaker_raw))
+        if fem is None:
+            continue
+        _, _, given = (res.get("person_name") or "").partition(",")
+        name = first_given(norm(given))
+        if not name:
+            continue
+        seen, femcount = tally.get(name, (0, 0))
+        tally[name] = (seen + row.n_blocks, femcount + row.n_blocks * fem)
+    gender = {}
+    for name, (seen, femcount) in tally.items():
+        if seen < GENDER_MIN_COUNT:
+            continue
+        share = femcount / seen
+        if share >= GENDER_MIN_SHARE:
+            gender[name] = True
+        elif share <= 1 - GENDER_MIN_SHARE:
+            gender[name] = False
+    return gender
+
+
+def narrow_by_honorific(sens, label, gender):
+    """Keep the candidate whose given name carries the label's courtesy title.
+
+    This is the last thing tried and the only one that rests on how the
+    chamber writes rather than on what it states, so it is deliberately
+    narrow. EVERY candidate's given name must be settled, not just the one
+    that survives: a name the corpus has not settled would otherwise be
+    dropped for being unknown, and the title would appear to decide between
+    two women because only one of them was recognised. Rows decided here are
+    marked `tiebreak == "honorific"` so a reading that will not accept a
+    courtesy title as evidence can drop them with one filter.
+    """
+    fem = honorific_is_feminine(label)
+    if fem is None:
+        return []
+    known = [gender.get(first_given(sen["given_key"])) for sen in sens]
+    if any(g is None for g in known):
+        return []
+    return [sen for sen, g in zip(sens, known) if g == fem]
 
 
 def role_contains(haystack, needle):
@@ -460,7 +549,26 @@ def match_authorities(auth, key, d, role_hint=None):
     return hits
 
 
-def resolve_one(label, session_date, session_type, mandates, auth, presiding=()):
+def break_tie(sens, label, presiding, gender):
+    """Try to leave exactly one candidate, and say what did it.
+
+    Two things can separate senators the roster cannot: the sitting's cover
+    page, which STATES who presided, and the courtesy title, which only
+    reflects how the chamber writes. The cover page is tried first for that
+    reason. Either is used only when it leaves exactly one candidate — a
+    narrowing to none, or to two, is no narrowing at all and the label stays
+    ambiguous.
+    """
+    if len(sens) < 2:
+        return sens, None
+    for narrowed, how in ((narrow_by_masthead(sens, presiding), "masthead"),
+                          (narrow_by_honorific(sens, label, gender or {}), "honorific")):
+        if len(narrowed) == 1:
+            return narrowed, how
+    return sens, None
+
+
+def resolve_one(label, session_date, session_type, mandates, auth, presiding=(), gender=None):
     d = session_date
     s = clean_label(label)
 
@@ -486,22 +594,22 @@ def resolve_one(label, session_date, session_type, mandates, auth, presiding=())
         if FOREIGN_OFFICE_RE.search(m["pre"]):
             return {"match_status": "out_of_scope", "role": m["pre"].strip()}
         sens = match_senators(mandates, key, d, fuzzy=True)
-        if len(sens) > 1 and presiding:
-            sens = narrow_by_masthead(sens, presiding)
+        sens, tiebreak = break_tie(sens, s, presiding, gender)
         if len(sens) == 1:
             sen = sens[0]
             return {"match_status": "matched_senator_chair", "person_id": sen["person_id"],
                     "person_name": f"{sen['surname']}, {sen['given']}", "role": m["pre"].strip(),
-                    "party": sen["party"], "province": sen["province"]}
+                    "party": sen["party"], "province": sen["province"], "tiebreak": tiebreak}
         return {"match_status": "ambiguous" if sens else "unmatched", "role": m["pre"].strip()}
 
     if m:  # parenthetical WITHOUT role word: "Sra. González (Gladys)" — given in paren
         sens = match_senators(mandates, norm(m["pre"]), d, given_key=norm(m["paren"]))
+        sens, tiebreak = break_tie(sens, s, (), gender)
         if len(sens) == 1:
             sen = sens[0]
             return {"match_status": "matched_senator", "person_id": sen["person_id"],
                     "person_name": f"{sen['surname']}, {sen['given']}",
-                    "party": sen["party"], "province": sen["province"]}
+                    "party": sen["party"], "province": sen["province"], "tiebreak": tiebreak}
         return {"match_status": "ambiguous" if sens else "unmatched"}
 
     if ROLE_WORDS.search(s) and "(" not in s:
@@ -548,11 +656,12 @@ def resolve_one(label, session_date, session_type, mandates, auth, presiding=())
         grace = 300 if m["elect"] else 0
         sens = match_senators(mandates, norm(m["sur"]), d, grace_days=grace, fuzzy=True,
                               given_key=norm(m["given"]) if m["given"] else None)
+        sens, tiebreak = break_tie(sens, s, (), gender)
         if len(sens) == 1:
             sen = sens[0]
             return {"match_status": "matched_senator", "person_id": sen["person_id"],
                     "person_name": f"{sen['surname']}, {sen['given']}",
-                    "party": sen["party"], "province": sen["province"]}
+                    "party": sen["party"], "province": sen["province"], "tiebreak": tiebreak}
         if not sens:
             # bare-surname officers (secretaries: Izzo, Chavarría, D. Martínez)
             # and, in Asambleas, the President ("Sr. Fernández")
@@ -723,11 +832,34 @@ def main():
               .size().reset_index(name="n_blocks"))
     print(f"{len(labels)} (session, label) pairs across {labels.session_id.nunique()} sessions")
 
+    rows = list(labels.itertuples())
+
+    def resolve(r, gender=None):
+        return resolve_one(r.speaker_raw, date.fromisoformat(r.session_date),
+                           r.session_type, mandates, auth,
+                           presiding.get(Path(r.source_file).stem, ()), gender)
+
+    resolved = [resolve(r) for r in rows]
+    # The labels are read twice. The courtesy title can separate two senators
+    # of the same surname, but only once the corpus has said which given names
+    # the chamber writes as "señora" — and it says that through the labels that
+    # needed no tiebreak at all. So: resolve, learn, then try again on what
+    # stayed ambiguous. Nothing decided by a title feeds the learning.
+    gender = learn_honorific_gender(rows, resolved)
+    settled = 0
+    for i, r in enumerate(rows):
+        if resolved[i]["match_status"] != "ambiguous":
+            continue
+        again = resolve(r, gender)
+        if again["match_status"] != "ambiguous":
+            resolved[i] = again
+            settled += 1
+    print(f"{len(gender)} given names settled by the chamber's own courtesy titles; "
+          f"{settled} ambiguous labels resolved by one")
+
     out = []
-    for _, r in labels.iterrows():
+    for r, res in zip(rows, resolved):
         d = date.fromisoformat(r.session_date)
-        res = resolve_one(r.speaker_raw, d, r.session_type, mandates, auth,
-                          presiding.get(Path(r.source_file).stem, ()))
         out.append({
             "session_id": r.session_id,
             "session_date": r.session_date,
@@ -740,6 +872,7 @@ def main():
             "elected_ticket": res.get("party"),
             "province": res.get("province"),
             "match_status": res["match_status"],
+            "tiebreak": res.get("tiebreak"),
             **bloc_on(res.get("person_id"), d, bloc_obs, bloc_lives),
         })
 

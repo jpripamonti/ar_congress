@@ -348,16 +348,29 @@ as its own HTML export for most of 1998–2003; both are read here.
   office-known-person-unstated. Another 0.9% is correctly out of scope —
   parties and witnesses at the impeachment trials, deputies, ministers of
   the national executive, foreign heads of state. **Genuine lookup failures
-  are 0.2%** (504 blocks): invited outside speakers at public hearings named
-  by surname alone, and the two senators named Sapag who sat together from
-  1998 to 2001, for whom a label reading "Sapag" and nothing else cannot be
-  told apart and is marked ambiguous rather than assigned.
-- The two eras resolve alike: **0.24% of the HTML era's speech is unresolved
-  against 0.18% of the PDF era's**. Getting there took the sittings' own
-  cover pages, which had never been read for 1998–2003 — they name the
-  chamber's secretaries, whom the labels cite by surname alone, and they name
-  which senator held the gavel, which is the only thing that separates Felipe
-  Sapag in the chair from Silvia Sapag on the floor.
+  are 0.1%** (331 blocks): invited outside speakers at public hearings named
+  by surname alone, four senators named Martínez and three named González
+  whom nothing on the page separates, and the preparatory sittings where an
+  office's outgoing and incoming holder are both in window.
+- The era that was missing now resolves best: **0.07% of the HTML era's speech
+  is unresolved against 0.18% of the PDF era's**, where it stood at 3.4% when
+  the resolution first ran over it. Getting there took the sittings' own cover
+  pages, which had never been read for 1998–2003 — they name the chamber's
+  secretaries, whom the labels cite by surname alone, and they name which
+  senator held the gavel.
+- Where two senators of the same surname sat at once, **what separated them is
+  written on every row it decided**, because the two things that can separate
+  them are not equally strong. Felipe and Silvia Sapag both sat for Neuquén
+  from 1998 to 2001. For the chair, the cover page states which of them held
+  the gavel. For an ordinary turn only the courtesy title is left — "Sra.
+  Sapag" against "Sr. Sapag" — which is how the chamber writes rather than
+  something it states, and about 1% of courtesy titles in the corpus disagree
+  with the senator the label resolves to. Which given names the chamber writes
+  as "señora" is read off the corpus rather than guessed from the spelling,
+  and the 173 passages decided that way carry `tiebreak = "honorific"`, so a
+  reading that will not accept a courtesy title can drop them with one filter.
+  On the 69 Sapag turns the chair introduces by name, its wording agrees with
+  the title in all 69.
 - Caucus attached to **86% of senator speech blocks**. What is missing is
   almost all 1998–1999 (19,797 of the 21,812 blocks without one): the Senate's
   bloc-roster page is the only record of the chamber's composition before the
