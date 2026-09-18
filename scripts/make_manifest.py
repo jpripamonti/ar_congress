@@ -1,7 +1,12 @@
 """Regenerate raw_data_manifest.csv from the raw session tree.
 
-One row per held PDF: session identity, the portal URL it came from, size,
-sha256 of both the PDF and its JSON sidecar, and when it was downloaded.
+One row per held transcript: session identity, the portal URL it came from,
+the format the portal served (PDF from 2004 on, the chamber's HTML export for
+most of 1998-2003), whether the record is the provisional version, size,
+sha256 of both the file and its JSON sidecar, and when it was downloaded.
+
+The file columns were named pdf_* through release 0.4.37, when every holding
+was a PDF; they are filename/file_size_bytes/file_sha256 now that they are not.
 Checksums are recomputed here rather than copied from the sidecar, so the
 manifest reflects the bytes actually on disk. The January 2025 downloads
 have sidecars that predate the size/checksum fields; their download time is
@@ -18,10 +23,14 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
 OUT_PATH = REPO_ROOT / "raw_data_manifest.csv"
 
+# Written out in words: an empty cell would not say whether the record makes no
+# claim or whether we never looked.
+PROVISIONAL_LABEL = {True: "true", False: "false", None: "unstated"}
+
 COLUMNS = [
-    "pdf_filename", "session_date_iso", "fecha", "tipo", "sesion", "reunion",
-    "source_url", "pdf_size_bytes", "pdf_sha256", "json_sha256",
-    "downloaded_at_utc",
+    "filename", "session_date_iso", "fecha", "tipo", "sesion", "reunion",
+    "source_url", "format", "provisional", "file_size_bytes", "file_sha256",
+    "json_sha256", "downloaded_at_utc",
 ]
 
 
@@ -36,7 +45,9 @@ def sha256(path):
 def main():
     rows = []
     missing_sidecar = []
-    for pdf in sorted(RAW_DIR.glob("*.pdf")):
+    held = sorted(p for p in RAW_DIR.iterdir() if p.suffix in (".pdf", ".html"))
+    unmarked = []
+    for pdf in held:
         side = pdf.with_suffix(".json")
         if not side.exists():
             missing_sidecar.append(pdf.name)
@@ -47,16 +58,20 @@ def main():
             iso = datetime.strptime(fecha, "%d-%m-%Y").date().isoformat()
         except ValueError:
             iso = ""
+        if "format" not in meta or "provisional" not in meta:
+            unmarked.append(pdf.name)
         rows.append({
-            "pdf_filename": pdf.name,
+            "filename": pdf.name,
             "session_date_iso": iso,
             "fecha": fecha,
             "tipo": meta.get("tipo", ""),
             "sesion": meta.get("sesion", ""),
             "reunion": meta.get("reunion", ""),
             "source_url": meta.get("url", ""),
-            "pdf_size_bytes": pdf.stat().st_size,
-            "pdf_sha256": sha256(pdf),
+            "format": meta.get("format", ""),
+            "provisional": PROVISIONAL_LABEL.get(meta.get("provisional"), ""),
+            "file_size_bytes": pdf.stat().st_size,
+            "file_sha256": sha256(pdf),
             "json_sha256": sha256(side),
             "downloaded_at_utc": meta.get("downloaded_at_utc", ""),
         })
@@ -70,8 +85,10 @@ def main():
     undated = sum(1 for r in rows if not r["downloaded_at_utc"])
     print(f"Wrote {len(rows)} rows to {OUT_PATH}")
     print(f"  without a recorded download time (pre-2026 sidecars): {undated}")
+    if unmarked:
+        print(f"  without format/provisional — run mark_provenance.py: {len(unmarked)}")
     if missing_sidecar:
-        print(f"  PDFs with no sidecar, SKIPPED: {len(missing_sidecar)}")
+        print(f"  files with no sidecar, SKIPPED: {len(missing_sidecar)}")
         for name in missing_sidecar[:10]:
             print(f"    {name}")
 

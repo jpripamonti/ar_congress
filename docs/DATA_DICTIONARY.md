@@ -49,20 +49,21 @@ To get from a label to a person, join `speakers.parquet` on
 
 | Column | Meaning |
 | --- | --- |
-| `chapter`, `chapter_title` | The numbered section of the sitting's agenda the passage falls under, and its title. Present in 538 of the 558 sittings that parse; the rest print no section numbering the parser can read. |
+| `chapter`, `chapter_title` | The numbered section of the sitting's agenda the passage falls under, and its title. Present in 777 of the 817 sittings that parse; the rest print no section numbering the parser can read. |
 | `session_id` | The sitting: date plus its number within the year, e.g. `2014-05-07_r07`. |
 | `session_date` | The date of the sitting, `YYYY-MM-DD`. |
-| `session_type` | What kind of sitting, as the Senate names it: `ORDINARIA` (156,382 rows), `ESPECIAL` (41,691), `EXTRAORDINARIA` (12,298), `TRIBUNAL DE JUICIO POLITICO` (6,649 — impeachment trials, where the speakers are largely not senators), `INFORMATIVA ESPECIAL` (6,582 — the cabinet chief's report to the chamber), `ASAMBLEA` (5,846 — both chambers together, where the President of the Nation speaks), `PREPARATORIA` (2,342), and five smaller kinds (`EN MINORÍA` 528, `ORDINARIA CONTINUACIÓN` 461, `ESPECIAL EXTRAORDINARIA` 287, `ESPECIAL EN MINORÍA` 196, `REUNIÓN CONJ.AMBAS CÁMARAS` 146). **Mixing them without thinking will mislead you**: an impeachment trial and an ordinary sitting are not the same kind of speech. |
+| `session_type` | What kind of sitting, as the Senate names it, by row count: `ORDINARIA` (323,298), `ESPECIAL` (51,573), `EXTRAORDINARIA` (24,395), `ASAMBLEA` (11,249), `TRIBUNAL DE JUICIO POLITICO` (6,940), `INFORMATIVA ESPECIAL` (6,696), `PREPARATORIA` (3,294), `ESPECIAL EXTRAORDINARIA` (2,630), `ORDINARIA CONTINUACIÓN` (1,038), `EN MINORÍA` (807), `REUNIÓN CONJ.AMBAS CÁMARAS` (201), `ESPECIAL EN MINORÍA` (196), `FALTA DE QUORUM` (14). These are the chamber's own labels and they overlap — `EN MINORÍA` and `ESPECIAL EN MINORÍA` name the same thing — so group them before counting. **Mixing them without thinking will mislead you**: an impeachment trial and an ordinary sitting are not the same kind of speech. |
 | `sesion`, `reunion` | The Senate's own two numberings of the sitting, as printed on its cover. |
 
 **Where it came from**
 
 | Column | Meaning |
 | --- | --- |
-| `source_pdf` | The file it was read from. |
-| `pdf_sha256` | That file's checksum, so a passage can be traced to the exact bytes it came from. |
+| `source_file` | The file it was read from. Called `source_pdf` up to release 0.4.37, when every holding was a PDF. |
+| `source_format` | `pdf` or `html` — which of the two the chamber served for that sitting. The HTML export covers most of 1998–2003 and carries no pagination, so `pages` is empty and `size` is null on those rows; do not read an empty `pages` as a parsing failure. |
+| `source_sha256` | That file's checksum, so a passage can be traced to the exact bytes it came from. Called `pdf_sha256` up to release 0.4.37. |
 | `parser_version` | Which version of the parser produced this row. |
-| `font`, `font_style`, `size` | The typeface the passage was printed in. Kept because the parser's decisions rest on it and they should be re-checkable, not because they carry meaning. |
+| `font`, `font_style`, `size` | The typeface the passage was printed in. Kept because the parser's decisions rest on it and they should be re-checkable, not because they carry meaning. On HTML rows `font` and `size` are null and `font_style` comes from the markup, which states outright what the PDF side has to infer. |
 
 ## The speakers table
 

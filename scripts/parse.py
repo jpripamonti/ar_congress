@@ -2236,19 +2236,27 @@ def blocks_to_frame(blocks, chapters, meta):
             "font": b.get("font"),
             "font_style": b.get("font_style"),
             "size": b.get("size"),
-            "source_pdf": meta["source_pdf"],
-            "pdf_sha256": meta["pdf_sha256"],
+            "source_file": meta["source_file"],
+            "source_format": meta["source_format"],
+            "source_sha256": meta["source_sha256"],
             "parser_version": PARSER_VERSION,
         })
     return pd.DataFrame(rows)
 
 
 def load_manifest():
-    """Index raw_data_manifest.csv by pdf filename (empty dict if absent)."""
+    """Index raw_data_manifest.csv by file name (empty dict if absent).
+
+    The file columns were pdf_* through release 0.4.37, before the HTML
+    holdings; both spellings are accepted so an older manifest still loads.
+    """
     if not MANIFEST_PATH.exists():
         return {}
     df = pd.read_csv(MANIFEST_PATH, dtype=str)
-    return {row["pdf_filename"]: row for _, row in df.iterrows()}
+    name_col = "filename" if "filename" in df.columns else "pdf_filename"
+    if "pdf_sha256" in df.columns:
+        df = df.rename(columns={"pdf_sha256": "file_sha256"})
+    return {row[name_col]: row for _, row in df.iterrows()}
 
 
 def session_meta_for(pdf_path, manifest):
@@ -2257,7 +2265,7 @@ def session_meta_for(pdf_path, manifest):
     if row is not None:
         date_iso = row["session_date_iso"]
         tipo, sesion, reunion = row["tipo"], row["sesion"], row["reunion"]
-        sha = row["pdf_sha256"]
+        sha = row["file_sha256"]
     else:
         sidecar = pdf_path.with_suffix(".json")
         meta = json.loads(sidecar.read_text(encoding="utf-8")) if sidecar.exists() else {}
@@ -2282,8 +2290,9 @@ def session_meta_for(pdf_path, manifest):
         "session_type": tipo,
         "sesion": sesion,
         "reunion": reunion,
-        "source_pdf": pdf_path.name,
-        "pdf_sha256": sha,
+        "source_file": pdf_path.name,
+        "source_format": "html" if pdf_path.suffix.lower() == ".html" else "pdf",
+        "source_sha256": sha,
     }
 
 

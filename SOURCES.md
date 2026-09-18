@@ -4,13 +4,36 @@
 
 - **Source:** Senado de la Nación Argentina, open-data portal —
   <https://www.senado.gob.ar/micrositios/DatosAbiertos/>, dataset
-  "Versiones Taquigráficas" (`ExportarListadoVersionesTac/json`).
-- **Holdings:** 559 sessions spanning 2000–2024, retrieved 2025-01 and
-  2026-07. Complete from 2004 on — every session the portal lists for those
-  years is held. Before that the portal lists the sittings but no longer
-  serves most of the files: 34 of 47 held for 2003, 4 of 47 for 2002, 10 of
-  83 for 2001, 3 of 75 for 2000. Nothing before 2000 is served at all.
-  Per-file sha256, source URL, and timestamps:
+  "Versiones Taquigráficas" (`ExportarListadoVersionesTac/json`). The listing
+  gives one download URL per sitting; that URL is what is fetched.
+- **Two formats from one URL.** The portal answers with a PDF for the sittings
+  from 2004 on and with the chamber's own HTML export for most of 1998–2003
+  (212 of the 214 held are Corel WordPerfect exports, two come from a later
+  exporter that carries emphasis in CSS). The format is not a choice the
+  requester makes and not something the listing declares: it is read off the
+  first bytes of the response and recorded per sitting as `format`. Files are
+  kept in the format served, never converted.
+- **Holdings:** 819 sittings spanning 1998–2026, retrieved 2025-01, 2026-07 and
+  2026-09. Complete from 2002 on — every sitting the portal lists for those
+  years is held. Partial before it: 51 of 73 for 1998, 47 of 74 for 1999, 46 of
+  75 for 2000, 44 of 83 for 2001, plus a single sitting of 1997.
+- **Where the record stops, and how we know.** The portal lists sittings back
+  to 1983. Of the 882 it lists before 1998, every URL was requested: 881 answer
+  404 and one is served, the impeachment tribunal of 18 December 1997. This is
+  a census, not a sample, so 1998 is the floor of what can be held and the
+  question does not need asking again.
+- **Provisional records.** A sitting's masthead may declare itself
+  "VERSIÓN TAQUIGRÁFICA (PROVISIONAL)", the uncorrected record. The manifest
+  carries this as `provisional` with three values: 309 sittings declare
+  themselves provisional, 338 declare themselves not, and 172 declare nothing,
+  because from 2018 the phrase leaves the masthead. The third value is not a
+  gap in our reading — it is what the document says, and treating it as "final"
+  would invent a fact about 134 sittings. `scripts/provenance.py` holds the
+  rule; `scripts/mark_provenance.py` applies it to every held file.
+- **One sitting is served twice.** 29 October 2003 appears as reunión 27 and as
+  reunión 28, and both URLs return byte-identical files. It is the only such
+  pair among the 819.
+- Per-file sha256, source URL, format, provisional status and timestamps:
   [raw_data_manifest.csv](raw_data_manifest.csv), rebuilt from the files on
   disk by `scripts/make_manifest.py`. Listing snapshots are archived under
   `data/raw/senado/listings/`.

@@ -2,34 +2,50 @@
 
 Corpus of Argentine Senate stenographic session transcripts ("versiones
 taquigráficas"): acquisition, parsing into structured speaker-attributed
-text blocks, and analysis.
+text blocks, and analysis. The chamber serves them as PDFs from 2004 on and
+as its own HTML export for most of 1998–2003; both are read here.
 
 ## Status (September 2026)
 
-- 559 session transcripts held, spanning 2000–2024. Coverage is complete
-  from 2004 onward — every session the portal lists for those years is
-  held. Before that it thins out fast, because the portal lists the
-  sessions but no longer serves the files: 34 of 47 held for 2003, 4 of 47
-  for 2002, 10 of 83 for 2001, 3 of 75 for 2000. Sessions are listed back
-  to 1983, but nothing before 2000 is served at all, so 2000 is the hard
-  floor. Every held session is in the provenance manifest
-  ([raw_data_manifest.csv](raw_data_manifest.csv): sha256 of the PDF and
-  its metadata sidecar, source URL, size, download time), regenerated from
-  the files on disk by `scripts/make_manifest.py`. The 90 sessions fetched
-  in January 2025 predate the download-timestamp field, so theirs is blank
-  rather than guessed.
-- Corpus parsed (parser 0.4.37): 151,761 speaker-attributed speech blocks
-  and 31,955 typed stenographer events in 233,408 rows, as per-session
-  Parquet under `data/processed/senado/`. 331 of those events carry the
-  speaker label the page printed directly above them — "Sr. Secretario
-  (Estrada). — (Lee:)" is one printed line, and without this the secretary's
-  taking the floor was recorded nowhere at all (`TODO.md`, Phase 33). One session fails to parse — a
-  November 2001 sitting that never reached quorum, so it has no session
-  opening to find. Text the parser cannot attribute to a speaker is 1,109
-  rows (0.5%), and a handful of sessions account for most of it: sittings
-  whose record is mostly an inserted document (two impeachment dossiers, a
-  printed bill text, a list of judicial appointments) rather than floor
-  debate.
+- 819 session transcripts held, spanning 1998–2026. Coverage is complete from
+  2002 onward — every session the portal lists for those years is held — and
+  partial before it: 51 of 73 for 1998, 47 of 74 for 1999, 46 of 75 for 2000,
+  44 of 83 for 2001. 1997 contributes a single sitting, an impeachment tribunal
+  of 18 December. The portal lists sittings back to 1983, but of the 882 it
+  lists before 1998 exactly one is still served; the other 881 answer 404. That
+  was established by asking for all 882, not by sampling, so 1998 is the floor
+  and there is no point looking again.
+- **Two formats, one corpus.** The portal serves the same URL as a PDF for the
+  sittings from 2004 on and as the chamber's own HTML export for most of
+  1998–2003 (212 of the 214 held come from Corel WordPerfect). The downloader
+  used to reject anything that did not begin with `%PDF`, which is why those
+  years looked unserved: 211 sittings were being thrown away as they arrived.
+  Both formats are kept as served, and every row carries the `source_format`
+  it came from.
+- **What the record declares about itself.** A sitting's masthead may read
+  "VERSIÓN TAQUIGRÁFICA (PROVISIONAL)" — the uncorrected record — and the
+  manifest carries that as `provisional`, with three values rather than two:
+  309 sittings say they are provisional, 338 say they are not, and 172 make no
+  claim, because from 2018 the words leave the masthead altogether. Calling
+  that last group final would invent a fact about 134 sittings. Read it from
+  the raw file: the parser drops the masthead as page apparatus, so parsed text
+  puts every PDF at "not provisional" when 261 of 605 are.
+- Corpus parsed: 247,163 speaker-attributed speech blocks and 60,765 typed
+  stenographer events in 432,331 rows over 817 sittings, as per-session Parquet
+  under `data/processed/senado/`. 25.7 million words of attributed speech, of
+  which the HTML era contributes 6.5 million. The PDF side is parser 0.4.37 and
+  the HTML side `scripts/parse_html.py` at 0.5.0-html; the two share the speaker
+  pattern and the event subtypes, so a passage means the same thing in either.
+  Two sittings fail to parse, both because the parser cannot find a session
+  opening: the November 2001 sitting that never reached quorum, and the 1997
+  impeachment tribunal, which does not open like an ordinary sitting. Text that
+  cannot be attributed to a speaker is 0.92% of the corpus, and in the HTML era
+  82% of it stands just after a marker of insertion — speeches handed in for the
+  record and never delivered.
+- **The portal serves one sitting twice.** 29 October 2003 is listed as reunión
+  27 and as reunión 28, and both URLs return byte-identical files. It is the
+  only such pair in the 819, and until it is resolved that sitting's words are
+  counted twice.
 - **The words no longer run together.** The 2003–2009 files end a line without
   storing a space, so the last word of one line used to come out glued to the
   first of the next — "reemplazala expresión". Parser 0.4.11 puts the space
@@ -343,6 +359,11 @@ text blocks, and analysis.
 
 ## Results
 
+> These figures and numbers were computed on the 559-sitting corpus of
+> 2000–2024, before the HTML holdings of 1998–2003 and the sittings of
+> 2025–2026 were added. They have not been recomputed, so read them as the
+> state of the analysis at release 0.4.37, not of the corpus as it stands.
+
 ![Senate floor words by year and party family](figures/floor_words_by_year.png)
 
 - The Peronist/Justicialist family holds 30% to 56% of floor words in the
@@ -408,11 +429,20 @@ it brackets a change between two dates and never fixes one to the day.
 
 ## Layout
 
-- `scripts/download.py` — fetch session PDFs + metadata sidecars from the
-  Senate open-data portal.
+- `scripts/download.py` — fetch sessions + metadata sidecars from the Senate
+  open-data portal, in whichever of the two formats it serves for the sitting.
+- `scripts/provenance.py` — what a held file is: the format served and whether
+  the record declares itself provisional, read from the file's own masthead.
+- `scripts/mark_provenance.py` — write those two facts into every sidecar,
+  including the files fetched before the fields existed.
 - `scripts/parse.py` — parse PDFs into per-session Parquet block tables
   (speech turns, typed events, headings), plus per-session logs and a
   `parse_stats.csv` quality table.
+- `scripts/parse_html.py` — the same table from the chamber's HTML export,
+  which covers most of 1998–2003. A separate reader, because none of the PDF
+  pipeline's work applies to markup that states outright what a PDF only
+  implies; the speaker pattern and the event subtypes are shared with
+  `parse.py` so both eras mean the same thing.
 - `scripts/fetch_roster.py` — fetch senator roster datasets into
   `reference/senado/`.
 - `scripts/fetch_blocs.py` — read one roll-call record per sitting date back

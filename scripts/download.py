@@ -10,9 +10,12 @@ Hardened rewrite of the Jan 2025 downloader:
   existing JSON sidecars — not by filename — so the Jan 2025 files keep
   their names while new downloads use {date-iso}_r{reunion}_{TIPO}.pdf
   (ASCII, sortable, collision-free: reunion is part of the session's URL).
-- PDFs stream to a .part file, are validated (%PDF magic, minimum size),
-  and are renamed into place atomically; a truncated or bogus download can
-  no longer masquerade as a finished one.
+- Files stream to a .part file, are validated, and are renamed into place
+  atomically; a truncated or bogus download can no longer masquerade as a
+  finished one. The portal serves two formats from the same URL: a PDF for
+  the sittings from 2004 on, and the chamber's original HTML export for
+  most of 1998-2003. Both are kept, in the format served; a sitting the
+  portal no longer holds answers 404 and is reported, not stored.
 - Sidecars now record sha256, size, download timestamp, and the archived
   listing they came from.
 """
@@ -29,6 +32,8 @@ from pathlib import Path
 
 import requests
 
+from provenance import html_head_text, pdf_head_text, provisional_status, sniff_format
+
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
 LISTINGS_DIR = REPO_ROOT / "data" / "raw" / "senado" / "listings"
@@ -38,8 +43,12 @@ DEFAULT_YEARS = [2020, 2021, 2022, 2023, 2024]
 DOWNLOAD_DELAY = 5  # seconds between downloads
 MAX_RETRIES = 3
 LISTING_TIMEOUT = 30
-PDF_TIMEOUT = (10, 60)  # (connect, read)
-MIN_PDF_BYTES = 10_000  # smallest real transcript so far is ~200 KB
+FILE_TIMEOUT = (10, 60)  # (connect, read)
+MIN_PDF_BYTES = 10_000  # smallest real PDF transcript so far is ~200 KB
+MIN_HTML_BYTES = 4_000  # smallest real HTML transcript so far is ~20 KB
+# Every real file arrives as an attachment; a sitting the portal lists but no
+# longer serves answers 404, so status and this header carry the decision.
+HTML_MARKERS = ("SENADO", "ASAMBLEA LEGISLATIVA", "CONGRESO")
 
 
 def fetch_listing():
@@ -124,35 +133,64 @@ def target_basename(session):
     return f"{date_iso}_r{int(reunion):02d}_{tipo}" if reunion.isdigit() else f"{date_iso}_rxx_{tipo}"
 
 
+def looks_like_transcript_html(raw):
+    """True when an HTML body reads like a chamber transcript, not a stray page."""
+    text = html_head_text(raw)
+    return any(marker in text for marker in HTML_MARKERS)
+
+
 def download_session(session, listing_name):
-    """Download one session PDF atomically + write its sidecar. True on success."""
+    """Download one session file atomically + write its sidecar. True on success.
+
+    The portal serves PDF or HTML from the same URL depending on the sitting's
+    age, so the format is read off the bytes rather than assumed.
+    """
     basename = target_basename(session)
-    pdf_path = RAW_DIR / f"{basename}.pdf"
-    part_path = RAW_DIR / f"{basename}.pdf.part"
+    part_path = RAW_DIR / f"{basename}.part"
     url = session["url"]
 
     for attempt in range(1, MAX_RETRIES + 1):
         try:
-            with requests.get(url, stream=True, timeout=PDF_TIMEOUT) as response:
+            with requests.get(url, stream=True, timeout=FILE_TIMEOUT) as response:
                 response.raise_for_status()
+                disposition = response.headers.get("Content-Disposition", "")
                 first = b""
                 with part_path.open("wb") as f:
                     for chunk in response.iter_content(chunk_size=8192):
                         if not first and chunk:
                             first = chunk
-                            if not first.startswith(b"%PDF"):
-                                raise ValueError(f"not a PDF (starts with {first[:8]!r})")
                         f.write(chunk)
 
+            fmt = sniff_format(first)
             size = part_path.stat().st_size
-            if size < MIN_PDF_BYTES:
-                raise ValueError(f"suspiciously small download ({size} bytes)")
+            if fmt == "pdf":
+                if size < MIN_PDF_BYTES:
+                    raise ValueError(f"suspiciously small PDF ({size} bytes)")
+            else:
+                # Without the attachment header this is a page, not a file.
+                if "attachment" not in disposition.lower():
+                    raise ValueError(f"not a served file (starts with {first[:16]!r})")
+                if size < MIN_HTML_BYTES:
+                    raise ValueError(f"suspiciously small HTML ({size} bytes)")
+                if not looks_like_transcript_html(part_path.read_bytes()):
+                    raise ValueError("HTML body does not read like a transcript")
 
+            # Read off the file itself, so the record says what it is.
+            # None where the masthead makes no claim — see provenance.py.
+            head = (pdf_head_text(part_path) if fmt == "pdf"
+                    else html_head_text(part_path.read_bytes()))
+            provisional = provisional_status(head)
+
+            served = re.search(r'filename="([^"]+)"', disposition)
             sha = hashlib.sha256(part_path.read_bytes()).hexdigest()
-            part_path.rename(pdf_path)  # atomic: only complete, validated files get .pdf
+            final_path = RAW_DIR / f"{basename}.{fmt}"
+            part_path.rename(final_path)  # atomic: only validated files get the real name
 
             sidecar = dict(session)
             sidecar.update({
+                "format": fmt,
+                "provisional": provisional,
+                "served_filename": served.group(1) if served else None,
                 "sha256": sha,
                 "size_bytes": size,
                 "downloaded_at_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
@@ -161,12 +199,17 @@ def download_session(session, listing_name):
             (RAW_DIR / f"{basename}.json").write_text(
                 json.dumps(sidecar, indent=4, ensure_ascii=False), encoding="utf-8"
             )
-            print(f"Downloaded: {pdf_path.name} ({size} bytes)")
+            print(f"Downloaded: {final_path.name} ({size} bytes)")
             return True
 
         except (requests.RequestException, ValueError) as e:
             part_path.unlink(missing_ok=True)
+            status = getattr(getattr(e, "response", None), "status_code", None)
             print(f"Attempt {attempt}/{MAX_RETRIES} failed for {session['fecha']} r{session['reunion']}: {e}")
+            if status == 404:
+                # The portal lists the sitting but no longer serves it; retrying cannot help.
+                print(f"  not served by the portal (404) — {session['fecha']} r{session['reunion']}")
+                return False
             if attempt < MAX_RETRIES:
                 time.sleep(2 ** attempt)
 
@@ -175,9 +218,11 @@ def download_session(session, listing_name):
 
 
 def main():
-    ap = argparse.ArgumentParser(description="Download Senate transcript PDFs from the open-data portal.")
+    ap = argparse.ArgumentParser(description="Download Senate transcripts (PDF or HTML) from the open-data portal.")
     ap.add_argument("--years", type=int, nargs="+", default=DEFAULT_YEARS,
                     help=f"session years to include (default: {DEFAULT_YEARS})")
+    ap.add_argument("--all-years", action="store_true",
+                    help="every year the listing carries, overriding --years")
     ap.add_argument("--types", nargs="+", help="session types to include (default: all)")
     ap.add_argument("--dry-run", action="store_true",
                     help="archive the listing and report missing sessions without downloading")
@@ -197,7 +242,8 @@ def main():
     (LISTINGS_DIR / listing_name).write_text(raw_text, encoding="utf-8")
     print(f"Listing archived: {listing_name} ({len(rows)} rows)")
 
-    sessions = filter_sessions(parse_sessions(rows), args.years, args.types)
+    years = None if args.all_years else args.years
+    sessions = filter_sessions(parse_sessions(rows), years, args.types)
     held = held_sessions()
     missing = [s for s in sessions if session_key(s["fecha"], s["reunion"]) not in held]
     listed_keys = {session_key(s["fecha"], s["reunion"]) for s in sessions}

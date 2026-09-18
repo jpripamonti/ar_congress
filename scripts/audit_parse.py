@@ -248,7 +248,7 @@ def load_corpus():
     frames = []
     for p in sorted(BLOCKS_DIR.glob("*.parquet")):
         frames.append(pd.read_parquet(p, columns=[
-            "session_id", "session_date", "source_pdf", "type", "turn_id",
+            "session_id", "session_date", "source_file", "type", "turn_id",
             "speaker_raw", "text", "pages"]))
     if not frames:
         sys.exit(f"No parsed sessions under {BLOCKS_DIR}")
@@ -377,7 +377,7 @@ def main():
     if not args.skip_source:
         print(f"\n{'='*66}\nSOURCE CHECKS — re-extracting every PDF\n{'='*66}")
         speech = corpus[corpus.type.isin(["speech", "event", "heading"])]
-        jobs = [(sid, g.source_pdf.iloc[0], g.text.tolist())
+        jobs = [(sid, g.source_file.iloc[0], g.text.tolist())
                 for sid, g in speech.groupby("session_id")]
         rows = []
         with ProcessPoolExecutor(max_workers=args.workers) as pool:
@@ -481,7 +481,7 @@ def write_review_sheet(corpus, n, scanned=frozenset()):
         r = speech.loc[i]
         rows.append({
             "session": r.session_id,
-            "pdf": r.source_pdf,
+            "pdf": r.source_file,
             "page": list(r.pages)[0] if len(r.pages) else "",
             "turn_opens_on_page": first_page.get((r.session_id, r.turn_id), ""),
             "parser_says_speaker": r.speaker_raw,

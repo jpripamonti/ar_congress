@@ -1731,6 +1731,38 @@ label was therefore written nowhere at all.
       the gold set stays at 124 of 125 until somebody decides whether a turn
       holding only a stenographer's note is a turn.
 
+## Phase 34 — the HTML era (September 2026)
+
+The portal serves the same URL as a PDF or as the chamber's HTML export
+depending on the sitting's age, and the downloader had been rejecting
+everything that was not a PDF. Fixing that added 211 sittings of 1998-2003,
+29 of 2025-2026 and the one served sitting of 1997: 559 holdings become 819,
+and 21.5 million words of attributed speech become 25.7.
+
+- [x] Accept both formats, keep each as served, record `format` per sitting
+- [x] Census all 882 listed sittings before 1998: 881 are gone, one survives
+- [x] Record `provisional` from the masthead, with `unstated` as a third value
+- [x] `parse_html.py`: 214 files, no errors, 6.5M words of attributed speech
+- [x] Rename `source_pdf`/`pdf_sha256` to `source_file`/`source_sha256`, add
+      `source_format`, and re-parse every PDF so the corpus has one schema
+- [ ] Resolve speakers over the HTML era. `speakers.parquet` still holds only
+      the 16,311 rows of the PDF corpus, so the 214 new sittings have a
+      `speaker_raw` and nothing joined to it. The historical roster may not
+      reach 1998-2001 well; find out before trusting any grouping there.
+- [ ] Two sittings do not parse, both for want of a session opening: the
+      November 2001 sitting that never reached quorum, and the 1997
+      impeachment tribunal, which does not open like an ordinary sitting. The
+      1997 one is the only sitting of its year, so it is worth the look.
+- [ ] 29 October 2003 is served twice, as reunión 27 and reunión 28, byte for
+      byte identical. Decide which to keep; until then its words count twice.
+- [ ] Re-run the analysis and the figures. Everything under "Results" in the
+      README was computed on the 559-sitting corpus and is not recomputed.
+- [ ] Put the HTML era through the audit and a blind read. `audit_parse.py`
+      reads PDFs, so it does not cover these 214 sittings at all; nothing here
+      has been checked against the printed page by eye.
+- [ ] Group the chamber's own `session_type` labels before counting: `EN
+      MINORÍA` and `ESPECIAL EN MINORÍA` name the same thing.
+
 ## Explicitly not building
 
 Packaging/PyPI, docs site, utils wrappers, test-file mirror, separate

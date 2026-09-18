@@ -132,7 +132,7 @@ def main():
         page = gold["page"]
         # NFC-normalize both sides: macOS stores filenames NFD, annotators type NFC
         want = unicodedata.normalize("NFC", gold["pdf"])
-        sess = corpus[corpus.source_pdf.map(lambda s: unicodedata.normalize("NFC", s)) == want]
+        sess = corpus[corpus.source_file.map(lambda s: unicodedata.normalize("NFC", s)) == want]
         if sess.empty:
             print(f"!! no parsed session for {gold['pdf']} — skipping {path.name}")
             continue
