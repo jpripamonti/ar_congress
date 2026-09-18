@@ -1779,8 +1779,13 @@ and 21.5 million words of attributed speech become 25.7.
       1997 one is the only sitting of its year, so it is worth the look.
 - [ ] 29 October 2003 is served twice, as reunión 27 and reunión 28, byte for
       byte identical. Decide which to keep; until then its words count twice.
-- [ ] Re-run the analysis and the figures. Everything under "Results" in the
-      README was computed on the 559-sitting corpus and is not recomputed.
+- [x] Re-run the analysis and the figures over all 817 sittings. The notebook
+      now takes the caucus from `speakers.parquet` rather than the older spell
+      table, which is what let the caucus panel start in 2000 instead of 2005,
+      and it keeps the readings the Senate mis-dates after checking what they
+      get wrong: the name, not the family (1.4% cross one). Dropping them
+      would have cost 40% of 2018-2019 and biased the panel against the
+      peronist family, which is the one the Senate back-labels.
 - [ ] Put the HTML era through the audit and a blind read. `audit_parse.py`
       reads PDFs, so it does not cover these 214 sittings at all; nothing here
       has been checked against the printed page by eye.

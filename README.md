@@ -387,73 +387,85 @@ as its own HTML export for most of 1998–2003; both are read here.
 
 ## Results
 
-> These figures and numbers were computed on the 559-sitting corpus of
-> 2000–2024, before the HTML holdings of 1998–2003 and the sittings of
-> 2025–2026 were added. They have not been recomputed, so read them as the
-> state of the analysis at release 0.4.37, not of the corpus as it stands.
+Computed on the whole corpus — 817 sittings, 1998–2026 — by
+[notebooks/analysis.ipynb](notebooks/analysis.ipynb), which prints the figures
+below and the tables behind them.
 
 ![Senate floor words by year and party family](figures/floor_words_by_year.png)
 
 - The Peronist/Justicialist family holds 30% to 56% of floor words in the
-  fully held years, median 48%, across four changes of national government.
-  It is the largest single family in 18 of those 21 years; in 2013, 2014 and
-  2015 the provincial-and-other bucket was larger, but that bucket is a
-  residual holding many separate alliances rather than one family — and
-  regrouping the same speech by the caucus each senator actually sat in makes
-  the peronist family the largest in every one of the twenty years the caucus
-  data covers.
+  completely held years, median 47%, across five changes of national
+  government. It is the largest single family in 21 of those 24 years; in
+  2013, 2014 and 2015 the provincial-and-other bucket was larger, but that
+  bucket is a residual holding many separate alliances rather than one family
+  — and regrouping the same speech by the caucus each senator actually sat in
+  makes the peronist family the largest in **every one of the twenty-seven
+  years the caucus reaches**, at 42% to 66%.
+
 ![The same floor speech grouped by ticket and by caucus](figures/ticket_vs_caucus.png)
 
-- **What moved is mostly the labels, and the caucus data now shows it rather
-  than merely warning about it.** By ticket, provincial and other alliances
-  held 30–46% of floor words to 2016 and 13–15% from 2020, while the
-  radical/Cambiemos family went the other way (9–27% before 2019, 30–39%
-  after) — a chamber that looks realigned at a stroke. Group the identical
-  speech by caucus and the step disappears: radical/Cambiemos sits at 23–37%
-  throughout, and provincial and other alliances end 2022–2024 at 16–20%
-  rather than 13%. Senators did not change sides in 2019; the tickets they had
-  been elected on consolidated into two national coalitions. All 62 caucuses are
-  dated by hand ([blocs_manual.csv](reference/senado/blocs_manual.csv)), each
-  against the sitting that attests it, because the Senate records a caucus once
-  per mandate and backdates it over the whole term. `bloc_status` says whether
-  the caucus existed **on the day of the sitting**, which is not the same
-  question as whether it existed on the day it was recorded: a sitting can be
-  up to 200 days from the nearest record, and 99 passages used to come out
-  `confirmed` because the check had only ever been made at the other end of
-  that gap. 0.4.35 re-checks at the sitting's own date. A second reading of
-  the same gap is marked too: where the sitting falls between two records that
-  could each describe that day and name DIFFERENT caucuses, the switch happened
-  somewhere in between and the record does not say on which side, so taking the
-  nearer of the two projected one reading across a disagreement. Those 113
-  passages — 0.1% of senators' floor passages, of which 36 cross a party family —
-  read `disputed` rather than `confirmed`.
-- The 2020–2023 collapse was mostly fewer sittings, not quieter ones. Floor
-  words fell 6.4-fold, which splits into a 3.9-fold fall in sittings held
-  (31 to 8) and only a 1.65-fold fall in words per sitting. By 2024 a
-  sitting was as long as ever; there were simply twelve of them.
+- **What moved in 2019 is mostly the labels, and the caucus data shows it
+  rather than merely warning about it.** By ticket, the radical/Cambiemos/JxC
+  family holds 9–34% of floor words to 2018 and 25–39% from 2019, while
+  provincial and other alliances go the other way, 9–46% down to 13–25% — a
+  chamber that looks realigned at a stroke. Group the identical speech by the
+  caucus each senator sat in and the step disappears: radical/Cambiemos/JxC
+  sits at 23–33% before 2019 and 23–34% after, provincial and other alliances
+  at 9–27% and 10–21%. Senators did not change sides in 2019; the tickets they
+  had been elected on consolidated into two national coalitions. La Libertad
+  Avanza is the one real arrival, from nothing to 24% of floor words by caucus
+  in 2026.
+- **The caucus panel keeps the readings the Senate mis-dates, because the
+  notebook checks what they actually get wrong.** The Senate records a caucus
+  once per mandate and stores the one the senator **ended** it in, projected
+  backwards over the whole term, so 3,069 of its 23,701 readings (12.9%) name
+  a caucus that did not exist on the day of the sitting. Every caucus is dated
+  by hand ([blocs_manual.csv](reference/senado/blocs_manual.csv)) against the
+  sitting that attests it, and those readings are marked `anachronistic`. What
+  they get wrong is the NAME; this panel reads the FAMILY, and the notebook
+  compares each mis-dated reading against the same senator's nearest attested
+  one: **1.4% of them land in a different family**. Dropping them instead would
+  cost 40% of the evidence in 2018–2019, and not at random — the readings the
+  Senate back-labels are overwhelmingly peronist, so the cure would bias the
+  panel against the family it mislabels.
+
+![Sittings held and words spoken per sitting](figures/sittings_and_length.png)
+
+- The 2020–2023 collapse was fewer sittings, not quieter ones. Floor words
+  fell 6.4-fold, which splits into a 3.9-fold fall in sittings held (31 to 8)
+  and only a 1.65-fold fall in words per sitting. The three years since settle
+  it: 2024, 2025 and 2026 run 41,000–45,000 floor words per sitting — the
+  longest sittings in the corpus — on 12 to 14 of them a year.
+
+![Incidents, reactions and votes per 10,000 floor words](figures/chamber_temperature.png)
+
 - The chamber has been getting steadily more disorderly since about 2013.
-  Recorded incidents per 10,000 floor words ran near 1 through the 2000s
-  and peaked at 12.3 in 2023 — roughly a tenfold rise, beginning well
-  before the remote sittings of 2020. This is a measurement only possible
+  Recorded incidents per 10,000 floor words ran near 1 through the 2000s,
+  peaked at 12.3 in 2023 and have eased since, to 9.4 in 2024 and 6.8 in 2025
+  — roughly a tenfold rise and a partial retreat, beginning well before the
+  remote sittings of 2020. The 1998–2003 holdings extend the quiet baseline
+  back four years without disturbing it. This is a measurement only possible
   because stenographer events are preserved and typed rather than deleted.
+- Recorded votes per word fell sevenfold and then held: 28–41 per 10,000 floor
+  words from 2002 to 2005, falling through 2006–2009, and between 3 and 11
+  every year from 2010 on. The fall happens inside the PDF era, so it is not an
+  artefact of the two formats. Read it as procedural volume rather than
+  temperature — the chamber came to spend far more words per recorded vote.
 
-Methodological caveats (incomplete holdings before 2004, session-type mix,
-chairs excluded) are documented in the notebook and in
-[SOURCES.md](SOURCES.md). The caucus view carries its own: the Senate records
-a caucus once per mandate and stores the one the senator **ended** it in,
-projected backwards over the whole term, so **3,043 of its 22,213 readings
-(13.7%) name a caucus that did not exist on the day of the vote**. All 62
-caucuses are dated by hand against the sittings that attest them, every reading
-is checked against those dates, and the ones that fail are marked rather than
-dropped or repaired. Seven caucuses still have no established start, so nothing
-can be checked for them. A senator who crossed the floor between two
-observations changes on the later one, not the day they moved.
+Methodological caveats — 1998–2001 incompletely held, 2026 still running,
+session-type mix, chairs excluded — are documented in the notebook's sampling
+frame and in [SOURCES.md](SOURCES.md). The caucus carries its own: it is
+observed on 357 days and never continuously, seven caucuses have no established
+start so nothing can be checked for them, and a senator who crossed the floor
+between two observations changes on the later one, not the day they moved.
 
-Before 2005 the roll-call records do not exist at all, and that gap is now
-filled from the Senate's own bloc-roster page as the Internet Archive kept it —
-1,112 senator-rows over 16 captures from May 2000 to June 2004, every one checked
+Before 2005 the roll-call records do not exist at all, and that gap is filled
+from the Senate's own bloc-roster page as the Internet Archive kept it — 1,112
+senator-rows over 16 captures from May 2000 to June 2004, every one checked
 against the roster's mandate dates. A capture dates the page, not the chamber:
-it brackets a change between two dates and never fixes one to the day.
+it brackets a change between two dates and never fixes one to the day. Before
+25 May 2000 there is no capture and no caucus, so 1998 and 1999 have the ticket
+and nothing else.
 
 ## Layout
 
