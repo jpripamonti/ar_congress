@@ -824,7 +824,13 @@ def main():
     print(f"{sum(len(v) for v in presiding.values())} presiding names "
           f"from the mastheads of {len(presiding)} sittings")
 
-    corpus = pd.concat([pd.read_parquet(p) for p in sorted(BLOCKS_DIR.glob("*.parquet"))],
+    # Only the columns the join needs. Reading all of them pulls 25.7 million
+    # words of text in to count rows, and makes pandas guess a dtype for
+    # columns that are empty in one sitting and not in the next.
+    corpus = pd.concat([pd.read_parquet(p, columns=["session_id", "session_date",
+                                                    "session_type", "source_file",
+                                                    "type", "speaker_raw"])
+                        for p in sorted(BLOCKS_DIR.glob("*.parquet"))],
                        ignore_index=True)
     speech = corpus[corpus.type == "speech"]
     labels = (speech.groupby(["session_id", "session_date", "session_type",

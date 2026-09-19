@@ -349,21 +349,21 @@ session_date,file,office,person
 1999-05-05,1999-05-05_r15_ORDINARIA,secretario,Pedro C. Maranguello
 1999-05-05,1999-05-05_r15_ORDINARIA,secretario,Víctor Eduardo Pereira
 1999-05-05,1999-05-05_r15_ORDINARIA,vicepresidente de la nacion,Carlos F. Ruckauf
-1999-05-12,1999-05-12_r18_ESPECIAL,prosecretario,Alejandro L. Colombo
 1999-05-12,1999-05-12_r19_ORDINARIA,prosecretario,Alejandro L. Colombo
-1999-05-12,1999-05-12_r18_ESPECIAL,prosecretario,Mario L. Pontaquarto
+1999-05-12,1999-05-12_r18_ESPECIAL,prosecretario,Alejandro L. Colombo
 1999-05-12,1999-05-12_r19_ORDINARIA,prosecretario,Mario L. Pontaquarto
-1999-05-12,1999-05-12_r18_ESPECIAL,prosecretario,Ricardo Balestra
+1999-05-12,1999-05-12_r18_ESPECIAL,prosecretario,Mario L. Pontaquarto
 1999-05-12,1999-05-12_r19_ORDINARIA,prosecretario,Ricardo Balestra
-1999-05-12,1999-05-12_r18_ESPECIAL,secretario,Juan Carlos Oyarzún
+1999-05-12,1999-05-12_r18_ESPECIAL,prosecretario,Ricardo Balestra
 1999-05-12,1999-05-12_r19_ORDINARIA,secretario,Juan Carlos Oyarzún
-1999-05-12,1999-05-12_r18_ESPECIAL,secretario,Pedro C. Maranguello
+1999-05-12,1999-05-12_r18_ESPECIAL,secretario,Juan Carlos Oyarzún
 1999-05-12,1999-05-12_r19_ORDINARIA,secretario,Pedro C. Maranguello
-1999-05-12,1999-05-12_r18_ESPECIAL,secretario,Víctor Eduardo Pereira
+1999-05-12,1999-05-12_r18_ESPECIAL,secretario,Pedro C. Maranguello
 1999-05-12,1999-05-12_r19_ORDINARIA,secretario,Víctor Eduardo Pereira
+1999-05-12,1999-05-12_r18_ESPECIAL,secretario,Víctor Eduardo Pereira
 1999-05-12,1999-05-12_r19_ORDINARIA,vicepresidente 1°,Mario A. Losada
-1999-05-12,1999-05-12_r18_ESPECIAL,vicepresidente de la nacion,Carlos F. Ruckauf
 1999-05-12,1999-05-12_r19_ORDINARIA,vicepresidente de la nacion,Carlos F. Ruckauf
+1999-05-12,1999-05-12_r18_ESPECIAL,vicepresidente de la nacion,Carlos F. Ruckauf
 1999-05-19,1999-05-19_r20_EN_MINORIA,prosecretario,Alejandro L. Colombo
 1999-05-19,1999-05-19_r20_EN_MINORIA,prosecretario,Mario L. Pontaquarto
 1999-05-19,1999-05-19_r20_EN_MINORIA,prosecretario,Ricardo Balestra
@@ -615,25 +615,25 @@ session_date,file,office,person
 1999-12-22,1999-12-22_r69_EXTRAORDINARIA,secretario,Mario L. Pontaquarto
 1999-12-22,1999-12-22_r69_EXTRAORDINARIA,secretario,Ricardo Mitre
 1999-12-22,1999-12-22_r69_EXTRAORDINARIA,vicepresidente de la nacion,Carlos A. Álvarez
-1999-12-28,1999-12-28_r72_ESPECIAL,prosecretario,Alejandro L. Colombo
 1999-12-28,1999-12-28_r70_ESPECIAL,prosecretario,Alejandro L. Colombo
+1999-12-28,1999-12-28_r72_ESPECIAL,prosecretario,Alejandro L. Colombo
 1999-12-28,1999-12-28_r71_ESPECIAL,prosecretario,Alejandro L. Colombo
 1999-12-28,1999-12-28_r70_ESPECIAL,prosecretario,Rodolfo Bernardini
 1999-12-28,1999-12-28_r71_ESPECIAL,prosecretario,Rodolfo Bernardini
-1999-12-28,1999-12-28_r72_ESPECIAL,prosecretario,Vilma Ibarra
 1999-12-28,1999-12-28_r70_ESPECIAL,prosecretario,Vilma Ibarra
+1999-12-28,1999-12-28_r72_ESPECIAL,prosecretario,Vilma Ibarra
 1999-12-28,1999-12-28_r71_ESPECIAL,prosecretario,Vilma Ibarra
-1999-12-28,1999-12-28_r72_ESPECIAL,secretario,Juan Carlos Oyarzún
 1999-12-28,1999-12-28_r70_ESPECIAL,secretario,Juan Carlos Oyarzún
+1999-12-28,1999-12-28_r72_ESPECIAL,secretario,Juan Carlos Oyarzún
 1999-12-28,1999-12-28_r71_ESPECIAL,secretario,Juan Carlos Oyarzún
-1999-12-28,1999-12-28_r72_ESPECIAL,secretario,Mario L. Pontaquarto
 1999-12-28,1999-12-28_r70_ESPECIAL,secretario,Mario L. Pontaquarto
+1999-12-28,1999-12-28_r72_ESPECIAL,secretario,Mario L. Pontaquarto
 1999-12-28,1999-12-28_r71_ESPECIAL,secretario,Mario L. Pontaquarto
-1999-12-28,1999-12-28_r72_ESPECIAL,secretario,Ricardo Mitre
 1999-12-28,1999-12-28_r70_ESPECIAL,secretario,Ricardo Mitre
+1999-12-28,1999-12-28_r72_ESPECIAL,secretario,Ricardo Mitre
 1999-12-28,1999-12-28_r71_ESPECIAL,secretario,Ricardo Mitre
-1999-12-28,1999-12-28_r72_ESPECIAL,vicepresidente de la nacion,Carlos A. Álvarez
 1999-12-28,1999-12-28_r70_ESPECIAL,vicepresidente de la nacion,Carlos A. Álvarez
+1999-12-28,1999-12-28_r72_ESPECIAL,vicepresidente de la nacion,Carlos A. Álvarez
 1999-12-28,1999-12-28_r71_ESPECIAL,vicepresidente de la nacion,Carlos A. Álvarez
 2000-02-23,2000-02-23_r73_EXTRAORDINARIA,presidente provisional,José Genoud
 2000-02-23,2000-02-23_r73_EXTRAORDINARIA,prosecretario,Alejandro L. Colombo
@@ -1797,8 +1797,16 @@ session_date,file,office,person
 2003-10-16,2003-10-16_r00_ASAMBLEA,secretario,Eduardo Daniel Rollano
 2003-10-16,2003-10-16_r00_ASAMBLEA,secretario,Juan Estrada
 2003-10-16,2003-10-16_r00_ASAMBLEA,vicepresidente de la nacion,Daniel Osvaldo Scioli
-2003-10-29,2003-10-29_r27_ORDINARIA,NONE,
-2003-10-29,2003-10-29_r28_TRIBUNAL_DE_JUICIO_POLITICO,NONE,
+2003-10-29,2003-10-29_r27_ORDINARIA,prosecretario,Alfredo A. Luques
+2003-10-29,2003-10-29_r28_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Alfredo A. Luques
+2003-10-29,2003-10-29_r27_ORDINARIA,prosecretario,José D. Canata
+2003-10-29,2003-10-29_r28_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata
+2003-10-29,2003-10-29_r27_ORDINARIA,prosecretario,Juan J. Canals
+2003-10-29,2003-10-29_r28_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Juan J. Canals
+2003-10-29,2003-10-29_r27_ORDINARIA,secretario,Carlos Alberto Machiaroli
+2003-10-29,2003-10-29_r28_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Carlos Alberto Machiaroli
+2003-10-29,2003-10-29_r27_ORDINARIA,secretario,Juan Héctor Estrada
+2003-10-29,2003-10-29_r28_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Juan Héctor Estrada
 2003-11-04,2003-11-04_r29_TRIBUNAL_DE_JUICIO_POLITICO,NONE,
 2003-11-05,2003-11-05_r30_ORDINARIA,presidente provisional,José Luis Gioja
 2003-11-05,2003-11-05_r31_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Alfredo A. Luques
@@ -1828,19 +1836,19 @@ session_date,file,office,person
 2003-11-19,2003-11-19_r33_ORDINARIA,vicepresidente,Marcelo Eduardo López Arias
 2003-11-19,2003-11-19_r33_ORDINARIA,vicepresidente de la nacion,Daniel Osvaldo Scioli
 2003-11-26,2003-11-26_r35_ORDINARIA,presidente provisional,José Luis Gioja
-2003-11-26,2003-11-26_r36_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Alfredo A. Luques
 2003-11-26,2003-11-26_r35_ORDINARIA,prosecretario,Alfredo A. Luques
-2003-11-26,2003-11-26_r36_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata
+2003-11-26,2003-11-26_r36_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Alfredo A. Luques
 2003-11-26,2003-11-26_r35_ORDINARIA,prosecretario,José D. Canata
-2003-11-26,2003-11-26_r36_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Juan J. Canals
+2003-11-26,2003-11-26_r36_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata
 2003-11-26,2003-11-26_r35_ORDINARIA,prosecretario,Juan J. Canals
-2003-11-26,2003-11-26_r36_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Carlos Alberto Machiaroli
+2003-11-26,2003-11-26_r36_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Juan J. Canals
 2003-11-26,2003-11-26_r35_ORDINARIA,secretario,Carlos Alberto Machiaroli
-2003-11-26,2003-11-26_r36_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Juan Héctor Estrada
+2003-11-26,2003-11-26_r36_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Carlos Alberto Machiaroli
 2003-11-26,2003-11-26_r35_ORDINARIA,secretario,Juan Héctor Estrada
+2003-11-26,2003-11-26_r36_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Juan Héctor Estrada
 2003-11-26,2003-11-26_r35_ORDINARIA,vicepresidente,Marcelo Eduardo López Arias
-2003-11-26,2003-11-26_r36_TRIBUNAL_DE_JUICIO_POLITICO,vicepresidente de la nacion,Daniel Osvaldo Scioli
 2003-11-26,2003-11-26_r35_ORDINARIA,vicepresidente de la nacion,Daniel Osvaldo Scioli
+2003-11-26,2003-11-26_r36_TRIBUNAL_DE_JUICIO_POLITICO,vicepresidente de la nacion,Daniel Osvaldo Scioli
 2003-11-27,2003-11-27_r37_ESPECIAL,prosecretario,Alfredo A. Luques
 2003-11-27,2003-11-27_r37_ESPECIAL,prosecretario,José D. Canata
 2003-11-27,2003-11-27_r38_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata
@@ -1874,19 +1882,19 @@ session_date,file,office,person
 2003-12-17,2003-12-17_r41_ORDINARIA,secretario,Juan Héctor Estrada
 2003-12-17,2003-12-17_r41_ORDINARIA,vicepresidente de la nacion,Daniel Osvaldo Scioli
 2004-02-24,2004-02-24_r43_EXTRAORDINARIA,presidente provisional,Marcelo Alejandro Horacio Guinle
-2004-02-24,2004-02-24_r01_PREPARATORIA,prosecretario,José D. Canata
 2004-02-24,2004-02-24_r43_EXTRAORDINARIA,prosecretario,José D. Canata
-2004-02-24,2004-02-24_r01_PREPARATORIA,prosecretario,Juan J. Canals
+2004-02-24,2004-02-24_r01_PREPARATORIA,prosecretario,José D. Canata
 2004-02-24,2004-02-24_r43_EXTRAORDINARIA,prosecretario,Juan J. Canals
-2004-02-24,2004-02-24_r01_PREPARATORIA,prosecretario,Ricardo Nicanor Gutiérrez
+2004-02-24,2004-02-24_r01_PREPARATORIA,prosecretario,Juan J. Canals
 2004-02-24,2004-02-24_r43_EXTRAORDINARIA,prosecretario,Ricardo Nicanor Gutiérrez
-2004-02-24,2004-02-24_r01_PREPARATORIA,secretario,Carlos Alberto Machiaroli
+2004-02-24,2004-02-24_r01_PREPARATORIA,prosecretario,Ricardo Nicanor Gutiérrez
 2004-02-24,2004-02-24_r43_EXTRAORDINARIA,secretario,Carlos Alberto Machiaroli
-2004-02-24,2004-02-24_r01_PREPARATORIA,secretario,Juan Héctor Estrada
+2004-02-24,2004-02-24_r01_PREPARATORIA,secretario,Carlos Alberto Machiaroli
 2004-02-24,2004-02-24_r43_EXTRAORDINARIA,secretario,Juan Héctor Estrada
+2004-02-24,2004-02-24_r01_PREPARATORIA,secretario,Juan Héctor Estrada
 2004-02-24,2004-02-24_r43_EXTRAORDINARIA,vicepresidente,Marcelo Eduardo López Arias
-2004-02-24,2004-02-24_r01_PREPARATORIA,vicepresidente de la nacion,Daniel Osvaldo Scioli
 2004-02-24,2004-02-24_r43_EXTRAORDINARIA,vicepresidente de la nacion,Daniel Osvaldo Scioli
+2004-02-24,2004-02-24_r01_PREPARATORIA,vicepresidente de la nacion,Daniel Osvaldo Scioli
 2004-03-01,2004-03-01_r00_ASAMBLEA,presidente de la honorable camara de diputados,Eduardo Oscar Camaño
 2004-03-01,2004-03-01_r00_ASAMBLEA,secretario,Eduardo Daniel Rollano
 2004-03-01,2004-03-01_r00_ASAMBLEA,secretario,Juan Héctor Estrada
@@ -2200,18 +2208,18 @@ session_date,file,office,person
 2005-04-06,2005-04-06_r06_ESPECIAL,secretario,Juan Héctor Estrada
 2005-04-06,2005-04-06_r08_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Juan Héctor Estrada
 2005-04-06,2005-04-06_r07_ORDINARIA,secretario,Juan Héctor Estrada
-2005-04-20,2005-04-20_r10_TRIBUNAL_DE_JUICIO_POLITICO,presidente provisional,Marcelo Alejandro Horacio Guinle
 2005-04-20,2005-04-20_r09_ORDINARIA,presidente provisional,Marcelo Alejandro Horacio Guinle
-2005-04-20,2005-04-20_r10_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata
+2005-04-20,2005-04-20_r10_TRIBUNAL_DE_JUICIO_POLITICO,presidente provisional,Marcelo Alejandro Horacio Guinle
 2005-04-20,2005-04-20_r09_ORDINARIA,prosecretario,José D. Canata
-2005-04-20,2005-04-20_r10_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Juan J. Canals
+2005-04-20,2005-04-20_r10_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata
 2005-04-20,2005-04-20_r09_ORDINARIA,prosecretario,Juan J. Canals
-2005-04-20,2005-04-20_r10_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Ricardo Nicanor Gutiérrez
+2005-04-20,2005-04-20_r10_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Juan J. Canals
 2005-04-20,2005-04-20_r09_ORDINARIA,prosecretario,Ricardo Nicanor Gutiérrez
-2005-04-20,2005-04-20_r10_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Carlos Alberto Machiaroli
+2005-04-20,2005-04-20_r10_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Ricardo Nicanor Gutiérrez
 2005-04-20,2005-04-20_r09_ORDINARIA,secretario,Carlos Alberto Machiaroli
-2005-04-20,2005-04-20_r10_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Juan Héctor Estrada
+2005-04-20,2005-04-20_r10_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Carlos Alberto Machiaroli
 2005-04-20,2005-04-20_r09_ORDINARIA,secretario,Juan Héctor Estrada
+2005-04-20,2005-04-20_r10_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Juan Héctor Estrada
 2005-04-20,2005-04-20_r10_TRIBUNAL_DE_JUICIO_POLITICO,vicepresidenta 1°,Mirian Belén Curletti
 2005-05-04,2005-05-04_r11_ORDINARIA,presidente provisional,Marcelo Alejandro Horacio Guinle
 2005-05-04,2005-05-04_r12_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata
@@ -2286,18 +2294,18 @@ session_date,file,office,person
 2005-07-27,2005-07-27_r21_ORDINARIA,secretario,Juan Héctor Estrada
 2005-07-27,2005-07-27_r21_ORDINARIA,vicepresidenta 1°,Mirian Belén Curletti
 2005-08-10,2005-08-10_r22_ORDINARIA,presidente provisional,Marcelo Alejandro Horacio Guinle
-2005-08-10,2005-08-10_r23_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata
 2005-08-10,2005-08-10_r22_ORDINARIA,prosecretario,José D. Canata
-2005-08-10,2005-08-10_r23_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Juan J. Canals
+2005-08-10,2005-08-10_r23_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata
 2005-08-10,2005-08-10_r22_ORDINARIA,prosecretario,Juan J. Canals
-2005-08-10,2005-08-10_r23_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Ricardo Nicanor Gutiérrez
+2005-08-10,2005-08-10_r23_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Juan J. Canals
 2005-08-10,2005-08-10_r22_ORDINARIA,prosecretario,Ricardo Nicanor Gutiérrez
-2005-08-10,2005-08-10_r23_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Carlos Alberto Machiaroli
+2005-08-10,2005-08-10_r23_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Ricardo Nicanor Gutiérrez
 2005-08-10,2005-08-10_r22_ORDINARIA,secretario,Carlos Alberto Machiaroli
-2005-08-10,2005-08-10_r23_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Juan Héctor Estrada
+2005-08-10,2005-08-10_r23_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Carlos Alberto Machiaroli
 2005-08-10,2005-08-10_r22_ORDINARIA,secretario,Juan Héctor Estrada
-2005-08-10,2005-08-10_r23_TRIBUNAL_DE_JUICIO_POLITICO,vicepresidente de la nacion,Daniel Osvaldo Scioli
+2005-08-10,2005-08-10_r23_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Juan Héctor Estrada
 2005-08-10,2005-08-10_r22_ORDINARIA,vicepresidente de la nacion,Daniel Osvaldo Scioli
+2005-08-10,2005-08-10_r23_TRIBUNAL_DE_JUICIO_POLITICO,vicepresidente de la nacion,Daniel Osvaldo Scioli
 2005-08-17,2005-08-17_r24_ORDINARIA,presidente provisional,Marcelo Alejandro Horacio Guinle
 2005-08-17,2005-08-17_r24_ORDINARIA,prosecretario,José D. Canata
 2005-08-17,2005-08-17_r24_ORDINARIA,prosecretario,Juan J. Canals
@@ -3142,20 +3150,20 @@ session_date,file,office,person
 2009-09-02,2009-09-02_r09_EN_MINORIA,secretario,Jorge Luis Alberto Tieppo
 2009-09-02,2009-09-02_r09_EN_MINORIA,secretario,Juan Héctor Estrada
 2009-09-02,2009-09-02_r09_EN_MINORIA,vicepresidente de la nacion,Julio César Cleto Cobos
-2009-09-09,2009-09-09_r11_INFORMATIVA_ESPECIAL,prosecretario,Gustavo Carlos Vélez
 2009-09-09,2009-09-09_r10_ORDINARIA,prosecretario,Gustavo Carlos Vélez
-2009-09-09,2009-09-09_r11_INFORMATIVA_ESPECIAL,prosecretario,Juan J. Canals
+2009-09-09,2009-09-09_r11_INFORMATIVA_ESPECIAL,prosecretario,Gustavo Carlos Vélez
 2009-09-09,2009-09-09_r10_ORDINARIA,prosecretario,Juan J. Canals
-2009-09-09,2009-09-09_r11_INFORMATIVA_ESPECIAL,prosecretario,Mario Daniele
+2009-09-09,2009-09-09_r11_INFORMATIVA_ESPECIAL,prosecretario,Juan J. Canals
 2009-09-09,2009-09-09_r10_ORDINARIA,prosecretario,Mario Daniele
-2009-09-09,2009-09-09_r11_INFORMATIVA_ESPECIAL,secretario,Jorge Luis Alberto Tieppo
+2009-09-09,2009-09-09_r11_INFORMATIVA_ESPECIAL,prosecretario,Mario Daniele
 2009-09-09,2009-09-09_r10_ORDINARIA,secretario,Jorge Luis Alberto Tieppo
-2009-09-09,2009-09-09_r11_INFORMATIVA_ESPECIAL,secretario,Juan Héctor Estrada
+2009-09-09,2009-09-09_r11_INFORMATIVA_ESPECIAL,secretario,Jorge Luis Alberto Tieppo
 2009-09-09,2009-09-09_r10_ORDINARIA,secretario,Juan Héctor Estrada
+2009-09-09,2009-09-09_r11_INFORMATIVA_ESPECIAL,secretario,Juan Héctor Estrada
 2009-09-09,2009-09-09_r11_INFORMATIVA_ESPECIAL,vicepresidente,Rubén Hugo Marín
 2009-09-09,2009-09-09_r11_INFORMATIVA_ESPECIAL,vicepresidente 1º,Juan Carlos Marino
-2009-09-09,2009-09-09_r11_INFORMATIVA_ESPECIAL,vicepresidente de la nacion,Julio César Cleto Cobos
 2009-09-09,2009-09-09_r10_ORDINARIA,vicepresidente de la nacion,Julio César Cleto Cobos
+2009-09-09,2009-09-09_r11_INFORMATIVA_ESPECIAL,vicepresidente de la nacion,Julio César Cleto Cobos
 2009-09-23,2009-09-23_r12_ORDINARIA,presidente provisional,José Juan Bautista Pampuro
 2009-09-23,2009-09-23_r12_ORDINARIA,prosecretario,Gustavo Carlos Vélez
 2009-09-23,2009-09-23_r12_ORDINARIA,prosecretario,Juan J. Canals
@@ -3948,18 +3956,18 @@ session_date,file,office,person
 2014-10-08,2014-10-08_r15_ESPECIAL,secretario,Juan Horacio Zabaleta
 2014-10-08,2014-10-08_r15_ESPECIAL,secretario,Juan Héctor Estrada
 2014-10-08,2014-10-08_r15_ESPECIAL,vicepresidente de la nacion,Amado Boudou
-2014-10-22,2014-10-22_r17_INFORMATIVA_ESPECIAL,prosecretario,José Lepere
 2014-10-22,2014-10-22_r16_ORDINARIA,prosecretario,José Lepere
-2014-10-22,2014-10-22_r17_INFORMATIVA_ESPECIAL,prosecretario,Luis Borsani
+2014-10-22,2014-10-22_r17_INFORMATIVA_ESPECIAL,prosecretario,José Lepere
 2014-10-22,2014-10-22_r16_ORDINARIA,prosecretario,Luis Borsani
-2014-10-22,2014-10-22_r17_INFORMATIVA_ESPECIAL,prosecretario,Mario Daniele
+2014-10-22,2014-10-22_r17_INFORMATIVA_ESPECIAL,prosecretario,Luis Borsani
 2014-10-22,2014-10-22_r16_ORDINARIA,prosecretario,Mario Daniele
-2014-10-22,2014-10-22_r17_INFORMATIVA_ESPECIAL,secretario,Juan Horacio Zabaleta
+2014-10-22,2014-10-22_r17_INFORMATIVA_ESPECIAL,prosecretario,Mario Daniele
 2014-10-22,2014-10-22_r16_ORDINARIA,secretario,Juan Horacio Zabaleta
-2014-10-22,2014-10-22_r17_INFORMATIVA_ESPECIAL,secretario,Juan Héctor Estrada
+2014-10-22,2014-10-22_r17_INFORMATIVA_ESPECIAL,secretario,Juan Horacio Zabaleta
 2014-10-22,2014-10-22_r16_ORDINARIA,secretario,Juan Héctor Estrada
-2014-10-22,2014-10-22_r17_INFORMATIVA_ESPECIAL,vicepresidente de la nacion,Amado Boudou
+2014-10-22,2014-10-22_r17_INFORMATIVA_ESPECIAL,secretario,Juan Héctor Estrada
 2014-10-22,2014-10-22_r16_ORDINARIA,vicepresidente de la nacion,Amado Boudou
+2014-10-22,2014-10-22_r17_INFORMATIVA_ESPECIAL,vicepresidente de la nacion,Amado Boudou
 2014-10-29,2014-10-29_r18_ORDINARIA,presidente provisional,Gerardo Zamora
 2014-10-29,2014-10-29_r18_ORDINARIA,prosecretario,José Lepere
 2014-10-29,2014-10-29_r18_ORDINARIA,prosecretario,Luis Borsani
@@ -4278,18 +4286,18 @@ session_date,file,office,person
 2017-03-29,2017-03-29_r02_ORDINARIA,secretario,Juan Pedro Tunessi
 2017-03-29,2017-03-29_r02_ORDINARIA,vicepresidente 1º,Juan Carlos Marino
 2017-03-29,2017-03-29_r02_ORDINARIA,vicepresidente de la nacion,Marta Gabriela Michetti
-2017-04-25,2017-04-25_r03_ESPECIAL,presidente provisional,Federico Pinedo
 2017-04-25,2017-04-25_r04_INFORMATIVA_ESPECIAL,presidente provisional,Federico Pinedo
-2017-04-25,2017-04-25_r03_ESPECIAL,prosecretario,Eric Calcagno
+2017-04-25,2017-04-25_r03_ESPECIAL,presidente provisional,Federico Pinedo
 2017-04-25,2017-04-25_r04_INFORMATIVA_ESPECIAL,prosecretario,Eric Calcagno
-2017-04-25,2017-04-25_r03_ESPECIAL,prosecretario,Mario Daniele
+2017-04-25,2017-04-25_r03_ESPECIAL,prosecretario,Eric Calcagno
 2017-04-25,2017-04-25_r04_INFORMATIVA_ESPECIAL,prosecretario,Mario Daniele
-2017-04-25,2017-04-25_r03_ESPECIAL,prosecretario,Ángel Torres
+2017-04-25,2017-04-25_r03_ESPECIAL,prosecretario,Mario Daniele
 2017-04-25,2017-04-25_r04_INFORMATIVA_ESPECIAL,prosecretario,Ángel Torres
-2017-04-25,2017-04-25_r03_ESPECIAL,secretario,Helio Rebot
+2017-04-25,2017-04-25_r03_ESPECIAL,prosecretario,Ángel Torres
 2017-04-25,2017-04-25_r04_INFORMATIVA_ESPECIAL,secretario,Helio Rebot
-2017-04-25,2017-04-25_r03_ESPECIAL,secretario,Juan Pedro Tunessi
+2017-04-25,2017-04-25_r03_ESPECIAL,secretario,Helio Rebot
 2017-04-25,2017-04-25_r04_INFORMATIVA_ESPECIAL,secretario,Juan Pedro Tunessi
+2017-04-25,2017-04-25_r03_ESPECIAL,secretario,Juan Pedro Tunessi
 2017-04-25,2017-04-25_r04_INFORMATIVA_ESPECIAL,vicepresidente de la nacion,Marta Gabriela Michetti
 2017-04-26,2017-04-26_r05_ESPECIAL,presidente provisional,Federico Pinedo
 2017-04-26,2017-04-26_r05_ESPECIAL,prosecretario,Eric Calcagno
@@ -4357,18 +4365,18 @@ session_date,file,office,person
 2017-09-27,2017-09-27_r13_ESPECIAL,prosecretario,Ángel Torres
 2017-09-27,2017-09-27_r13_ESPECIAL,secretario,Helio Rebot
 2017-09-27,2017-09-27_r13_ESPECIAL,secretario,Juan Pedro Tunessi
-2017-11-01,2017-11-01_r14_ESPECIAL,presidente provisional,Federico Pinedo
 2017-11-01,2017-11-01_r15_INFORMATIVA_ESPECIAL,presidente provisional,Federico Pinedo
-2017-11-01,2017-11-01_r14_ESPECIAL,prosecretario,Eric Calcagno
+2017-11-01,2017-11-01_r14_ESPECIAL,presidente provisional,Federico Pinedo
 2017-11-01,2017-11-01_r15_INFORMATIVA_ESPECIAL,prosecretario,Eric Calcagno
-2017-11-01,2017-11-01_r14_ESPECIAL,prosecretario,Mario Daniele
+2017-11-01,2017-11-01_r14_ESPECIAL,prosecretario,Eric Calcagno
 2017-11-01,2017-11-01_r15_INFORMATIVA_ESPECIAL,prosecretario,Mario Daniele
-2017-11-01,2017-11-01_r14_ESPECIAL,prosecretario,Ángel Torres
+2017-11-01,2017-11-01_r14_ESPECIAL,prosecretario,Mario Daniele
 2017-11-01,2017-11-01_r15_INFORMATIVA_ESPECIAL,prosecretario,Ángel Torres
-2017-11-01,2017-11-01_r14_ESPECIAL,secretario,Helio Rebot
+2017-11-01,2017-11-01_r14_ESPECIAL,prosecretario,Ángel Torres
 2017-11-01,2017-11-01_r15_INFORMATIVA_ESPECIAL,secretario,Helio Rebot
-2017-11-01,2017-11-01_r14_ESPECIAL,secretario,Juan Pedro Tunessi
+2017-11-01,2017-11-01_r14_ESPECIAL,secretario,Helio Rebot
 2017-11-01,2017-11-01_r15_INFORMATIVA_ESPECIAL,secretario,Juan Pedro Tunessi
+2017-11-01,2017-11-01_r14_ESPECIAL,secretario,Juan Pedro Tunessi
 2017-11-01,2017-11-01_r15_INFORMATIVA_ESPECIAL,vicepresidente 1º,Juan Carlos Marino
 2017-11-22,2017-11-22_r16_ESPECIAL_EN_MINORIA,presidente provisional,Federico Pinedo
 2017-11-22,2017-11-22_r16_ESPECIAL_EN_MINORIA,prosecretario,Eric Calcagno
@@ -4434,15 +4442,15 @@ session_date,file,office,person
 2018-05-30,2018-05-30_r06_ESPECIAL,vicepresidente 1º,Juan Carlos Marino
 2018-05-30,2018-05-30_r06_ESPECIAL,vicepresidente de la nacion,Marta Gabriela Michetti
 2018-06-27,2018-06-27_r08_INFORMATIVA_ESPECIAL,presidente provisional,Federico Pinedo
-2018-06-27,2018-06-27_r07_ORDINARIA,prosecretario,Eric Calcagno
 2018-06-27,2018-06-27_r08_INFORMATIVA_ESPECIAL,prosecretario,Eric Calcagno
-2018-06-27,2018-06-27_r07_ORDINARIA,prosecretario,Mario Daniele
+2018-06-27,2018-06-27_r07_ORDINARIA,prosecretario,Eric Calcagno
 2018-06-27,2018-06-27_r08_INFORMATIVA_ESPECIAL,prosecretario,Mario Daniele
-2018-06-27,2018-06-27_r07_ORDINARIA,secretario,Juan Pedro Tunessi
+2018-06-27,2018-06-27_r07_ORDINARIA,prosecretario,Mario Daniele
 2018-06-27,2018-06-27_r08_INFORMATIVA_ESPECIAL,secretario,Juan Pedro Tunessi
+2018-06-27,2018-06-27_r07_ORDINARIA,secretario,Juan Pedro Tunessi
 2018-06-27,2018-06-27_r08_INFORMATIVA_ESPECIAL,vicepresidente 1º,Juan Carlos Marino
-2018-06-27,2018-06-27_r07_ORDINARIA,vicepresidente de la nacion,Marta Gabriela Michetti
 2018-06-27,2018-06-27_r08_INFORMATIVA_ESPECIAL,vicepresidente de la nacion,Marta Gabriela Michetti
+2018-06-27,2018-06-27_r07_ORDINARIA,vicepresidente de la nacion,Marta Gabriela Michetti
 2018-07-04,2018-07-04_r09_ORDINARIA,prosecretario,Eric Calcagno
 2018-07-04,2018-07-04_r09_ORDINARIA,prosecretario,Mario Daniele
 2018-07-04,2018-07-04_r09_ORDINARIA,secretario,Juan Pedro Tunessi
@@ -4510,14 +4518,14 @@ session_date,file,office,person
 2019-03-20,2019-03-20_r02_ORDINARIA,prosecretario,Eric Calcagno
 2019-03-20,2019-03-20_r02_ORDINARIA,prosecretario,Mario Daniele
 2019-03-20,2019-03-20_r02_ORDINARIA,secretario,Juan Pedro Tunessi
-2019-03-27,2019-03-27_r04_INFORMATIVA_ESPECIAL,presidente provisional,Federico Pinedo
 2019-03-27,2019-03-27_r03_ORDINARIA_CONTINUACION,presidente provisional,Federico Pinedo
-2019-03-27,2019-03-27_r04_INFORMATIVA_ESPECIAL,prosecretario,Eric Calcagno
+2019-03-27,2019-03-27_r04_INFORMATIVA_ESPECIAL,presidente provisional,Federico Pinedo
 2019-03-27,2019-03-27_r03_ORDINARIA_CONTINUACION,prosecretario,Eric Calcagno
-2019-03-27,2019-03-27_r04_INFORMATIVA_ESPECIAL,prosecretario,Mario Daniele
+2019-03-27,2019-03-27_r04_INFORMATIVA_ESPECIAL,prosecretario,Eric Calcagno
 2019-03-27,2019-03-27_r03_ORDINARIA_CONTINUACION,prosecretario,Mario Daniele
-2019-03-27,2019-03-27_r04_INFORMATIVA_ESPECIAL,secretario,Juan Pedro Tunessi
+2019-03-27,2019-03-27_r04_INFORMATIVA_ESPECIAL,prosecretario,Mario Daniele
 2019-03-27,2019-03-27_r03_ORDINARIA_CONTINUACION,secretario,Juan Pedro Tunessi
+2019-03-27,2019-03-27_r04_INFORMATIVA_ESPECIAL,secretario,Juan Pedro Tunessi
 2019-04-16,2019-04-16_r05_ESPECIAL,presidente provisional,Federico Pinedo
 2019-04-16,2019-04-16_r05_ESPECIAL,prosecretario,Eric Calcagno
 2019-04-16,2019-04-16_r05_ESPECIAL,prosecretario,Mario Daniele
@@ -4542,8 +4550,8 @@ session_date,file,office,person
 2019-11-13,2019-11-13_r09_ESPECIAL,presidente provisional,Federico Pinedo
 2019-11-13,2019-11-13_r09_ESPECIAL,prosecretario,Eric Calcagno
 2019-11-13,2019-11-13_r09_ESPECIAL,prosecretario,Mario Daniele
-2019-11-13,2019-11-13_r00_ASAMBLEA,secretario,Juan Pedro Tunessi
 2019-11-13,2019-11-13_r09_ESPECIAL,secretario,Juan Pedro Tunessi
+2019-11-13,2019-11-13_r00_ASAMBLEA,secretario,Juan Pedro Tunessi
 2019-11-13,2019-11-13_r09_ESPECIAL,vicepresidente de la nacion,Marta Gabriela Michetti
 2019-11-27,2019-11-27_r10_ESPECIAL,prosecretario,Eric Calcagno
 2019-11-27,2019-11-27_r10_ESPECIAL,prosecretario,Mario Daniele

@@ -30,15 +30,17 @@ as its own HTML export for most of 1998–2003; both are read here.
   that last group final would invent a fact about 134 sittings. Read it from
   the raw file: the parser drops the masthead as page apparatus, so parsed text
   puts every PDF at "not provisional" when 261 of 605 are.
-- Corpus parsed: 247,163 speaker-attributed speech blocks and 60,765 typed
-  stenographer events in 432,331 rows over 817 sittings, as per-session Parquet
+- Corpus parsed: 247,219 speaker-attributed speech blocks and 60,909 typed
+  stenographer events in 432,548 rows over 818 sittings, as per-session Parquet
   under `data/processed/senado/`. 25.7 million words of attributed speech, of
-  which the HTML era contributes 6.5 million. The PDF side is parser 0.4.37 and
+  which the HTML side contributes 5.9 million. The PDF side is parser 0.4.38 and
   the HTML side `scripts/parse_html.py` at 0.5.0-html; the two share the speaker
   pattern and the event subtypes, so a passage means the same thing in either.
-  Two sittings fail to parse, both because the parser cannot find a session
-  opening: the November 2001 sitting that never reached quorum, and the 1997
-  impeachment tribunal, which does not open like an ordinary sitting. Text that
+  One sitting fails to parse: the 1997 impeachment tribunal, which does not open
+  like an ordinary sitting. It used to be two — the no-quorum sitting of 29
+  November 2001 joined the corpus in 0.4.38, when the front-matter cut learned
+  to recognise an opening whose dash the file had set in roman with the page
+  number before it. Text that
   cannot be attributed to a speaker is 0.92% of the corpus, and in the HTML era
   82% of it stands just after a marker of insertion — speeches handed in for the
   record and never delivered.
@@ -292,17 +294,23 @@ as its own HTML export for most of 1998–2003; both are read here.
   rests on twelve pages. The
   annotations have themselves been checked back against the source PDFs
   (`scripts/check_gold.py`, 36 of 36 pass) — a second machine reading, not an
-  independent human audit. **On all 558 sessions that parse** (`scripts/audit_parse.py`):
-  no turn carries a second speaker's label, no label is absorbed by the section
-  title above it, no page apparatus leaks into speech outside the two scans,
-  no text is written out twice, every one of 98,601 probed blocks is found in
-  the PDF it came from (0.120% not located, and no sitting above 1% once the
-  two scans are set aside), 5 turns of 151,761 open mid-word
-  and every one of them is printed that way, and a median 79.0% of each
+  independent human audit. **On all 818 sessions that parse, in both formats**
+  (`scripts/audit_parse.py`): no turn carries a second speaker's label, no label
+  is absorbed by the section title above it, no page apparatus leaks into speech
+  outside the three scans, no text is written out twice, every one of 160,098
+  probed blocks is found in the file it came from (0.006% not located once the
+  scans are set aside, and no sitting above 1%), 8 turns of 247,219 open
+  mid-word and every one of them is printed that way, and a median 82.7% of each
   document's printed text is kept (the rest — contents pages, attendance rolls,
-  appendices — is dropped by design). Two
-  sittings of November 2001 are scans with OCR text and should be excluded from
-  any text analysis; the parser flags them. **On 5,463 turns read blind** — every
+  appendices — is dropped by design). Three sittings are scans with OCR text and
+  should be excluded from any text analysis; the parser flags them.
+- **The HTML era passes the same audit, and on the conservation check it passes
+  perfectly**: all 54,829 of its probed blocks are found in the file they came
+  from, none missing, against 0.008% for the PDF side. It also keeps more of
+  what it prints — a median 91.2% against 79.3% — because an HTML export has no
+  repeated page headers or footers to drop. Until September 2026 the audit had
+  never read one of these files: it opened every source with pdfplumber, so the
+  214 HTML sittings sat outside the conservation and coverage checks entirely. **On 5,463 turns read blind** — every
   page rendered as an image and read by an agent that was never shown the
   parser's answer, then compared — the two agree on who is speaking in
   [50 of 50](reference/verification/blind_read_50.csv),
@@ -387,7 +395,7 @@ as its own HTML export for most of 1998–2003; both are read here.
 
 ## Results
 
-Computed on the whole corpus — 817 sittings, 1998–2026 — by
+Computed on the whole corpus — 818 sittings, 1998–2026 — by
 [notebooks/analysis.ipynb](notebooks/analysis.ipynb), which prints the figures
 below and the tables behind them.
 
@@ -504,7 +512,7 @@ and nothing else.
 - `scripts/eval_gold.py` — score the parser against the gold annotations
   in `reference/gold/`.
 - `scripts/check_gold.py` — check those annotations against the source PDFs.
-- `scripts/audit_parse.py` — audit every session against its PDF: apparatus
+- `scripts/audit_parse.py` — audit every session against the file it came from, PDF or HTML: apparatus
   leaking into speech, undetected speaker changes, duplicated or invented
   text, coverage, scans. `--sample N` also writes a review sheet of N turns
   to be checked by eye against the printed page.

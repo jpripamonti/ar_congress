@@ -47,9 +47,29 @@ def sniff_format(raw_head):
     return "pdf" if raw_head.startswith(b"%PDF") else "html"
 
 
+def decode_html(raw):
+    """Text from a held HTML transcript, in the encoding it declares.
+
+    Do not assume iso-8859-1 because 212 of the 214 files are. Two — the
+    sitting of 29 October 2003, which the portal serves twice — come from a
+    later exporter and declare utf-8, and reading those as latin-1 turns
+    "VERSIÓN TAQUIGRÁFICA" into "VERSIA\x93N TAQUIGRA\x81FICA". That is not a
+    cosmetic difference: the masthead then matches nothing, so the sitting
+    declares no provisional status and names no officers, and an audit
+    comparing parsed text against the file reports a third of it as text the
+    source does not contain.
+    """
+    match = re.search(rb'charset\s*=\s*"?([\w-]+)', raw[:2000], re.I)
+    encoding = match.group(1).decode("ascii", "replace") if match else "latin-1"
+    try:
+        return raw.decode(encoding, "replace")
+    except LookupError:
+        return raw.decode("latin-1", "replace")
+
+
 def html_head_text(raw):
-    """Readable text from an HTML transcript (the files are iso-8859-1)."""
-    text = raw.decode("latin-1", "replace")
+    """Readable text from an HTML transcript."""
+    text = decode_html(raw)
     text = re.sub(r"(?is)<(script|style).*?</\1>", " ", text)
     text = re.sub(r"<[^>]+>", " ", html.unescape(text))
     return normalize(text)[:HEAD_CHARS]

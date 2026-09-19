@@ -122,7 +122,14 @@ def main():
     if not golds:
         sys.exit(f"No gold files in {GOLD_DIR}")
 
-    corpus = pd.concat([pd.read_parquet(p) for p in sorted(BLOCKS_DIR.glob("*.parquet"))],
+    # Only the columns the comparison reads. Naming them also keeps the
+    # per-sitting frames comparable: a sitting that yields no speech has no
+    # turn_id or label at all, and concatenating those columns across the
+    # corpus leaves pandas guessing at a dtype.
+    corpus = pd.concat([pd.read_parquet(p, columns=["source_file", "type", "turn_id",
+                                                    "seq", "pages", "speaker_raw",
+                                                    "text", "event_type", "parser_version"])
+                        for p in sorted(BLOCKS_DIR.glob("*.parquet"))],
                        ignore_index=True)
     parser_version = corpus["parser_version"].iloc[0]
 

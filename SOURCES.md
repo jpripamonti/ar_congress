@@ -349,7 +349,9 @@ the corpus, drawn from 24 of 559 sittings. `scripts/audit_parse.py` covers the
 rest by checking, on every session, things that must never happen. Current
 results:
 
-- **Page apparatus inside a speech turn: 0** in 151,761 speech blocks. It stood
+- **Page apparatus inside a speech turn: 0** in 247,219 speech blocks, in both
+  formats — the HTML era's own navigation link, `[Volver al sumario]`, prints
+  9,790 times in the holdings and has never reached a speech turn either. It stood
   at 1 until September 2026 — a footer line that landed mid-sentence in the
   7 May 2014 sitting, printed by the audit on every run and counted by none of
   them, because the check reported its findings and returned only the
@@ -396,8 +398,12 @@ results:
   positive.
 - **Text written out twice: 0 sessions.** No document yields more text than it
   prints.
-- **Blocks not findable in the source PDF: 0.120% on average**, 0 sessions above
-  1% once the two scans are set aside. This figure used to be 0.422%, and it
+- **Blocks not findable in the source file: 0.006% on average**, 0 sessions above
+  1% once the three scans are set aside — and on the HTML side of the corpus,
+  where the audit first looked in September 2026, not one of 54,829 probed
+  blocks is missing. Until then `audit_parse.py` opened every source with
+  pdfplumber, so the 214 HTML sittings had never been through this check or the
+  coverage one at all. This figure used to be 0.422%, and it
   used to go UP as the parser improved — which was read as the price of
   repairing the text and was in fact a fault in the check. Where a footnote
   marker had been dropped from the middle of a sentence, removing it joins
@@ -419,7 +425,7 @@ results:
   98.4% of the blocks the long windows miss rebuild inside the eight runs
   allowed, most of them in two; a genuine opening followed by an invented tail
   never does, 0 of 572 tried. The corpus passes the honest test everywhere:
-  the rate goes from 0.009% to 0.120%, and no sitting outside the two scans is
+  the rate goes from 0.009% to 0.120%, and no sitting outside the scans is
   above 1%.
 
   Because each run has to be found after the last one ends, the rebuild also

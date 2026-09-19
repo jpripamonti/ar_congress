@@ -1786,9 +1786,33 @@ and 21.5 million words of attributed speech become 25.7.
       get wrong: the name, not the family (1.4% cross one). Dropping them
       would have cost 40% of 2018-2019 and biased the panel against the
       peronist family, which is the one the Senate back-labels.
-- [ ] Put the HTML era through the audit and a blind read. `audit_parse.py`
-      reads PDFs, so it does not cover these 214 sittings at all; nothing here
-      has been checked against the printed page by eye.
+- [x] Put the HTML era through the audit. `audit_parse.py` opened every source
+      with pdfplumber, so the conservation and coverage checks had never seen
+      these 214 files. They pass: not one of 54,829 probed blocks is missing
+      from the file it came from, against 0.008% on the PDF side, and the HTML
+      keeps a median 91.2% of what it prints against 79.3%. The three turns it
+      reports as opening mid-word were each read back against the file and the
+      page prints them that way — one of them because the chamber's own typist
+      dropped the opening words of a sentence.
+- [x] The audit found its own bug first. Two files declare utf-8 and were being
+      read as iso-8859-1, which turned "VERSIÓN TAQUIGRÁFICA" into mojibake:
+      the audit called a third of their text foreign, and the same assumption
+      in two other scripts left those sittings declaring no provisional status
+      and naming no officers. One decoder now honours the declared charset and
+      the parser, the provenance and the audit all use it.
+- [x] The audit also found a sitting parsing to seven rows of debris and no
+      speech at all. Where a file sets the opening dash in roman with the page
+      number before it, the front-matter cut ran past the opening and matched
+      the CLOSING event, taking the sitting's only speech with it. Measured over
+      all 605 held PDFs, recognising it moves the cut in 123: 115 gain the
+      opening event, 7 recover real content the old cut threw away — 22 March
+      2006 was losing two whole sections — and the no-quorum sitting of 29
+      November 2001 goes from not parsing to parsing. Parser 0.4.38.
+- [ ] A blind read of the HTML era. The nine rounds on record are all PDF-era.
+      `audit_parse.py --sample 60 --sample-format html` writes
+      `review_sheet_html.csv`, 60 turns across 1998-2003, each with its file and
+      opening words — an HTML export has no pages, so the locator is the text.
+      It needs a reader who is not shown the parser's answer.
 - [ ] Group the chamber's own `session_type` labels before counting: `EN
       MINORÍA` and `ESPECIAL EN MINORÍA` name the same thing.
 

@@ -31,6 +31,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from parse import SPEAKER_RE, classify_event  # noqa: E402
+from provenance import decode_html  # noqa: E402
 
 PARSER_VERSION = "0.5.0-html"
 
@@ -182,13 +183,7 @@ class TranscriptHTML(HTMLParser):
 
 def read_paragraphs(path):
     """Styled paragraphs from one HTML transcript."""
-    raw = path.read_bytes()
-    match = re.search(rb'charset\s*=\s*"?([\w-]+)', raw[:2000], re.I)
-    encoding = match.group(1).decode("ascii", "replace") if match else "latin-1"
-    try:
-        text = raw.decode(encoding, "replace")
-    except LookupError:
-        text = raw.decode("latin-1", "replace")
+    text = decode_html(path.read_bytes())
     parser = TranscriptHTML()
     parser.feed(text)
     parser.close()

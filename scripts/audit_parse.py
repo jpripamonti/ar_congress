@@ -1,4 +1,4 @@
-"""Audit the parsed corpus against the source PDFs — every session, not a sample.
+"""Audit the parsed corpus against the held files — every session, not a sample.
 
 The gold set answers "did the parser read these 36 pages the way a careful
 reader does?" — 0.08% of the corpus. This answers the questions that can be
@@ -13,7 +13,7 @@ checked everywhere, by looking for things that must never happen:
 2. GLUED LABELS — a complete printed speaker label sitting inside a turn's
    text. This is the worst error the parser can make: it means a change of
    speaker went undetected, so one senator is credited with another's words.
-3. CONSERVATION — every block's text must be findable in the source PDF, and
+3. CONSERVATION — every block's text must be findable in the source file, and
    no document may yield more text than it prints. This catches text invented
    or written out twice by the block splitting and merging. A block is looked
    up by windows taken from inside it, and a block that fails is asked instead
@@ -41,7 +41,9 @@ Sessions that are scans with OCR text are reported first and excluded from the
 counts: their faults belong to the scan, not to the parser.
 
 Checks 1, 2 and 5 read only the parsed output and are fast. Checks 3 and 4
-re-extract every PDF; pass --skip-source to leave them out.
+re-read every held file — the PDFs of 2004 on and the HTML of 1998-2003 alike,
+each stripped independently of the reader that parsed it; pass --skip-source to
+leave them out.
 
 Usage:
     uv run scripts/audit_parse.py               # everything
@@ -52,6 +54,7 @@ Usage:
 import argparse
 import csv
 import hashlib
+import html
 import re
 import sys
 import unicodedata
@@ -60,6 +63,11 @@ from pathlib import Path
 
 import pandas as pd
 import pdfplumber
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+# Decoding only: a document's own declared charset is not a reading of it, and
+# the audit must not guess an encoding the parser was told.
+from provenance import decode_html  # noqa: E402
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 BLOCKS_DIR = REPO_ROOT / "data" / "processed" / "senado" / "blocks"
@@ -79,6 +87,11 @@ FURNITURE = {
     # printed at body size below the rule at the foot of the page, so nothing
     # about its type or position distinguishes it from speech
     "appendix-pointer footnote": re.compile(r"\bVer el Ap[eé]ndice\b"),
+    # the HTML era's own navigation, printed after almost every section. It is
+    # apparatus the way a page header is, and it is the one piece the earlier
+    # formats do not have: 9,790 stand in the holdings and none has ever
+    # reached a speech turn, so this is a tripwire rather than a finding.
+    "contents link [Volver al sumario]": re.compile(r"\[\s*Volver al [Ss]umario\s*\]"),
 }
 # A complete printed label — title, name, ". —" terminator — inside a turn.
 GLUED_LABEL = re.compile(r"(?<![A-Za-zÁÉÍÓÚÑ])(?:Sr|Sra|Srta)\.\s+[A-ZÁÉÍÓÚÑ][^.]{1,45}?\.\s*[–—−─]\s")
@@ -184,12 +197,30 @@ def reconstructs(text, src, max_pieces=8):
     return True
 
 
+def source_text(name):
+    """The whole of a held transcript, flattened, in whichever format it arrived.
+
+    The HTML is stripped here rather than through parse_html.py, and that is
+    the point: an audit that re-read the source with the parser's own reader
+    would be asking the parser to mark its own work. Tags out, entities
+    decoded, nothing else — flatten() throws away everything but the letters
+    and digits, so no judgement about what the markup meant survives into the
+    comparison.
+    """
+    path = RAW_DIR / name
+    if path.suffix.lower() == ".html":
+        raw = decode_html(path.read_bytes())
+        raw = re.sub(r"(?is)<(script|style).*?</\1>", " ", raw)
+        return flatten(html.unescape(re.sub(r"<[^>]+>", " ", raw)))
+    with pdfplumber.open(path) as pdf:
+        return flatten("".join((p.extract_text() or "") for p in pdf.pages))
+
+
 def audit_source(args):
     """One session: is its output text really the source's text?"""
-    session_id, pdf_name, texts = args
+    session_id, source_name, texts = args
     try:
-        with pdfplumber.open(RAW_DIR / pdf_name) as pdf:
-            src = flatten("".join((p.extract_text() or "") for p in pdf.pages))
+        src = source_text(source_name)
     except Exception as exc:
         return {"session_id": session_id, "error": str(exc)[:70]}
     out = flatten("".join(texts))
@@ -362,9 +393,12 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--skip-source", action="store_true",
-                    help="skip the checks that re-extract every PDF")
+                    help="skip the checks that re-read every held file")
     ap.add_argument("--sample", type=int, default=0,
                     help="also write a review sheet of N turns for a human to check")
+    ap.add_argument("--sample-format", choices=("pdf", "html"), default=None,
+                    help="draw the review sheet from one format only, so a round "
+                         "can be aimed at an era that has not been read yet")
     ap.add_argument("--workers", type=int, default=8)
     args = ap.parse_args()
 
@@ -375,7 +409,7 @@ def main():
     problems += check_attribution_windows(corpus)
 
     if not args.skip_source:
-        print(f"\n{'='*66}\nSOURCE CHECKS — re-extracting every PDF\n{'='*66}")
+        print(f"\n{'='*66}\nSOURCE CHECKS — re-reading every held file\n{'='*66}")
         speech = corpus[corpus.type.isin(["speech", "event", "heading"])]
         jobs = [(sid, g.source_file.iloc[0], g.text.tolist())
                 for sid, g in speech.groupby("session_id")]
@@ -394,7 +428,7 @@ def main():
 
         df["scanned"] = df.session_id.isin(scanned)
         foreign = df[(df.foreign_passage_share > 0.01) & ~df.scanned]
-        print("\n8. Blocks whose text is not found in the source PDF:")
+        print("\n8. Blocks whose text is not found in the source file:")
         print(f"   {int(df.blocks_probed.sum()):,} blocks probed across {len(df)} sessions; "
               f"{df.foreign_passage_share.mean():.3%} not located on average")
         print(f"   {len(foreign)} sessions above 1%, scans aside")
@@ -420,11 +454,13 @@ def main():
         for _, r in low.iterrows():
             print(f"          {r.coverage:.1%}  {r.session_id}")
         if len(errs):
-            print(f"\n   !! {len(errs)} PDFs could not be re-read")
+            print(f"\n   !! {len(errs)} held files could not be re-read")
+            for _, r in errs.iterrows():
+                print(f"          {r.session_id}: {r.error}")
         print(f"\n   per-session detail: {out_path}")
 
     if args.sample:
-        write_review_sheet(corpus, args.sample, scanned)
+        write_review_sheet(corpus, args.sample, scanned, args.sample_format)
 
     print(f"\n{'='*66}")
     print("Audit complete." if not problems else
@@ -432,7 +468,7 @@ def main():
     return 1 if problems else 0
 
 
-def write_review_sheet(corpus, n, scanned=frozenset()):
+def write_review_sheet(corpus, n, scanned=frozenset(), only_format=None):
     """Sample turns to be checked by eye against the printed page.
 
     The invariants above cannot tell whether the RIGHT person is behind the
@@ -456,9 +492,21 @@ def write_review_sheet(corpus, n, scanned=frozenset()):
     pages before the words quoted here — a long speech has no label on its
     later pages — and without that, a reader looking only at the quoted page
     finds no speaker at all and cannot answer.
+
+    An HTML transcript has no pages, so those rows carry no page number and the
+    reader finds the passage by searching the file for the opening words. The
+    sheet says which it is rather than leaving a column mysteriously blank.
+    `only_format` draws the whole sheet from one era, which is how a round gets
+    aimed at the years nobody has read yet.
     """
     speech = corpus[(corpus.type == "speech")
                     & ~corpus.session_id.isin(scanned)].copy()
+    if only_format:
+        suffix = "." + only_format
+        speech = speech[speech.source_file.str.lower().str.endswith(suffix)]
+        if speech.empty:
+            print(f"\nNo {only_format} sittings to draw a review sheet from.")
+            return
     speech["year"] = speech.session_date.str[:4]
     first_page = {}
     for (sid, turn), g in speech.groupby(["session_id", "turn_id"]):
@@ -479,25 +527,30 @@ def write_review_sheet(corpus, n, scanned=frozenset()):
     rows = []
     for i in sorted(picks):
         r = speech.loc[i]
+        page = list(r.pages)[0] if len(r.pages) else ""
         rows.append({
             "session": r.session_id,
-            "pdf": r.source_file,
-            "page": list(r.pages)[0] if len(r.pages) else "",
+            "source_file": r.source_file,
+            "find_it_by": f"page {page}" if page != "" else "searching the text",
+            "page": page,
             "turn_opens_on_page": first_page.get((r.session_id, r.turn_id), ""),
             "parser_says_speaker": r.speaker_raw,
             "opening_words": " ".join(str(r.text).split()[:14]),
             "correct? (y/n)": "",
             "if_wrong_who_spoke": "",
         })
-    path = OUT_DIR / "review_sheet.csv"
+    # A sheet aimed at one era gets its own name, so drawing one does not
+    # overwrite a sheet somebody is part-way through answering.
+    path = OUT_DIR / (f"review_sheet_{only_format}.csv" if only_format else "review_sheet.csv")
     with path.open("w", encoding="utf-8", newline="") as fh:
         w = csv.DictWriter(fh, fieldnames=list(rows[0].keys()))
         w.writeheader()
         w.writerows(rows)
     print(f"\n{'='*66}\nHUMAN REVIEW SHEET\n{'='*66}")
     print(f"{len(rows)} turns drawn across {speech.year.nunique()} years: {path}")
-    print("Open each PDF at the page given and confirm the speaker. This is the "
-          "only check that can catch the right rule applied to the wrong person.")
+    print("Open each file — a PDF at the page given, an HTML at the opening words — "
+          "and confirm the speaker. This is the only check that can catch the right "
+          "rule applied to the wrong person.")
 
 
 if __name__ == "__main__":

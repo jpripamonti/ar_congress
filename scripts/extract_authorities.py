@@ -34,6 +34,9 @@ from pathlib import Path
 
 import pdfplumber
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from provenance import decode_html  # noqa: E402
+
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
 OUT_PATH = REPO_ROOT / "reference" / "senado" / "authorities_observed.csv"
@@ -180,7 +183,7 @@ def cover_text(path):
 
 
 def html_cover_text(raw):
-    """Readable opening text of an HTML transcript (the files are iso-8859-1).
+    """Readable opening text of an HTML transcript.
 
     Case and accents are kept, unlike provenance.py's window: clean_name()
     reads capitalization to tell a shouted masthead from an ordinary one.
@@ -192,7 +195,7 @@ def html_cover_text(raw):
     and record a phrase as an officer. 8,000 characters is twice the furthest
     masthead in the holdings (4,099, the special sitting of 01-12-1999).
     """
-    text = raw.decode("latin-1", "replace")
+    text = decode_html(raw)
     text = re.sub(r"(?is)<(script|style).*?</\1>", " ", text)
     text = re.sub(r"(?i)<(?:p|br|hr|li|tr|div|center|h1|table|multicol)[^>]*>", "\n", text)
     text = unicodedata.normalize("NFC", html.unescape(re.sub(r"<[^>]+>", " ", text)))

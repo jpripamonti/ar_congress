@@ -53,7 +53,7 @@ from pathlib import Path
 import pandas as pd
 import pdfplumber
 
-PARSER_VERSION = "0.4.37"
+PARSER_VERSION = "0.4.38"
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
@@ -285,6 +285,11 @@ MAX_LABEL_TAIL = 70
 # 2006-2009 files drop the space at line joins ("…Fiscalía N°3Sr. Presidente"),
 # so the label can be glued straight onto the heading with no separator.
 FUSED_LABEL_RE = re.compile(r"\s?(?=(?:Sr|Sra|Srta|Sres)\.\s)")
+# How a sitting opens once the dash is off the front: "En la Ciudad Autónoma
+# de Buenos Aires, a las 15 y 2 del miércoles..." or plainly "A las 15:02".
+OPENING_TEXT_RE = re.compile(r"^(?:En\s+[^,]{3,70},\s*)?a\s+las\s+\d", re.I)
+# A block that ends on the dash the next one should have started with.
+DASH_TAIL_RE = re.compile(r"[—–\-−]\s*$")
 LABEL_FRAGMENT_RE = re.compile(r"^[.\s]*(?:Sr|Sra|Srta|Sres)$")  # shattered label: reset, not heading
 # a heading that ends on the opening word of a label — the line broke there
 LABEL_OPENER_TAIL_RE = re.compile(r"(?:^|\s)(?:Sr|Sra|Srta|Sres)\.$")
@@ -1184,6 +1189,24 @@ def cut_front_matter(blocks, body_size):
     format-independent and also skips the sumario/índice listing, whose
     chapter titles are re-detected from the body headings. Falls back to
     the v0.2 bold "1." marker; returns ([], "none") when nothing matches.
+
+    The dash is not always inside the italic run. Some files set it in roman
+    together with the page number before it — "3    —", and then, in a block
+    of its own, "En Buenos Aires, a las 17 y 59 del miércoles 31 de octubre
+    de 2001:" — so the opening carries no leading dash to match on and the
+    scan runs past it. In the no-quorum sitting of 31 October 2001 the scan
+    went on to the CLOSING event, "— Son las 18.", and cut the sitting's only
+    speech away with the front matter: the chair announcing there was no
+    quorum, which is the whole of what was said that day.
+
+    Recognising it takes all three of: the italic run, a preceding block
+    ending on a dash, and wording that opens a sitting. The wording is what
+    keeps the rule honest — the first two alone also fit a stray italic letter
+    after "Art 70. – " inside a quoted bill, and matching that would cut 1,832
+    blocks off a 2014 sitting. Measured over all 605 held PDFs, this moves the
+    cut in 30, every one of them from the first speaker back to the opening
+    event that belongs in front of it, and in none does it lose a match the
+    old rule found.
     """
     for i, b in enumerate(blocks):
         t = b["text"].strip()
@@ -1191,6 +1214,9 @@ def cut_front_matter(blocks, body_size):
             continue
         if b["font_style"] == "italic" and EVENT_DASH_RE.match(t):
             return blocks[i:], "opening_event"
+        if (b["font_style"] == "italic" and i and OPENING_TEXT_RE.match(t)
+                and DASH_TAIL_RE.search(blocks[i - 1]["text"])):
+            return blocks[i:], "stranded_dash"
         if b["font_style"] == "bold" and SPEAKER_RE.match(t):
             return blocks[i:], "first_speaker"
     for i, b in enumerate(blocks):
