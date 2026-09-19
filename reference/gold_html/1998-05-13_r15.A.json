@@ -1,0 +1,66 @@
+{
+  "source_file": "1998-05-13_r15_ORDINARIA.html",
+  "stretch_id": "1998-05-13_r15",
+  "annotator": "A",
+  "opens_mid_utterance": false,
+  "utterance_starts": [
+    {
+      "speaker_label": "Sr. PRESIDENTE (Cafiero).-",
+      "first_words": "Corresponde considerar el dictamen de las comisiones de Cultura y de Educación en el proyecto de comunicación"
+    },
+    {
+      "speaker_label": "Sr. SECRETARIO (Piuzzi).-",
+      "first_words": "(Lee:)"
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE (Cafiero).-",
+      "first_words": "En consideración en general."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE (Cafiero).-",
+      "first_words": "Queda aprobada la comunicación. Se procederá en consecuencia."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE (Cafiero).-",
+      "first_words": "Corresponde considerar el dictamen de las comisiones de Presupuesto y Hacienda y de Educación en el proyecto"
+    },
+    {
+      "speaker_label": "Sr. SECRETARIO (Piuzzi).-",
+      "first_words": "(Lee:)"
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE (Cafiero).-",
+      "first_words": "En consideración en general."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "Queda aprobada la comunicación. Se procederá en consecuencia."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE (Cafiero).-",
+      "first_words": "Corresponde considerar el dictamen de las comisiones de Interior y Justicia y de Transportes en el proyecto"
+    }
+  ],
+  "events": [
+    "-La votación resulta afirmativa.",
+    "-En particular es igualmente afirmativa.",
+    "-La votación resulta afirmativa.",
+    "-En particular es igualmente afirmativa."
+  ],
+  "headings": [
+    "32",
+    "Docentes para la Dirección nacional de teatro",
+    "Orden del Día N° 261",
+    "33",
+    "Créditos fiscales para empresas",
+    "Orden del Día N° 262",
+    "34",
+    "Nombre para el aeropuerto de Santiago del Estero"
+  ],
+  "furniture_seen": [
+    "[Volver al sumario]",
+    "[Volver al sumario]",
+    "[Volver al sumario]"
+  ],
+  "notes": "Nine turns, all of them the chair or the secretary; the stretch is a run of three consecutive orders of the day (32, 33, 34) handled without debate. Boundaries: the stretch opens on the bold section number 32, not inside anybody's speech, and closes inside the chair's ninth turn ('Por Secretaría se dará lectura.'), which is why that turn is listed as a start even though it is cut off. Botched label: the eighth turn prints 'Sr. PRESIDENTE.-' with no holder in parentheses, while every other chair label in the stretch prints '(Cafiero)'; recorded as printed, not repaired. Inserted documents: after each 'Sr. SECRETARIO (Piuzzi).- (Lee:)' the page prints only the bold title of the order of the day ('Orden del Día N° 261', 'Orden del Día N° 262') and never reproduces the dictamen itself, so there is no document body to attribute; I listed those two bold lines under headings rather than as speech, because they are set as titles, but they belong to the secretary's reading and a reasonable annotator could fold them into his turn instead. Typography traps a parser can fall into: (a) the degree sign in 'Orden del Día N° 261' and in the parenthetical '(Orden del Día N° 261)' is a digit 1 or a &deg; rendered in the font 'WP TypographicSymbols', so the underlying characters are not a degree sign at all and a naive text extraction yields 'N1 261'; (b) the 'Orden del Día N° 262' title is wrapped in a one-cell <table>, and the chair's label that follows it ('Sr. PRESIDENTE (Cafiero).- En consideración en general.') comes straight after </table> with no <p> in front of it, so a parser that only starts turns at paragraph boundaries will swallow that turn; (c) every accented letter sits in its own Times New Roman run inside a DeVinne Txt BT paragraph, so labels and headings are split across many font runs. '(Lee:)' is printed with the word Lee in italics and the colon outside the italic run; I treat it as the secretary's own turn, per the brief, not as an event."
+}

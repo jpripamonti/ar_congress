@@ -1,0 +1,20 @@
+{
+  "source_file": "2001-05-09_r32_ESPECIAL.html",
+  "stretch_id": "2001-05-09_r32",
+  "annotator": "B",
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {"speaker_label": "Sr. Presidente (Losada). --",
+     "first_words": "Tiene la palabra el señor jefe de Gabinete de Ministros."},
+    {"speaker_label": "Sr. jefe de Gabinete de Ministros. --",
+     "first_words": "Con respecto a la primera parte de su pregunta, cuando le contesté al senador Gioja me referí a la calidad"},
+    {"speaker_label": "Sr. Presidente (Losada). --",
+     "first_words": "Tiene la palabra la señora senadora Negre de Alonso."},
+    {"speaker_label": "Sra. Negre de Alonso. --",
+     "first_words": "Voy a plantear tres cuestiones."}
+  ],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [],
+  "notes": "Four turns start here. The fragment opens in the middle of a speech ('Quiero aprovechar su presencia en este recinto para transmitirle una preocupación...'), with no label of its own, so opens_mid_utterance is true and that speech is not listed. For the record only, and not used in the annotation: the raw sitting shows the paragraph immediately before the cut belongs to senator Varizat, questioning the chief of the cabinet of ministers. No stenographer's notes, no headings, no inserted documents, no back-links or other furniture in this fragment. The chief of the cabinet has no personal name on the page — the label is the office, 'Sr. jefe de Gabinete de Ministros', lower-cased as the typist set it — and I left it exactly so rather than supplying the name. Both chair labels print the holder outside the bold run and the terminator back inside it ('Sr. Presidente ' bold, '(Losada)' plain, '. -- ' bold); Negre de Alonso's prints the dash inside the bold run with the following space outside it. All read the same on the page. Her turn is genuinely four words long ('Voy a plantear tres cuestiones.') before she goes on in a new paragraph, which is one turn, not two. Two typist slips in her speech, neither of them a label and neither tidied by me: 'Salario Mínimo,Vital y Móvil' missing a space after the comma, and 'Convención de Derechos Humanos.El salario' missing a space after the full stop."
+}

@@ -1,0 +1,59 @@
+{
+  "source_file": "2003-03-06_r02_ORDINARIA.html",
+  "stretch_id": "2003-03-06_r02",
+  "annotator": "A",
+  "opens_mid_utterance": false,
+  "utterance_starts": [
+    {"speaker_label": "Sr. Presidente (Gioja). --",
+     "first_words": "En consideración en general."},
+    {"speaker_label": "Sr. Presidente (Gioja). --",
+     "first_words": "Queda aprobada la resolución. Se procederá en consecuencia."},
+    {"speaker_label": "Sr. Presidente (Gioja). --",
+     "first_words": "Corresponde considerar el dictamen de las comisiones de Interior y Justicia y de Industria en el proyecto"},
+    {"speaker_label": "Sr. Secretario (Oyarzún) . --",
+     "first_words": "Secretaría informa que corresponde el pase al Archivo por tratarse de un evento vencido."},
+    {"speaker_label": "Sr. Presidente (Gioja). --",
+     "first_words": "En consideración."},
+    {"speaker_label": "Sr. Presidente (Gioja). --",
+     "first_words": "En consecuencia, pasa al Archivo."},
+    {"speaker_label": "Sr. Presidente (Gioja). --",
+     "first_words": "Corresponde considerar el dictamen de las comisiones de Ecología y Desarrollo Humano y de Recursos Hídricos"},
+    {"speaker_label": "Sr. Presidente (Gioja). --",
+     "first_words": "En consideración en general."},
+    {"speaker_label": "Sr. Presidente (Gioja). --",
+     "first_words": "Queda aprobada la comunicación. Se procederá en consecuencia."},
+    {"speaker_label": "Sr. Presidente (Gioja). --",
+     "first_words": "Corresponde considerar el dictamen de la Comisión de Turismo en el proyecto de declaración del señor"},
+    {"speaker_label": "Sr. Presidente (Gioja). --",
+     "first_words": "En consideración en general."}
+  ],
+  "events": [
+    "-- La votación resulta afirmativa.",
+    "-- En particular es igualmente afirmativa.",
+    "-- El texto es el siguiente:",
+    "-- La votación resulta afirmativa.",
+    "-- El texto es el siguiente:",
+    "-- La votación resulta afirmativa.",
+    "-- En particular es igualmente afirmativa.",
+    "-- El texto es el siguiente:",
+    "-- La votación resulta afirmativa."
+  ],
+  "headings": [
+    "81",
+    "Aniversario de la ciudad de Armstrong, Santa Fe",
+    "82",
+    "Comité Ejecutor del Plan de Gestión Ambiental y de Manejo de la Cuenca Hídrica Matanza-Riachuelo",
+    "83",
+    "Inclusión de la Península de Valdés en el Club de las más Bellas Bahías del Mundo"
+  ],
+  "furniture_seen": [
+    "Orden del Día Nº 1653",
+    "[Volver al sumario]",
+    "Orden del Día Nº 1654",
+    "[Volver al sumario]",
+    "Orden del Día Nº 1655",
+    "[Volver al sumario]",
+    "Orden del Día Nº 1656"
+  ],
+  "notes": "Eleven turns, all but one by the chair, in the chamber's rapid end-of-sitting routine of approving orders of the day one after another.\n\nopens_mid_utterance is false, and this is the one judgement worth checking. The stretch begins not with speech but with the centred bold link \"Orden del Día Nº 1653\", which is the stand-in for the text of that order of the day. I read the raw file at data/raw/senado/taquigraficas/2003-03-06_r02_ORDINARIA.html just before the cut: the chair's announcement of the item ends with \"(Orden del Día Nº 1653)\" and is followed by the note \"-- El texto es el siguiente:\", and the stretch starts immediately after that note. So no speech is in progress when the stretch opens; the inserted document is. The first speech in the stretch is the chair's \"En consideración en general.\", which is a genuine start and is listed. Note that the note \"-- El texto es el siguiente:\" that introduces this first document falls just outside the stretch and so is not in events, while the three later ones are.\n\nThe \"Orden del Día Nº NNNN\" centred links are the inserted documents themselves, printed as a hyperlink to the chamber's project database rather than as body text. They have no speaker and I did not invent one; I put them in furniture_seen rather than events because they are a printed pointer to a document, not a stenographer's note about what happened in the room.\n\nEach chair turn that puts an item to the vote runs over two paragraphs -- \"En consideración en general.\" and then \"Si no se hace uso de la palabra, se va a votar.\" -- with no second label. That is one turn, counted once. The same holds where a stenographer's note sits between a label and its continuation.\n\nHeadings print as two separate elements per section: a centred bold number in its own paragraph, and then the section title in an <h1>. I listed them as separate entries in printed order rather than joining them, since joining them would invent punctuation that is not on the page. Each pair 81/82/83 belongs together.\n\nThe secretary's label prints with a stray space before the full stop -- \"Sr. Secretario (Oyarzún) . -- \" -- because the markup closes the bold run after \"Secretario \", puts \"(Oyarzún) \" outside it, and reopens bold for \". -- \". Recorded as printed, per rule 4, not tidied to \"(Oyarzún). --\".\n\nThe chair's label also varies in the markup between \"<b>Sr. Presidente </b>(Gioja)<b>. -- </b>\" and a form where the dash is broken across a line, but every instance reads the same once the markup is stripped, so all eleven are recorded identically.\n\nOne thing a maintainer should know: the last event in the stretch, \"-- La votación resulta afirmativa.\", is the final line of the fragment, and the vote in particular that normally follows it falls outside. Nothing is missing from the annotation, but the section is cut off mid-item."
+}

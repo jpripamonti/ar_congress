@@ -1,0 +1,117 @@
+{
+  "source_file": "1998-11-18_r58_ORDINARIA.html",
+  "stretch_id": "1998-11-18_r58",
+  "annotator": "A",
+  "opens_mid_utterance": false,
+  "utterance_starts": [
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "Queda aprobada la resolución. Se procederá en consecuencia."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "Corresponde considerar si se trata sobre tablas el proyecto de declaración del señor senador Oudín"
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "Por Secretaría se dará lectura."
+    },
+    {
+      "speaker_label": "Sr. PROSECRETARIO (Pontaquarto).-",
+      "first_words": "(Lee:)"
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "En consideración en general."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "Queda aprobada la declaración. Se procederá en consecuencia."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "Corresponde considerar la moción de preferencia para la próxima sesión con dictamen de comisión para el proyecto"
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "Queda aprobada la preferencia."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "Corresponde considerar la moción de preferencia con despacho de comisión para la próxima sesión formulada por"
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "Queda aprobada la preferencia."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "Corresponde pasa a cuarto intermedio para constituir la Cámara en Tribunal de Juicio Político."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "Continúa la sesión."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "Corresponde considerar el dictamen de la Comisión de Asuntos Constitucionales por el que se consideran las designaciones"
+    },
+    {
+      "speaker_label": "SR. PROSECRETARIO (Pontaquarto).-",
+      "first_words": "(Lee:)"
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "En consideración en general."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "Tiene la palabra el señor senador por La Rioja."
+    },
+    {
+      "speaker_label": "Sr. YOMA.-",
+      "first_words": "Gracias por esperarme, señor presidente."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "Es un placer, señor senador."
+    },
+    {
+      "speaker_label": "Sr. YOMA.-",
+      "first_words": "Señor presidente: vamos a tratar los títulos de senadores que no presentan ningún tipo de observaciones"
+    }
+  ],
+  "events": [
+    "-La votación resulta afirmativa.",
+    "-Se lee el proyecto de declaración que figura en el punto ... de los Asuntos Entrados.",
+    "-La votación resulta afirmativa.",
+    "-En particular es igualmente afirmativa.",
+    "-La votación resulta afirmativa.",
+    "-La votación resulta afirmativa.",
+    "-Son las 19 y 20.",
+    "-A las 19 y 35:",
+    "-Luego de unos instantes:"
+  ],
+  "headings": [
+    "10",
+    "Tercer Simposio Técnico Profesional Ciudades del Mercosur",
+    "11",
+    "Moción de preferencia",
+    "12",
+    "Moción de preferencia",
+    "13",
+    "Cuarto intermedio",
+    "14",
+    "Designación de señores senadores",
+    "Orden del Día N° 1230"
+  ],
+  "furniture_seen": [
+    "[Volver al Sumario]",
+    "[Volver al Sumario]",
+    "[Volver al Sumario]",
+    "[Volver al Sumario]",
+    "[Volver al Sumario]",
+    "[Volver al Sumario]"
+  ],
+  "notes": "Nineteen turns. Boundaries: the stretch opens exactly on a label ('Sr. PRESIDENTE.- Queda aprobada la resolución.'), so nothing is cut off at the front; it closes inside senator Yoma's second turn, which is listed because it starts here. The chair is never named in parentheses anywhere in this stretch, unlike the 1998-05-13 file, so every chair label is the bare 'Sr. PRESIDENTE.-'; that is how the page prints it and I did not add a name. The worst case in the stretch is the fifteenth turn: the page prints, inside a centred bold run, 'Orden del Día N° 1230Sr. PRESIDENTE.-' with no space, line break or punctuation between the title of the order of the day and the chair's label, and only then drops out of bold for 'En consideración en general.' So the title of the document the prosecretary was reading and the label of the next speaker are glued into one bold string. I split them: 'Orden del Día N° 1230' goes to headings as the document title, and the chair's turn starts at 'En consideración en general.' A parser keyed on a label standing at the start of a paragraph will lose this turn entirely, and a parser keyed on the bold run will produce a speaker called 'Orden del Día N° 1230Sr. PRESIDENTE'. This is also the only heading in the stretch that is not a numbered section title. Two further label quirks: the prosecretary's second turn is shouted as 'SR. PROSECRETARIO (Pontaquarto).-' with a capitalised SR., against 'Sr. PROSECRETARIO (Pontaquarto).-' the first time; and in the thirteenth turn the bold run closes before the font run ('<B><FONT>Sr. PRESIDENTE.- </FONT></B>') instead of the usual nesting. Inserted document: nothing of the dictamen on the senators' credentials is reproduced, only its title, so there is no unattributed document body here. Typist's errors left as printed: 'Corresponde pasa a cuarto intermedio' (for 'pasar'), 'se va a votar' with no full stop, and 'se va votar' with the 'a' dropped; the ellipsis in the note '-Se lee el proyecto de declaración que figura en el punto ... de los Asuntos Entrados.' is a gap the stenographer never filled in, and I recorded it as printed. The two centred lines '-Son las 19 y 20.' and '-A las 19 y 35:' bracket the recess and are events, not speech; the chair's 'Continúa la sesión.' after them is a fresh turn and is listed. Section 14 is preceded by an empty <CENTER></CENTER>, and the anchor names for section 14 and for the two preference motions ('Designación de señores', 'Moción de preferencia1', 'Moción de preferencia2') do not match the printed titles; I recorded the printed titles."
+}

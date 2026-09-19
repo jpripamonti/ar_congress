@@ -1,0 +1,66 @@
+{
+  "source_file": "1998-05-13_r15_ORDINARIA.html",
+  "stretch_id": "1998-05-13_r15",
+  "annotator": "B",
+  "opens_mid_utterance": false,
+  "utterance_starts": [
+    {
+      "speaker_label": "Sr. PRESIDENTE (Cafiero).-",
+      "first_words": "Corresponde considerar el dictamen de las comisiones de Cultura y de Educación en el proyecto de comunicación"
+    },
+    {
+      "speaker_label": "Sr. SECRETARIO (Piuzzi).-",
+      "first_words": "(Lee:)"
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE (Cafiero).-",
+      "first_words": "En consideración en general. Si no se hace uso de la palabra, se va a votar."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE (Cafiero).-",
+      "first_words": "Queda aprobada la comunicación. Se procederá en consecuencia."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE (Cafiero).-",
+      "first_words": "Corresponde considerar el dictamen de las comisiones de Presupuesto y Hacienda y de Educación en el proyecto"
+    },
+    {
+      "speaker_label": "Sr. SECRETARIO (Piuzzi).-",
+      "first_words": "(Lee:)"
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE (Cafiero).-",
+      "first_words": "En consideración en general. Si no se hace uso de la palabra, se va a votar."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "Queda aprobada la comunicación. Se procederá en consecuencia."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE (Cafiero).-",
+      "first_words": "Corresponde considerar el dictamen de las comisiones de Interior y Justicia y de Transportes en el proyecto de ley"
+    }
+  ],
+  "events": [
+    "-La votación resulta afirmativa.",
+    "-En particular es igualmente afirmativa.",
+    "-La votación resulta afirmativa.",
+    "-En particular es igualmente afirmativa."
+  ],
+  "headings": [
+    "32",
+    "Docentes para la Dirección nacional de teatro",
+    "Orden del Día N° 261",
+    "33",
+    "Créditos fiscales para empresas",
+    "Orden del Día Nº 262",
+    "34",
+    "Nombre para el aeropuerto de Santiago del Estero"
+  ],
+  "furniture_seen": [
+    "[Volver al sumario]",
+    "[Volver al sumario]",
+    "[Volver al sumario]"
+  ],
+  "notes": "Nine turns, all of them starting inside the stretch; the fragment opens on the bold section number \"32\" and a centred title, so nothing is cut mid-speech.\n\nWHAT COUNTS AS A START. I listed every bold speaker label the page prints, including the ones where the president resumes after nothing but a vote note or a section break. Rule 2 of the brief can also be read as merging those into the preceding turn, but that reading is not survivable here: it would fold this whole fragment into two or three turns, because the president is the only floor voice between the secretary's two readings, and \"Queda aprobada la comunicación\" (closing item 32) and \"Corresponde considerar\" (opening item 33) would become the same turn. I read rule 2 as forbidding an INVENTED restart where no label is printed, not as suppressing a label the typist actually set. The starts that the stricter reading would drop are, in my numbering, turns 4, 5, 8 and 9.\n\nTHE NAMELESS PRESIDENT. Item 33 closes with \"Sr. PRESIDENTE.-\" with no holder in parentheses, while every other label in the fragment is \"Sr. PRESIDENTE (Cafiero).-\". It is the same man; the typist dropped the name. Recorded as printed, per rule 4.\n\nTHE DEGREE SIGN IS A LIE IN THE BYTES. The ordinal mark after \"N\" is set in the font \"WP TypographicSymbols\", where the glyph that prints as º is stored as the literal character \"1\". So the bold heading over item 33's reading, and the three in-body references \"(Orden del Día Nº 261/262/264)\", all come out of a naive text extraction as \"N1 261\", \"N1 262\", \"N1 264\". I have written the heading as it PRINTS (\"Orden del Día Nº 262\"). The one exception is the heading over item 32's reading, which really does carry &deg; — I wrote that one \"Orden del Día N° 261\". A maintainer comparing against a stripped text will see \"1\" where I wrote \"º\"; that is the font, not a transcription error on my part.\n\nTHE TWO 'ORDEN DEL DÍA' LINES ARE DOCUMENT TITLES, NOT FLOOR SPEECH. Each is a standalone bold block following \"Sr. SECRETARIO (Piuzzi).- (Lee:)\". They are the masthead of the committee report the secretary is reading out, and the report body itself is not reproduced in this fragment at all — the page jumps straight from the title to the president. I listed them under headings because they are set as headings, but they belong to an inserted document; they are not a section of the sitting on a par with \"32\"/\"33\"/\"34\". I did NOT treat them as a separate speaker: the reading is the secretary's own turn, per rule 3.\n\nMARKUP TRAPS FOR A PARSER. (a) Item 33's \"Orden del Día\" title is wrapped in a <table>/<tr>/<td>, unlike item 32's, which is a plain <p>. (b) Immediately after that </table> the president's next paragraph begins with NO <p> at all — \"<font ...><b>Sr. PRESIDENTE (Cafiero).-</b> En consideración\" hangs directly off the closing table tag. A parser that only looks at <p> boundaries will lose that turn, which is exactly the failure this gold set is meant to catch. (c) Every accented letter sits in its own <font face=\"Times New Roman\"> run inside the surrounding DeVinne Txt BT run, so \"Educación\", \"Dirección\", \"Créditos\" are each split across three runs.\n\nThe labels are printed with a trailing space inside the bold run (\"Sr. PRESIDENTE (Cafiero).- \"); I stripped that trailing space and nothing else."
+}

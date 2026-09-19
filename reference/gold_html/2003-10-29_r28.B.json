@@ -1,0 +1,28 @@
+{
+  "source_file": "2003-10-29_r28_TRIBUNAL_DE_JUICIO_POLITICO.html",
+  "stretch_id": "2003-10-29_r28",
+  "annotator": "B",
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {
+      "speaker_label": "Sr. Presidente (Gioja). —",
+      "first_words": "Tiene la palabra la señora senadora Fernández de Kirchner."
+    },
+    {
+      "speaker_label": "Sra. Fernández de Kirchner. —",
+      "first_words": "Señor presidente: en el artículo 4̊, donde precisamente se empieza a proveer la prueba de la defensa,"
+    },
+    {
+      "speaker_label": "Sr. Presidente (Gioja). —",
+      "first_words": "Continúa la lectura del dictamen de comisión."
+    },
+    {
+      "speaker_label": "Sr. Secretario (Estrada). —",
+      "first_words": "“1. Prueba Informativa. Se libren los siguientes oficios además de los proveídos a la parte acusadora"
+    }
+  ],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [],
+  "notes": "This is the political-impeachment tribunal sitting, and its HTML is a different export from the ordinary-session files: no <B>/<I> tags at all, labels carried by inline CSS ('<span style=\"font-weight: bold\">Sr. Presidente</span>'), paragraphs closed properly, and an em dash '—' as the label terminator instead of the double hyphen '--'. A parser tuned to <B> and '--' would see no labels here at all. OPENS MID-UTTERANCE: the fragment starts inside a numbered list ('2. Prueba testimonial...' through '2.16' and then 'Artículo 4̊...'). This is the text of the committee's evidence ruling, but it is NOT an unattributed inserted document -- the raw sitting file shows the last label before the fragment is 'Sr. Secretario', and the president later says 'Continúa la lectura del dictamen de comisión', so the secretary is reading it aloud. It is therefore the secretary's turn, already in progress, and I list no start for it. THE SAME CALL RECURS at the end: after 'Sr. Secretario (Estrada). — \"1. Prueba Informativa...\"' the paragraphs 1.1 and 1.2 carry no label and are the continuation of that same reading, not new turns, which is why the fragment's four turns cover far more text than four paragraphs. WHAT I DELIBERATELY DID NOT LIST: the numbered document headers ('2. Prueba testimonial.', 'Artículo 4̊...') are typographically ordinary body paragraphs inside the read-aloud document, not chamber section headings, so headings is empty; if a maintainer wants document-internal numbering captured, that is a separate field. LABEL AS PRINTED: the secretary's bold run ends with a trailing space ('Sr. Secretario ') before the holder; I normalised only that wrapping space. CHARACTER ODDITY: the ordinal indicator throughout is U+032A-style combining ring 'N̊' / '4̊', not a degree sign or masculine ordinal, and the quotation marks are curly (“ ”) with several closing quotes set as a straight inch mark ('N̊ 43\"'); leave these alone when comparing strings. There are no italic stenographer's notes, no parenthesised events, and no back-links in this fragment."
+}

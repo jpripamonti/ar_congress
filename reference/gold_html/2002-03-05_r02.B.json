@@ -1,0 +1,36 @@
+{
+  "source_file": "2002-03-05_r02_ESPECIAL.html",
+  "stretch_id": "2002-03-05_r02",
+  "annotator": "B",
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {
+      "speaker_label": "Sr. Presidente (López Arias). --",
+      "first_words": "Señor senador Brizuela del Moral: la señora senadora Sapag solicita una breve interrupción."
+    },
+    {
+      "speaker_label": "Sra. Sapag. --",
+      "first_words": "Señor presidente: he pedido hacer uso de la palabra para insertar mi discurso sobre el tema en consideración"
+    },
+    {
+      "speaker_label": "Sr. Presidente (López Arias). --",
+      "first_words": "Tiene la palabra el señor senador Brizuela del Moral."
+    },
+    {
+      "speaker_label": "Sr. Brizuela del Moral. --",
+      "first_words": "Señor presidente: está en consideración del cuerpo el proyecto de presupuesto para el ejercicio 2002"
+    },
+    {
+      "speaker_label": "Sr. Presidente (López Arias). --",
+      "first_words": "Tiene la palabra el señor senador Busti."
+    },
+    {
+      "speaker_label": "Sr. Busti. --",
+      "first_words": "Señor presidente: hace sesenta y un días que la República Argentina, producto de una crisis política"
+    }
+  ],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [],
+  "notes": "Six turns start here. The fragment opens two paragraphs into somebody else's speech ('Más allá de las urgencias del Poder Ejecutivo...' through 'el voto negativo de nuestra bancada'), so opens_mid_utterance is true and that speech is not listed. Context check in data/raw/senado/taquigraficas/2002-03-05_r02_ESPECIAL.html: the last label before the fragment begins is 'Sr. Chiappe.' - note it ends on a bare full stop with no dash - so those opening paragraphs are Chiappe finishing.\n\nThe three chair labels all PRINT identically as 'Sr. Presidente (López Arias). --' but the markup breaks them three different ways, and a parser that assumes the label is one bold run will mis-handle at least two of them:\n  1st: <B>Sr. Presidente </B>(López Arias)<B>. --</B>  - holder outside the bold, terminator back inside.\n  2nd: <B>Sr. Presidente</B> (López Arias)<B>. --</B>  - same, but the space before the parenthesis sits outside the bold instead of inside it.\n  3rd: <B>Sr. Presidente </B>(López Arias).<B> --</B>  - the full stop has slipped OUT of the bold too, leaving only the dash bold.\nI recorded the printed form in each case, which is the same string three times; the variation is purely in where the bold boundaries fall.\n\nThe chair's first turn runs across a <P> break: 'Señor senador Brizuela del Moral: ...' and then 'Tiene la palabra la señora senadora Sapag.' are one turn by the same person, not two, so I listed it once.\n\nOne passage could be read two ways and I want to flag it. The chair says 'Señor senador Brizuela del Moral: la señora senadora Sapag solicita una breve interrupción', which normally means Brizuela del Moral is holding the floor - yet the speech being interrupted is Chiappe's, and its content (a negative vote for 'nuestra bancada') contradicts what Brizuela del Moral says minutes later (his bloc votes in favour). The raw file shows no label between Chiappe's and this one. I read it as the chair having already passed the floor to Brizuela del Moral off the record, with Sapag's request arriving before he could begin - which is why the chair then has to say 'Tiene la palabra el señor senador Brizuela del Moral' a second time. Either reading leaves the turn boundaries exactly where I put them, so nothing in the list depends on it.\n\nNo inserted documents, no stenographer's notes, no headings and no furniture in this fragment. The two italic runs, both the word 'default' in Busti's speech, are a foreign word inside his own sentences, not events; the second is mis-tagged so that the italics swallow the following comma and space ('el <I>default, </I>porque'), which is a typesetting slip, not a note.\n\nTwo further typographic oddities for whoever maintains this: partway through Busti's speech the <P> paragraphs stop carrying the <FONT FACE=\"Times New Roman\"> wrapper that every earlier paragraph has, and those later paragraphs are also left unclosed; and the paragraph ending 'los depósitos cayeron el 17 por ciento' has no full stop at all. Neither affects the turn count."
+}

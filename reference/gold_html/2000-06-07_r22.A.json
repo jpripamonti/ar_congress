@@ -1,0 +1,40 @@
+{
+  "source_file": "2000-06-07_r22_ORDINARIA.html",
+  "stretch_id": "2000-06-07_r22",
+  "annotator": "A",
+  "opens_mid_utterance": false,
+  "utterance_starts": [
+    {"speaker_label": "Sr. Yoma. --", "first_words": "Señor presidente: quisiera escuchar alguna fundamentación de algún senador que esté a favor"},
+    {"speaker_label": "Sr. Presidente. --", "first_words": "Senador Yoma: usted sabe que no es obligatorio."},
+    {"speaker_label": "Sr. Yoma. --", "first_words": "No es obligatorio; se lo pido a mis pares, nada más."},
+    {"speaker_label": "Sr. Genoud. --", "first_words": "Tiene dictamen de comisión."},
+    {"speaker_label": "Sr. Presidente. --", "first_words": "Se va a votar."},
+    {"speaker_label": "Sr. Presidente. --", "first_words": "Si no se hace uso de la palabra, se va a votar el artículo 4°."},
+    {"speaker_label": "Sr. Presidente. --", "first_words": "Queda aprobado con 47 votos por la afirmativa sobre 50 senadores."},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Si no se hace uso de la palabra, se va a votar el artículo 5°."},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Queda aprobado con 47 votos por la afirmativa sobre 50 senadores."},
+    {"speaker_label": "Sr. Villarroel. --", "first_words": "Pido la palabra."},
+    {"speaker_label": "Sr. Presidente. --", "first_words": "Tiene la palabra el senador por Catamarca."},
+    {"speaker_label": "Sr. Villarroel. --", "first_words": "Señor presidente: no voto mamarrachos y si no he intervenido en el debate"},
+    {"speaker_label": "Sr. Villarroel. --", "first_words": "Las estadísticas, que han sido duramente tratadas..."},
+    {"speaker_label": "Sr. Villarroel. --", "first_words": "Hay algunos que se dan ciertos lujos, acompañados por el número."},
+    {"speaker_label": "Sr. Presidente. --", "first_words": "Tiene la palabra el señor senador Menem."},
+    {"speaker_label": "Sr. Menem. --", "first_words": "Señor presidente: creo que estamos transgrediendo el sistema de votación. Ya se votó"},
+    {"speaker_label": "Sr. Yoma. --", "first_words": "¿Me permite, señor presidente?"},
+    {"speaker_label": "Sr. Presidente. --", "first_words": "Sigamos con la votación en particular, como pide el senador Menem."},
+    {"speaker_label": "Sr. Yoma. --", "first_words": "Quiero opinar en la votación en particular."},
+    {"speaker_label": "Sr. Presidente. --", "first_words": "¿Se quiere referir a la votación en particular, señor senador?"},
+    {"speaker_label": "Sr. Yoma. --", "first_words": "Señor presidente: respecto al artículo 6, al que en alguna medida se refirió"},
+    {"speaker_label": "Sr. Presidente. --", "first_words": "Se va a votar el artículo 6."}
+  ],
+  "events": [
+    "-- La votación resulta afirmativa.",
+    "-- La votación resulta afirmativa.",
+    "— La votación resulta afirmativa.",
+    "-- Varios señores senadores hablan a la vez.",
+    "-- Varios señores senadores hablan a la vez. Risas."
+  ],
+  "headings": [],
+  "furniture_seen": [],
+  "notes": "Particular-vote sequence on a tax-evasion bill, articles 3 to 6. 22 printed labels, 5 stenographer lines, no headings and no back-links or other furniture in this fragment.\n\nTypography: three consecutive paragraphs in the middle of the fragment (article 5: the chair's two lines and the vote note between them) are set WITHOUT the surrounding <FONT FACE=\"Times New Roman\"> wrapper that every other paragraph carries, and use a real em dash '—' where the rest of the fragment uses a double hyphen '--'. I checked the raw file (data/raw/senado/taquigraficas/2000-06-07_r22_ORDINARIA.html, around byte 228000): the same anomaly is there, so it is the chamber's own patched-in passage, not damage introduced when the fragment was cut. The two labels in that patch are recorded with the em dash, as printed. The fragment file is UTF-8 while the raw file is cp1252; that is the only difference between them.\n\nCounting rule applied: every printed label is a start, including the chair's repeated announcements around a vote note ('Se va a votar' / note / 'Queda aprobado') and Villarroel's three labelled segments broken up by the two 'Varios señores senadores hablan a la vez' interruptions. This is the hard case in this fragment: rule 2 of the brief could be read as merging a speaker's labelled resumption after a note into one turn, but the existing gold set for the PDF era does not read it that way — reference/gold/gold_2004-04-28_p24.json lists four separate 'Sr. Presidente. —' starts across two electronic votes — so I followed the printed label. Unlabelled continuation paragraphs inside Villarroel's and Yoma's long speeches are NOT listed, which is what rule 2 governs.\n\nThe chair's two 'Queda aprobado con 47 votos por la afirmativa sobre 50 senadores' announcements (articles 4 and 5) are verbatim identical; they are two distinct turns, not a duplication introduced here. Nothing in this fragment is an inserted document; all of it is floor speech."
+}

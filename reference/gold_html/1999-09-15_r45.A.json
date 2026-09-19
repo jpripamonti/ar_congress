@@ -1,0 +1,13 @@
+{
+  "source_file": "1999-09-15_r45_ORDINARIA.html",
+  "stretch_id": "1999-09-15_r45",
+  "annotator": "A",
+  "opens_mid_utterance": false,
+  "utterance_starts": [],
+  "events": [
+    "-El texto de la inserción solicitada es el siguiente:"
+  ],
+  "headings": [],
+  "furniture_seen": [],
+  "notes": "0 turns. The whole stretch is one INSERTED DOCUMENT with no speaker, preceded by the italic note that introduces it. Why I judged it an inserted document: it is announced by the stenographer's note '-El texto de la inserción solicitada es el siguiente:', every paragraph of it is set in the small insertion font (FONT SIZE=-1) rather than the body font of the debate, no bold label appears anywhere in the stretch, and it ends on '...el 1° de enero del año 2.000.-', the sign-off of a written text rather than a spoken close. Checking the wider sitting in data/raw/senado/taquigraficas/1999-09-15_r45_ORDINARIA.html, the insertion was requested by senator GIOJA of San Juan, whose own short turn ('es simplemente para pedir que sea insertado en el Diario de Sesiones lo que yo pensaba decir') ends just BEFORE this stretch begins. The document therefore belongs to Gioja on paper but was never uttered, and I did not attribute it to him — inventing a speaker here is exactly the error the gold set should catch. opens_mid_utterance: I set it false, and this is the one call I was genuinely unsure about. The stretch does not open inside anybody's SPEECH — Gioja's turn is complete before the first byte, and the first thing printed is the stenographer's note. It does open inside a stretch of non-speech text that runs on past the stretch's end (the raw file shows the debate resuming with 'Sr. PRESIDENTE.- Solamente pide incorporarlo como antecedente' right after). If a scorer means 'was text in progress' rather than 'was a turn in progress', this should be read as true."
+}

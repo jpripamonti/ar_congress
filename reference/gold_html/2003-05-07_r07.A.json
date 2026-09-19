@@ -1,0 +1,11 @@
+{
+  "source_file": "2003-05-07_r07_ESPECIAL.html",
+  "stretch_id": "2003-05-07_r07",
+  "annotator": "A",
+  "opens_mid_utterance": true,
+  "utterance_starts": [],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [],
+  "notes": "No turn starts in this fragment: it is one continuous stretch of a single speech that begins before the stretch and runs past its end. The markup carries no bold run at all - this file uses lowercase '<p>' and '<span STYLE=\"font-family: Times New Roman\"><font face=\"Arial,Helvetica\">' wrappers, a different WordPerfect export style from the 2002 files, and every paragraph is followed by an EMPTY '<font face=\"Arial,Helvetica\"></font>' pair that contains no text and means nothing.\n\nI checked the wider file (data/raw/senado/taquigraficas/2003-05-07_r07_ESPECIAL.html): the last label before the fragment is '<b>Sra.\\r\\nNegre de Alonso. --</b>' (note the line break inside the bold run), and no label falls inside the fragment.\n\nThe main judgement call: this passage is a dense, footnote-like argument about the 1853 Constitution, quoting Alberdi, Bidart Campos, Sampay, Sagüés, Nino, Belluscio and article 19 verbatim, and it reads like a written paper. I considered whether it is an inserted document with no speaker (rule 3) and decided it is NOT: the earlier part of the same speech, just before the fragment, says 'hoy quiero centrar este homenaje en ese aspecto' and 'a través de las pocas y puntuales palabras que expresaré voy a tomar el pensamiento de...', which is first-person floor delivery in a commemorative sitting, not a document handed in for the record. So it is the continuation of the senator's own turn, and the stretch simply contains no start."
+}

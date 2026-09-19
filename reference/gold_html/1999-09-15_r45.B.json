@@ -1,0 +1,13 @@
+{
+  "source_file": "1999-09-15_r45_ORDINARIA.html",
+  "stretch_id": "1999-09-15_r45",
+  "annotator": "B",
+  "opens_mid_utterance": false,
+  "utterance_starts": [],
+  "events": [
+    "-El texto de la inserción solicitada es el siguiente:"
+  ],
+  "headings": [],
+  "furniture_seen": [],
+  "notes": "Zero turns. This whole stretch is one inserted document, so there is nothing to attribute to anybody.\n\nThe fragment opens on a complete stenographer's note, '-El texto de la inserción solicitada es el siguiente:', set in italics. Everything after it — nine paragraphs beginning 'Señor presidente: sólo quisiera, en esta oportunidad, decir unas palabras explicativas respecto del dictamen trabajado en Comisiones...' and ending '...el plazo de transición que operará el 1° de enero del año 2.000.-' — is set in a smaller font (FONT SIZE=-1) throughout, with no bold label anywhere in the file. There is not one bold run in the whole fragment. That is the written insertion a senator asked to have printed in the Diario de Sesiones, not floor speech, so per rule 3 I invented no speaker for it.\n\nI set opens_mid_utterance false, and this is the one thing I was genuinely unsure about. The fragment does not begin in the middle of a sentence or of anybody's speech — it begins on a complete note. But it does begin inside a passage that logically belongs to the turn of the senator who requested the insertion, and whose label is outside the fragment. If the flag is meant to say 'the parser is in the middle of something it did not see the start of', true would be the better answer. I chose false because the brief defines the flag as opening 'in the middle of somebody's speech', and no speech is in progress here.\n\nInternal evidence of who wrote it, which I did NOT turn into a speaker: the text says 'Como representante de la Provincia de San Juan' and discusses wine denominations of origin. A San Juan senator, but the fragment never names them, and rule 3 forbids the inference.\n\nThe document's own text uses shouted words ('TODOS', 'NO', 'URGENCIA', 'VENCIMIENTO DEL PLAZO COMPROMETIDO INTERNACIONALMENTE') and a few typos carried over from the original ('la Camara revisora' unaccented, 'regiòn' and 'caracterìsticas' with grave accents, 'vìnico' grave in one place and 'vínico' acute in another). None of those are labels; I mention them only so a maintainer does not mistake the all-caps runs for shouted speaker labels.\n\nI left furniture_seen empty: the inserted document is not back-links, footnote pointers, contents entries or sign-offs, and the trailing '2.000.-' is the document's own closing, not a sign-off."
+}

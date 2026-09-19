@@ -1,0 +1,20 @@
+{
+  "source_file": "2000-06-07_r24_ESPECIAL.html",
+  "stretch_id": "2000-06-07_r24",
+  "annotator": "B",
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {
+      "speaker_label": "Sr. Presidente. --",
+      "first_words": "Tiene la palabra el señor senador Villarroel."
+    },
+    {
+      "speaker_label": "Sr. Villarroel. --",
+      "first_words": "Señor presidente, señores colegas: por más de un motivo voy a ser parco"
+    }
+  ],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [],
+  "notes": "2 turns.\n\nThe fragment opens in mid-speech: fifteen paragraphs with no label at all, starting 'Por otra parte, el senador también se refería al caso de los salarios superiores a los 6.500 pesos.' The speaker is the jefe de Gabinete answering senators' questions — he addresses a senator as 'usted', says 'Como decía el senador Yoma' and 'fui ministro de Obras y Servicios Públicos' — but his label is outside the fragment, so per rule 1 I did not list that speech as a start, and set opens_mid_utterance true.\n\nThese paragraphs are ordinary floor speech, not an inserted document: they are in the body font (FONT FACE=\"Times New Roman\" with no size reduction), unlike the smaller FONT SIZE=-1 used for insertions in the other stretches I annotated.\n\nNo stenographer's notes, no headings, no back-links or other furniture anywhere in this fragment — not one italic run in the whole file.\n\nLabels here are in the later house style, lower case with a spaced double hyphen ('Sr. Presidente. --', 'Sr. Villarroel. --'), and both sit inside the FONT element rather than starting the paragraph, i.e. '<FONT FACE=\"Times New Roman\"><B>Sr. Presidente. --</B>'. The president's label carries no name in parentheses; per rule 4 I recorded it as printed and did not supply one. Villarroel's turn runs to the end of the fragment and is cut off mid-turn there (his second paragraph ends the file), which does not affect the count since it starts inside the stretch."
+}

@@ -1,0 +1,28 @@
+{
+  "source_file": "2001-05-09_r32_ESPECIAL.html",
+  "stretch_id": "2001-05-09_r32",
+  "annotator": "A",
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {
+      "speaker_label": "Sr. Presidente (Losada). --",
+      "first_words": "Tiene la palabra el señor jefe de Gabinete de Ministros."
+    },
+    {
+      "speaker_label": "Sr. jefe de Gabinete de Ministros. --",
+      "first_words": "Con respecto a la primera parte de su pregunta, cuando le contesté al senador Gioja"
+    },
+    {
+      "speaker_label": "Sr. Presidente (Losada). --",
+      "first_words": "Tiene la palabra la señora senadora Negre de Alonso."
+    },
+    {
+      "speaker_label": "Sra. Negre de Alonso. --",
+      "first_words": "Voy a plantear tres cuestiones."
+    }
+  ],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [],
+  "notes": "Four turns start here. The fragment opens in the middle of somebody's speech ('Quiero aprovechar su presencia en este recinto...'), so opens_mid_utterance is true and that speech is not listed; checking the wider sitting file shows it belongs to senator Varizat, whose label 'Sr. Varizat. --' sits just before the start of the stretch. The second label names an office rather than a person, 'Sr. jefe de Gabinete de Ministros. --', and I left it exactly so rather than substituting the officeholder's name. Both chair labels print 'Sr. Presidente (Losada). --' with the '. --' in a second bold run after the parenthesised name. Three typist slips inside the stretch, all in the body of the speech and none in a label, left untouched: 'Salario Mínimo,Vital' with no space after the comma, 'Derechos Humanos.El salario' with no space after the stop, and 'títular' for 'titular'. Nothing here is an inserted document; it is all live question-and-answer with the chief of cabinet. The stretch ends in the middle of Negre de Alonso's speech. No stenographer's notes, headings or furniture."
+}

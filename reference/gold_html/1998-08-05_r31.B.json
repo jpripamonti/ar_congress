@@ -1,0 +1,22 @@
+{
+  "source_file": "1998-08-05_r31_ORDINARIA.html",
+  "stretch_id": "1998-08-05_r31",
+  "annotator": "B",
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {
+      "speaker_label": "Sr. JEFE DE GABINETE DE MINISTROS.-",
+      "first_words": "Señor presidente, señoras y señores senadores: mis primeras palabras son para disculparme porque el informe"
+    },
+    {
+      "speaker_label": "Sr. JEFE DE GABINETE DE MINISTROS.-",
+      "first_words": "Las aguas van retornando lentamente a sus alturas y caudales normales, previéndose descensos para los meses siguientes."
+    }
+  ],
+  "events": [
+    "-Ocupa la Presidencia el señor vicepresidente del H. Senado, senador Antonio Cafiero."
+  ],
+  "headings": [],
+  "furniture_seen": [],
+  "notes": "Only two turns, and they are the same man twice. The fragment is almost entirely one long ministerial report, so there is very little to find here — which is itself the point: a parser that emits anything other than these two starts is inventing turns out of paragraph breaks.\n\nIT OPENS MID-SPEECH. The first words, \"Con la presencia del señor jefe de Gabinete de Ministros se va a cumplir con el objetivo de brindar el informe...\", carry no label. I went back to the raw file (data/raw/senado/taquigraficas/1998-08-05_r31_ORDINARIA.html, just before byte 115173) to see whose words they are: the turn began \"Sr. PRESIDENTE (Menem).- Continúa la sesión.\", after the note listing the jefe de gabinete and his secretaries entering the chamber. So the speaker is Menem in the chair, the turn starts outside this stretch, and per rule 1 it is not listed. I looked at the raw file only to settle who was speaking; the annotation itself is made from the fragment.\n\nTHE SAME SPEAKER TWICE, AND WHY I LISTED BOTH. The only thing between turn 1 and turn 2 is the note \"-Ocupa la Presidencia el señor vicepresidente del H. Senado, senador Antonio Cafiero.\" — Cafiero relieving Menem in the chair. The jefe de gabinete never stopped talking; the label is re-set purely because the note interrupted the column. This is the single case in my three stretches where a strict reading of rule 2 most clearly says ONE turn, not two, and I want the maintainer to see it plainly: if you decide that a note never re-starts a turn even when the label is re-printed, this stretch has one listed start, not two, and the first_words of that one turn are those of my turn 1. I listed both because the label is printed and because the alternative rule, applied consistently across my other two stretches, collapses whole sittings into a handful of turns. Turn 2 is the one to re-examine first if the project settles on the other convention.\n\nTHE NOTE'S DASH IS BOLD, NOT ITALIC. The paragraph is <B>-</B><I>Ocupa la Presidencia...</I>: the leading dash sits in a bold run and only the words are italic. A check that requires the whole paragraph, dash included, to be italic will not recognise this as a stenographer's note and may hand it to a speaker. Recorded with its dash, as printed.\n\nNO HEADINGS AND NO FURNITURE. The section heading for this business — \"13 / Informe del señor jefe de Gabinete de Ministros\" — and its \"[Volver al Sumario]\" back-link both fall just before the cut, so neither is in the fragment. Both lists are genuinely empty, not overlooked.\n\nNOT AN INSERTED DOCUMENT. The long run of paragraphs on flood relief, evacuee counts and credit lines reads like a tabled report, but it is not one: it is in the same roman face as the surrounding speech, it is not set off by any italic note announcing an insertion, and it is framed in the first person (\"comenzaré informando\", \"Informo que el próximo 8 de agosto\"). It is the minister reading his own report aloud from the floor, so it belongs to his turn and has no separate speaker. The fragment ends in the middle of it, at \"...30 millones a Desarrollo Social y 20 millones al Plan Arraigo.\"\n\nThe report he is delivering is the one required by article 101 of the Constitution; he opens by apologising that the copies handed to senators name the wrong chamber."
+}

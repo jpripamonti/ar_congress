@@ -1,0 +1,20 @@
+{
+  "source_file": "2001-03-23_r12_ORDINARIA.html",
+  "stretch_id": "2001-03-23_r12",
+  "annotator": "A",
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {
+      "speaker_label": "Sr. Presidente (León). --",
+      "first_words": "Tiene la palabra el señor senador Alasino."
+    },
+    {
+      "speaker_label": "Sr. Alasino. --",
+      "first_words": "Hace un año y medio que la Alianza sigue dilapidando esfuerzos, y llevando sucesivamente"
+    }
+  ],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [],
+  "notes": "The stretch opens six paragraphs deep inside a speech that began before it; I did not list that speech as a start. Checking the raw file (data/raw/senado/taquigraficas/2001-03-23_r12_ORDINARIA.html) shows the last bold label before the stretch is 'Sra. Negre de Alonso. --', which fits the content (she speaks for San Luis and quotes Juan Pablo II). The president's label is split across runs, with the holder outside the bold: '<B>Sr. Presidente </B>(León)<B>. -- </B>'. I recorded it as the page renders it, 'Sr. Presidente (León). --', trimming only the trailing space that belongs to the following sentence, not to the label. Same treatment for 'Sr. Alasino. -- ' -> 'Sr. Alasino. --'. No stenographer's notes, no headings, no back-links or other furniture anywhere in this stretch, and no inserted document: it is continuous floor speech. The stretch also ENDS mid-utterance, inside Alasino's speech. Nothing here was genuinely ambiguous."
+}

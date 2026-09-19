@@ -36,7 +36,7 @@ as its own HTML export for most of 1998–2003; both are read here.
   stenographer events in 432,563 rows over 817 sittings, as per-session Parquet
   under `data/processed/senado/`. 25.7 million words of attributed speech, of
   which the HTML side contributes 5.9 million. The PDF side is parser 0.4.40 and
-  the HTML side `scripts/parse_html.py` at 0.5.4-html; the two share the speaker
+  the HTML side `scripts/parse_html.py` at 0.5.5-html; the two share the speaker
   pattern and the event subtypes, so a passage means the same thing in either.
   One sitting fails to parse: the 1997 impeachment tribunal, which does not open
   like an ordinary sitting. It used to be two — the no-quorum sitting of 29
@@ -311,6 +311,24 @@ as its own HTML export for most of 1998–2003; both are read here.
   document's printed text is kept (the rest — contents pages, attendance rolls,
   appendices — is dropped by design). Three sittings are scans with OCR text and
   should be excluded from any text analysis; the parser flags them.
+- **The HTML era has a gold set of its own, and on it the parser is exact.**
+  Until September 2026 every one of the 36 gold pages was a PDF page — the
+  annotations are named by page number, and the chamber's HTML export has no
+  pages — so a third of the corpus had never had its turn recall or its event
+  recall measured at all. The unit there is a stretch instead: a window of
+  about 7,000 characters, cut on the SOURCE by character offset and never at a
+  heading the parser found, because cutting at the parser's own segmentation
+  would hand the annotators only the passages it already reads well.
+  `scripts/draw_gold_html.py` draws them, four per year across 1998–2003.
+  **Two readers annotated all 24 independently**, and `check_gold_html.py`
+  reports how far they agree before either is believed: 99.2% on turn starts,
+  22 of the 24 stretches identical, and `opens_mid_utterance` the same
+  everywhere. Against that set (`scripts/eval_gold_html.py`): boundary and
+  attribution **P=1.000 R=1.000 F1=1.000 on all 195 annotated turns**, events
+  P=1.000 R=1.000 on 62, under either reader's annotation.
+  It did not start there. The set found one turn the parser was losing and one
+  rule of its own that was wrong, and both are described under "what reading
+  it twice was for" below.
 - **The HTML era passes the same audit, and on the conservation check it passes
   perfectly**: every one of its probed blocks is found in the file it came from,
   none missing, against 0.008% for the PDF side. It also keeps more of what it
@@ -318,6 +336,28 @@ as its own HTML export for most of 1998–2003; both are read here.
   page headers or footers to drop. Until September 2026 the audit had never read
   one of these files: it opened every source with pdfplumber, so the 214 HTML
   sittings sat outside the conservation and coverage checks entirely.
+- **What reading it twice was for.** Both things the HTML gold set found in its
+  first run were found because two people read the same page and wrote down
+  where they hesitated. The parser's defect: the sitting of 18 November 1998
+  prints, inside one centred bold run with no space and no break between them,
+  `Orden del Día N° 1230Sr. PRESIDENTE.-` — a document's title welded to the
+  chair's next label. The title made the paragraph look like a heading and the
+  label inside it was never reached, so the turn was lost. Both readers flagged
+  it before it was scored, one calling it "the worst thing in this fragment".
+  A scan of all 214 files finds exactly two paragraphs botched this way, one
+  centred and one not, and the split now fires only where a label is welded to
+  a document pointer with no space at all. 0.5.5-html.
+  The other defect was in the annotation brief, not the parser: it told the
+  readers that a parenthesised note like "(Aplausos.)" is an event without
+  saying where on the page it has to sit, and the corpus convention — recorded
+  in TODO.md since Phase 2 — is that an event stands as its own paragraph while
+  an italic fragment inside a speaker's paragraph is merged back into that
+  speech. Fifteen notes had been recorded as events that the parser had
+  correctly kept inside somebody's turn. That is why event recall is quoted at
+  1.000 rather than the 0.803 the first run showed: the 0.803 was measuring the
+  brief. Whether "…señor presidente. (Aplausos.)" closing a speech should
+  really count as that senator's words is a fair question about the corpus, and
+  it is open in TODO.md rather than settled here.
 - **Three blind rounds on the HTML era, the tenth to the twelfth overall** — 60
   passages read by five readers
   ([blind_read_60_html.csv](reference/verification/blind_read_60_html.csv)),

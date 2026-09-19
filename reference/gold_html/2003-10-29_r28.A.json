@@ -1,0 +1,20 @@
+{
+  "source_file": "2003-10-29_r28_TRIBUNAL_DE_JUICIO_POLITICO.html",
+  "stretch_id": "2003-10-29_r28",
+  "annotator": "A",
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {"speaker_label": "Sr. Presidente (Gioja). —",
+     "first_words": "Tiene la palabra la señora senadora Fernández de Kirchner."},
+    {"speaker_label": "Sra. Fernández de Kirchner. —",
+     "first_words": "Señor presidente: en el artículo 4̊, donde precisamente se empieza a proveer la prueba de la defensa"},
+    {"speaker_label": "Sr. Presidente (Gioja). —",
+     "first_words": "Continúa la lectura del dictamen de comisión."},
+    {"speaker_label": "Sr. Secretario (Estrada). —",
+     "first_words": "“1. Prueba Informativa. Se libren los siguientes oficios además de los proveídos a la parte acusadora"}
+  ],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [],
+  "notes": "Four turns. This is the juicio político tribunal sitting, and most of the stretch is the text of the comisión's dictamen, which makes the mid-utterance judgement the whole question here.\n\nThe stretch opens inside a reading, not inside a document with no speaker. The unlabelled block that begins \"2. Prueba testimonial.\" and runs to \"Artículo 4̊...\" is the continuation of the secretary reading the dictamen aloud: I checked the raw file at data/raw/senado/taquigraficas/2003-10-29_r28_TRIBUNAL_DE_JUICIO_POLITICO.html and the last label before the cut is \"Sr. Secretario (Estrada).—\" opening a quoted \"1. Prueba informativa. Liberar los siguientes oficios...\", and the president says later in this very stretch \"Continúa la lectura del dictamen de comisión.\" So it is Estrada's turn already in progress. opens_mid_utterance is true and that reading is not listed as a start, per rule 1. This is the case I was least sure of: read on the fragment alone it looks like an inserted document with no speaker, and only the wider file settles it.\n\nThe same reasoning applies to the closing block. The final Estrada turn opens with a quotation mark and runs on through unlabelled paragraphs 1.1 and 1.2 to the end of the stretch; that is all one turn, the document being read aloud, so rule 3's \"a document a secretary READS ALOUD is that secretary's turn\" applies and I counted it once.\n\nThe Fernández de Kirchner turn likewise continues past its first paragraph into \"Luego, vamos a sugerir otra modificación en el punto 1.6...\", one turn.\n\nTypography of the labels: this file is a later HTML export that uses span style=\"font-weight: bold\" rather than <b>, and an em dash rather than the double hyphen used in the WordPerfect-era files. Recorded as printed. \"Sr. Secretario \" carries a trailing space inside the bold run before \"(Estrada)\"; I dropped it as whitespace when writing the label, since it is not a printed character the reader sees.\n\nThe file uses U+030A COMBINING RING ABOVE after a digit where the chamber means the ordinal sign (\"artículo 4̊\", \"N̊ 23\", \"N̊ 4128/01\"). I left it as it appears rather than normalising it to º; a maintainer comparing strings should expect that codepoint.\n\nNo stenographer's notes, no section headings, no back-links or contents entries fall inside this stretch."
+}

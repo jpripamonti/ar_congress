@@ -1,0 +1,116 @@
+{
+  "source_file": "1998-11-18_r58_ORDINARIA.html",
+  "stretch_id": "1998-11-18_r58",
+  "annotator": "B",
+  "opens_mid_utterance": false,
+  "utterance_starts": [
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "Queda aprobada la resolución. Se procederá en consecuencia."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "Corresponde considerar si se trata sobre tablas el proyecto de declaración del señor senador Oudín"
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "Por Secretaría se dará lectura."
+    },
+    {
+      "speaker_label": "Sr. PROSECRETARIO (Pontaquarto).-",
+      "first_words": "(Lee:)"
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "En consideración en general. Si no se hace uso de la palabra, se va a votar"
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "Queda aprobada la declaración. Se procederá en consecuencia."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "Corresponde considerar la moción de preferencia para la próxima sesión con dictamen de comisión para el proyecto"
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "Queda aprobada la preferencia."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "Corresponde considerar la moción de preferencia con despacho de comisión para la próxima sesión formulada"
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "Queda aprobada la preferencia."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "Corresponde pasa a cuarto intermedio para constituir la Cámara en Tribunal de Juicio Político."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "Continúa la sesión."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "Corresponde considerar el dictamen de la Comisión de Asuntos Constitucionales por el que se consideran las designaciones"
+    },
+    {
+      "speaker_label": "SR. PROSECRETARIO (Pontaquarto).-",
+      "first_words": "(Lee:)"
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "En consideración en general."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "Tiene la palabra el señor senador por La Rioja."
+    },
+    {
+      "speaker_label": "Sr. YOMA.-",
+      "first_words": "Gracias por esperarme, señor presidente."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "Es un placer, señor senador."
+    },
+    {
+      "speaker_label": "Sr. YOMA.-",
+      "first_words": "Señor presidente: vamos a tratar los títulos de senadores que no presentan ningún tipo de observaciones"
+    }
+  ],
+  "events": [
+    "-La votación resulta afirmativa.",
+    "-Se lee el proyecto de declaración que figura en el punto ... de los Asuntos Entrados.",
+    "-La votación resulta afirmativa.",
+    "-En particular es igualmente afirmativa.",
+    "-La votación resulta afirmativa.",
+    "-La votación resulta afirmativa.",
+    "-Son las 19 y 20.",
+    "-A las 19 y 35:",
+    "-Luego de unos instantes:"
+  ],
+  "headings": [
+    "10",
+    "Tercer Simposio Técnico Profesional Ciudades del Mercosur",
+    "11",
+    "Moción de preferencia",
+    "12",
+    "Moción de preferencia",
+    "13",
+    "Cuarto intermedio",
+    "14",
+    "Designación de señores senadores",
+    "Orden del Día N° 1230"
+  ],
+  "furniture_seen": [
+    "[Volver al Sumario]",
+    "[Volver al Sumario]",
+    "[Volver al Sumario]",
+    "[Volver al Sumario]",
+    "[Volver al Sumario]"
+  ],
+  "notes": "Nineteen turns. The fragment opens exactly on a bold label — \"Sr. PRESIDENTE.- Queda aprobada la resolución\", the close of item 9 — so it is not cut mid-speech and that turn is listed.\n\nTHE LABEL WELDED TO A HEADING — the worst thing in this fragment. After the prosecretary's \"(Lee:)\" for item 14, the page prints one <CENTER> block whose bold run reads, with no space and no separator:\n    Orden del Día N° 1230Sr. PRESIDENTE.-\nand then leaves the bold run for \"En consideración en general.\" So the title of the report being read and the president's next speaker label are fused into a single bold string inside a single centred block, and there is no <P> anywhere near it. I verified this against the raw file (data/raw/senado/taquigraficas/1998-11-18_r58_ORDINARIA.html, around byte 78213) to be sure it is the chamber's own botch and not an artefact of how the stretch was sliced. It is not. I split it the only way it can be read: \"Orden del Día N° 1230\" is the heading of the inserted report, \"Sr. PRESIDENTE.-\" is a real label, and the president's turn runs on through \"Tiene la palabra el señor presidente de la Comisión de Asuntos Constitucionales, a quien en este momento no veo en el recinto...\" and \"Estamos a la espera del señor senador Yoma...\". Any parser that anchors a label to the start of a paragraph, or that requires whitespace before \"Sr.\", will swallow this turn whole.\n\nNote also that the report announced by that heading is never reproduced — the prosecretary's \"(Lee:)\" is followed straight by the title and then by the president. The same happens at item 10, where the reading is represented only by the italic note \"-Se lee el proyecto de declaración que figura en el punto ... de los Asuntos Entrados.\" (the ellipsis is the typist's; the point number was never filled in). Both readings are the prosecretary's own turns, per rule 3, and I invented no speaker for the documents.\n\nWHAT COUNTS AS A START. As in my other stretches, I listed every printed bold label, including the president resuming after only a vote note or a section break. Read strictly, rule 2 would merge those, but here that would collapse items 10 through 14 into about three enormous turns and erase the boundaries between five separate pieces of business. The starts a stricter reading would drop are, in my numbering, 2, 3, 6, 7, 8, 9, 10, 11, 12, 13 and 16. Turn 16 is the closest call in the fragment: \"-Luego de unos instantes:\" is plainly an interruption inside a single stretch of presiding, and the president had already said \"Estamos a la espera del señor senador Yoma\" before it. I still listed it, because the label is printed.\n\nTYPIST'S ERRORS RECORDED AS PRINTED, per rule 4: turn 11 reads \"Corresponde pasa a cuarto intermedio\" (for \"pasar\"); turn 5 ends \"se va a votar\" with no full stop, and turn 9's equivalent line reads \"se va votar\" with the \"a\" missing. Turn 14's label is shouted — \"SR. PROSECRETARIO\" — where turn 4's is \"Sr. PROSECRETARIO\"; same man, same sitting, and I did not tidy either. Every president label in this fragment is bare \"Sr. PRESIDENTE.-\" with no holder named.\n\nMARKUP TRAPS. (a) The section numbers and titles are in <CENTER> blocks that are NOT preceded by a <P>, and they follow the previous paragraph's </FONT> directly. (b) Item 14's block is preceded by an empty <CENTER></CENTER>. (c) Turn 13's label nests the other way round from all the others — <B><FONT>Sr. PRESIDENTE.- </FONT></B> rather than <FONT><B>...</B>. (d) Turn 11's label has no space before the text: \"<B>Sr. PRESIDENTE.-</B> Corresponde\". None of these change what is printed.\n\nThe cuarto intermedio is the recess to sit as the Tribunal de Juicio Político; \"-Son las 19 y 20.\" and \"-A las 19 y 35:\" are its opening and closing time stamps and are events, not speech."
+}

@@ -1,0 +1,115 @@
+{
+  "source_file": "1999-08-25_r43_ORDINARIA.html",
+  "stretch_id": "1999-08-25_r43",
+  "annotator": "B",
+  "opens_mid_utterance": false,
+  "utterance_starts": [
+    {
+      "speaker_label": "Sr. GIOJA.-",
+      "first_words": "Señor presidente: si bien represento a una provincia que no produce tabaco, voy a"
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE (Menem).-",
+      "first_words": "Tiene la palabra el señor senador por Jujuy."
+    },
+    {
+      "speaker_label": "Sr. TELL.-",
+      "first_words": "Señor presidente: sin el ánimo de dialogar con el señor senador por San Juan,"
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE (Menem).-",
+      "first_words": "Tiene la palabra el señor senador por Misiones."
+    },
+    {
+      "speaker_label": "Sr. OUDÍN.-",
+      "first_words": "Deseo manifestar mi apoyo a esta iniciativa y decir que esto constituye nada más"
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE (Menem).-",
+      "first_words": "Tiene la palabra el señor senador por Corrientes."
+    },
+    {
+      "speaker_label": "Sr. PARDO.-",
+      "first_words": "Señor presidente: la provincia de Corrientes tiene tabaco y muchas necesidades."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE (Menem).-",
+      "first_words": "Tiene la palabra el señor senador por el Chaco."
+    },
+    {
+      "speaker_label": "Sr. SAGER.-",
+      "first_words": "Señor presidente: soy el representante de una provincia que es productora de tabaco en"
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE (Menem).-",
+      "first_words": "En primer término, vamos a poner a consideración el tratamiento sobre tablas."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE (Menem).-",
+      "first_words": "Pasamos a considerar el proyecto en general, para lo cual, por implicar gastos, corresponde"
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE (Menem).-",
+      "first_words": "Queda constituida la Cámara en comisión y confirmadas las autoridades para la conferencia."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE (Menem).-",
+      "first_words": "Queda abierta la conferencia."
+    },
+    {
+      "speaker_label": "Sr. PROSECRETARIO (Pontaquarto).-",
+      "first_words": "(Lee:)"
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE (Menem).-",
+      "first_words": "En consideración."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE (Menem).-",
+      "first_words": "Queda cerrada la conferencia."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE (Menem).-",
+      "first_words": "Continúa la sesión."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE (Menem).-",
+      "first_words": "Queda sancionado y convertido en ley. Se comunicará al Poder Ejecutivo."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE (Menem).-",
+      "first_words": "Se procederá en consecuencia."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE (Menem).-",
+      "first_words": "Se encuentra en antesala el señor jefe de Gabinete de Ministros, ingeniero Jorge Rodríguez,"
+    }
+  ],
+  "events": [
+    "-El texto de la inserción solicitada es el siguiente:",
+    "-La votación resulta afirmativa.",
+    "-Asentimiento.",
+    "-Se lee nuevamente el proyecto de ley en revisión.",
+    "-Asentimiento.",
+    "-La votación resulta afirmativa.",
+    "-En particular es igualmente afirmativa.",
+    "-La votación resulta afirmativa."
+  ],
+  "headings": [
+    "1",
+    "Constitución de la Cámara en comisión",
+    "2",
+    "Conferencia",
+    "3",
+    "Votación",
+    "53",
+    "Informe del jefe de Gabinete de Ministros"
+  ],
+  "furniture_seen": [
+    ".",
+    ".",
+    ".",
+    "[Volver al sumario]"
+  ],
+  "notes": "20 turns. The stretch begins exactly on Gioja's bold label, so nothing is cut: opens_mid_utterance is false.\n\nInserted document: after Tell says he will ask for his speech to be inserted in the Diario de Sesiones, the italic note '-El texto de la inserción solicitada es el siguiente:' introduces six paragraphs set in a smaller font (FONT SIZE=-1), beginning 'Señor presidente: los recursos que pertenecen al Fondo Especial del Tabaco...'. Nobody reads this aloud — it is the written insertion, printed for the record — so I gave it no speaker and did not list it as a turn. The smaller type is the tell: every spoken paragraph in this fragment is in the body font. The insertion is Tell's own text, but it is not part of his floor turn, which ends at 'Voy a solicitar, asimismo, la inserción...'.\n\nJudgement call I want flagged: the president's label is re-printed after a stenographer's note or a section heading eleven times (e.g. '-La votación resulta afirmativa.' then heading '1' / 'Constitución de la Cámara en comisión' then 'Sr. PRESIDENTE (Menem).- Pasamos a considerar...'). Rule 2 says a note or heading does not by itself start a new turn; I read that as covering the case where speech simply resumes with no new label, and I counted every RE-PRINTED label as a new turn start, since that is what the page prints. If the gold set is meant to merge those, this file has 11 turns too many, and they are all the president. The alternative reading would collapse turns 10-12 into one, 13/15/16 into one (broken by the prosecretario), and 17-20 into one.\n\nSecretary reading a document: 'Sr. PROSECRETARIO (Pontaquarto).- (Lee:)' is printed as a label followed by '(Lee' in italics plus ':)'. Per the brief I kept '(Lee:)' as his own turn rather than as an event, and the italic line that follows, '-Se lee nuevamente el proyecto de ley en revisión.', as a stenographer's note — note that here the bill's text is NOT reproduced, the note just records that it was read again.\n\nFurniture: three stray full stops each sit alone on a line just before a section number ('<BR><I>.</I>' once, '<BR>.' twice) — WordPerfect debris, not speech. '[Volver al sumario]' is the back-link to the contents. Two invisible anchors (A NAME) carry the section title.\n\nLabels as printed: several president labels carry a trailing space inside the bold run ('Sr. PRESIDENTE (Menem).- '); I dropped the trailing space, since it is not printed matter, but changed nothing else. 'Sr. OUDÍN.-' is a single bold run here, not split across accent fonts."
+}

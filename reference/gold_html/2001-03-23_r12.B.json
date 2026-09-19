@@ -1,0 +1,20 @@
+{
+  "source_file": "2001-03-23_r12_ORDINARIA.html",
+  "stretch_id": "2001-03-23_r12",
+  "annotator": "B",
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {
+      "speaker_label": "Sr. Presidente (León). --",
+      "first_words": "Tiene la palabra el señor senador Alasino."
+    },
+    {
+      "speaker_label": "Sr. Alasino. --",
+      "first_words": "Hace un año y medio que la Alianza sigue dilapidando esfuerzos, y llevando sucesivamente al gobierno"
+    }
+  ],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [],
+  "notes": "The stretch opens inside a speech already under way: the first six paragraphs (quoting Juan Pablo II, then the San Luis minimum-wage bill and the vote in favour) carry no label and are not listed as a start. Checked the wider sitting in data/raw/senado/taquigraficas/2001-03-23_r12_ORDINARIA.html: the speaker is Sra. Negre de Alonso, whose label is printed before the stretch begins. The president's label is split across bold runs, with the holder outside the bold — <B>Sr. Presidente </B>(León)<B>. -- </B> — and I recorded the printed text 'Sr. Presidente (León). --'. Note that this sitting prints the office in lower case ('Sr. Presidente'), not shouted. Alasino's turn runs to the end of the stretch across twelve paragraphs with no further label, so it counts once. Nothing in the fragment is italic, centred or linked: no stenographer's notes, no headings, no furniture at all."
+}

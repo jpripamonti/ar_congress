@@ -1,0 +1,22 @@
+{
+  "source_file": "1998-08-05_r31_ORDINARIA.html",
+  "stretch_id": "1998-08-05_r31",
+  "annotator": "A",
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {
+      "speaker_label": "Sr. JEFE DE GABINETE DE MINISTROS.-",
+      "first_words": "Señor presidente, señoras y señores senadores: mis primeras palabras son para disculparme porque el informe"
+    },
+    {
+      "speaker_label": "Sr. JEFE DE GABINETE DE MINISTROS.-",
+      "first_words": "Las aguas van retornando lentamente a sus alturas y caudales normales, previéndose descensos"
+    }
+  ],
+  "events": [
+    "-Ocupa la Presidencia el señor vicepresidente del H. Senado, senador Antonio Cafiero."
+  ],
+  "headings": [],
+  "furniture_seen": [],
+  "notes": "Only one turn starts here, which makes this stretch a test of restraint rather than of coverage. The stretch opens in the middle of the chair's speech: the two unlabelled paragraphs at the top ('Con la presencia del señor jefe de Gabinete de Ministros...' and 'Tiene la palabra el señor jefe de Gabinete de Ministros.') are the tail of 'Sr. PRESIDENTE (Menem).- Continúa la sesión.', which begins just before the cut; I checked the wider sitting in data/raw/senado/taquigraficas/1998-08-05_r31_ORDINARIA.html to confirm this, so opens_mid_utterance is true and that speech is not listed. The judgement call, now settled: the label 'Sr. JEFE DE GABINETE DE MINISTROS.-' is printed TWICE in this stretch, once at the start of the report and again right after the italic note that Cafiero takes over the chair. Substantively the second printing is not a fresh intervention - the same man is still delivering the same report, and the stenographer only re-set the label because the note interrupted the column. I first listed it once, reading the brief's rule 2 as covering it. The count was settled at 2 under the corpus convention that a printed label always opens a turn, with rule 2 reaching only an UNLABELLED paragraph that runs on with no label of its own; the convention is recorded in TODO.md ('a printed label opens a turn; speech resuming after an event stays in the same turn') and the PDF gold set follows it, gold_2004-04-28_p24.json listing repeated 'Sr. Presidente. —' starts across two electronic votes. So both printings are listed here, and the second start is the resumption after the chair changes hands. The note itself is oddly marked up: the leading dash is inside a bold run and only the words after it are italic ('<B>-</B><I>Ocupa la Presidencia...</I>'), so a rule that requires an italic dash will not see this event, and a rule that treats a bold run at the head of a paragraph as a label will read the bare dash as a speaker. The rest of the stretch is a single continuous ministerial report on the Litoral floods and the budget, all of it floor speech in the minister's own voice; nothing here is an inserted document, and there is no heading, no back-link and no other furniture in the fragment. The report quotes figures and a decree ('decreto 464/98') but never breaks into a read-aloud text. The chamber's chair changes hands mid-turn, which means the speaker who later answers will be Cafiero, not Menem - worth knowing if the surrounding stretches are ever scored together."
+}

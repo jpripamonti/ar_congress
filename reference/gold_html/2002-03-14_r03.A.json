@@ -1,0 +1,79 @@
+{
+  "source_file": "2002-03-14_r03_ORDINARIA.html",
+  "stretch_id": "2002-03-14_r03",
+  "annotator": "A",
+  "opens_mid_utterance": false,
+  "utterance_starts": [
+    {
+      "speaker_label": "Sra. Avelín. --",
+      "first_words": "El Orden del Día no incluye el texto del acuerdo; habla de la aprobación"
+    },
+    {
+      "speaker_label": "Sr. Presidente (López Arias).--",
+      "first_words": "Haré una pequeña aclaración. En el texto del artículo 1 se hace referencia a"
+    },
+    {
+      "speaker_label": "Sr. Alfonsín. --",
+      "first_words": "Pido la palabra."
+    },
+    {
+      "speaker_label": "Sr. Presidente (López Arias).--",
+      "first_words": "Tiene la palabra el señor senador Alfonsín."
+    },
+    {
+      "speaker_label": "Sr. Alfonsín. --",
+      "first_words": "Señor presidente: quiero aclarar que la norma que estamos considerando ha sido enviada por"
+    },
+    {
+      "speaker_label": "Sr. Presidente (López Arias). --",
+      "first_words": "Entiendo, señor senador Alfonsín, que debo tener por desistida su moción de vuelta a"
+    },
+    {
+      "speaker_label": "Sr. Alfonsín. --",
+      "first_words": "Si así lo considera el presidente de mi bloque..."
+    },
+    {
+      "speaker_label": "Sr. Presidente (López Arias). --",
+      "first_words": "Vamos a escucharlo después."
+    },
+    {
+      "speaker_label": "Sr. Pichetto. --",
+      "first_words": "Señor presidente: vamos a modificar nuestra posición. Pedimos que se vote. Este es un"
+    },
+    {
+      "speaker_label": "Sr. Presidente (López Arias). --",
+      "first_words": "Tiene la palabra el señor senador Maestro."
+    },
+    {
+      "speaker_label": "Sr. Maestro. --",
+      "first_words": "Señor presidente: valoramos el gesto del presidente de la bancada justicialista, que ante una"
+    },
+    {
+      "speaker_label": "Sr. Presidente (López Arias). --",
+      "first_words": "Tiene la palabra el señor senador Losada."
+    },
+    {
+      "speaker_label": "Sr. Losada. --",
+      "first_words": "Señor presidente: el tema evidentemente es responsabilidad de la Comisión de Relaciones Exteriores."
+    },
+    {
+      "speaker_label": "Sr. Presidente (López Arias).--",
+      "first_words": "Entiendo que hay un desistimiento del autor de la moción de vuelta a comisión."
+    },
+    {
+      "speaker_label": "Sr. Alfonsín.--",
+      "first_words": "Sí."
+    },
+    {
+      "speaker_label": "Sr. Presidente (López Arias).--",
+      "first_words": "Por lo tanto, pasamos a votar el proyecto."
+    }
+  ],
+  "events": [
+    "-- La votación resulta afirmativa.",
+    "-- En particular es igualmente afirmativa."
+  ],
+  "headings": [],
+  "furniture_seen": [],
+  "notes": "16 turns. The stretch begins exactly on Avelín's bold label, so it does not open mid-utterance. LABELS: the president's label is printed four different ways in these seven paragraphs and I kept each as rendered rather than normalising. '<B>Sr. Presidente </B>(López Arias)<B>.-- </B>' and '<B>Sr. Presidente</B> (López Arias)<B>.-- </B>' both render 'Sr. Presidente (López Arias).--' (the space before the parenthesis is inside the bold run in the first, outside it in the second); '<B>Sr. Presidente </B>(López Arias)<B>.\\n--</B>' renders with a space, 'Sr. Presidente (López Arias). --'. The holder is outside the bold run every time. Alfonsín's one-word turn ('Sí.') is printed '<B>Sr. Alfonsín</B>.-- ', with the stop and dash OUTSIDE the bold run and no space before the stop, unlike his other three turns ('<B>Sr. Alfonsín. --</B>'). That short turn and 'Pido la palabra.' are exactly the kind that get dropped, so I flag them. CONTINUATIONS I DID NOT COUNT: after 'Vamos a escucharlo después.' a separate unlabelled paragraph reads 'Tiene la palabra el señor senador Pichetto.' — still the president's same turn. Likewise Alfonsín's second turn runs over three paragraphs, Pichetto's over three, Losada's over two, and the president's last turn continues into 'Se va a votar en general.' ITALICS THAT ARE NOT AN EVENT: inside Alfonsín's speech the Latin tag 'omni definitio in jure periculosa est' is set in italics. It is spoken (he introduces it with 'permítanme un latinazgo'), so it is part of his turn, not a stenographer's note. The two real notes are the voting lines at the end. No headings, no back-links, no inserted document in this stretch. UNSURE: nothing that changes the turn count. The only judgement call was the Latin italics, decided against calling it an event because the sentence around it announces it as speech."
+}

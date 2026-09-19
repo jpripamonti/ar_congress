@@ -1910,6 +1910,69 @@ and 21.5 million words of attributed speech become 25.7.
       records of the eleven earlier blind rounds still resolve to the person
       the round named. The gold set is unchanged at F1 0.996.
 
+## Phase 36 — a gold set for the HTML era, and what it cost to build (September 2026 — parser 0.5.5-html)
+
+- [x] The 36 gold pages were all PDF pages — they are keyed by page number and
+      the HTML export has none — so 214 sittings, 85,684 turns and 5.9 million
+      words had never had turn recall or event recall measured. A blind read
+      cannot supply it: it samples turns that exist and never asks whether one
+      is missing. The unit is a stretch instead, ~7,000 characters cut on the
+      source by offset, drawn by `scripts/draw_gold_html.py`, four per year
+      across 1998-2003. Cut on the source deliberately: cutting at a heading
+      the parser found would hand the annotators only what it already reads
+      well.
+- [x] Two readers annotated all 24 stretches independently.
+      `scripts/check_gold_html.py` reports the agreement before either is
+      believed: 99.2% of turn starts, 22 of 24 stretches identical,
+      `opens_mid_utterance` the same everywhere. The two disagreements were
+      the same question, and both readers had already named it.
+- [x] Settle it: a printed label opens a turn, and rule 2 of the brief reaches
+      only an unlabelled paragraph that runs on. Not chosen by preference —
+      the convention is in Phase 2 above, the PDF gold set does the same
+      (`gold_2004-04-28_p24.json` lists four separate chair starts across two
+      electronic votes), and the parser gives 497 turn ids to 497 labelled
+      rows of one sitting. Four annotations were re-emitted under it.
+- [x] The defect the set was built to find: 18 November 1998 prints
+      `Orden del Día N° 1230Sr. PRESIDENTE.-` inside one centred bold run with
+      no space between the document's title and the chair's label. The title
+      made the paragraph a heading and the label was never reached, so the
+      turn was lost. Both readers flagged it before it was scored. Exactly two
+      paragraphs in the 214 files are botched this way, one centred and one
+      not; the split fires only where a label is welded to a document pointer
+      with no space. 0.5.5-html.
+- [x] The other defect was the brief's, not the parser's: it called a
+      parenthesised note an event without saying where it has to sit, so 15
+      inline notes were recorded as events that the parser had correctly kept
+      inside a speaker's turn. Event recall read 0.803 and was measuring the
+      brief. Corrected, and the six affected annotations re-emitted.
+- [x] Against the settled set: boundary and attribution P=1.000 R=1.000
+      F1=1.000 on all 195 annotated turns, events P=1.000 R=1.000 on 62,
+      identical under either reader.
+- [ ] Decide what a note closing a speaker's paragraph is. The convention
+      names two positions, standalone and inline, and the page uses a third:
+      "...seguimos siendo pobres, señor presidente. (Aplausos.)" — speech
+      before it, nothing after, inside the paragraph. It is treated as inline
+      today, which makes "Aplausos" a word the senator spoke. An annotator
+      raised it; applause closing a speech is probably the commonest note in
+      the corpus, so the count it affects is not small.
+- [ ] Fix the annotation brief before the next set is drawn: say that an event
+      stands as its own paragraph, and that a printed label always opens a
+      turn. Both cost a re-emission this round.
+
+## Phase 37 — where the dropped text goes (September 2026)
+
+- [x] 52 sittings of real length keep under 60% of their printed text, and
+      nobody had ever looked at what the other 40% is. It is not lost debate:
+      **91.8% of those 785,705 words are an appendix or an insertion**. The
+      worst, 20 April 2005 at 14%, is an impeachment tribunal that closes on
+      page 13 of 74 — "queda levantada la sesión", 23:37, the stenographers'
+      sign-off — with the Orden del Día 1755 appended behind it. 27 November
+      2003 closes at row 66 of 693 with 88,861 words of appendix after it.
+- [ ] The residue is 64,592 words, of which 36,851 are in two of the three OCR
+      scans, where the fault is the scan. That leaves ~27,700 words across 50
+      sittings, and the rule that explained the rest is a keyword heuristic,
+      so that figure is a ceiling rather than a measurement. Worth one pass.
+
 - [ ] Group the chamber's own `session_type` labels before counting: `EN
       MINORÍA` and `ESPECIAL EN MINORÍA` name the same thing.
 

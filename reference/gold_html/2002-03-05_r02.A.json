@@ -1,0 +1,36 @@
+{
+  "source_file": "2002-03-05_r02_ESPECIAL.html",
+  "stretch_id": "2002-03-05_r02",
+  "annotator": "A",
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {
+      "speaker_label": "Sr. Presidente (López Arias). --",
+      "first_words": "Señor senador Brizuela del Moral: la señora senadora Sapag solicita una breve interrupción."
+    },
+    {
+      "speaker_label": "Sra. Sapag. --",
+      "first_words": "Señor presidente: he pedido hacer uso de la palabra para insertar mi discurso sobre el tema"
+    },
+    {
+      "speaker_label": "Sr. Presidente (López Arias). --",
+      "first_words": "Tiene la palabra el señor senador Brizuela del Moral."
+    },
+    {
+      "speaker_label": "Sr. Brizuela del Moral. --",
+      "first_words": "Señor presidente: está en consideración del cuerpo el proyecto de presupuesto para el ejercicio 2002"
+    },
+    {
+      "speaker_label": "Sr. Presidente (López Arias). --",
+      "first_words": "Tiene la palabra el señor senador Busti."
+    },
+    {
+      "speaker_label": "Sr. Busti. --",
+      "first_words": "Señor presidente: hace sesenta y un días que la República Argentina, producto de una crisis"
+    }
+  ],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [],
+  "notes": "Six turns start here. The fragment opens in the middle of senator Chiappe's speech: the wider file (data/raw/senado/taquigraficas/2002-03-05_r02_ESPECIAL.html) shows the last label before the fragment is '<B>Sr. Chiappe.</B> -- Señor presidente: esta manera de legislar...', preceded by the chair saying 'Continúa en el uso de la palabra el señor senador Chiappe', so the two opening paragraphs are his and are not listed as a start.\n\nThe three chair labels are split across bold runs in three DIFFERENT ways, and all three render as exactly the same printed string, 'Sr. Presidente (López Arias). --', which is what I recorded for each: (1) '<B>Sr. Presidente </B>(López Arias)<B>. --</B>' - holder outside the bold, space inside it; (2) '<B>Sr. Presidente</B> (López Arias)<B>. --</B>' - the space before the holder is outside the bold; (3) '<B>Sr. Presidente </B>(López Arias).<B> --</B>' - the full stop is outside the bold and only the dash is bold. A parser keying on the bold run alone will see three different label texts here for one and the same chair.\n\nJudgement call worth flagging: the chair's first line addresses 'Señor senador Brizuela del Moral' about Sapag's interruption, but the senator who actually held the floor at that moment was Chiappe, and Brizuela del Moral is only formally given the floor two turns later. I read this as a stenographer's slip (or a missing line handing the floor to Brizuela del Moral) and did NOT treat it as evidence of an unprinted turn; I listed only the labels the page actually prints.\n\nThe chair's first turn runs over two <P> paragraphs - the second is 'Tiene la palabra la señora senadora Sapag.' with no new label - so it is one turn, listed once.\n\nNo stenographer's notes and no headings in this fragment. The two italic runs are '<I>default</I>' and '<I>default, </I>', italicised as a foreign word inside senator Busti's own sentences, not events - deliberately excluded. Markup irregularity: from 'Este presupuesto se confecciona en el marco de una caída estrepitosa' onwards the paragraphs drop the <FONT FACE=\"Times New Roman\"> wrapper and are bare <P>, and one of them ends with no full stop ('los depósitos cayeron el 17 por ciento'). That is still Busti speaking, not a change of speaker and not an inserted document."
+}

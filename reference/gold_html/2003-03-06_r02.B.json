@@ -1,0 +1,81 @@
+{
+  "source_file": "2003-03-06_r02_ORDINARIA.html",
+  "stretch_id": "2003-03-06_r02",
+  "annotator": "B",
+  "opens_mid_utterance": false,
+  "utterance_starts": [
+    {
+      "speaker_label": "Sr. Presidente (Gioja). --",
+      "first_words": "En consideración en general."
+    },
+    {
+      "speaker_label": "Sr. Presidente (Gioja). --",
+      "first_words": "Queda aprobada la resolución. Se procederá en consecuencia."
+    },
+    {
+      "speaker_label": "Sr. Presidente (Gioja). --",
+      "first_words": "Corresponde considerar el dictamen de las comisiones de Interior y Justicia y de Industria"
+    },
+    {
+      "speaker_label": "Sr. Secretario (Oyarzún) . --",
+      "first_words": "Secretaría informa que corresponde el pase al Archivo por tratarse de un evento vencido."
+    },
+    {
+      "speaker_label": "Sr. Presidente (Gioja). --",
+      "first_words": "En consideración."
+    },
+    {
+      "speaker_label": "Sr. Presidente (Gioja). --",
+      "first_words": "En consecuencia, pasa al Archivo."
+    },
+    {
+      "speaker_label": "Sr. Presidente (Gioja). --",
+      "first_words": "Corresponde considerar el dictamen de las comisiones de Ecología y Desarrollo Humano y de Recursos Hídricos"
+    },
+    {
+      "speaker_label": "Sr. Presidente (Gioja). --",
+      "first_words": "En consideración en general."
+    },
+    {
+      "speaker_label": "Sr. Presidente (Gioja). --",
+      "first_words": "Queda aprobada la comunicación. Se procederá en consecuencia."
+    },
+    {
+      "speaker_label": "Sr. Presidente (Gioja). --",
+      "first_words": "Corresponde considerar el dictamen de la Comisión de Turismo en el proyecto de declaración del señor senador Maestro"
+    },
+    {
+      "speaker_label": "Sr. Presidente (Gioja). --",
+      "first_words": "En consideración en general."
+    }
+  ],
+  "events": [
+    "-- La votación resulta afirmativa.",
+    "-- En particular es igualmente afirmativa.",
+    "-- El texto es el siguiente:",
+    "-- La votación resulta afirmativa.",
+    "-- El texto es el siguiente:",
+    "-- La votación resulta afirmativa.",
+    "-- En particular es igualmente afirmativa.",
+    "-- El texto es el siguiente:",
+    "-- La votación resulta afirmativa."
+  ],
+  "headings": [
+    "81",
+    "Aniversario de la ciudad de Armstrong, Santa Fe",
+    "82",
+    "Comité Ejecutor del Plan de Gestión Ambiental y de Manejo de la Cuenca Hídrica Matanza-Riachuelo",
+    "83",
+    "Inclusión de la Península de Valdés en el Club de las más Bellas Bahías del Mundo"
+  ],
+  "furniture_seen": [
+    "Orden del Día Nº 1653",
+    "[Volver al sumario]",
+    "Orden del Día Nº 1654",
+    "[Volver al sumario]",
+    "Orden del Día Nº 1655",
+    "[Volver al sumario]",
+    "Orden del Día Nº 1656"
+  ],
+  "notes": "Fast-track consent business: three complete items (81, 82, 83) plus the tail of item 80, all conducted by the chair alone, with one intervention by the secretary. DOES NOT OPEN MID-UTTERANCE: the fragment's first line is the centred bold link 'Orden del Día Nº 1653', which is printed matter, not speech. I checked the raw sitting file: immediately before the fragment the chair's turn ends with '(Orden del Día Nº 1653)' and the note '-- El texto es el siguiente:' closes it, so no utterance is in progress across the boundary and opens_mid_utterance is false. This is the one judgement in my three stretches I would most want a second opinion on, since a reader who treats the inserted order-of-the-day as part of the preceding speech would answer true. THE EASY TRAP: each item has the chair speak TWICE in a row with only a vote note between -- 'En consideración en general.' then, after '-- La votación resulta afirmativa.', 'Queda aprobada...'. Rule 2 says a note does not start a new turn, but these are two separate turns anyway because each carries its own printed label; what rule 2 covers here is the unlabelled 'Si no se hace uso de la palabra, se va a votar.' paragraph, which I folded into the preceding 'En consideración' turn every time (three times) rather than counting it. Counting those would inflate the total from 11 to 14. TYPIST ERROR PRESERVED: the secretary prints as 'Sr. Secretario (Oyarzún) . -- ' with a space between the holder and the full stop, unlike every other label in the file; I left it exactly so. INSERTED DOCUMENTS: each 'Orden del Día Nº NNNN' is a centred bold hyperlink to proyectos2.senado.gov.ar standing in for the text of the order of the day, which the export did not inline. It has no speaker and I invented none. I filed these four under furniture rather than headings because they are document pointers rather than section titles, but they are centred and bold and a different reader could plausibly file them as headings -- worth deciding once, repo-wide. HEADINGS: the section number ('81') is a separate centred bold paragraph and the title is a separate <h1>; I listed each as its own entry, in printed order, rather than joining them into '81 Aniversario...'. MARKUP: labels here split the holder out of the bold on BOTH sides -- '<b>Sr. Presidente </b>(Gioja)<b>. -- </b>' -- so the terminator sits in a second bold run; in the three 'Corresponde considerar' labels the source line even breaks between the stop and the dash. All print as 'Sr. Presidente (Gioja). --'. The '-- El texto es el siguiente:' notes put the dash OUTSIDE the italics ('--<i> El texto es el siguiente:</i>'), unlike the vote notes, where the dash is inside; a parser keying on italic-starts-with-dash will miss those three."
+}

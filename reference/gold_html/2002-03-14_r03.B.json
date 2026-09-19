@@ -1,0 +1,79 @@
+{
+  "source_file": "2002-03-14_r03_ORDINARIA.html",
+  "stretch_id": "2002-03-14_r03",
+  "annotator": "B",
+  "opens_mid_utterance": false,
+  "utterance_starts": [
+    {
+      "speaker_label": "Sra. Avelín. --",
+      "first_words": "El Orden del Día no incluye el texto del acuerdo; habla de la aprobación de los veinticuatro artículos"
+    },
+    {
+      "speaker_label": "Sr. Presidente (López Arias).--",
+      "first_words": "Haré una pequeña aclaración. En el texto del artículo 1 se hace referencia a que se adjunta"
+    },
+    {
+      "speaker_label": "Sr. Alfonsín. --",
+      "first_words": "Pido la palabra."
+    },
+    {
+      "speaker_label": "Sr. Presidente (López Arias).--",
+      "first_words": "Tiene la palabra el señor senador Alfonsín."
+    },
+    {
+      "speaker_label": "Sr. Alfonsín. --",
+      "first_words": "Señor presidente: quiero aclarar que la norma que estamos considerando ha sido enviada por el Poder Ejecutivo"
+    },
+    {
+      "speaker_label": "Sr. Presidente (López Arias). --",
+      "first_words": "Entiendo, señor senador Alfonsín, que debo tener por desistida su moción de vuelta a comisión. ¿Es así?"
+    },
+    {
+      "speaker_label": "Sr. Alfonsín. --",
+      "first_words": "Si así lo considera el presidente de mi bloque..."
+    },
+    {
+      "speaker_label": "Sr. Presidente (López Arias). --",
+      "first_words": "Vamos a escucharlo después."
+    },
+    {
+      "speaker_label": "Sr. Pichetto. --",
+      "first_words": "Señor presidente: vamos a modificar nuestra posición. Pedimos que se vote. Este es un convenio internacional"
+    },
+    {
+      "speaker_label": "Sr. Presidente (López Arias). --",
+      "first_words": "Tiene la palabra el señor senador Maestro."
+    },
+    {
+      "speaker_label": "Sr. Maestro. --",
+      "first_words": "Señor presidente: valoramos el gesto del presidente de la bancada justicialista, que ante una observación"
+    },
+    {
+      "speaker_label": "Sr. Presidente (López Arias). --",
+      "first_words": "Tiene la palabra el señor senador Losada."
+    },
+    {
+      "speaker_label": "Sr. Losada. --",
+      "first_words": "Señor presidente: el tema evidentemente es responsabilidad de la Comisión de Relaciones Exteriores."
+    },
+    {
+      "speaker_label": "Sr. Presidente (López Arias).--",
+      "first_words": "Entiendo que hay un desistimiento del autor de la moción de vuelta a comisión."
+    },
+    {
+      "speaker_label": "Sr. Alfonsín.--",
+      "first_words": "Sí."
+    },
+    {
+      "speaker_label": "Sr. Presidente (López Arias).--",
+      "first_words": "Por lo tanto, pasamos a votar el proyecto."
+    }
+  ],
+  "events": [
+    "-- La votación resulta afirmativa.",
+    "-- En particular es igualmente afirmativa."
+  ],
+  "headings": [],
+  "furniture_seen": [],
+  "notes": "Sixteen turns. The stretch begins exactly on a printed label, so it does not open mid-utterance. The typist is inconsistent with the president's eight labels and I left each one as printed: four end '.--' with no space and four end '. --' with a space. In the last two ('Entiendo que hay un desistimiento' and 'Por lo tanto, pasamos a votar') the bold run stops at <B>Sr. Presidente</B> and the space before the holder falls outside it, where the earlier ones bold it as <B>Sr. Presidente </B>; the printed text is the same either way. Alfonsín's one-word answer 'Sí.' is printed with the stop outside the bold, <B>Sr. Alfonsín</B>.--, which is why I recorded it as 'Sr. Alfonsín.--' rather than the 'Sr. Alfonsín. --' used for his other three turns. That 'Sí.' and his 'Pido la palabra.' are the short turns most at risk of being dropped; both are real turns. Two judgement calls. First, the italic Latin tag 'omni definitio in jure periculosa est' inside Alfonsín's second turn is italic but it is spoken by him, mid-sentence and inside his <FONT> run, so it is not a stenographer's note and I did not list it as an event. Second, after Alfonsín's second turn and after Pichetto's and Losada's turns the speech continues into further unlabelled paragraphs; by rule 2 those are the same turn and are not listed again. The president's 'Vamos a escucharlo después.' is followed by an unlabelled paragraph 'Tiene la palabra el señor senador Pichetto.', still his same turn. The only events are the two italic voting notes that close the stretch; there are no headings, back-links or inserted documents in this fragment."
+}

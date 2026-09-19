@@ -1,0 +1,100 @@
+{
+  "source_file": "2002-08-01_r17_ORDINARIA.html",
+  "stretch_id": "2002-08-01_r17",
+  "annotator": "A",
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {
+      "speaker_label": "Sr. Presidente (Maqueda). --",
+      "first_words": "Queda aprobada la resolución. Se procederá en consecuencia."
+    },
+    {
+      "speaker_label": "Sr. Presidente (Maqueda). --",
+      "first_words": "Corresponde considerar el dictamen de las comisiones de Energía y de Presupuesto y Hacienda en"
+    },
+    {
+      "speaker_label": "Sr. Presidente (Maqueda). --",
+      "first_words": "En consideración en general."
+    },
+    {
+      "speaker_label": "Sr. Presidente (Maqueda). --",
+      "first_words": "Queda aprobada la resolución. Se procederá en consecuencia."
+    },
+    {
+      "speaker_label": "Sr. Presidente (Maqueda). --",
+      "first_words": "Corresponde considerar el dictamen de las comisiones de Asuntos Administrativos y Municipales y de Turismo"
+    },
+    {
+      "speaker_label": "Sr. Presidente (Maqueda). --",
+      "first_words": "En consideración en general."
+    },
+    {
+      "speaker_label": "Sr. Presidente (Maqueda). --",
+      "first_words": "Queda aprobada la comunicación. Se procederá en consecuencia."
+    },
+    {
+      "speaker_label": "Sr. Presidente (Maqueda). --",
+      "first_words": "Corresponde considerar el dictamen de las comisiones de Ciencia y Tecnología y de Cultura en"
+    },
+    {
+      "speaker_label": "Sr. Presidente (Maqueda). --",
+      "first_words": "En consideración en general."
+    },
+    {
+      "speaker_label": "Sr. Presidente (Maqueda). --",
+      "first_words": "Queda aprobada la declaración. Se procederá en consecuencia."
+    },
+    {
+      "speaker_label": "Sr. Presidente (Maqueda). --",
+      "first_words": "Corresponde considerar el dictamen de las comisiones de Pesca, Intereses Marítimos y Portuarios y"
+    },
+    {
+      "speaker_label": "Sr. Presidente (Maqueda). --",
+      "first_words": "En consideración en general."
+    },
+    {
+      "speaker_label": "Sr. Presidente (Maqueda). --",
+      "first_words": "Queda aprobada la declaración. Se procederá en consecuencia."
+    }
+  ],
+  "events": [
+    "-- La votación resulta afirmativa.",
+    "-- En particular es igualmente afirmativa.",
+    "-- El texto es el siguiente:",
+    "-- La votación resulta afirmativa.",
+    "-- En particular es igualmente afirmativa.",
+    "-- El texto es el siguiente:",
+    "-- La votación resulta afirmativa.",
+    "-- En particular es igualmente afirmativa.",
+    "-- El texto es el siguiente:",
+    "-- La votación resulta afirmativa.",
+    "-- En particular es igualmente afirmativa.",
+    "-- El texto es el siguiente:",
+    "-- La votación resulta afirmativa.",
+    "-- En particular es igualmente afirmativa."
+  ],
+  "headings": [
+    "71",
+    "Beneficio de la ley sobre energía eólica y solar",
+    "72",
+    "Permanencia de la Subsecretaría de Transporte Aerocomercial en la órbita de la Secretaria de Turismo y Deportes",
+    "73",
+    "IV Congreso Iberoamericano de Psicodrama",
+    "74",
+    "Proyecto productivo, turístico y cultural Paseo de las Lanchas",
+    "75",
+    "Sistema Federal de Vivienda"
+  ],
+  "furniture_seen": [
+    "[Volver al sumario]",
+    "Orden del Día Nº 479",
+    "[Volver al sumario]",
+    "Orden del Día Nº 480",
+    "[Volver al sumario]",
+    "Orden del Día Nº 481",
+    "[Volver al sumario]",
+    "Orden del Día Nº 484",
+    "[Volver al sumario]"
+  ],
+  "notes": "13 turns, all of them the chair's, and the whole stretch is four consecutive consent-style items plus the tail of a fifth. OPENS MID-UTTERANCE: the first paragraph, 'Si no se hace uso de la palabra, se va a votar con la modificación indicada.', has no label. The raw file (data/raw/senado/taquigraficas/2002-08-01_r17_ORDINARIA.html) shows it continues the chair's 'En consideración en general.' under item 70, so I did not list it. THE ONE REAL JUDGEMENT CALL, and it decides the count: within each item the chair's label 'Sr. Presidente (Maqueda). --' is printed afresh three times, separated only by a stenographer's note, the order-of-the-day insert, or a section heading — never by another speaker. Read rule 2 at its most literal ('if the same person goes on speaking after one, that is still one turn'), the entire stretch would collapse into roughly one turn, which would make this stretch useless for measuring missing turns. I therefore treated every PRINTED bold label as a turn start, and applied rule 2 only to paragraphs that carry no label. Two such unlabelled continuations exist and are NOT listed: 'Si no se hace uso de la palabra, se va a votar.' after each 'En consideración en general.' — four of them, one per item. The raw file supports the printed-label reading: in item 70, just before this stretch, a 'Sr. Secretario (Oyarzún). --' turn sits between two identically re-printed Maqueda labels, so the re-printed label is the chamber's own turn boundary, not a typographic artifact. If the maintainer prefers the merging reading, this stretch would be 4 or 5 turns instead of 13. INSERTED DOCUMENTS: after each 'Corresponde considerar el dictamen...' comes the note '-- El texto es el siguiente:' and then a centred, bold, hyperlinked line 'Orden del Día Nº 479' (480, 481, 484). That line is a POINTER standing in for the committee report, not speech and not uttered by anyone — the export replaced the report's text with a link to proyectos2.senado.gov.ar. I filed those four lines under furniture and invented no speaker for them. The '-- El texto es el siguiente:' lines themselves are stenographer's notes (dash, italics) and are listed as events; note the dash is OUTSIDE the italic run in the markup ('--<I> El texto es el siguiente:</I>'), which is a splitting hazard. HEADINGS: each item is printed as two centred bold blocks, a bare number then a title, so I listed them as separate entries in reading order. Heading 72 prints 'Secretaria de Turismo y Deportes' without the accent, while the chair's own sentence below says 'Secretaría'; I kept the heading's error as printed. Heading '75 / Sistema Federal de Vivienda' appears at the very end with no speech after it — the stretch cuts off there. FURNITURE: the back-link '[Volver al sumario]' appears five times, once after each 'Queda aprobada...' and before each new item number; 'Volver al sumario' is itself italicised inside the brackets. Invisible <A NAME=\"_1_71\"> anchors accompany each heading; I did not list those as they print nothing. UNSURE: only the re-printed-label question above. Everything else is mechanical repetition."
+}

@@ -1,0 +1,106 @@
+{
+  "source_file": "2000-06-07_r22_ORDINARIA.html",
+  "stretch_id": "2000-06-07_r22",
+  "annotator": "B",
+  "opens_mid_utterance": false,
+  "utterance_starts": [
+    {
+      "speaker_label": "Sr. Yoma. --",
+      "first_words": "Señor presidente: quisiera escuchar alguna fundamentación de algún senador que esté a favor"
+    },
+    {
+      "speaker_label": "Sr. Presidente. --",
+      "first_words": "Senador Yoma: usted sabe que no es obligatorio."
+    },
+    {
+      "speaker_label": "Sr. Yoma. --",
+      "first_words": "No es obligatorio; se lo pido a mis pares, nada más."
+    },
+    {
+      "speaker_label": "Sr. Genoud. --",
+      "first_words": "Tiene dictamen de comisión."
+    },
+    {
+      "speaker_label": "Sr. Presidente. --",
+      "first_words": "Se va a votar."
+    },
+    {
+      "speaker_label": "Sr. Presidente. --",
+      "first_words": "Si no se hace uso de la palabra, se va a votar el artículo 4°."
+    },
+    {
+      "speaker_label": "Sr. Presidente. --",
+      "first_words": "Queda aprobado con 47 votos por la afirmativa sobre 50 senadores."
+    },
+    {
+      "speaker_label": "Sr. Presidente. —",
+      "first_words": "Si no se hace uso de la palabra, se va a votar el artículo 5°."
+    },
+    {
+      "speaker_label": "Sr. Presidente. —",
+      "first_words": "Queda aprobado con 47 votos por la afirmativa sobre 50 senadores."
+    },
+    {
+      "speaker_label": "Sr. Villarroel. --",
+      "first_words": "Pido la palabra."
+    },
+    {
+      "speaker_label": "Sr. Presidente. --",
+      "first_words": "Tiene la palabra el senador por Catamarca."
+    },
+    {
+      "speaker_label": "Sr. Villarroel. --",
+      "first_words": "Señor presidente: no voto mamarrachos y si no he intervenido en el debate pese"
+    },
+    {
+      "speaker_label": "Sr. Villarroel. --",
+      "first_words": "Las estadísticas, que han sido duramente tratadas..."
+    },
+    {
+      "speaker_label": "Sr. Villarroel. --",
+      "first_words": "Hay algunos que se dan ciertos lujos, acompañados por el número. Algunos creen"
+    },
+    {
+      "speaker_label": "Sr. Presidente. --",
+      "first_words": "Tiene la palabra el señor senador Menem."
+    },
+    {
+      "speaker_label": "Sr. Menem. --",
+      "first_words": "Señor presidente: creo que estamos transgrediendo el sistema de votación. Ya se votó"
+    },
+    {
+      "speaker_label": "Sr. Yoma. --",
+      "first_words": "¿Me permite, señor presidente?"
+    },
+    {
+      "speaker_label": "Sr. Presidente. --",
+      "first_words": "Sigamos con la votación en particular, como pide el senador Menem."
+    },
+    {
+      "speaker_label": "Sr. Yoma. --",
+      "first_words": "Quiero opinar en la votación en particular."
+    },
+    {
+      "speaker_label": "Sr. Presidente. --",
+      "first_words": "¿Se quiere referir a la votación en particular, señor senador?"
+    },
+    {
+      "speaker_label": "Sr. Yoma. --",
+      "first_words": "Señor presidente: respecto al artículo 6, al que en alguna medida se refirió"
+    },
+    {
+      "speaker_label": "Sr. Presidente. --",
+      "first_words": "Se va a votar el artículo 6."
+    }
+  ],
+  "events": [
+    "-- La votación resulta afirmativa.",
+    "-- La votación resulta afirmativa.",
+    "— La votación resulta afirmativa.",
+    "-- Varios señores senadores hablan a la vez.",
+    "-- Varios señores senadores hablan a la vez. Risas."
+  ],
+  "headings": [],
+  "furniture_seen": [],
+  "notes": "The stretch begins exactly on a bold label (Sr. Yoma), so nothing is cut off at the front; it ends on the president's 'Se va a votar el artículo 6.' with the vote itself falling outside. \n\nTwo paragraphs in the middle of the fragment are set in a different house style from the rest: the 'artículo 5°' pair of president turns (and the vote note between them) carry no FONT FACE=\"Times New Roman\" wrapper, put the terminator dash outside the bold run (<B>Sr. Presidente.</B> —), and use a real em dash character rather than the two hyphens used everywhere else in this file. The file is otherwise pure ASCII with HTML entities for accents; these two paragraphs are the only UTF-8 bytes in it. I recorded those two labels as 'Sr. Presidente. —' and the other president labels as 'Sr. Presidente. --', matching what is printed. \n\nNo president label in this stretch names its holder; every one prints bare as 'Sr. Presidente.' I did not add a name, though the sitting's president is Carlos Menem's successor in the chair and the senator Menem who speaks at the end is a different person from whoever is presiding. \n\nSenator Villarroel's speech is broken twice by stenographer's notes about several senators talking at once, and after each note the page reprints his label — '<B>Sr. Villarroel. --</B> Las estadísticas, que han sido duramente tratadas...' and then '<B>Sr. Villarroel. -- </B>Hay algunos que se dan ciertos lujos...'. I first read these as continuations of one turn and raised the question; it was settled the other way, so both are listed as starts here and the stretch has 22. The convention, recorded in the project's TODO.md and followed by the PDF gold set, is that a printed label always opens a turn, and that the rule about speech resuming after an event covers only a continuation paragraph carrying NO label of its own — of which this fragment has four, two inside this Villarroel turn and two inside Yoma's closing turn, none of them listed. \n\nNo inserted documents, headings or furniture here: the whole fragment is floor speech and vote notes."
+}

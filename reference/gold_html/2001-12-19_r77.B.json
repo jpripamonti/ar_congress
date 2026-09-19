@@ -1,0 +1,24 @@
+{
+  "source_file": "2001-12-19_r77_EXTRAORDINARIA.html",
+  "stretch_id": "2001-12-19_r77",
+  "annotator": "B",
+  "opens_mid_utterance": false,
+  "utterance_starts": [
+    {"speaker_label": "Sr. Presidente (Maqueda). --",
+     "first_words": "Señora senadora discúlpeme. El senador Passo le solicita una interrupción. ¿Se la concede?"},
+    {"speaker_label": "Sra. Negre de Alonso. --",
+     "first_words": "Con mucho gusto, señor presidente."},
+    {"speaker_label": "Sr. Presidente (Maqueda). --",
+     "first_words": "Para una interrupción, tiene la palabra el señor senador Passo."},
+    {"speaker_label": "Sr. Passo. --",
+     "first_words": "Señor presidente: intentaré hacer una contribución en un debate que comenzó verdaderamente realzado, y que en estos momentos"},
+    {"speaker_label": "Sr. Presidente (Maqueda). --",
+     "first_words": "Continúa en el uso de la palabra la señora senadora Negre de Alonso."},
+    {"speaker_label": "Sra. Negre de Alonso. --",
+     "first_words": "Señor presidente: me congratula que el señor senador a quien concedí la interrupción esté preocupado por esta situación."}
+  ],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [],
+  "notes": "Six turns. The fragment begins exactly at the chair's label, so opens_mid_utterance is false; I confirmed against the raw sitting that the paragraph before the cut is the tail of Negre de Alonso's speech and falls outside this stretch. No stenographer's notes, no headings, no inserted documents, no furniture. The one case worth a second reading is the whole shape of the passage: senator Negre de Alonso was already speaking before the stretch opens, yields to Passo for an interruption, and then resumes. Her resumption ('Señor presidente: me congratula...') is printed with its own full label after the chair gives her back the floor, so I listed it as a start — it is a separately labelled turn on the page, and the rule about not re-listing a speaker applies to a stenographer's note or a heading breaking up a speech, not to an intervening interruption by somebody else. Her two appearances are therefore two starts, and the speech she was making before the fragment opens is not listed at all. Every paragraph in this file closes with an empty second font run ('<FONT FACE=\"Arial,Helvética\"></FONT>'), which prints nothing and is not furniture. Labels here split the terminator two ways, as elsewhere in this corpus: the chair's three print '(Maqueda)' outside the bold run with '. -- ' back inside it, while the senators' print the dash inside the bold run. All read identically on the page."
+}

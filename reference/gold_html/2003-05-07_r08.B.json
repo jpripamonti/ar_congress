@@ -1,0 +1,63 @@
+{
+  "source_file": "2003-05-07_r08_ORDINARIA.html",
+  "stretch_id": "2003-05-07_r08",
+  "annotator": "B",
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {
+      "speaker_label": "Sr. Presidente (Gioja). --",
+      "first_words": "Tiene la palabra el señor senador Pichetto."
+    },
+    {
+      "speaker_label": "Sr. Pichetto. --",
+      "first_words": "Señor presidente: si no entendí mal es una ampliación del plazo. ¿Esa es la propuesta?"
+    },
+    {
+      "speaker_label": "Sr. Baglini. --",
+      "first_words": "No del plazo total."
+    },
+    {
+      "speaker_label": "Sr. Presidente (Gioja). --",
+      "first_words": "Tiene la palabra el señor senador Capitanich."
+    },
+    {
+      "speaker_label": "Sr. Capitanich. --",
+      "first_words": "Señor presidente: efectivamente, el originalmente artículo 4° del dictamen pasaría a ser ahora el 3°."
+    },
+    {
+      "speaker_label": "Sr. Presidente (Gioja). --",
+      "first_words": "Tiene la palabra el señor senador Lamberto."
+    },
+    {
+      "speaker_label": "Sr. Lamberto. --",
+      "first_words": "Estamos de acuerdo."
+    },
+    {
+      "speaker_label": "Sr. Presidente (Gioja). --",
+      "first_words": "Si no se hace uso de la palabra , se va a votar el artículo 3°, ex 4°,"
+    },
+    {
+      "speaker_label": "Sr. Baglini. --",
+      "first_words": "Pido la palabra."
+    },
+    {
+      "speaker_label": "Sr. Presidente (Gioja). --",
+      "first_words": "Tiene la palabra el señor senador Baglini."
+    },
+    {
+      "speaker_label": "Sr. Baglini. --",
+      "first_words": "Señor presidente: aquí hay un error material que también ha sido advertido por el señor miembro informante"
+    },
+    {
+      "speaker_label": "Sr. Presidente (Gioja). --",
+      "first_words": "¿Cómo quedaría redactado el artículo?"
+    }
+  ],
+  "events": [
+    "-- La votación resulta afirmativa.",
+    "-- Se enuncia el actual artículo 4, ex 5°."
+  ],
+  "headings": [],
+  "furniture_seen": [],
+  "notes": "The stretch opens in the middle of a speech: the raw sitting file shows the last label before the fragment is 'Sr. Baglini. --', so the opening paragraph ('Por lo tanto, creemos que esta modificación...') is Baglini still speaking and is not listed as a start. Baglini then gets two further, genuinely new turns later in the fragment ('Pido la palabra.' and 'Señor presidente: aquí hay un error material...'), both listed. THE HARDEST CALL: after Capitanich's turn begins, three unlabelled paragraphs follow that are the literal text of the proposed article 3 in quotation marks ('Facúltase al Ministerio de Economía...' / 'La emisión referida precedentemente...' / 'A partir de ahí, los puntos siguientes VI, VII, VIII, IX y X...'). I judged this NOT an inserted document but a continuation of Capitanich's own turn, because he introduces it in his own voice ('El artículo 3° quedaría redactado de la siguiente manera:'), because the last of the three paragraphs drops back out of quotation into his own commentary, and because there is no stenographer's note ('-- El texto es el siguiente:') marking an insertion, which is the marker this chamber uses elsewhere. The same reasoning covers Baglini's second paragraph ('En el artículo 5° del dictamen se incluía...'), also a continuation. MARKUP: the president's label is split so that the holder sits outside the bold run -- '<b>Sr. Presidente</b> (Gioja). --' -- and in one instance the bold wraps the font element the other way round ('<b><font>Sr. Presidente</font></b> (Gioja). -- Tiene la palabra el señor senador Lamberto.'); both print identically and I recorded them identically. Baglini's third label prints the dash INSIDE the bold ('<b>Sr. Baglini. -- </b>') while his earlier ones keep it outside; again identical on the page. All labels are broken across a source line ('Sr.\\nPresidente'), which is HTML line-wrapping, not printed content, so I collapsed it to one space. TYPIST ERROR PRESERVED: the president's vote-call reads 'Si no se hace uso de la palabra , se va a votar' with a space before the comma; I left it. Both events are italic dash-notes; there are no headings, no back-links and no other furniture in this fragment."
+}

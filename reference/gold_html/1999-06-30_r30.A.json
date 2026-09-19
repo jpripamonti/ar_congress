@@ -1,0 +1,11 @@
+{
+  "source_file": "1999-06-30_r30_ORDINARIA.html",
+  "stretch_id": "1999-06-30_r30",
+  "annotator": "A",
+  "opens_mid_utterance": true,
+  "utterance_starts": [],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [],
+  "notes": "ZERO turns start here. The fragment is one uninterrupted run of a single senator's speech on the libro/lectura bill: it opens mid-sentence (\"Este es el proceso hasta que, hacia fines del siglo XIX, comienza...\") and is still running at the closing boundary. Walking the bold labels backwards in data/raw/senado/taquigraficas/1999-06-30_r30_ORDINARIA.html from offset 83578, the last one is \"Sr. DE LA ROSA.-\"; the internal evidence agrees (the speaker calls Mendoza \"mi provincia\" and pays homage to the Mendoza publisher Gildo da Curcio). That label is outside the stretch, so nothing is listed. There is not a single <B> or <I> run in the fragment: no labels, no stenographer's notes, no headings, no furniture. The long enumeration of the bill's objectives in the last two paragraphs (\"El proyecto consta de treinta y dos artículos...\", \"Entre los principales objetivos...\") is the senator paraphrasing the dictamen from the floor in his own running prose, not an inserted document: it is continuous with his narrative, carries no article numbering or block formatting of its own, and is set in the same plain roman as the rest of his speech."
+}

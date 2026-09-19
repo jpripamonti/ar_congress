@@ -33,7 +33,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from parse import SPEAKER_RE, classify_event  # noqa: E402
 from provenance import decode_html  # noqa: E402
 
-PARSER_VERSION = "0.5.4-html"
+PARSER_VERSION = "0.5.5-html"
 
 # A paragraph break: WordPerfect writes <p> with no closing tag and uses <br>
 # for the lines of a masthead or the two lines of a heading.
@@ -382,6 +382,33 @@ def tidy(label, speech):
     return label, speech
 
 
+# A document's title and the chair's next label, welded into one bold run
+# with nothing between them: "<B>Orden del Día N° 1230Sr. PRESIDENTE.-</B>".
+# The chamber botched two paragraphs this way in the 214 files, one centred
+# and one not, and both cost a turn: the title makes the paragraph look like
+# a heading, and the label inside it is never reached. Split only where the
+# label is welded to a document pointer with no space at all — a space, or
+# anything else before it, and this does not fire.
+WELD_RE = re.compile(
+    r"^(?P<title>(?:Orden del D[íi]a|Dictamen|Expediente)[^\n]{0,40}?\d)"
+    r"(?=(?:Sr|Sra|Srta|Sres)\.?\s*[^\W\d_])", re.I)
+
+
+def unweld(para):
+    """One paragraph as two, when a label is welded to a document title."""
+    runs = para["runs"]
+    if not runs or runs[0]["style"] not in ("bold", "bold-italic"):
+        return None
+    match = WELD_RE.match(runs[0]["text"].strip())
+    if not match:
+        return None
+    title = match.group("title")
+    rest = runs[0]["text"].strip()[match.end():]
+    head = dict(para, runs=[dict(runs[0], text=title)], center=True)
+    tail = dict(para, runs=[dict(runs[0], text=rest)] + runs[1:], center=False)
+    return head, tail
+
+
 def classify(paragraphs):
     """Turn paragraphs into pipeline blocks, and collect the chapter titles."""
     blocks = []
@@ -393,6 +420,12 @@ def classify(paragraphs):
     in_roll = False
     stats = {"paragraphs": len(paragraphs), "front_matter": 0, "nav_cut": 0,
              "roll_cut": 0}
+
+    split = []
+    for para in paragraphs:
+        pair = unweld(para)
+        split.extend(pair if pair else [para])
+    paragraphs = split
 
     for para in paragraphs:
         text = paragraph_text(para)

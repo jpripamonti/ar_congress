@@ -1,0 +1,40 @@
+{
+  "source_file": "2001-08-15_r54_ORDINARIA.html",
+  "stretch_id": "2001-08-15_r54",
+  "annotator": "A",
+  "opens_mid_utterance": false,
+  "utterance_starts": [
+    {
+      "speaker_label": "Sr. Ulloa. --",
+      "first_words": "Señor presidente: en realidad este tema me toca muy de cerca. Fui comandante antártico"
+    },
+    {
+      "speaker_label": "Sr. Presidente (León). --",
+      "first_words": "Tiene la palabra el señor senador Agúndez."
+    },
+    {
+      "speaker_label": "Sr. Agúndez. --",
+      "first_words": "Señor presidente: a los fines prácticos y por compartir las inquietudes de quienes han hecho"
+    },
+    {
+      "speaker_label": "Sr. Presidente (León). --",
+      "first_words": "Tiene la palabra el señor senador Villaverde."
+    },
+    {
+      "speaker_label": "Sr. Villaverde. --",
+      "first_words": "Señor presidente: la iniciativa que sobre este tema he presentado consta de cinco puntos"
+    },
+    {
+      "speaker_label": "Sr. Presidente (León). --",
+      "first_words": "Tiene la palabra el señor senador Maglietti."
+    },
+    {
+      "speaker_label": "Sr. Maglietti. --",
+      "first_words": "Señor presidente: estoy de acuerdo con las mociones formuladas en este recinto, pero quiero"
+    }
+  ],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [],
+  "notes": "Seven turns, all of them plain floor speech on the Antarctic bases; no inserted documents. The stretch begins exactly on Ulloa's label, so nothing opens mid-speech. In the wider sitting file, the two things immediately before this stretch are an italic stage note that vice-president León takes the chair and León's turn giving Ulloa the floor; both fall outside the stretch and are not listed. The bold runs are broken inconsistently and I recorded the printed result, not the markup: Ulloa prints as bold 'Sr. Ulloa' with the '. --' outside the bold, and the three chair labels all print 'Sr. Presidente (León). --' although the first keeps '. --' inside a second bold run and the other two leave it outside. All three chair turns are one line of business each ('Tiene la palabra el señor senador ...'); they are short but they are turns. The stretch ends in the middle of Maglietti's speech. No stenographer's notes, no headings, no back-links or other furniture in this fragment."
+}

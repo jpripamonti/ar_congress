@@ -1,0 +1,26 @@
+{
+  "source_file": "2001-08-15_r54_ORDINARIA.html",
+  "stretch_id": "2001-08-15_r54",
+  "annotator": "B",
+  "opens_mid_utterance": false,
+  "utterance_starts": [
+    {"speaker_label": "Sr. Ulloa. --",
+     "first_words": "Señor presidente: en realidad este tema me toca muy de cerca. Fui comandante antártico en 1971."},
+    {"speaker_label": "Sr. Presidente (León). --",
+     "first_words": "Tiene la palabra el señor senador Agúndez."},
+    {"speaker_label": "Sr. Agúndez. --",
+     "first_words": "Señor presidente: a los fines prácticos y por compartir las inquietudes de quienes han hecho uso de la palabra"},
+    {"speaker_label": "Sr. Presidente (León). --",
+     "first_words": "Tiene la palabra el señor senador Villaverde."},
+    {"speaker_label": "Sr. Villaverde. --",
+     "first_words": "Señor presidente: la iniciativa que sobre este tema he presentado consta de cinco puntos, tres de los cuales"},
+    {"speaker_label": "Sr. Presidente (León). --",
+     "first_words": "Tiene la palabra el señor senador Maglietti."},
+    {"speaker_label": "Sr. Maglietti. --",
+     "first_words": "Señor presidente: estoy de acuerdo con las mociones formuladas en este recinto, pero quiero agregar algunas palabras"}
+  ],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [],
+  "notes": "Seven turns, all of them ordinary floor speech; no stenographer's notes, no section headings, no inserted documents, no back-links or contents entries anywhere in the fragment. The stretch begins exactly at the Ulloa label (I checked the raw file at the cut point: the paragraph immediately before the fragment is the chair's 'Sr. Presidente (León). -- Tiene la palabra el señor senador Ulloa.', which falls outside), so opens_mid_utterance is false. It ends in the middle of Maglietti's speech, which does not affect the list of starts. Typography of the chair's label is inconsistent between its three occurrences and I recorded all three by what is printed, not by the markup: the first prints the holder outside the bold run and the dash back inside it (bold 'Sr. Presidente ', plain '(León)', bold '. -- '), while the second and third keep only 'Sr. Presidente ' bold and leave '(León). --' entirely unbolded. All three read identically on the page. Ulloa's and Villaverde's labels likewise split the terminator differently from Agúndez's and Maglietti's, where the dash sits inside the bold run. Accented names (Agúndez, León) are written with entities rather than split across separate font runs in this file, so no label is fragmented. One genuine judgement call: Ulloa's opening 'Señor presidente:' and the comparable openings by the other three senators are vocatives inside their own speech, not labels, and I did not treat them as turn starts."
+}

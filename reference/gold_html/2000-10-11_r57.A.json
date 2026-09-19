@@ -1,0 +1,30 @@
+{
+  "source_file": "2000-10-11_r57_ORDINARIA.html",
+  "stretch_id": "2000-10-11_r57",
+  "annotator": "A",
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {"speaker_label": "Sr. Presidente (Cafiero). --", "first_words": "Tiene la palabra el señor senador por San Juan."},
+    {"speaker_label": "Sr. Bravo. --", "first_words": "Señor presidente: he pedido el uso de la palabra para adelantar mi voto afirmativo"},
+    {"speaker_label": "Sr. Presidente (Cafiero). --", "first_words": "Tiene la palabra el señor senador por Tierra del Fuego."},
+    {"speaker_label": "Sr. Preto. --", "first_words": "Señor presidente: nuestro bloque del Movimiento Popular Fueguino ha permanecido en silencio hasta este momento"},
+    {"speaker_label": "Sr. Presidente (Cafiero). --", "first_words": "Tiene la palabra el señor senador por Salta."},
+    {"speaker_label": "Sr. Ulloa. --", "first_words": "Señor presidente: confieso que lamenté mucho que el senador Genoud se alejara de su cargo."},
+    {"speaker_label": "Sr. Presidente (Cafiero). --", "first_words": "Tiene la palabra el señor senador por la Ciudad Autónoma de Buenos Aires."},
+    {"speaker_label": "Sr. Del Piero. --", "first_words": "Señor presidente: anticipo el voto favorable del Frepaso a la designación del senador Mario Losada"},
+    {"speaker_label": "Sr. Presidente (Cafiero). --", "first_words": "Señores senadores: voy a poner en consideración la propuesta de elegir como presidente provisional"},
+    {"speaker_label": "Sr. Menem. --", "first_words": "Pido la palabra."},
+    {"speaker_label": "Sr. Presidente (Cafiero). --", "first_words": "Tiene la palabra el senador por La Rioja."},
+    {"speaker_label": "Sr. Menem. --", "first_words": "Que se haga por signos, señor presidente. Corresponde que se practique votación nominal"},
+    {"speaker_label": "Sr. Presidente (Cafiero). --", "first_words": "Si no se hace uso de la palabra, se va a votar la moción del señor senador por La Rioja."},
+    {"speaker_label": "Sr. Presidente (Cafiero). --", "first_words": "Si no se hace uso de la palabra, se va a votar en la forma indicada la propuesta"},
+    {"speaker_label": "Sr. Presidente (Cafiero). --", "first_words": "Por unanimidad y por aclamación, queda designado como presidente provisional del Honorable Senado"}
+  ],
+  "events": [
+    "-- La votación resulta afirmativa.",
+    "-- Puestos de pie los señores senadores, se aprueba por unanimidad y aclamación. (Aplausos en las bancas y en las galerías. Varios señores senadores rodean y felicitan al señor senador Losada.)"
+  ],
+  "headings": [],
+  "furniture_seen": [],
+  "notes": "Election of Mario Losada as presidente provisional. The fragment opens in mid-speech: five unlabelled paragraphs praising Losada, ending 'Muchas gracias, señor presidente. (Aplausos.)'. That speech is Senator Humada's — his label 'Sr. Humada.-- ' is the last one before the fragment in the raw file (data/raw/senado/taquigraficas/2000-10-11_r57_ORDINARIA.html, byte ~95593) and the speaker calls himself a misionero from Apóstoles. Not listed as a start, per rule 1.\n\n15 printed labels, 6 stenographer notes, no headings, no furniture.\n\nThe chair's label is printed with the holder's surname split out of the bold run in three different ways within this one fragment: '<B>Sr. Presidente </B>(Cafiero)<B>. -- </B>', '<B>Sr. Presidente</B> (Cafiero). --' and '<B>Sr. Presidente </B>(Cafiero). --'. All three print the same string, so all are recorded as 'Sr. Presidente (Cafiero). --'; a parser that only reads the bold run will see a bare 'Sr. Presidente' or lose the terminator on the last two.\n\nEvents: only notes printed as their own paragraph are listed, per the corpus convention (TODO.md Phase 2: an italic fragment inline inside a speaker's paragraph is merged back into that speech instead of splitting the turn). Both listed notes open their own <P>. The four inline '(Aplausos.)' on this page — closing Humada's, Bravo's, Preto's and Ulloa's own final paragraphs — are NOT absent from the page and are NOT judged unreal: they are real applause, reclassified as part of those senators' speech because they sit inside the speaker's paragraph rather than standing alone. An earlier draft of this file listed them as events; that was my misreading of the brief, which described parenthesised notes without saying where they must sit. The italic scope varies across them, '(<I>Aplausos</I>.)' versus '(<I>Aplausos.</I>)', with no difference in the printed text. The applause inside the standing-ovation note stays inside that single note, since it is printed within that note's own parentheses and the note is standalone.\n\nHard case: the last three chair turns are two vote announcements each followed by a note, then the proclamation. Each carries its own printed label, so each is listed as a start (same reading as for 2000-06-07_r22, following reference/gold/gold_2004-04-28_p24.json rather than a literal reading of rule 2). Nothing here is an inserted document."
+}

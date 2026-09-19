@@ -1,0 +1,32 @@
+{
+  "source_file": "2000-04-05_r11_ORDINARIA.html",
+  "stretch_id": "2000-04-05_r11",
+  "annotator": "B",
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {
+      "speaker_label": "Sr. Presidente. --",
+      "first_words": "Senador: no se distraiga, porque ya se pasó del tiempo."
+    },
+    {
+      "speaker_label": "Sr. Sergnese. --",
+      "first_words": "Voy a ser muy breve y voy a terminar con una pregunta muy concreta, después."
+    },
+    {
+      "speaker_label": "Sr. Presidente. --",
+      "first_words": "La pregunta, senador, la pregunta."
+    },
+    {
+      "speaker_label": "Sr. Sergnese. --",
+      "first_words": "La pregunta va a ser muy simple y muy concreta."
+    },
+    {
+      "speaker_label": "Sr. Presidente. --",
+      "first_words": "Formúlela si es tan simple."
+    }
+  ],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [],
+  "notes": "The fragment opens in the middle of a speech, ten unlabelled paragraphs of it, so opens_mid_utterance is true and that speech is not listed as a start. I checked the wider sitting in data/raw/senado/taquigraficas/2000-04-05_r11_ORDINARIA.html: the last bold label before the fragment begins is 'Sr. Sergnese. --', which also matches the two later labels inside the fragment, so the opening material is Sergnese continuing on the ATN funds sent to San Luis municipalities. \n\nAll five listed turns are short chair interjections and the senator's replies. The two Sergnese labels DO count as starts even though he is resuming an interrupted speech, because what interrupted him was another person's turn (the president), not a stenographer's note — rule 2 only covers notes and headings. \n\nThis is the plainest of my three stretches: every paragraph is wrapped identically in FONT FACE=\"Times New Roman\", every label is bold with a '. --' terminator and no holder name, and there are no italics at all — so no stenographer's notes, no parenthesised events, no headings and no furniture. \n\nThe long quotation from ley 23.548 in the opening paragraph (the article 5° text about the Fondo de Aporte del Tesoro Nacional) is NOT an inserted document: it is set in the same roman type as the surrounding speech, inside quotation marks, and the senator reads on from it in his own voice in the same sentence. I treated it as part of the speech the fragment opens inside. \n\nThe fragment ends on the president's 'Formúlela si es tan simple.'; Sergnese's actual question falls outside it."
+}

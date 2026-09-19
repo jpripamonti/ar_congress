@@ -1,0 +1,100 @@
+{
+  "source_file": "2002-08-01_r17_ORDINARIA.html",
+  "stretch_id": "2002-08-01_r17",
+  "annotator": "B",
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {
+      "speaker_label": "Sr. Presidente (Maqueda). --",
+      "first_words": "Queda aprobada la resolución. Se procederá en consecuencia."
+    },
+    {
+      "speaker_label": "Sr. Presidente (Maqueda). --",
+      "first_words": "Corresponde considerar el dictamen de las comisiones de Energía y de Presupuesto y Hacienda en el proyecto"
+    },
+    {
+      "speaker_label": "Sr. Presidente (Maqueda). --",
+      "first_words": "En consideración en general."
+    },
+    {
+      "speaker_label": "Sr. Presidente (Maqueda). --",
+      "first_words": "Queda aprobada la resolución. Se procederá en consecuencia."
+    },
+    {
+      "speaker_label": "Sr. Presidente (Maqueda). --",
+      "first_words": "Corresponde considerar el dictamen de las comisiones de Asuntos Administrativos y Municipales y de Turismo"
+    },
+    {
+      "speaker_label": "Sr. Presidente (Maqueda). --",
+      "first_words": "En consideración en general."
+    },
+    {
+      "speaker_label": "Sr. Presidente (Maqueda). --",
+      "first_words": "Queda aprobada la comunicación. Se procederá en consecuencia."
+    },
+    {
+      "speaker_label": "Sr. Presidente (Maqueda). --",
+      "first_words": "Corresponde considerar el dictamen de las comisiones de Ciencia y Tecnología y de Cultura en el proyecto"
+    },
+    {
+      "speaker_label": "Sr. Presidente (Maqueda). --",
+      "first_words": "En consideración en general."
+    },
+    {
+      "speaker_label": "Sr. Presidente (Maqueda). --",
+      "first_words": "Queda aprobada la declaración. Se procederá en consecuencia."
+    },
+    {
+      "speaker_label": "Sr. Presidente (Maqueda). --",
+      "first_words": "Corresponde considerar el dictamen de las comisiones de Pesca, Intereses Marítimos y Portuarios y de Turismo"
+    },
+    {
+      "speaker_label": "Sr. Presidente (Maqueda). --",
+      "first_words": "En consideración en general."
+    },
+    {
+      "speaker_label": "Sr. Presidente (Maqueda). --",
+      "first_words": "Queda aprobada la declaración. Se procederá en consecuencia."
+    }
+  ],
+  "events": [
+    "-- La votación resulta afirmativa.",
+    "-- En particular es igualmente afirmativa.",
+    "-- El texto es el siguiente:",
+    "-- La votación resulta afirmativa.",
+    "-- En particular es igualmente afirmativa.",
+    "-- El texto es el siguiente:",
+    "-- La votación resulta afirmativa.",
+    "-- En particular es igualmente afirmativa.",
+    "-- El texto es el siguiente:",
+    "-- La votación resulta afirmativa.",
+    "-- En particular es igualmente afirmativa.",
+    "-- El texto es el siguiente:",
+    "-- La votación resulta afirmativa.",
+    "-- En particular es igualmente afirmativa."
+  ],
+  "headings": [
+    "71",
+    "Beneficio de la ley sobre energía eólica y solar",
+    "72",
+    "Permanencia de la Subsecretaría de Transporte Aerocomercial en la órbita de la Secretaria de Turismo y Deportes",
+    "73",
+    "IV Congreso Iberoamericano de Psicodrama",
+    "74",
+    "Proyecto productivo, turístico y cultural Paseo de las Lanchas",
+    "75",
+    "Sistema Federal de Vivienda"
+  ],
+  "furniture_seen": [
+    "[Volver al sumario]",
+    "Orden del Día Nº 479",
+    "[Volver al sumario]",
+    "Orden del Día Nº 480",
+    "[Volver al sumario]",
+    "Orden del Día Nº 481",
+    "[Volver al sumario]",
+    "Orden del Día Nº 484",
+    "[Volver al sumario]"
+  ],
+  "notes": "Thirteen turns, every one of them the presiding officer; no senator speaks in this fragment. The stretch opens inside his turn — the first paragraph, 'Si no se hace uso de la palabra, se va a votar con la modificación indicada.', carries no label. I checked the wider sitting in data/raw/senado/taquigraficas/2002-08-01_r17_ORDINARIA.html: it belongs to Maqueda's 'En consideración en general.' for item 70, printed just before the fragment starts, so it is not listed as a start. The reading that decides the count: I treated every printed bold label as the start of a turn, even where the same man is speaking on both sides of a voting note or a section heading. Rule 2 says a note or a heading does not by itself start a turn, and I applied that only to the unlabelled paragraphs — each 'Si no se hace uso de la palabra, se va a votar.' continues the 'En consideración en general.' turn above it and is not listed. Where the page reprints the label, I listed it. The opposite reading, collapsing everything the same speaker says across notes and headings, would make this whole fragment a single turn already under way and would yield an empty list, which cannot be what the gold set is meant to record. Four times the page prints '--' followed by an italic 'El texto es el siguiente:' and then a centred bold hyperlink to Orden del Día Nº 479, 480, 481 and 484. The note itself I listed as an event, with the dash outside the italic run as printed. The linked Orden del Día line stands in for an inserted document — the committee report is not reproduced, only pointed at — so it has no speaker and I put it in furniture rather than headings, even though it is centred and bold like the section titles. The numbers 71 to 75 and the titles beneath them are the sitting's own section headings; I listed number and title separately because the page prints them as two separate centred blocks. Heading 75, 'Sistema Federal de Vivienda', closes the fragment with no speech under it. 'Secretaria' in the heading for item 72 is printed without its accent and I left it as printed. The four items are procedurally identical, which makes an accidentally dropped or duplicated turn easy to miss; the counts are 13 labels, 5 back-links, 5 voting pairs and 4 document pointers, each verified against the markup."
+}

@@ -1,0 +1,17 @@
+{
+  "source_file": "2000-04-05_r11_ORDINARIA.html",
+  "stretch_id": "2000-04-05_r11",
+  "annotator": "A",
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {"speaker_label": "Sr. Presidente. --", "first_words": "Senador: no se distraiga, porque ya se pasó del tiempo."},
+    {"speaker_label": "Sr. Sergnese. --", "first_words": "Voy a ser muy breve y voy a terminar con una pregunta muy concreta, después."},
+    {"speaker_label": "Sr. Presidente. --", "first_words": "La pregunta, senador, la pregunta."},
+    {"speaker_label": "Sr. Sergnese. --", "first_words": "La pregunta va a ser muy simple y muy concreta."},
+    {"speaker_label": "Sr. Presidente. --", "first_words": "Formúlela si es tan simple."}
+  ],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [],
+  "notes": "Question period with the jefe de Gabinete. The fragment opens in mid-speech: eleven unlabelled paragraphs on ATN funds and the province of San Luis before the first printed label. That speech is Senator Sergnese's — his label 'Sr. Sergnese. --' stands earlier in the sitting (raw file 2000-04-05_r11_ORDINARIA.html, byte ~203697, the last label before the fragment) and he is named again by the chair's interruption inside the fragment. Not listed as a start, per rule 1.\n\n5 printed labels, no stenographer notes, no headings, no furniture.\n\nJudgement calls: (1) the long quotation of article 3 of ley 23.548 ('El monto total recaudado...') and of article 5 of the same law are read out by the senator inside his own speech, in quotation marks and in the same roman type as his words, with no italic lead-in and no 'El texto es el siguiente:' — so this is quoted speech, not an inserted document, and it gets no separate speaker. (2) After Sergnese's second labelled reply the speech runs on for two further unlabelled paragraphs ('Estas afirmaciones graves...' and 'Estos temas donde se cuestiona...'); those are the same turn and are not listed. (3) The senator's surname is printed 'Sergnese' throughout; recorded as printed, not normalised."
+}

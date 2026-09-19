@@ -1,0 +1,39 @@
+{
+  "source_file": "2003-05-07_r08_ORDINARIA.html",
+  "stretch_id": "2003-05-07_r08",
+  "annotator": "A",
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {"speaker_label": "Sr. Presidente (Gioja). --",
+     "first_words": "Tiene la palabra el señor senador Pichetto."},
+    {"speaker_label": "Sr. Pichetto. --",
+     "first_words": "Señor presidente: si no entendí mal es una ampliación del plazo. ¿Esa es la propuesta?"},
+    {"speaker_label": "Sr. Baglini. --",
+     "first_words": "No del plazo total."},
+    {"speaker_label": "Sr. Presidente (Gioja). --",
+     "first_words": "Tiene la palabra el señor senador Capitanich."},
+    {"speaker_label": "Sr. Capitanich. --",
+     "first_words": "Señor presidente: efectivamente, el originalmente artículo 4° del dictamen pasaría a ser ahora el 3°."},
+    {"speaker_label": "Sr. Presidente (Gioja). --",
+     "first_words": "Tiene la palabra el señor senador Lamberto."},
+    {"speaker_label": "Sr. Lamberto. --",
+     "first_words": "Estamos de acuerdo."},
+    {"speaker_label": "Sr. Presidente (Gioja). --",
+     "first_words": "Si no se hace uso de la palabra , se va a votar el artículo 3°, ex 4°"},
+    {"speaker_label": "Sr. Baglini. --",
+     "first_words": "Pido la palabra."},
+    {"speaker_label": "Sr. Presidente (Gioja). --",
+     "first_words": "Tiene la palabra el señor senador Baglini."},
+    {"speaker_label": "Sr. Baglini. --",
+     "first_words": "Señor presidente: aquí hay un error material que también ha sido advertido por el señor miembro"},
+    {"speaker_label": "Sr. Presidente (Gioja). --",
+     "first_words": "¿Cómo quedaría redactado el artículo?"}
+  ],
+  "events": [
+    "-- La votación resulta afirmativa.",
+    "-- Se enuncia el actual artículo 4, ex 5°."
+  ],
+  "headings": [],
+  "furniture_seen": [],
+  "notes": "The stretch opens in the middle of a speech with no label of its own (\"Por lo tanto, creemos que esta modificación en la fijación del plazo de gracia...\"). Checked the raw file at data/raw/senado/taquigraficas/2003-05-07_r08_ORDINARIA.html: the last label before the cut is \"Sr. Baglini. --\", so the opening paragraph is Baglini still speaking; not listed as a start, per rule 1.\n\nThe Capitanich turn runs over three paragraphs. The second and third (\"El artículo 3° quedaría redactado de la siguiente manera: ...\" and \"A partir de ahí, los puntos siguientes VI, VII, VIII, IX y X...\") carry no label and are set in the same roman type as the rest of his speech, not in the italics used for stenographer's notes. I read them as Capitanich reading out his own proposed wording aloud, i.e. one continuous turn, not an inserted document. The bill text he quotes is inside quotation marks and is introduced by him in the first person, which is why I did not treat it as a document handed in for the record.\n\nLabel typography varies but the printed text is the same in every case. The president's label appears three ways in the markup: bold \"Sr. Presidente\" with \"(Gioja). --\" outside the bold run; the whole thing inside one bold font run; and a version where the bold tag wraps the font tag. Lamberto's prints the stop inside the bold (\"Sr. Lamberto.\" then \" -- \"), and the second Baglini turn prints the dash inside the bold (\"Sr. Baglini. -- \"). All are recorded as they read after the markup is stripped.\n\nIn the president's \"Si no se hace uso de la palabra , se va a votar\" there is a stray space before the comma in the source. Kept as printed.\n\nThe two italic lines are stenographer's notes and do not break the turns around them; the second one (\"-- Se enuncia el actual artículo 4, ex 5°.\") is followed by a new labelled turn anyway.\n\nNo headings, back-links or other furniture fall inside this stretch."
+}

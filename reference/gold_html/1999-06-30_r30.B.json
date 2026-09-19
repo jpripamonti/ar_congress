@@ -1,0 +1,11 @@
+{
+  "source_file": "1999-06-30_r30_ORDINARIA.html",
+  "stretch_id": "1999-06-30_r30",
+  "annotator": "B",
+  "opens_mid_utterance": true,
+  "utterance_starts": [],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [],
+  "notes": "Zero turn starts, zero events, nothing but running speech. The fragment contains no bold and no italic runs at all: fourteen plain \"<P><FONT FACE=\\\"Times New Roman\\\">\" paragraphs. It sits wholly inside one senator's speech on the libro bill. The full sitting file shows the last label before the fragment is \"Sr. DE LA ROSA.-\" (he speaks of \"mi provincia\" and of Mendoza publishers), and the speech continues past the closing words (\"Se procura también difundir la cultura nacional y latinoamericana...\"), so the fragment neither opens nor closes a turn. One thing worth a maintainer's eye: from \"El proyecto consta de treinta y dos artículos\" onwards the senator summarises the bill's objectives in long enumerations that read like statute text. I judged it floor speech, not an inserted document, because it is in the first person and in reported form (\"establece\", \"podemos señalar\") rather than the articulated \"Artículo 1° - ...\" form an inserted bill takes, and because it continues the same paragraph flow as the historical narrative before it with no break, no heading and no reading formula such as \"(Lee:)\"."
+}

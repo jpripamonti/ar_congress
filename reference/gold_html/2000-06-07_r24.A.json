@@ -1,0 +1,20 @@
+{
+  "source_file": "2000-06-07_r24_ESPECIAL.html",
+  "stretch_id": "2000-06-07_r24",
+  "annotator": "A",
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {
+      "speaker_label": "Sr. Presidente. --",
+      "first_words": "Tiene la palabra el señor senador Villarroel."
+    },
+    {
+      "speaker_label": "Sr. Villarroel. --",
+      "first_words": "Señor presidente, señores colegas: por más de un motivo voy a ser parco en mi"
+    }
+  ],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [],
+  "notes": "2 turns. The stretch opens 15 unlabelled paragraphs deep inside a speech already in progress, so opens_mid_utterance is true and that speech is not listed as a start. From the wider sitting in data/raw/senado/taquigraficas/2000-06-07_r24_ESPECIAL.html the speaker in progress is the jefe de Gabinete de Ministros, whose label 'Sr. Jefe de Gabinete de Ministros' is printed well before this fragment; its content (answering senator Yoma, 'fui ministro de Obras y Servicios Públicos') confirms it. The stretch also ends mid-turn: Villarroel goes on speaking past the closing words. This sitting uses the later house style — a lowercase-name label closed by a full stop and a double hyphen ('Sr. Presidente. --', 'Sr. Villarroel. --') — with the trailing space inside the bold run, which I dropped. No stenographer's notes, headings or furniture appear in this stretch."
+}

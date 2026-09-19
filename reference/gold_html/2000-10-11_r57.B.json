@@ -1,0 +1,75 @@
+{
+  "source_file": "2000-10-11_r57_ORDINARIA.html",
+  "stretch_id": "2000-10-11_r57",
+  "annotator": "B",
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {
+      "speaker_label": "Sr. Presidente (Cafiero). --",
+      "first_words": "Tiene la palabra el señor senador por San Juan."
+    },
+    {
+      "speaker_label": "Sr. Bravo. --",
+      "first_words": "Señor presidente: he pedido el uso de la palabra para adelantar mi voto afirmativo"
+    },
+    {
+      "speaker_label": "Sr. Presidente (Cafiero). --",
+      "first_words": "Tiene la palabra el señor senador por Tierra del Fuego."
+    },
+    {
+      "speaker_label": "Sr. Preto. --",
+      "first_words": "Señor presidente: nuestro bloque del Movimiento Popular Fueguino ha permanecido en silencio hasta este momento"
+    },
+    {
+      "speaker_label": "Sr. Presidente (Cafiero). --",
+      "first_words": "Tiene la palabra el señor senador por Salta."
+    },
+    {
+      "speaker_label": "Sr. Ulloa. --",
+      "first_words": "Señor presidente: confieso que lamenté mucho que el senador Genoud se alejara de su cargo."
+    },
+    {
+      "speaker_label": "Sr. Presidente (Cafiero). --",
+      "first_words": "Tiene la palabra el señor senador por la Ciudad Autónoma de Buenos Aires."
+    },
+    {
+      "speaker_label": "Sr. Del Piero. --",
+      "first_words": "Señor presidente: anticipo el voto favorable del Frepaso a la designación del senador Mario Losada"
+    },
+    {
+      "speaker_label": "Sr. Presidente (Cafiero). --",
+      "first_words": "Señores senadores: voy a poner en consideración la propuesta de elegir como presidente provisional"
+    },
+    {
+      "speaker_label": "Sr. Menem. --",
+      "first_words": "Pido la palabra."
+    },
+    {
+      "speaker_label": "Sr. Presidente (Cafiero). --",
+      "first_words": "Tiene la palabra el senador por La Rioja."
+    },
+    {
+      "speaker_label": "Sr. Menem. --",
+      "first_words": "Que se haga por signos, señor presidente. Corresponde que se practique votación nominal"
+    },
+    {
+      "speaker_label": "Sr. Presidente (Cafiero). --",
+      "first_words": "Si no se hace uso de la palabra, se va a votar la moción del señor senador por La Rioja."
+    },
+    {
+      "speaker_label": "Sr. Presidente (Cafiero). --",
+      "first_words": "Si no se hace uso de la palabra, se va a votar en la forma indicada la propuesta"
+    },
+    {
+      "speaker_label": "Sr. Presidente (Cafiero). --",
+      "first_words": "Por unanimidad y por aclamación, queda designado como presidente provisional del Honorable Senado"
+    }
+  ],
+  "events": [
+    "-- La votación resulta afirmativa.",
+    "-- Puestos de pie los señores senadores, se aprueba por unanimidad y aclamación. (Aplausos en las bancas y en las galerías. Varios señores senadores rodean y felicitan al señor senador Losada.)"
+  ],
+  "headings": [],
+  "furniture_seen": [],
+  "notes": "The fragment opens five unlabelled paragraphs into a speech praising Mario Losada, so opens_mid_utterance is true and that speech is not listed. Checking the wider sitting in data/raw/senado/taquigraficas/2000-10-11_r57_ORDINARIA.html, the last bold label before the fragment starts is 'Sr. Humada.--', the Misiones senator, which fits the content (Apóstoles, the red-earth roads, his shared history with Losada). The fragment covers the election of Losada as presidente provisional in place of Genoud and ends on the chair's proclamation of the result. \n\nThe presiding officer's label is printed four different ways in this one fragment, and all four print as the same string on the page, so I normalised none of them and wrote 'Sr. Presidente (Cafiero). --' throughout. The four markup shapes are: '<B>Sr. Presidente </B>(Cafiero)<B>. -- </B>' with the holder outside the bold run and the terminator back inside it (twice); '<B>Sr. Presidente</B> (Cafiero). -- ' with both the holder and the terminator outside the bold (once); and '<B>Sr. Presidente </B>(Cafiero). -- ' with a trailing space inside the bold (the rest). Anything keyed only on the bold run's own text would see 'Sr. Presidente' with the name missing, or, in the first shape, would see the label split into two bold runs with the name between them. \n\nFour applause notes in this fragment are NOT listed as events, and not because I doubted they happened: under the corpus convention an event is a note printed as its own paragraph, while a parenthesised italic fragment sitting inside a speaker's paragraph is part of that speech and does not split the turn. All four are inline, each closing a senator's own final paragraph — 'Muchas gracias, señor presidente. (Aplausos.)' closing the Humada speech the fragment opens inside, 'Muchas gracias. (Aplausos.)' closing Bravo, and one each closing Preto and Ulloa. They belong to those senators' speech and are recorded here only so a maintainer knows the applause is on the page. (An earlier version of this file listed them as events; that was my misreading of the brief, which said a parenthesised note is an event without saying where it has to sit.) Their markup is inconsistent as well — the first two italicise only the word, leaving the stop outside ('(<I>Aplausos</I>.)'), the last two italicise word and stop together ('(<I>Aplausos.</I>)'). \n\nThe two events that remain each open a <P> of their own, which is what qualifies them: the vote result at line 119 of the fragment and the standing ovation at line 126. Note that the long ovation note carries its own parenthesised applause INSIDE it ('(Aplausos en las bancas y en las galerías...)'); that text stays part of the one standalone note rather than being split off as a second event. \n\nTwo more presentational oddities worth knowing: the 'La votación resulta afirmativa' note is the only one in the fragment whose italic tag wraps the FONT tag rather than sitting inside it, and its leading dash is inside the italics, whereas the long standing-ovation note keeps its dash outside them. \n\nNo inserted documents, headings or furniture. The final two president turns are separate starts even though only a stenographer's note separates them, because each is a distinct act by the chair (putting the motion, then proclaiming the result) and the note falls between two of his turns rather than inside one."
+}

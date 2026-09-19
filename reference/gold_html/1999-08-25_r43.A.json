@@ -1,0 +1,115 @@
+{
+  "source_file": "1999-08-25_r43_ORDINARIA.html",
+  "stretch_id": "1999-08-25_r43",
+  "annotator": "A",
+  "opens_mid_utterance": false,
+  "utterance_starts": [
+    {
+      "speaker_label": "Sr. GIOJA.-",
+      "first_words": "Señor presidente: si bien represento a una provincia que no produce tabaco, voy a expresar"
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE (Menem).-",
+      "first_words": "Tiene la palabra el señor senador por Jujuy."
+    },
+    {
+      "speaker_label": "Sr. TELL.-",
+      "first_words": "Señor presidente: sin el ánimo de dialogar con el señor senador por San Juan, debo"
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE (Menem).-",
+      "first_words": "Tiene la palabra el señor senador por Misiones."
+    },
+    {
+      "speaker_label": "Sr. OUDÍN.-",
+      "first_words": "Deseo manifestar mi apoyo a esta iniciativa y decir que esto constituye nada más que"
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE (Menem).-",
+      "first_words": "Tiene la palabra el señor senador por Corrientes."
+    },
+    {
+      "speaker_label": "Sr. PARDO.-",
+      "first_words": "Señor presidente: la provincia de Corrientes tiene tabaco y muchas necesidades."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE (Menem).-",
+      "first_words": "Tiene la palabra el señor senador por el Chaco."
+    },
+    {
+      "speaker_label": "Sr. SAGER.-",
+      "first_words": "Señor presidente: soy el representante de una provincia que es productora de tabaco en menor"
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE (Menem).-",
+      "first_words": "En primer término, vamos a poner a consideración el tratamiento sobre tablas."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE (Menem).-",
+      "first_words": "Pasamos a considerar el proyecto en general, para lo cual, por implicar gastos, corresponde constituir"
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE (Menem).-",
+      "first_words": "Queda constituida la Cámara en comisión y confirmadas las autoridades para la conferencia."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE (Menem).-",
+      "first_words": "Queda abierta la conferencia."
+    },
+    {
+      "speaker_label": "Sr. PROSECRETARIO (Pontaquarto).-",
+      "first_words": "(Lee:)"
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE (Menem).-",
+      "first_words": "En consideración."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE (Menem).-",
+      "first_words": "Queda cerrada la conferencia."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE (Menem).-",
+      "first_words": "Continúa la sesión."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE (Menem).-",
+      "first_words": "Queda sancionado y convertido en ley. Se comunicará al Poder Ejecutivo."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE (Menem).-",
+      "first_words": "Se procederá en consecuencia."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE (Menem).-",
+      "first_words": "Se encuentra en antesala el señor jefe de Gabinete de Ministros, ingeniero Jorge Rodríguez, con"
+    }
+  ],
+  "events": [
+    "-El texto de la inserción solicitada es el siguiente:",
+    "-La votación resulta afirmativa.",
+    "-Asentimiento.",
+    "-Se lee nuevamente el proyecto de ley en revisión.",
+    "-Asentimiento.",
+    "-La votación resulta afirmativa.",
+    "-En particular es igualmente afirmativa.",
+    "-La votación resulta afirmativa."
+  ],
+  "headings": [
+    "1",
+    "Constitución de la Cámara en comisión",
+    "2",
+    "Conferencia",
+    "3",
+    "Votación",
+    "53",
+    "Informe del jefe de Gabinete de Ministros"
+  ],
+  "furniture_seen": [
+    ".",
+    ".",
+    ".",
+    "[Volver al sumario]"
+  ],
+  "notes": "20 turns. Every turn I list has its own printed bold label; I never list an unlabelled continuation paragraph (Tell's 'Voy a solicitar, asimismo, la inserción...', Pardo's two further paragraphs, and the president's 'Si no se hace uso de la palabra...' all continue the turn above them). The president's label is reprinted after each stenographer's note and after each section heading, so those count as fresh turns even though the speaker never changes; the rule about notes and headings not starting a turn applies to speech that simply continues without a label, which is not what happens here. The seven paragraphs in small type between Tell's request for an insertion and the president's 'Tiene la palabra el señor senador por Misiones' are an INSERTED DOCUMENT, not floor speech: they are introduced by the italic note '-El texto de la inserción solicitada es el siguiente:', they are set in a smaller font than the surrounding debate, and Tell explicitly asked for them to go into the Diario de Sesiones instead of being spoken. They have no speaker and I assigned none. The prosecretario's turn is only '(Lee:)' — the reading itself is summarised by the following italic note '-Se lee nuevamente el proyecto de ley en revisión.', so I kept '(Lee:)' as his turn (per the brief) and the italic line as an event. OUDÍN's label is printed with the accented letter in its own font run, so on the page it reads as three pieces; it is one label, 'Sr. OUDÍN.-'. Several of the president's labels are printed with the trailing space inside the bold run ('<B>Sr. PRESIDENTE (Menem).- </B>'); I recorded them without the trailing space since it carries no meaning. The three lone full stops in furniture_seen are stray typesetting debris: a bare '.' (once italicised) on its own line just before each of the centred section numbers 1, 2 and 3. They are not speech and not notes."
+}

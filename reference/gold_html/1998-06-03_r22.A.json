@@ -1,0 +1,97 @@
+{
+  "source_file": "1998-06-03_r22_ORDINARIA.html",
+  "stretch_id": "1998-06-03_r22",
+  "annotator": "A",
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "¿Usted se refiere al artículo 2?"
+    },
+    {
+      "speaker_label": "Sr. BERHONGARAY.-",
+      "first_words": "Sí, Título II, artículo 2."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "No, usted está hablando de la ley."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "Reitero: está muy claro que la aprobación del artículo 1 implica la aprobación de todo el anexo."
+    },
+    {
+      "speaker_label": "Sr. BERHONGARAY.-",
+      "first_words": "El artículo 2 de la ley, que está incluido en el Título II, sobre \"Definición de pequeño contribuyente\"..."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "No, señor senador Berhongaray. Me extraña, porque usted es uno de los senadores más avezados."
+    },
+    {
+      "speaker_label": "Sr. BERHONGARAY.-",
+      "first_words": "Pido reconsideración a los efectos de que en el Anexo, en el Título II ..."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "¿Usted pide reconsideración del artículo 1° para poder opinar sobre el Anexo?"
+    },
+    {
+      "speaker_label": "Sr. BERHONGARAY.-",
+      "first_words": "Para que se incluyan las modificaciones que señalamos en particular."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "Primero hay que tratar si la Cámara le hace lugar para reconsiderar el artículo 1°,"
+    },
+    {
+      "speaker_label": "Sr. BERHONGARAY.-",
+      "first_words": "Está bien, señor presidente. Muchísimos señores senadores hicieron observaciones a este Anexo."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "Señor senador Berhongaray: yo hice votar en general. Luego llegó el tratamiento del artículo 1°"
+    },
+    {
+      "speaker_label": "Sr. BERHONGARAY.-",
+      "first_words": "Señor presidente: usted fue testigo durante todo este debate de que en el Anexo"
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "Quiero dejar claro la posición de la Presidencia antes de seguir. Efectivamente, ha habido"
+    },
+    {
+      "speaker_label": "Sr. VERNA.-",
+      "first_words": "Señor presidente: no vamos a acompañar el pedido de reconsideración. Creemos que si el"
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "Senador Verna: yo no lo voy a permitir, porque si no hay reconsideración"
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "Queda definitivamente sancionado el proyecto de ley. Se harán las comunicaciones correspondientes."
+    },
+    {
+      "speaker_label": "Sr. DE LA SOTA.-",
+      "first_words": "Señor presidente: intervengo al solo efecto de repetir lo que dije al terminar"
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "Se toma nota."
+    },
+    {
+      "speaker_label": "Sr. BERHONGARAY.-",
+      "first_words": "Señor presidente: en igual sentido, pido que las disidencias que señalé en mi"
+    }
+  ],
+  "events": [
+    "-Varios señores senadores hablan a la vez.",
+    "-La votación resulta afirmativa.",
+    "-Se enuncia y aprueba el artículo 3°.",
+    "-El artículo 4° es de forma."
+  ],
+  "headings": [],
+  "furniture_seen": [],
+  "notes": "Opens in mid-sentence (\"Y en el párrafo siguiente...\"). Checking the raw file data/raw/senado/taquigraficas/1998-06-03_r22_ORDINARIA.html before offset 178952 confirms this is the tail of senator Berhongaray's turn proposing two amendments, so it is not listed as a start. TWO PLACES where the page reprints a bold label for the SAME speaker immediately after a stenographer's note, with nobody else speaking in between: (a) \"Sr. PRESIDENTE.-\" / \"Reitero: está muy claro que la aprobación del artículo 1\" after the note \"-Varios señores senadores hablan a la vez.\"; (b) \"Sr. PRESIDENTE.-\" / \"Queda definitivamente sancionado el proyecto de ley.\" after the three voting notes. I first read rule 2 as making each of these a continuation of the turn already in progress and emitted 18 starts. The question was settled against that reading on the project's own evidence — the corpus convention recorded in TODO.md, the PDF gold set (gold_2004-04-28_p24.json lists four separate \"Sr. Presidente. —\" starts across two electronic votes), and the parser giving 497 distinct turn_ids to 497 labelled rows in one sitting: a printed label ALWAYS opens a turn, and rule 2 covers only an UNLABELLED continuation paragraph, speech that runs on with no label of its own. Both (a) and (b) are therefore listed in place and THE COUNT IS SETTLED AT 20 under the printed-label convention. Label punctuation varies between \"<B>Sr. PRESIDENTE.-</B>\" and \"<B>Sr. PRESIDENTE.- </B>\" (a trailing space inside the bold run); I recorded the printed characters only and dropped that trailing space, since it is whitespace and not part of the terminator. The presiding officer is never named in this fragment, so the label stays the bare \"Sr. PRESIDENTE.-\". No inserted documents, headings or furniture in this stretch; the quoted statutory text inside the president's turn (\"Sustitúyese el artículo 29...\", \"Apruébase como Régimen Simplicado...\") is him reading aloud from the bill while speaking, not an insertion, so it stays inside his turn. \"Simplicado\" is the typist's misspelling of \"Simplificado\", left as printed. Markup trap: the fragment holds 21 bold runs but only 20 are labels — inside the president's turn \"Señor senador Berhongaray: yo hice votar en general...\" there is a stray empty bold run, \"artículo 1°<B> </B>y dije\", which is a WordPerfect artefact and not a speaker label. All 20 real labels are listed, one start each."
+}
