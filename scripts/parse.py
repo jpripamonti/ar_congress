@@ -53,7 +53,7 @@ from pathlib import Path
 import pandas as pd
 import pdfplumber
 
-PARSER_VERSION = "0.4.38"
+PARSER_VERSION = "0.4.40"
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
@@ -62,9 +62,19 @@ MANIFEST_PATH = REPO_ROOT / "raw_data_manifest.csv"
 
 SUBSET_RE = re.compile(r"^[A-Z]{6}\+")          # PDF font-subset prefixes: ABCDEF+ArialMT
 PAG_LINE_RE = re.compile(r"Pág\.\s*\d+")         # page-header dateline invariant
+# The honorific as the chamber prints it, and as its typists mistype it. The
+# separator is where the variants live: "Sr. Mayans" is the rule, but the
+# HTML era also has "Sr.Presidente" with no space, "Sr Sager" with no stop,
+# "Sr- Usandizaga" with a hyphen for the stop and "Sr. .Pichetto" with two.
+# All of them must be followed by a letter, which is what keeps the pattern
+# from swallowing an ordinary word that happens to begin "Sr".
+# The case is free because both eras shout at will: "SR. PRESIDENTE" and
+# "VARIOS SEÑORES SENADORES" are the same speakers as their spelt-out forms.
 SPEAKER_RE = re.compile(
-    r"^(?:(?:Sr|Sra|Srta|Sres)\.\s"                             # Sr. Mayans / Sra. Presidenta (…)
-    r"|(?:Varios señores|Varias señoras|Un señor|Una señora) senador)"  # anonymous/collective speakers
+    r"^(?:(?i:Sr|Sra|Srta|Sres)(?:(?:[.\-]\s*)+|\s+)(?=[^\W\d_])"   # Sr. Mayans / Sra. Presidenta (…)
+    r"|(?i:Varios señores|Varias señoras|Un señor|Una señora)"      # anonymous/collective speakers
+    r"\s+(?i:senador))",
+    re.UNICODE,
 )
 # "1. Título" (2014+) or dotless "1 TÍTULO" (2000–2013 layouts)
 CHAPTER_RE = re.compile(r"^\d+(?:\.\s?\S|\s+[A-ZÁÉÍÓÚÜÑ])")
@@ -341,6 +351,10 @@ PAGE_SIGNOFF_RE = re.compile(r"^Dirección General de Taquígrafos\s*$")
 FOOTNOTE_TEXT_RE = re.compile(r"\s*(?:\d{1,3}\s*)?Ver el Ap[eé]ndice\.?\s*")
 # the digital edition's link back to the contents page, printed after a turn
 SUMARIO_RE = re.compile(r"\s*\[\s*Volver al sumario\s*\]\s*", re.I)
+# The bare back-link printed on each appended roll-call plate ("Volver", next
+# to "Acta Nº 2"). It is a link, not a word anybody says: no block of this
+# shape is speech anywhere in the corpus, in either format.
+VOLVER_RE = re.compile(r"^\s*volver\s*\.?\s*$", re.I)
 # characters from a font with no Unicode map land in the private-use area
 CID_UNMAPPED_RE = re.compile(r"[-]")
 # what is left of the "Pág. N" dateline once the unmapped letters are dropped
@@ -1384,8 +1398,8 @@ def classify_blocks(blocks, body_size):
     events = 0
     for b in blocks:
         t = b["text"].strip()
-        if DGT_RE.match(t):
-            b["type"] = "furniture"      # "Dirección General de Taquígrafos" backstop
+        if DGT_RE.match(t) or VOLVER_RE.match(t):
+            b["type"] = "furniture"      # office sign-off and plate back-link
             continue
         if b["size"] != body_size:
             b["type"] = "furniture"      # appendix, footnotes, attendance lists, plates

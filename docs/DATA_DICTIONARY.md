@@ -29,7 +29,7 @@ the normal way to work with it.
 
 | Column | Meaning |
 | --- | --- |
-| `type` | `speech` — words somebody said (247,130). `event` — the stenographer's note about something that happened (60,909). `heading` — a section title (33,710). `furniture` — printed page matter kept only for tracing; not speech (83,210). `inline_italic` — an italicised fragment that had no turn to belong to (1,183). `other` — text the parser could not attribute to anyone (6,544, 1.5%), most of it speeches inserted into the record without being delivered. |
+| `type` | `speech` — words somebody said (247,469). `event` — the stenographer's note about something that happened (60,905). `heading` — a section title (33,493). `furniture` — printed page matter kept only for tracing; not speech (84,102), which from 0.5.4-html includes the HTML era's attendance roll. `inline_italic` — an italicised fragment that had no turn to belong to (1,169). `other` — text the parser could not attribute to anyone (5,425, 1.25%), most of it matter inserted into the record without being spoken: speeches handed in, and the bills read into it. |
 | `text` | The words themselves, as printed. Spelling, punctuation and the edition's own mistakes are preserved: where a page misspells a senator's surname, so does this. |
 | `event_type` | Only for notes. `vote` (17,417), `incident` (4,097, disorder in the chamber), `applause` (3,755), `unspecified` (1,721), `laughter` (1,395), `pause` (1,378), `stage` (1,180, someone entering, leaving or taking the chair), `timestamp` (1,012, the clock time the record prints). |
 | `seq` | Position within the sitting. Sorting by it gives the order the words were printed in, which is the order they were spoken. |
@@ -49,7 +49,7 @@ To get from a label to a person, join `speakers.parquet` on
 
 | Column | Meaning |
 | --- | --- |
-| `chapter`, `chapter_title` | The numbered section of the sitting's agenda the passage falls under, and its title. Present in 780 of the 818 sittings that parse; the rest print no section numbering the parser can read. |
+| `chapter`, `chapter_title` | The numbered section of the sitting's agenda the passage falls under, and its title. Present in 781 of the 817 sittings that parse; the rest print no section numbering the parser can read. |
 | `session_id` | The sitting: date plus its number within the year, e.g. `2014-05-07_r07`. |
 | `session_date` | The date of the sitting, `YYYY-MM-DD`. |
 | `session_type` | What kind of sitting, as the Senate names it, by row count: `ORDINARIA` (323,298), `ESPECIAL` (51,573), `EXTRAORDINARIA` (24,395), `ASAMBLEA` (11,249), `TRIBUNAL DE JUICIO POLITICO` (6,940), `INFORMATIVA ESPECIAL` (6,696), `PREPARATORIA` (3,294), `ESPECIAL EXTRAORDINARIA` (2,630), `ORDINARIA CONTINUACIÓN` (1,038), `EN MINORÍA` (807), `REUNIÓN CONJ.AMBAS CÁMARAS` (201), `ESPECIAL EN MINORÍA` (196), `FALTA DE QUORUM` (14). These are the chamber's own labels and they overlap — `EN MINORÍA` and `ESPECIAL EN MINORÍA` name the same thing — so group them before counting. **Mixing them without thinking will mislead you**: an impeachment trial and an ordinary sitting are not the same kind of speech. |

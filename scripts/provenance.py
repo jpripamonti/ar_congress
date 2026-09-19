@@ -47,6 +47,11 @@ def sniff_format(raw_head):
     return "pdf" if raw_head.startswith(b"%PDF") else "html"
 
 
+# What a browser does with these, and what the exporter meant. See decode_html.
+LATIN1_ALIASES = {"iso-8859-1", "iso8859-1", "latin-1", "latin1", "l1",
+                  "iso-ir-100", "8859-1", "cp819"}
+
+
 def decode_html(raw):
     """Text from a held HTML transcript, in the encoding it declares.
 
@@ -58,13 +63,32 @@ def decode_html(raw):
     declares no provisional status and names no officers, and an audit
     comparing parsed text against the file reports a third of it as text the
     source does not contain.
+
+    A declaration of iso-8859-1 is read as windows-1252, which is what every
+    browser does with it and what the exporter meant: 40 of the 212 files
+    declaring iso-8859-1 put bytes in the 0x80-0x9f range, which latin-1 has
+    no printable character for. Read as latin-1 they become control codes;
+    read as windows-1252 they are the curly quotes, dashes and ellipses the
+    page shows — 252 quotation marks, 46 dashes and 12 ellipses in the file,
+    of which 16, 32 and 12 survive tag-stripping into readable text. The dash
+    matters beyond typography: it is the em dash that ends a speaker's label,
+    so under latin-1 the label has no terminator the parser recognises and
+    the sitting loses the speaker entirely.
+
+    One byte resists: 0x80, which windows-1252 calls the euro sign and which
+    these files draw as the degree sign ("Escuela N\x80 3", "artículo 5\x80").
+    All 16 occurrences sit inside anchor names, which the parser drops before
+    any text is written, so the euro is never printed; it is left as the
+    encoding says rather than corrected to a degree sign nothing reads.
     """
     match = re.search(rb'charset\s*=\s*"?([\w-]+)', raw[:2000], re.I)
     encoding = match.group(1).decode("ascii", "replace") if match else "latin-1"
+    if encoding.lower().replace("_", "-") in LATIN1_ALIASES:
+        encoding = "cp1252"
     try:
         return raw.decode(encoding, "replace")
     except LookupError:
-        return raw.decode("latin-1", "replace")
+        return raw.decode("cp1252", "replace")
 
 
 def html_head_text(raw):

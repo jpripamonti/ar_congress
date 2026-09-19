@@ -33,7 +33,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from parse import SPEAKER_RE, classify_event  # noqa: E402
 from provenance import decode_html  # noqa: E402
 
-PARSER_VERSION = "0.5.2-html"
+PARSER_VERSION = "0.5.4-html"
 
 # A paragraph break: WordPerfect writes <p> with no closing tag and uses <br>
 # for the lines of a masthead or the two lines of a heading.
@@ -63,8 +63,58 @@ CSS_ITALIC_RE = re.compile(r"font-style\s*:\s*italic", re.I)
 QUALIFIER_RE = re.compile(r"^\s*\(([^)]{1,60})\)")
 # What separates a label from the speech: ". --", ". –", ".-", or a bare dash.
 TERMINATOR_RE = re.compile(r"^\s*[.:]?\s*[-–—]{1,2}\s*")
-# The same terminator when the bold run carries it: "<b>Sr. Vaquir. -- </b>".
-LABEL_END_RE = re.compile(r"[.:]?\s*[-–—]{1,2}\s*$")
+# What a label is made of, once the honorific is past: a short name or office
+# carrying no stop of its own, and sometimes the holder in parentheses. The
+# cap of five words is what keeps a sentence from being read as a name.
+_LABEL_BODY = (r"[^\s.,;:()]+(?:\s+[^\s.,;:()]+){0,4}"
+               r"(?:\s*\([^)]{1,40}\))?")
+_HONORIFIC = (r"(?:(?i:Sr|Sra|Srta|Sres)(?:(?:[.\-]\s*)+|\s+)"
+              r"|(?i:Varios señores|Varias señoras|Un señor|Una señora)\s+)")
+# Everything before the terminator, when what is before it really is a label.
+LABEL_HEAD_RE = re.compile(rf"^{_HONORIFIC}{_LABEL_BODY}\s*$")
+# The same terminator, found wherever it falls inside the bold run. It need
+# not fall last: the opening character of the speech is often set in bold
+# along with it ("<b>Sr. YOMA.- ¿</b>Me permite una interrupción?"), as is
+# the ellipsis that resumes an interrupted turn ("<b>Sr. CAFIERO.- ...</b>").
+# The dash must be preceded by a stop, a space, or the holder's closing
+# parenthesis, so that a hyphenated surname is not read as a terminator and
+# "Sr. LÓPEZ-ARIAS.- " does not become a senator called LÓPEZ.
+LABEL_TERM_RE = re.compile(r"(?:(?<=\))\s*|[.,;:]+\s*|\s+)[-–—]{1,2}[.,;:]*\s*")
+# The dash with nothing at all before it, glued to the last letter of the
+# name: "Sr. AVELÍN- Pido la palabra." Read only at the end of the bold run
+# and only behind a label-shaped prefix, which is what keeps a hyphenated
+# surname from being cut in two.
+LABEL_GLUED_RE = re.compile(r"[-–—]{1,2}[.,;:]*\s*$")
+# The terminator written twice, once before the holder and once after:
+# "Sr. PRESIDENTE.- (Losada).- Tiene la palabra el señor senador".
+DOUBLED_HOLDER_RE = re.compile(r"^\(([^)]{1,40})\)\s*[.,;:]*\s*[-–—]{1,2}\s*")
+# A label the typist ended with a full stop and no dash at all: "Sr. GENOUD.
+# Si no le daban mandato al bloque, hoy se votaba la figura." Read only when
+# the whole shape is there and a new sentence opens after it. The stop may be
+# a full stop or a comma the typist doubled ("Sr. PRESIDENTE (Menem),.
+# Corresponde"), never a colon: a colon after an office is how an inserted
+# letter greets its addressee, not how the chamber gives someone the floor.
+# Tighter than the dashed path: with no dash to mark the end of the label,
+# only a name of one or two words keeps an inserted letter's salutation —
+# "Sr. Presidente de la Honorable Cámara. Tengo el agrado de dirigirme" —
+# from being read as the chamber giving the floor to somebody.
+LABEL_BARE_RE = re.compile(
+    rf"^(?P<label>{_HONORIFIC}"
+    r"[^\s.,;:()]+(?:\s+[^\s.,;:()]+)?(?:\s*\([^)]{1,40}\))?)"
+    r"\s*[.,]+\s*(?=[¿¡(\"«A-ZÁÉÍÓÚÑÜ])"
+)
+# The attendance roll: a shouted heading, then one senator to a line. The PDF
+# side never sees this — it is cut with the front matter, before the sitting
+# opens — but the HTML export prints it inside the document, where nothing
+# else marks it off, so it is recognised by its own shape. The heading must
+# be shouted and the entry must be "SURNAME, Given" with the surname shouted
+# and the given name not, which is what keeps an ordinary sentence out.
+ROLL_HEAD_RE = re.compile(
+    r"^(?:PRESENTES|AUSENTES|AUSENTE|EN COMISI[ÓO]N|SUSPENDIDO|SUSPENDIDOS"
+    r"|CON LICENCIA|LICENCIA)\b[^a-záéíóúñü]*$")
+ROLL_ENTRY_RE = re.compile(
+    r"^[A-ZÁÉÍÓÚÑÜ][A-ZÁÉÍÓÚÑÜ'’.\s]+,\s*[A-ZÁÉÍÓÚÑÜ][a-záéíóúñü]")
+
 # A note's opening dash is presentation, and the two formats print it
 # differently ("-- Se vota." against "-Se vota."); the subtype patterns are
 # anchored, so it comes off before they run.
@@ -72,6 +122,13 @@ LEADING_DASH_RE = re.compile(r"^\s*[-–—−]+\s*")
 CHAPTER_NUM_RE = re.compile(r"^\d{1,3}$")
 # "[Volver al sumario]" and the sumario's own entries are navigation.
 NAV_RE = re.compile(r"volver al sumario|^\s*\[?\s*sumario\s*\]?\s*$", re.I)
+# Printed apparatus with no speaker: the footnote pointing at the appendix
+# ("1. Ver el Apéndice."), and the sign-off the stenographers' office puts at
+# the foot of the record, with or without the director's name above it.
+APPARATUS_RE = re.compile(
+    r"^\s*(?:\d+\s*[.)]?\s*Ver el Ap[ée]ndice\s*\.?"
+    r"|(?:[^\n]{0,60}\s)?(?:Sub)?[Dd]irector(?:a)?\s+(?:a/c\s+)?del\s+Cuerpo"
+    r"\s+de\s+Taqu[íi]grafos)\s*$")
 
 
 class TranscriptHTML(HTMLParser):
@@ -240,35 +297,89 @@ def split_label(para):
     face — "<b>Sr. Presidente </b>(Cafiero). -- Como último intento" — so the
     parenthetical is picked up from the run that follows, which is how the PDF
     side spells these too ("Sr. Presidente (Cafiero)").
+
+    A label set wholly in the body face is still a label: 42 paragraphs of the
+    HTML era print one with no bold at all. Those are read only on the strict
+    path, where an explicit dash separates the label from the speech, because
+    without the bold there is nothing else to tell a label from an inserted
+    letter that opens "Sr. Presidente:".
     """
     runs = para["runs"]
-    if not runs or runs[0]["style"] not in ("bold", "bold-italic"):
+    if not runs:
         return None
     raw = runs[0]["text"].strip()
     if not SPEAKER_RE.match(raw):
         return None
+    bold = runs[0]["style"] in ("bold", "bold-italic")
+    rest = "".join(r["text"] for r in runs[1:])
+
+    # The bold run sometimes stops inside the holder's name — "<b>Sr.
+    # PRESIDENTE (Cafiero</b>).- La Presidencia informa" — so the parenthesis
+    # is closed from what follows before the label is read off it.
+    if "(" in raw and ")" not in raw:
+        close = rest.find(")")
+        if close != -1:
+            raw, rest = raw + rest[:close + 1], rest[close + 1:]
+        else:
+            # The typist never closed it — "Sr. PRESIDENTE (Cafiero.- Queda
+            # aprobada" — so it is closed where the terminator falls, which
+            # is where the name ends and where the reader closes it too.
+            term = LABEL_TERM_RE.search(raw) or LABEL_GLUED_RE.search(raw)
+            if term is None:
+                return None
+            raw = f"{raw[:term.start()]}){raw[term.start():]}"
+
     # Two shapes, both common: the terminator sits inside the bold run
     # ("<b>Sr. Vaquir. -- </b>Pido la palabra.") or after it, past the
     # holder's name ("<b>Sr. Presidente </b>(Preto)<b>. -- </b>Para una...").
-    closed = bool(LABEL_END_RE.search(raw))
-    label = LABEL_END_RE.sub("", raw).strip().rstrip(".")
-    rest = "".join(r["text"] for r in runs[1:])
+    # Cutting inside the run is safe when the terminator ends it, as it did
+    # before this was read at all, and otherwise only when what precedes it
+    # is shaped like a label — without that, the first parenthetical dash of
+    # an ordinary sentence would be read as the end of somebody's name.
+    inside = LABEL_TERM_RE.search(raw)
+    if inside and (inside.end() == len(raw)
+                   or LABEL_HEAD_RE.match(raw[:inside.start()])):
+        return tidy(raw[:inside.start()], raw[inside.end():] + rest)
+    glued = LABEL_GLUED_RE.search(raw)
+    if glued and LABEL_HEAD_RE.match(raw[:glued.start()]):
+        return tidy(raw[:glued.start()], rest)
 
     # Only when the bold run stopped short of the holder's name. A label that
     # already closed with its terminator is complete, and the parenthesis that
     # follows it belongs to the speech: "Sr. SECRETARIO (Piuzzi).- (Lee:)"
     # names the secretary, it does not name a secretary called "Lee".
-    if not closed and "(" not in label:
+    # The trailing stop comes off before the holder is appended, so that
+    # "<b>Sr. Presidente. </b>(Losada)" is the same speaker as
+    # "Sr. Presidente (Losada)" and not a third one.
+    label = raw.strip().rstrip(".")
+    if "(" not in label:
         qualifier = QUALIFIER_RE.match(rest)
         if qualifier:
             label = f"{label} ({qualifier.group(1).strip()})"
             rest = rest[qualifier.end():]
     terminator = TERMINATOR_RE.match(rest)
     if terminator:
-        rest = rest[terminator.end():]
-    elif not closed:
-        return None
-    return label, re.sub(r"\s+", " ", rest).strip()
+        return tidy(label, rest[terminator.end():])
+
+    # No dash anywhere: the typist ended the label on a full stop. Read off
+    # the whole paragraph, and only where the label was printed in bold.
+    if bold:
+        bare = LABEL_BARE_RE.match(f"{raw}{rest}")
+        if bare:
+            return tidy(bare.group("label"), f"{raw}{rest}"[bare.end():])
+    return None
+
+
+def tidy(label, speech):
+    """A label and its speech, with the printing cleaned off both."""
+    label = label.strip().rstrip(".")
+    speech = re.sub(r"\s+", " ", speech).strip()
+    if "(" not in label:
+        again = DOUBLED_HOLDER_RE.match(speech)
+        if again:
+            label = f"{label} ({again.group(1).strip()})"
+            speech = speech[again.end():]
+    return label, speech
 
 
 def classify(paragraphs):
@@ -279,7 +390,9 @@ def classify(paragraphs):
     pending_number = None
     turn = 0
     speaker = None
-    stats = {"paragraphs": len(paragraphs), "front_matter": 0, "nav_cut": 0}
+    in_roll = False
+    stats = {"paragraphs": len(paragraphs), "front_matter": 0, "nav_cut": 0,
+             "roll_cut": 0}
 
     for para in paragraphs:
         text = paragraph_text(para)
@@ -292,9 +405,22 @@ def classify(paragraphs):
             blocks.append({"type": "furniture", "text": text})
             speaker = None
             continue
-        if para["link_only"] or NAV_RE.search(text):
+        if para["link_only"] or NAV_RE.search(text) or APPARATUS_RE.match(text):
             stats["nav_cut"] += 1
             blocks.append({"type": "furniture", "text": text})
+            continue
+
+        # -- the attendance roll ---------------------------------------------
+        # It only ever starts at its own heading, so a surname shouted in the
+        # body of a speech cannot open one.
+        if ROLL_HEAD_RE.match(text):
+            in_roll = True
+        elif in_roll and not ROLL_ENTRY_RE.match(text):
+            in_roll = False
+        if in_roll:
+            stats["roll_cut"] += 1
+            blocks.append({"type": "furniture", "text": text})
+            speaker = None
             continue
 
         # -- section headings ------------------------------------------------
@@ -450,6 +576,26 @@ def parse_one(path_str, meta, out_dir):
     return stats
 
 
+def superseded():
+    """Held files the portal serves under a session they are not.
+
+    One of these exists: 29 October 2003, which the portal returns at the URL
+    of reunión 27 and again at the URL of reunión 28, byte for byte. The
+    document says in its own masthead which sitting it is, so the other slot
+    is the portal's error, and parsing both would count that day's words
+    twice. Listed in reference/senado/superseded_sources.csv with the reason,
+    and still held on disk and in the manifest: what the portal serves is a
+    fact about the portal, and dropping it from the record would hide it.
+    """
+    import csv
+    path = (Path(__file__).resolve().parents[1]
+            / "reference" / "senado" / "superseded_sources.csv")
+    if not path.exists():
+        return set()
+    with path.open(encoding="utf-8") as fh:
+        return {row["filename"] for row in csv.DictReader(fh)}
+
+
 def main():
     import argparse
 
@@ -464,7 +610,7 @@ def main():
     (OUT_DIR / "blocks").mkdir(parents=True, exist_ok=True)
     manifest = load_manifest()
 
-    files = sorted(RAW_DIR.glob("*.html"))
+    files = [f for f in sorted(RAW_DIR.glob("*.html")) if f.name not in superseded()]
     if args.only:
         files = [f for f in files if f.name == args.only]
         if not files:

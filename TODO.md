@@ -1773,12 +1773,18 @@ and 21.5 million words of attributed speech become 25.7.
       changed again and `extract_authorities.py` does not follow it. It costs
       nothing today, because the manual authorities table covers those years,
       and it will cost something the moment it does not.
-- [ ] Two sittings do not parse, both for want of a session opening: the
-      November 2001 sitting that never reached quorum, and the 1997
-      impeachment tribunal, which does not open like an ordinary sitting. The
-      1997 one is the only sitting of its year, so it is worth the look.
-- [ ] 29 October 2003 is served twice, as reunión 27 and reunión 28, byte for
-      byte identical. Decide which to keep; until then its words count twice.
+- [ ] One sitting does not parse, for want of a session opening: the 1997
+      impeachment tribunal, which does not open like an ordinary sitting. It
+      is the only sitting of its year, so it is worth the look. It used to be
+      two; the no-quorum sitting of November 2001 came in with 0.4.38.
+- [x] 29 October 2003 is served twice, as reunión 27 and reunión 28, byte for
+      byte identical. The document decides it: its masthead reads "28°
+      Reunión - 6° Sesión en tribunal", so reunión 27's slot returns the wrong
+      document. Parsed once, under reunión 28;
+      `reference/senado/superseded_sources.csv` records the decision, and both
+      files stay on disk and in the manifest. What the portal serves is a fact
+      about the portal, and the ordinary sitting of that day is simply not
+      held.
 - [x] Re-run the analysis and the figures over all 817 sittings. The notebook
       now takes the caucus from `speakers.parquet` rather than the older spell
       table, which is what let the caucus panel start in 2000 instead of 2005,
@@ -1844,10 +1850,66 @@ and 21.5 million words of attributed speech become 25.7.
       turns, +993 words, and four speaker labels that had never appeared; the
       parser's sequence of that sitting's fourteen "Pido la palabra." now
       matches the blind reader's, name for name. 0.5.2-html.
-- [ ] The review sheet's `which_occurrence` counts turns whose whole text
-      matches; a reader counts printed occurrences. Every reader in the round
-      noticed the two disagree, and twice it sent one to the wrong turn. Count
-      it the way a reader counts it.
+- [x] The review sheet's `which_occurrence` counted turns whose whole text
+      matches; a reader counts printed occurrences. Thirteen of the twenty
+      readers of the 500-passage round reported the gap without being asked,
+      and it accounts for all seven of that round's disagreements. It now
+      counts occurrences of the quoted words in the source file, which
+      reproduces four readers' own counts exactly — 78 "(Lee:)" where the
+      sheet said 76, 25 "En consecuencia, pasa al Archivo." where it said 20.
+      Only for HTML: a PDF row carries the page number, which is how a reader
+      finds the passage there.
+- [ ] The label a reader is shown is sometimes too short to be an answerable
+      question — "(Lee:)", "Pido la palabra." Now that the occurrence count is
+      right the reader can still be sent to the right passage, but a sheet
+      that quoted more would not depend on the count at all.
+## Phase 35 — the labels the parser was not reading (September 2026 — parsers 0.4.40 and 0.5.4-html)
+
+- [x] Widen the speaker pattern to the honorific as the typists spell it.
+      The pattern demanded "Sr." with a stop and one space, and the HTML era
+      also prints "Sr.Presidente" with no space, "Sr Sager" with no stop,
+      "Sr- Usandizaga" with a hyphen for it, "Sr. .Pichetto" with two, and
+      "SR. PRESIDENTE" and "VARIOS SEÑORES SENADORES" shouted. The case is now
+      free and the separator loose, but a letter must follow, which is what
+      keeps an ordinary word beginning "Sr" out. Checked against every label
+      in the corpus: one was lost and it was a mangling ("Sr. .Pichetto"),
+      recovered by allowing the doubled stop. 0.4.39.
+- [x] Read the labels the HTML splitter was throwing away. Four mechanics,
+      each measured on all 214 files before and after: a bold run that stops
+      inside the holder's name ("Sr. PRESIDENTE (Cafiero" + ").- La
+      Presidencia"); a terminator that does not end the run, because the first
+      character of the speech is bold along with it ("Sr. YOMA.- ¿"); a label
+      the typist ended on a full stop and no dash at all ("Sr. GENOUD. Si no
+      le daban mandato"); and a label set in the body face, which 42
+      paragraphs are. The loose paths are fenced: the in-run cut needs a
+      label-shaped prefix, the bare stop needs a name of one or two words and
+      a new sentence after it and never a colon — a colon after an office is
+      how an inserted letter greets its addressee — and the body-face path
+      needs an explicit dash. Against the previous parser: 317 labels gained,
+      0 lost, 11 changed and every one of the eleven cleaner than before
+      ("Sr. PRESIDENTE.- (Losada)" is now "Sr. PRESIDENTE (Losada)").
+      0.5.3-html.
+- [x] Read the files in windows-1252, which is what a browser does with a
+      declaration of iso-8859-1 and what the exporter meant. 40 of the 212
+      files that declare it put bytes in the range latin-1 leaves as control
+      codes: 252 curly quotes, 46 dashes, 12 ellipses. The dashes were the
+      cost — the em dash that ends a speaker's label, so the label had no
+      terminator and the sitting lost the speaker.
+- [x] File the attendance roll as furniture. The PDF side never sees it, cut
+      with the front matter; the HTML export prints it inside the document,
+      where nothing marked it off, so 624 senators' names sat in the corpus as
+      text attributed to nobody. Recognised by its own shape: a shouted
+      heading, then "SURNAME, Given" one to a line. 3 of the 624 are left, and
+      they stand outside any roll.
+- [x] File the printed apparatus that was still unattributed: the footnote
+      pointing at the appendix, the stenographers' office sign-off, and the
+      bare "Volver" back-link on each appended roll-call plate. No block of
+      the last shape is speech anywhere in the corpus, in either format.
+- [x] Together: text the parser cannot attribute to anyone fell from 1.52% of
+      the corpus to 1.25%, speech turns rose 247,130 → 247,469, and all 5,823
+      records of the eleven earlier blind rounds still resolve to the person
+      the round named. The gold set is unchanged at F1 0.996.
+
 - [ ] Group the chamber's own `session_type` labels before counting: `EN
       MINORÍA` and `ESPECIAL EN MINORÍA` name the same thing.
 

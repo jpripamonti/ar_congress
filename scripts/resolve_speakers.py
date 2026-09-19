@@ -119,7 +119,13 @@ def clean_label(label):
         s = s[matches[-1].start():]
     s = re.sub("\\.\\s*[\\-\u2013\u2014\u2212\u2500\ue000-\uf8ff].*$", "", s)  # terminator + speech spillover ("Sr. Mayans.- ¡")
     s = re.sub(r"[.\-:…\s]+$", "", s).strip()
-    s = re.sub(r"^((?:Sr|Sra|Srta|Sres)\.)(?=\S)", r"\1 ", s)  # "Sra.Presidenta" -> spaced (dot required, no backtracking)
+    # "Sra.Presidenta", "Sr Pichetto", "Sr.. PRESIDENTE", "Sr- Usandizaga",
+    # "SR. PRESIDENTE": how the typist spelled the honorific does not make a
+    # different speaker, so it is written the one way before anything is
+    # matched against it. A letter must follow, or "Sr." on its own would be
+    # turned into a label with nobody in it.
+    s = re.sub(r"^(?i:(sres|srta|sra|sr))(?:(?:[.\-]\s*)+|\s+)(?=[^\W\d_])",
+               lambda m: f"{m.group(1).capitalize()}. ", s)
     s = re.sub(r"\(\s*", "(", s)
     if ")" in s and "(" not in s:
         s = s.replace(")", "")                              # "Sr. Presidente)" -> stray close paren

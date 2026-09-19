@@ -197,6 +197,72 @@ def reconstructs(text, src, max_pieces=8):
     return True
 
 
+def as_read(text):
+    """Comparison key for counting a phrase the way a reader counts it.
+
+    Unlike flatten(), the punctuation stays. A reader counting "(Lee:)"
+    counts that, and flatten() — which keeps only letters and digits — would
+    have them counting every "lee" inside "leemos" and "leerá" as well: 100
+    where the page prints 78.
+
+    The whitespace still goes, as it does in flatten() and for the same
+    reason: stripping the markup puts a space where a tag was, so the page's
+    "(<B>Lee:</B>)" arrives as "( Lee: )" and would match nothing.
+    """
+    s = unicodedata.normalize("NFD", str(text or "").casefold())
+    s = "".join(c for c in s if not unicodedata.combining(c))
+    return re.sub(r"\s+", "", s)
+
+
+def occurrence(row, opening, _cache={}):
+    """Which occurrence of the quoted words the reader is being sent to.
+
+    Counted the way the reader counts: occurrences of the quoted phrase in
+    the source file, top to bottom. The sheet used to count something else —
+    turns of the sitting whose first 400 characters were identical — and the
+    two are not the same number. Four readers of the 500-passage round of
+    September 2026 reported the gap without being asked about it: the sheet
+    said the 55th of 76 "(Lee:)" where the file holds 78, the 13th of 20
+    "En consecuencia, pasa al Archivo." where the file holds 25. The phrase
+    also occurs in headings, in the contents and inside longer turns, and
+    none of those were being counted. No answer in that round turned on it,
+    because every occurrence in those files belonged to the same speaker —
+    but a sheet that sends a reader to the wrong passage is a sheet whose
+    disagreements cannot be trusted either way.
+
+    Only for HTML, which has no pages: a PDF row carries its page number,
+    which is how a reader finds the passage there, and reading 500 PDFs to
+    number a phrase nobody counts by would cost an hour for nothing.
+    """
+    name = row.source_file
+    if not str(name).lower().endswith(".html"):
+        return "" if row._of < 2 else f"{row._nth} of {row._of}"
+    if name not in _cache:
+        try:
+            _cache[name] = as_read(source_read(name))
+        except Exception:
+            _cache[name] = None
+    src = _cache[name]
+    quote = as_read(opening)
+    if not src or not quote:
+        return "" if row._of < 2 else f"{row._nth} of {row._of}"
+    total = src.count(quote)
+    if total < 2:
+        return ""
+    # Where this turn sits in the file. Identical turns are told apart by the
+    # order they were parsed in, which is the order they are printed in.
+    whole = as_read(row.text)
+    at, seen = -1, 0
+    while seen < row._nth:
+        nxt = src.find(whole, at + 1)
+        if nxt == -1:
+            break
+        at, seen = nxt, seen + 1
+    if at == -1:
+        return f"one of {total}"
+    return f"{src.count(quote, 0, at) + 1} of {total}"
+
+
 def source_text(name):
     """The whole of a held transcript, flattened, in whichever format it arrived.
 
@@ -207,13 +273,18 @@ def source_text(name):
     and digits, so no judgement about what the markup meant survives into the
     comparison.
     """
+    return flatten(source_read(name))
+
+
+def source_read(name):
+    """The same text before flatten(), for the checks that need its spelling."""
     path = RAW_DIR / name
     if path.suffix.lower() == ".html":
         raw = decode_html(path.read_bytes())
         raw = re.sub(r"(?is)<(script|style).*?</\1>", " ", raw)
-        return flatten(html.unescape(re.sub(r"<[^>]+>", " ", raw)))
+        return html.unescape(re.sub(r"<[^>]+>", " ", raw))
     with pdfplumber.open(path) as pdf:
-        return flatten("".join((p.extract_text() or "") for p in pdf.pages))
+        return "".join((p.extract_text() or "") for p in pdf.pages)
 
 
 def audit_source(args):
@@ -552,7 +623,7 @@ def write_review_sheet(corpus, n, scanned=frozenset(), only_format=None):
         # reading. Where even 30 words do not separate the occurrences, the
         # sheet says which one to count to.
         opening = " ".join(str(r.text).split()[:30])
-        nth = "" if r._of < 2 else f"{r._nth} of {r._of}"
+        nth = occurrence(r, opening)
         rows.append({
             "session": r.session_id,
             "source_file": r.source_file,

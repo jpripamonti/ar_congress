@@ -30,9 +30,28 @@
   gap in our reading — it is what the document says, and treating it as "final"
   would invent a fact about 134 sittings. `scripts/provenance.py` holds the
   rule; `scripts/mark_provenance.py` applies it to every held file.
-- **One sitting is served twice.** 29 October 2003 appears as reunión 27 and as
-  reunión 28, and both URLs return byte-identical files. It is the only such
-  pair among the 819.
+- **One sitting is served twice, and the document says which one it is.**
+  29 October 2003 appears as reunión 27 and as reunión 28, and both URLs return
+  byte-identical files — the only such pair among the 819. The document names
+  itself in its masthead: "28° Reunión - 6° Sesión en tribunal - 29 de octubre
+  de 2003". So reunión 28 is the sitting it is, and reunión 27's slot returns
+  the wrong document. The corpus parses it once, under reunión 28, and
+  [superseded_sources.csv](reference/senado/superseded_sources.csv) records
+  which file was set aside and why. Both files stay on disk and in the
+  manifest, because what the portal serves is itself a fact about the portal.
+  Whatever was said at the ordinary sitting of that day, the portal does not
+  hold it.
+- **Windows-1252, whatever the file says.** 212 of the 214 HTML transcripts
+  declare `iso-8859-1`, and 40 of them put bytes in the range that latin-1 has
+  no printable character for. Read as latin-1 those become control codes; read
+  as windows-1252 they are the curly quotes, dashes and ellipses the page
+  shows. A browser does the same, and so does `scripts/provenance.py`. It is
+  not only typography: the em dash that ends a speaker's label is one of them,
+  so under latin-1 the label had no terminator the parser recognised and the
+  sitting lost the speaker. One byte resists — 0x80, which windows-1252 calls
+  the euro sign and these files draw as the degree sign — and all 16 of its
+  occurrences sit inside anchor names the parser drops, so the euro is never
+  printed and nothing is corrected towards a degree sign nobody reads.
 - Per-file sha256, source URL, format, provisional status and timestamps:
   [raw_data_manifest.csv](raw_data_manifest.csv), rebuilt from the files on
   disk by `scripts/make_manifest.py`. Listing snapshots are archived under

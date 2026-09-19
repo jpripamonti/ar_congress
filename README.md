@@ -7,7 +7,9 @@ as its own HTML export for most of 1998–2003; both are read here.
 
 ## Status (September 2026)
 
-- 819 session transcripts held, spanning 1998–2026. Coverage is complete from
+- 819 session transcript files held, spanning 1998–2026, which are 818 distinct
+  sittings: one of them the portal serves twice, under two reunión numbers.
+  Coverage is complete from
   2002 onward — every session the portal lists for those years is held — and
   partial before it: 51 of 73 for 1998, 47 of 74 for 1999, 46 of 75 for 2000,
   44 of 83 for 2001. 1997 contributes a single sitting, an impeachment tribunal
@@ -30,24 +32,29 @@ as its own HTML export for most of 1998–2003; both are read here.
   that last group final would invent a fact about 134 sittings. Read it from
   the raw file: the parser drops the masthead as page apparatus, so parsed text
   puts every PDF at "not provisional" when 261 of 605 are.
-- Corpus parsed: 247,130 speaker-attributed speech blocks and 60,909 typed
-  stenographer events in 432,686 rows over 818 sittings, as per-session Parquet
+- Corpus parsed: 247,469 speaker-attributed speech blocks and 60,905 typed
+  stenographer events in 432,563 rows over 817 sittings, as per-session Parquet
   under `data/processed/senado/`. 25.7 million words of attributed speech, of
-  which the HTML side contributes 5.9 million. The PDF side is parser 0.4.38 and
-  the HTML side `scripts/parse_html.py` at 0.5.2-html; the two share the speaker
+  which the HTML side contributes 5.9 million. The PDF side is parser 0.4.40 and
+  the HTML side `scripts/parse_html.py` at 0.5.4-html; the two share the speaker
   pattern and the event subtypes, so a passage means the same thing in either.
   One sitting fails to parse: the 1997 impeachment tribunal, which does not open
   like an ordinary sitting. It used to be two — the no-quorum sitting of 29
   November 2001 joined the corpus in 0.4.38, when the front-matter cut learned
   to recognise an opening whose dash the file had set in roman with the page
   number before it. Text that
-  cannot be attributed to a speaker is 0.92% of the corpus, and in the HTML era
-  82% of it stands just after a marker of insertion — speeches handed in for the
-  record and never delivered.
-- **The portal serves one sitting twice.** 29 October 2003 is listed as reunión
-  27 and as reunión 28, and both URLs return byte-identical files. It is the
-  only such pair in the 819, and until it is resolved that sitting's words are
-  counted twice.
+  cannot be attributed to a speaker is 1.25% of the corpus, and in the HTML era
+  83% of those words stand inside a run of inserted matter — speeches handed in
+  for the record and never delivered, and the bills read into it.
+- **The portal serves one sitting twice, and the document says which one it
+  is.** 29 October 2003 is listed as reunión 27 and as reunión 28, and both
+  URLs return byte-identical files. The document's own masthead reads "28°
+  Reunión - 6° Sesión en tribunal", so reunión 28 is what it is and reunión 27's
+  slot returns the wrong document; the corpus parses it once, under reunión 28,
+  and `reference/senado/superseded_sources.csv` records the decision. Both
+  files stay on disk and in the manifest: what the portal serves is a fact
+  about the portal. Whatever was said at the ordinary sitting of that day, the
+  portal does not hold it.
 - **The words no longer run together.** The 2003–2009 files end a line without
   storing a space, so the last word of one line used to come out glued to the
   first of the next — "reemplazala expresión". Parser 0.4.11 puts the space
@@ -294,13 +301,13 @@ as its own HTML export for most of 1998–2003; both are read here.
   rests on twelve pages. The
   annotations have themselves been checked back against the source PDFs
   (`scripts/check_gold.py`, 36 of 36 pass) — a second machine reading, not an
-  independent human audit. **On all 818 sessions that parse, in both formats**
+  independent human audit. **On all 817 sessions that parse, in both formats**
   (`scripts/audit_parse.py`): no turn carries a second speaker's label, no label
   is absorbed by the section title above it, no page apparatus leaks into speech
-  outside the three scans, no text is written out twice, every one of 160,103
+  outside the three scans, no text is written out twice, every one of 160,180
   probed blocks is found in the file it came from (0.006% not located once the
-  scans are set aside, and no sitting above 1%), 8 turns of 247,130 open
-  mid-word and every one of them is printed that way, and a median 82.7% of each
+  scans are set aside, and no sitting above 1%), 8 turns of 247,469 open
+  mid-word and every one of them is printed that way, and a median 82.8% of each
   document's printed text is kept (the rest — contents pages, attendance rolls,
   appendices — is dropped by design). Three sittings are scans with OCR text and
   should be excluded from any text analysis; the parser flags them.
@@ -311,23 +318,43 @@ as its own HTML export for most of 1998–2003; both are read here.
   page headers or footers to drop. Until September 2026 the audit had never read
   one of these files: it opened every source with pdfplumber, so the 214 HTML
   sittings sat outside the conservation and coverage checks entirely.
-- **Two blind rounds on the HTML era, the tenth and eleventh overall** — 60
+- **Three blind rounds on the HTML era, the tenth to the twelfth overall** — 60
   passages read by five readers
-  ([blind_read_60_html.csv](reference/verification/blind_read_60_html.csv)) and
-  then 300 more, drawn so as not to overlap, read by twenty
-  ([blind_read_300_html.csv](reference/verification/blind_read_300_html.csv)).
+  ([blind_read_60_html.csv](reference/verification/blind_read_60_html.csv)),
+  300 more read by twenty
+  ([blind_read_300_html.csv](reference/verification/blind_read_300_html.csv)),
+  and 498 more read by twenty again
+  ([blind_read_500_html.csv](reference/verification/blind_read_500_html.csv)),
+  each round drawn so as not to overlap the last.
   Each reader was given the source file and the words and never the parser's
-  answer. **Of the 360, 345 name the same speaker; 11 the first round's readers
-  refused to pin down and were right to; 2 were the sheet miscounting; and 2
-  were real defects the readers found.** Both are fixed. The first: a centred
-  section number and an `<h1>` title read as words the chair said. The second,
-  and the one that mattered: WordPerfect sets each accented letter in a font of
-  its own, which split a bold label across three runs — "Sr. AVEL", "Í", "N.-"
-  — and the parser read only the first, so four senators of the sitting of 13
-  May 1998 lost their turns, two swallowed into the chair's and three dropped
-  outright. Runs are merged by style from 0.5.2-html, and the parser's sequence
-  of that sitting's fourteen "Pido la palabra." now matches the reader's name
-  for name. **All 5,823 records from the eleven rounds are re-asked of the
+  answer. **Of the first 360, 345 name the same speaker; 11 the first round's
+  readers refused to pin down and were right to; 2 were the sheet miscounting;
+  and 2 were real defects the readers found.** Both are fixed. The first: a
+  centred section number and an `<h1>` title read as words the chair said. The
+  second, and the one that mattered: WordPerfect sets each accented letter in a
+  font of its own, which split a bold label across three runs — "Sr. AVEL",
+  "Í", "N.-" — and the parser read only the first, so four senators of the
+  sitting of 13 May 1998 lost their turns, two swallowed into the chair's and
+  three dropped outright. Runs are merged by style from 0.5.2-html, and the
+  parser's sequence of that sitting's fourteen "Pido la palabra." now matches
+  the reader's name for name.
+- **The third round found nothing wrong with the corpus and something wrong
+  with the sheet.** 491 of its 498 passages name the same speaker outright. The
+  other 7 were checked against the page one at a time, and in every one of them
+  the page prints the parser's label immediately before as many occurrences of
+  that passage as the parser gives it to — so no block is credited to somebody
+  the page does not name there. What the readers had been sent to was a
+  *different* printing of the same stock phrase: thirteen of the twenty
+  reported, unprompted, that the sheet's "which occurrence" did not match what
+  they counted in the file. It did not: the sheet counted turns of the sitting
+  whose first 400 characters were identical, and a reader counts occurrences of
+  the quoted words. The file that the sheet said held 76 "(Lee:)" holds 78; the
+  one it said held 20 "En consecuencia, pasa al Archivo." holds 25. The count
+  is now taken the way a reader takes it, and reproduces all four readers'
+  own counts exactly. No answer in the round turned on it — but a sheet that
+  sends a reader to the wrong passage is a sheet whose agreements are worth as
+  little as its disagreements, and that is the defect this round bought.
+  **All 6,321 records from the twelve rounds are re-asked of the
   current corpus by `scripts/check_blind_reads.py`**, and none resolves to
   anybody else. **On 5,463 turns read blind** — every
   page rendered as an image and read by an agent that was never shown the
@@ -341,14 +368,13 @@ as its own HTML export for most of 1998–2003; both are read here.
   [998 of 1,000](reference/verification/blind_read_1000_0413.csv),
   [1,000 of 1,000](reference/verification/blind_read_1000_0413b.csv) and
   [105 of 115](reference/verification/blind_read_115_0418.csv) on nine
-  samples that do not overlap, spread across every year of the span. All 5,463
-  answers are re-asked of the current corpus by `scripts/check_blind_reads.py`,
-  which is what makes them a check rather than a record: 5,416 still resolve to
-  the person the round named, 47 cannot be re-asked — 43 quote words the page
-  prints under two different names, so the record cannot say which turn the
-  reader meant; two quotes are all an unmapped font left of a passage; two are
-  notes a repair has since moved out of speech — and none resolves to anybody
-  else. Every case left over from the
+  samples that do not overlap, spread across every year of the span. Re-asking
+  all twelve rounds is what makes them a check rather than a record: of the
+  6,321 records, 6,132 still resolve to the person the round named and 189
+  cannot be re-asked — 184 quote words the page prints under more than one
+  name, so the record cannot say which turn the reader meant; three are notes a
+  repair has since moved out of speech; two are all an unmapped font left of a
+  passage — and none resolves to anybody else. Every case left over from the
   rounds themselves was checked afterwards against the page image and the
   parser is right in all of them — pages that print the quoted phrase twice, so the reader could
   not know which occurrence was meant, and, in the ninth round, ten pages that
