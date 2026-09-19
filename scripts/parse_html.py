@@ -33,7 +33,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from parse import SPEAKER_RE, classify_event  # noqa: E402
 from provenance import decode_html  # noqa: E402
 
-PARSER_VERSION = "0.5.1-html"
+PARSER_VERSION = "0.5.2-html"
 
 # A paragraph break: WordPerfect writes <p> with no closing tag and uses <br>
 # for the lines of a masthead or the two lines of a heading.
@@ -189,7 +189,17 @@ class TranscriptHTML(HTMLParser):
                  "italic" if self.italic and not self.bold else
                  "bold-italic" if self.bold and self.italic else "normal")
         text = re.sub(r"\s+", " ", data)
-        self._runs.append({"text": text, "style": style})
+        # One run per change of STYLE, not per tag. WordPerfect puts each
+        # accented letter in a font of its own, which splits a name across
+        # three <font> spans inside one <b> — "Sr. AVEL", "Í", "N.-" — and a
+        # label read from the first run alone is then "Sr. AVEL", which
+        # matches nothing. The turn stops being a turn: the senator's words
+        # are swallowed into the chair's, or dropped. In the sitting of 13 May
+        # 1998 that happened to every senator with an accent in their name.
+        if self._runs and self._runs[-1]["style"] == style:
+            self._runs[-1]["text"] += text
+        else:
+            self._runs.append({"text": text, "style": style})
         self._chars += len(text.strip())
         if self._link:
             self._link_chars += len(text.strip())

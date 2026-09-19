@@ -30,11 +30,11 @@ as its own HTML export for most of 1998–2003; both are read here.
   that last group final would invent a fact about 134 sittings. Read it from
   the raw file: the parser drops the masthead as page apparatus, so parsed text
   puts every PDF at "not provisional" when 261 of 605 are.
-- Corpus parsed: 247,098 speaker-attributed speech blocks and 60,909 typed
-  stenographer events in 432,671 rows over 818 sittings, as per-session Parquet
+- Corpus parsed: 247,130 speaker-attributed speech blocks and 60,909 typed
+  stenographer events in 432,686 rows over 818 sittings, as per-session Parquet
   under `data/processed/senado/`. 25.7 million words of attributed speech, of
   which the HTML side contributes 5.9 million. The PDF side is parser 0.4.38 and
-  the HTML side `scripts/parse_html.py` at 0.5.1-html; the two share the speaker
+  the HTML side `scripts/parse_html.py` at 0.5.2-html; the two share the speaker
   pattern and the event subtypes, so a passage means the same thing in either.
   One sitting fails to parse: the 1997 impeachment tribunal, which does not open
   like an ordinary sitting. It used to be two — the no-quorum sitting of 29
@@ -297,9 +297,9 @@ as its own HTML export for most of 1998–2003; both are read here.
   independent human audit. **On all 818 sessions that parse, in both formats**
   (`scripts/audit_parse.py`): no turn carries a second speaker's label, no label
   is absorbed by the section title above it, no page apparatus leaks into speech
-  outside the three scans, no text is written out twice, every one of 160,096
+  outside the three scans, no text is written out twice, every one of 160,103
   probed blocks is found in the file it came from (0.006% not located once the
-  scans are set aside, and no sitting above 1%), 8 turns of 247,098 open
+  scans are set aside, and no sitting above 1%), 8 turns of 247,130 open
   mid-word and every one of them is printed that way, and a median 82.7% of each
   document's printed text is kept (the rest — contents pages, attendance rolls,
   appendices — is dropped by design). Three sittings are scans with OCR text and
@@ -311,18 +311,25 @@ as its own HTML export for most of 1998–2003; both are read here.
   page headers or footers to drop. Until September 2026 the audit had never read
   one of these files: it opened every source with pdfplumber, so the 214 HTML
   sittings sat outside the conservation and coverage checks entirely.
-- **A tenth blind round, the first on the HTML era** — 60 passages read by five
-  readers who were given the file and the words and never the parser's answer
-  ([blind_read_60_html.csv](reference/verification/blind_read_60_html.csv)).
-  48 name the same speaker as the parser. 11 the readers refused to pin down,
-  rightly: the sitting prints those words more than once and the sheet, which
-  has no page number to offer for an HTML file, did not say which occurrence
-  was meant — a defect in the sheet, since fixed by drawing on the passage's own
-  text and telling the reader which occurrence to count to. The one disagreement
-  was the readers' and it was correct: a centred section number and an `<h1>`
-  title were being read as words the chair said. **All 5,523 records from the
-  ten rounds are re-asked of the current corpus by
-  `scripts/check_blind_reads.py`**, and none resolves to anybody else. **On 5,463 turns read blind** — every
+- **Two blind rounds on the HTML era, the tenth and eleventh overall** — 60
+  passages read by five readers
+  ([blind_read_60_html.csv](reference/verification/blind_read_60_html.csv)) and
+  then 300 more, drawn so as not to overlap, read by twenty
+  ([blind_read_300_html.csv](reference/verification/blind_read_300_html.csv)).
+  Each reader was given the source file and the words and never the parser's
+  answer. **Of the 360, 345 name the same speaker; 11 the first round's readers
+  refused to pin down and were right to; 2 were the sheet miscounting; and 2
+  were real defects the readers found.** Both are fixed. The first: a centred
+  section number and an `<h1>` title read as words the chair said. The second,
+  and the one that mattered: WordPerfect sets each accented letter in a font of
+  its own, which split a bold label across three runs — "Sr. AVEL", "Í", "N.-"
+  — and the parser read only the first, so four senators of the sitting of 13
+  May 1998 lost their turns, two swallowed into the chair's and three dropped
+  outright. Runs are merged by style from 0.5.2-html, and the parser's sequence
+  of that sitting's fourteen "Pido la palabra." now matches the reader's name
+  for name. **All 5,823 records from the eleven rounds are re-asked of the
+  current corpus by `scripts/check_blind_reads.py`**, and none resolves to
+  anybody else. **On 5,463 turns read blind** — every
   page rendered as an image and read by an agent that was never shown the
   parser's answer, then compared — the two agree on who is speaking in
   [50 of 50](reference/verification/blind_read_50.csv),

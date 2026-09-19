@@ -349,7 +349,7 @@ the corpus, drawn from 24 of 559 sittings. `scripts/audit_parse.py` covers the
 rest by checking, on every session, things that must never happen. Current
 results:
 
-- **Page apparatus inside a speech turn: 0** in 247,098 speech blocks, in both
+- **Page apparatus inside a speech turn: 0** in 247,130 speech blocks, in both
   formats — the HTML era's own navigation link, `[Volver al sumario]`, prints
   9,790 times in the holdings and has never reached a speech turn either. It stood
   at 1 until September 2026 — a footer line that landed mid-sentence in the

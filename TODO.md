@@ -1829,8 +1829,25 @@ and 21.5 million words of attributed speech become 25.7.
       could not tell which occurrence was meant anyway. The draw now keys on the
       passage's own text AND which occurrence of it this is, and the sheet says
       "3 of 41" where the words repeat. 60 rows are now 60 distinct passages.
-- [ ] The HTML round covers 60 passages against the PDF era's 5,463. Worth a
-      larger round now that the sheet can be answered.
+- [x] A second, larger HTML round: 300 fresh passages over 131 sittings, read
+      by twenty readers, none overlapping the first 60. 297 name the same
+      speaker. Two disagreements were the sheet miscounting — it numbers turns
+      whose WHOLE text matches, a reader counts the words as printed, and the
+      two diverge where the phrase also sits inside a longer turn; both were
+      verified against the file and the parser was right. The third was real.
+- [x] WordPerfect sets each accented letter in a font of its own, so a bold
+      label split into three runs — "Sr. AVEL", "Í", "N.-" — and the parser read
+      only the first, which matches nothing. In the sitting of 13 May 1998 every
+      senator with an accent in their name lost their turns: two were swallowed
+      into the chair's and three dropped outright. Runs are now merged by style
+      rather than by tag. Across the 214 files this touches 17 sittings, +32
+      turns, +993 words, and four speaker labels that had never appeared; the
+      parser's sequence of that sitting's fourteen "Pido la palabra." now
+      matches the blind reader's, name for name. 0.5.2-html.
+- [ ] The review sheet's `which_occurrence` counts turns whose whole text
+      matches; a reader counts printed occurrences. Every reader in the round
+      noticed the two disagree, and twice it sent one to the wrong turn. Count
+      it the way a reader counts it.
 - [ ] Group the chamber's own `session_type` labels before counting: `EN
       MINORÍA` and `ESPECIAL EN MINORÍA` name the same thing.
 
