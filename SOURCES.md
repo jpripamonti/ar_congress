@@ -349,7 +349,7 @@ the corpus, drawn from 24 of 559 sittings. `scripts/audit_parse.py` covers the
 rest by checking, on every session, things that must never happen. Current
 results:
 
-- **Page apparatus inside a speech turn: 0** in 247,219 speech blocks, in both
+- **Page apparatus inside a speech turn: 0** in 247,098 speech blocks, in both
   formats — the HTML era's own navigation link, `[Volver al sumario]`, prints
   9,790 times in the holdings and has never reached a speech turn either. It stood
   at 1 until September 2026 — a footer line that landed mid-sentence in the
@@ -400,8 +400,8 @@ results:
   prints.
 - **Blocks not findable in the source file: 0.006% on average**, 0 sessions above
   1% once the three scans are set aside — and on the HTML side of the corpus,
-  where the audit first looked in September 2026, not one of 54,829 probed
-  blocks is missing. Until then `audit_parse.py` opened every source with
+  where the audit first looked in September 2026, not one probed block is
+  missing at all. Until then `audit_parse.py` opened every source with
   pdfplumber, so the 214 HTML sittings had never been through this check or the
   coverage one at all. This figure used to be 0.422%, and it
   used to go UP as the parser improved — which was read as the price of

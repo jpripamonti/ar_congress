@@ -33,7 +33,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from parse import SPEAKER_RE, classify_event  # noqa: E402
 from provenance import decode_html  # noqa: E402
 
-PARSER_VERSION = "0.5.0-html"
+PARSER_VERSION = "0.5.1-html"
 
 # A paragraph break: WordPerfect writes <p> with no closing tag and uses <br>
 # for the lines of a masthead or the two lines of a heading.
@@ -46,6 +46,15 @@ DROP_TAGS = {"sup", "script", "style", "title"}
 # Two sittings of 2003 come from a different exporter that carries emphasis in
 # CSS rather than in tags: <span style="font-weight: bold">. Without this the
 # speaker labels in those two files are invisible and nothing is attributed.
+# The same exporter that carries emphasis in CSS carries centring there too —
+# <p style="text-align: CENTER"> and <h1 style="text-align: CENTER"> where the
+# older files write <center>. A section heading is recognised by being centred,
+# so without this its number and title fall through to the running speaker and
+# are read as words he said: 117 of them in the sitting of 6 March 2003, every
+# item of the day's agenda credited to the chair as speech.
+CSS_CENTER_RE = re.compile(r"text-align\s*:\s*center", re.I)
+# A heading tag is a heading wherever it sits, centred or not.
+HEADING_TAGS = {"h1", "h2", "h3", "h4"}
 CSS_BOLD_RE = re.compile(r"font-weight\s*:\s*(bold|[6-9]00)", re.I)
 CSS_ITALIC_RE = re.compile(r"font-style\s*:\s*italic", re.I)
 
@@ -81,6 +90,7 @@ class TranscriptHTML(HTMLParser):
         # One entry per open tag, so a tag returns exactly what it added.
         self._stack = []
         self.center = 0
+        self.para_center = False
         self.multicol = 0
         self.listitem = 0
         self.drop = 0
@@ -93,11 +103,12 @@ class TranscriptHTML(HTMLParser):
     def _flush(self):
         runs = [r for r in self._runs if r["text"].strip()]
         self._runs = []
+        centred, self.para_center = self.para_center, False
         if not runs:
             return
         self.paragraphs.append({
             "runs": runs,
-            "center": self.center > 0,
+            "center": self.center > 0 or centred,
             "multicol": self.multicol > 0,
             "listitem": self.listitem > 0,
             "after_rule": self.rules_seen > 0,
@@ -123,6 +134,13 @@ class TranscriptHTML(HTMLParser):
         self.bold += bold
         self.italic += italic
         self._stack.append((tag, bold, italic))
+        # Centring belongs to the paragraph this tag OPENS, and is cleared at
+        # the next flush rather than at a closing tag: these files use <p> as a
+        # separator and never close it, so a depth counter set here would stay
+        # up for the rest of the document and read every later paragraph as a
+        # heading. <center> keeps its own counter below, because it does nest.
+        if tag in BREAK_TAGS and (tag in HEADING_TAGS or CSS_CENTER_RE.search(style)):
+            self.para_center = True
 
         if tag == "center":
             self.center += 1

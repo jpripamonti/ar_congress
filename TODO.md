@@ -1808,11 +1808,29 @@ and 21.5 million words of attributed speech become 25.7.
       opening event, 7 recover real content the old cut threw away — 22 March
       2006 was losing two whole sections — and the no-quorum sitting of 29
       November 2001 goes from not parsing to parsing. Parser 0.4.38.
-- [ ] A blind read of the HTML era. The nine rounds on record are all PDF-era.
-      `audit_parse.py --sample 60 --sample-format html` writes
-      `review_sheet_html.csv`, 60 turns across 1998-2003, each with its file and
-      opening words — an HTML export has no pages, so the locator is the text.
-      It needs a reader who is not shown the parser's answer.
+- [x] A blind read of the HTML era, the tenth round and the first on these
+      files: 60 passages, five readers, each given the file and the words and
+      never the parser's answer. 48 name the same speaker. 11 the readers
+      refused to pin down and were right to — see the next item. The one
+      disagreement was theirs and it was correct, and it found a real defect.
+- [x] A centred section number and an `<h1>` title were being read as words the
+      chair said. The HTML reader recognised a heading only by the `<center>`
+      tag, and a later exporter carries the same thing in CSS — the same shape
+      as the CSS-bold labels already handled. 117 rows of one sitting's agenda
+      were credited to Gioja as speech. Fixed in 0.5.1-html, with centring read
+      as a property of the paragraph and cleared at each break: as a nesting
+      depth it never comes back down, because these files use `<p>` as a
+      separator and never close it, and every later paragraph then reads as a
+      heading. 18 of the 214 files can be touched by the rule at all; after it,
+      no section title anywhere in the corpus is emitted as speech.
+- [x] The review sheet could not be answered for half its rows. With no page to
+      offer, turns opening alike in the same sitting hashed alike, so 60 rows
+      held 47 distinct passages — one sentence nine times over — and the reader
+      could not tell which occurrence was meant anyway. The draw now keys on the
+      passage's own text AND which occurrence of it this is, and the sheet says
+      "3 of 41" where the words repeat. 60 rows are now 60 distinct passages.
+- [ ] The HTML round covers 60 passages against the PDF era's 5,463. Worth a
+      larger round now that the sheet can be answered.
 - [ ] Group the chamber's own `session_type` labels before counting: `EN
       MINORÍA` and `ESPECIAL EN MINORÍA` name the same thing.
 

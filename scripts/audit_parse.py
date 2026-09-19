@@ -513,10 +513,28 @@ def write_review_sheet(corpus, n, scanned=frozenset(), only_format=None):
         pages = [int(p) for row in g.pages for p in row]
         first_page[(sid, turn)] = min(pages) if pages else ""
 
+    # How many times this exact passage occurs in its sitting, and which one
+    # this is. Derived from content and from order within the sitting, not from
+    # a row number, so it survives a parser change that adds rows elsewhere.
+    speech["_words"] = speech.text.map(lambda t: " ".join(str(t).split())[:400])
+    grp = speech.groupby(["session_id", "_words"])
+    speech["_nth"] = grp.cumcount() + 1
+    speech["_of"] = grp["_words"].transform("size")
+
     def sample_key(r):
-        opening = " ".join(str(r.text).split()[:14])
+        # The seed is the turn's own content, not its row number, so a parser
+        # change that adds or removes unrelated rows does not redraw the whole
+        # sheet and throw away the reading already done on it.
+        #
+        # It takes 400 characters, not the 14 words the sheet quotes. A page
+        # number used to separate two turns that open alike; an HTML transcript
+        # has no pages, so with the short opening alone the chair's stock
+        # phrases — "Tiene la palabra el señor senador por La Pampa." — all
+        # hash the same and the draw returns the same passage many times over.
+        # The first HTML round drew 60 rows that held only 47 distinct
+        # passages, nine of them one sentence repeated.
         page = list(r.pages)[0] if len(r.pages) else ""
-        seed = f"20260728|{r.session_id}|{page}|{opening[:60]}"
+        seed = f"20260728|{r.session_id}|{page}|{r._words}|{r._nth}"
         return int.from_bytes(hashlib.blake2b(seed.encode(), digest_size=7).digest(), "big")
 
     speech["_key"] = speech.apply(sample_key, axis=1)
@@ -528,14 +546,22 @@ def write_review_sheet(corpus, n, scanned=frozenset(), only_format=None):
     for i in sorted(picks):
         r = speech.loc[i]
         page = list(r.pages)[0] if len(r.pages) else ""
+        # Enough words to be findable. A reader given "Pido la palabra." cannot
+        # answer: the sitting of 27 Nov 2002 prints it three times, under three
+        # different senators, and a reader who guesses between them is not
+        # reading. Where even 30 words do not separate the occurrences, the
+        # sheet says which one to count to.
+        opening = " ".join(str(r.text).split()[:30])
+        nth = "" if r._of < 2 else f"{r._nth} of {r._of}"
         rows.append({
             "session": r.session_id,
             "source_file": r.source_file,
             "find_it_by": f"page {page}" if page != "" else "searching the text",
             "page": page,
             "turn_opens_on_page": first_page.get((r.session_id, r.turn_id), ""),
+            "which_occurrence": nth,
             "parser_says_speaker": r.speaker_raw,
-            "opening_words": " ".join(str(r.text).split()[:14]),
+            "opening_words": opening,
             "correct? (y/n)": "",
             "if_wrong_who_spoke": "",
         })

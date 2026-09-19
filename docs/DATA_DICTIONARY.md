@@ -29,7 +29,7 @@ the normal way to work with it.
 
 | Column | Meaning |
 | --- | --- |
-| `type` | `speech` — words somebody said (247,219). `event` — the stenographer's note about something that happened (60,909). `heading` — a section title (33,456). `furniture` — printed page matter kept only for tracing; not speech (83,210). `inline_italic` — an italicised fragment that had no turn to belong to (1,183). `other` — text the parser could not attribute to anyone (6,571, 1.5%), most of it speeches inserted into the record without being delivered. |
+| `type` | `speech` — words somebody said (247,098). `event` — the stenographer's note about something that happened (60,909). `heading` — a section title (33,710). `furniture` — printed page matter kept only for tracing; not speech (83,210). `inline_italic` — an italicised fragment that had no turn to belong to (1,183). `other` — text the parser could not attribute to anyone (6,561, 1.5%), most of it speeches inserted into the record without being delivered. |
 | `text` | The words themselves, as printed. Spelling, punctuation and the edition's own mistakes are preserved: where a page misspells a senator's surname, so does this. |
 | `event_type` | Only for notes. `vote` (17,417), `incident` (4,097, disorder in the chamber), `applause` (3,755), `unspecified` (1,721), `laughter` (1,395), `pause` (1,378), `stage` (1,180, someone entering, leaving or taking the chair), `timestamp` (1,012, the clock time the record prints). |
 | `seq` | Position within the sitting. Sorting by it gives the order the words were printed in, which is the order they were spoken. |
