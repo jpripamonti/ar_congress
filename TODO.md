@@ -2174,12 +2174,37 @@ and 21.5 million words of attributed speech become 25.7.
       between event recall 0.705 and the 0.935 the old 36 pages showed. Decide
       whether the unit is the printed line or the note, and say so in the data
       dictionary either way.
-- [ ] Annotators flagged printing defects worth their own scan: the ordinal
-      sign printed as a capital E ("el artículo 5E" for 5º) on 2008-09-10 p37,
-      a page number set in Greek glyphs ("Πáγ. 5") on 2002-08-22 p5 and
-      2005-11-29 p5 — which would defeat a header-stripping rule that matches
-      on "Pág." — a missing Orden del Día number in a heading on 2003-05-28
-      p28, and an uncleared yellow editing highlight on the 2009-03-01 roll.
+- [x] Annotators flagged printing defects worth their own scan: the ordinal
+      sign printed as a capital E, a page number set in Greek glyphs, a
+      missing Orden del Día number, an uncleared yellow highlight. **All four
+      are scanned. None of them damages the corpus.**
+      The ordinal and the Greek page number are settled above. The other two:
+      **The missing Orden del Día number** is real and is the ONLY occurrence
+      in all 605 PDFs. The annotator had the number wrong, which the corpus
+      settles: chapter 34 is "Orden del Día N° 23", chapter 35 is
+      "Orden del Día N°" and nothing, chapter 36 is "N° 25". **The missing one
+      is 24**, and chapter 35's own body cites "Orden del Día Nº 24" twice —
+      the 25 the annotator named is the next section, correctly numbered.
+      Harmless today: the section's sequence number 35 is intact and delimits
+      its blocks, `chapter_title` is documented as free text, and nothing in
+      the repo parses a number back out of it. A reader matching this section
+      to its committee report would have to take the number from the body one
+      line down.
+      Everything else the raw-text scan turned up was a false positive,
+      each confirmed by rendering: 2001-era two-column pages where
+      `extract_text()` interleaves the columns, alternate spellings that do
+      carry a number ("No. 732", "Nro. 108", "Número 148/12"), and headings
+      whose number is simply printed on the next page.
+      **The yellow highlight** is a drawn rectangle, not a PDF annotation —
+      pdfplumber exposes no Highlight objects in these files. Four sittings
+      carry one: 2008-11-25 p3 and 2009-03-01 p3 both behind the same roster
+      line "*RIVAS, Jorge – no incorporado", and 2022-10-27 p56 and
+      2022-06-30 p86 behind a senator's speech. A fifth candidate,
+      2022-03-17 p186, renders with no visible yellow at all — the rect sits
+      behind an opaque bar chart — and was excluded. Cosmetic everywhere:
+      `parse.py` reads characters and never `page.rects` or colour, the two
+      roster pages are cut as front matter and never reach the blocks, and
+      the two speech pages parse with their text intact.
 - [x] The ordinal-as-E is already repaired and was reported here as a finding
       by mistake: `parse.py` maps ("WPMathA", "E") to the degree sign and
       documents its 3,229 occurrences, so the corpus reads "artículo 5°". The
