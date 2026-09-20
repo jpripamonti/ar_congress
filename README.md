@@ -298,7 +298,7 @@ as its own HTML export for most of 1998–2003; both are read here.
   not allow for. The 36 pages cover eight kinds of sitting and thirteen years
   from 2003 to 2024, but two thirds of them are 2020 or later; on the
   pre-2016 record, where the printed conventions are least like today's, it
-  rests on twelve pages. The
+  rests on eight pages carrying 50 of the 125 turns. The
   annotations have themselves been checked back against the source PDFs
   (`scripts/check_gold.py`, 36 of 36 pass) — a second machine reading, not an
   independent human audit. **On all 817 sessions that parse, in both formats**

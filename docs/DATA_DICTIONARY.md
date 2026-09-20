@@ -277,8 +277,8 @@ different thing, and the strongest number rests on the smallest sample.
   **Read the interval, not the point.** One miss in 320 puts the 95% interval
   on recall at 0.983 to 0.999, those 320 turns are 0.13% of the 247,471 in the
   corpus, and two thirds of the PDF pages are 2020 or later — on the record
-  before 2016 the measure rests on twelve pages. Neither set checks the order
-  the turns came out in.
+  before 2016 the measure rests on eight pages carrying 50 of those turns.
+  Neither set checks the order the turns came out in.
 - **All 817 parsed sittings audited against their source files**: no page
   apparatus inside a turn and no turn carrying a second speaker's label outside
   the three scans, no sitting whose output is longer than the page it came from,
