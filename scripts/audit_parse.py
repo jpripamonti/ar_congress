@@ -76,6 +76,7 @@ import re
 import sys
 import unicodedata
 from collections import Counter
+from datetime import date
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from pathlib import Path
 
@@ -642,6 +643,78 @@ def find_running_header(strips, min_len=12, min_count=3, min_share=0.3):
     return best_sig, {p for p, s in sigs.items() if s.startswith(best_sig)}
 
 
+# The months as the stenographers spell them, accents folded off. "setiembre"
+# is not a misspelling to repair: both spellings are printed in these files.
+OPENING_MONTHS = {"enero": 1, "febrero": 2, "marzo": 3, "abril": 4, "mayo": 5,
+                  "junio": 6, "julio": 7, "agosto": 8, "septiembre": 9,
+                  "setiembre": 9, "octubre": 10, "noviembre": 11,
+                  "diciembre": 12}
+
+# "…a las 15 y 33 del miercoles 28 de abril de 2010:" — the hour may be
+# written "15:02", "15.02", "15 y 33" or "15 horas", and the weekday is
+# skipped rather than listed, since the files disagree about it.
+OPENING_DATE_RE = re.compile(
+    r"a\s+las\s+[\d.,: ]+\s*(?:y\s*[\d]+\s*)?"
+    r"(?:horas?\s*)?del?\s+\w+\s+(\d{1,2})\s+de\s+(\w+)\s+de\s+(\d{4})")
+
+
+def check_opening_date(corpus):
+    """Does the text a sitting parsed to actually belong to that sitting?
+
+    Every transcript opens with a stage note giving the place and the hour —
+    "— En la Ciudad Autónoma de Buenos Aires, a las 15 y 33 del miércoles 28
+    de abril de 2010:". Where the date in that line is not the sitting's own,
+    the parser started reading inside some OTHER document bound into the same
+    file, and the sitting ships a transcript of a different day under its own
+    identifier.
+
+    Nothing checked this before, and that is how 2014-09-03_r13 came to ship a
+    committee meeting of 19 August 2014 in place of 214 pages of floor debate.
+    It was found by hand. This finds it without anyone opening a page.
+
+    What the check does NOT do is decide whether a mismatch is a defect. Three
+    kinds of alert are expected and correct:
+      - a sitting that ran past midnight and opens on the previous day;
+      - the chamber's own typing, where the opening line carries a year the
+        masthead contradicts, which the parser preserves on purpose;
+      - the defect this exists for, where the date is days or weeks away.
+    So the alert is by size of the gap, and the ones a day apart are listed
+    apart from the ones that are not. A check that reported them all the same
+    way would be ignored within a month.
+    """
+    print("\n7b. Sittings whose opening stage note names a date other than their own:")
+    rows = []
+    for sid, g in corpus.groupby("session_id"):
+        # the rows come off the parquet in seq order, which is reading order
+        head = " ".join(g.text.fillna("").astype(str).head(40)).lower()
+        head = unicodedata.normalize("NFD", head)
+        head = "".join(c for c in head if not unicodedata.combining(c))
+        m = OPENING_DATE_RE.search(head)
+        if not m:
+            continue
+        month = OPENING_MONTHS.get(m.group(2))
+        if not month:
+            continue
+        said = date(int(m.group(3)), month, int(m.group(1)))
+        real = pd.to_datetime(g.session_date.iloc[0]).date()
+        if said != real:
+            rows.append({"session_id": sid, "session_date": real,
+                         "text_says": said, "days_off": (said - real).days})
+    if not rows:
+        print("   0  (no sitting read as found with an opening line)")
+        return 0
+    rows.sort(key=lambda r: -abs(r["days_off"]))
+    far = [r for r in rows if abs(r["days_off"]) > 1]
+    near = [r for r in rows if abs(r["days_off"]) <= 1]
+    print(f"   {len(far):6}  more than a day apart — these want a page opened")
+    for r in far:
+        print(f"          {r['session_id']}  parses as {r['text_says']}, "
+              f"{r['days_off']:+d} days")
+    print(f"   {len(near):6}  one day apart — a sitting that ran past midnight "
+          f"({', '.join(r['session_id'] for r in near) or 'none'})")
+    return len(far)
+
+
 def audit_running_header(args):
     """One PDF: find its running header by position, then hand back where."""
     session_id, source_name = args
@@ -919,6 +992,7 @@ def main():
     problems = check_output_only(corpus, scanned)
     problems += check_turn_shape(corpus, scanned)
     problems += check_attribution_windows(corpus)
+    problems += check_opening_date(corpus)
 
     if not args.skip_source:
         print(f"\n{'='*66}\nSOURCE CHECKS — re-reading every held file\n{'='*66}")
