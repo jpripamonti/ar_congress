@@ -265,10 +265,32 @@ different thing, and the strongest number rests on the smallest sample.
   124 of 125 turns and 29 of 31 stenographer's notes. **24 stretches of the
   HTML era** spanning 1998–2003, each about 7,000 characters and cut on the
   source rather than at anything the parser found: F1 = 1.000, 195 of 195
-  turns and 62 of 62 notes, under either of the two readers who annotated them
-  independently. How far those two agree is reported by `check_gold_html.py`
-  before either is believed, and on the committed annotations they agree on
-  every one of the 195 turn starts and on all 24 stretches.
+  turns and 62 of 62 notes, under either reading. **Both readings are the
+  same model working from the same brief, not two people.** `check_gold_html.py`
+  reports how far the two readings agree before either is believed, and on
+  the committed annotations they agree on every one of the 195 turn starts
+  and on all 24 stretches — but agreement between one model and itself shows
+  the brief was read the same way twice, not that the reading is right; a gap
+  in the brief is a blind spot both readings share, so their agreeing on it is
+  no check on it at all. That is weaker evidence than two independent people,
+  and it is also not what the two readings first produced: the commit that
+  built this set (`a94c38a`) records them agreeing on 99.2% of turn starts,
+  with 22 of the 24 stretches identical and the disagreement all of it one
+  question — does a label the typist re-sets after a stenographer's note open
+  a new turn. The readings that answered it the other way were revised before
+  the set was committed (`TODO.md`, Phase 36: four annotations re-emitted for
+  that question, six more for a separate fix to what counts as an event), so
+  the 100% printed today is those readings after that revision. Re-annotating
+  under a settled convention is ordinary practice and does not make the two
+  readings dependent on each other; what the repository no longer holds is
+  the state that showed they were independent, which is why the figure in the
+  commit message cannot be reproduced from the files. One thing about the
+  settlement does need naming: it rested on three grounds, and one was how
+  the parser itself behaves on an unrelated sitting — the thing the set
+  exists to measure. The other two, the convention in Phase 2 and the PDF
+  gold set, are older than the parser's behaviour and stand without it, so
+  the settlement survives; but a gold set must not consult the parser, and
+  this one did.
   The PDF set is scored twice, on the printed label alone and on the label
   together with the turn's own opening words, because a page where the chair
   speaks four times has four identical labels and counting labels alone cannot

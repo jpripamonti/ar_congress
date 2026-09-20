@@ -320,12 +320,30 @@ as its own HTML export for most of 1998–2003; both are read here.
   heading the parser found, because cutting at the parser's own segmentation
   would hand the annotators only the passages it already reads well.
   `scripts/draw_gold_html.py` draws them, four per year across 1998–2003.
-  **Two readers annotated all 24 independently**, and `check_gold_html.py`
-  reports how far they agree before either is believed: 99.2% on turn starts,
-  22 of the 24 stretches identical, and `opens_mid_utterance` the same
-  everywhere. Against that set (`scripts/eval_gold_html.py`): boundary and
+  **All 24 were read twice**, and `check_gold_html.py` reports how far the
+  two readings agree before either is believed: on the committed annotations,
+  every one of 195 turn starts and all 24 stretches, and `opens_mid_utterance`
+  the same everywhere. **Both readings are the same model working from the
+  same brief, not two people** — agreement between them says the brief was
+  read the same way twice, not that the reading is right, and a blind spot
+  the brief shares with itself will pass as agreement every time. It is also
+  not what the two readings first produced: the commit that built this set
+  (`a94c38a`) records them agreeing on 99.2% of turn starts, with 22 of the
+  24 stretches identical and the disagreement all one question — does a label
+  the typist re-sets after a stenographer's note open a new turn. The
+  readings that answered it the other way were revised before the set was
+  committed (`TODO.md`, Phase 36), so the 100% printed today is those two
+  readings after that revision. Re-annotating under a settled convention is
+  ordinary practice and does not make the readings dependent; what the
+  repository no longer holds is the state that showed they were independent.
+  One thing about the settlement is worth naming, though: three grounds
+  decided it, and one of them was how the parser itself behaves on another
+  sitting — the thing the set exists to measure. The other two are older than
+  the parser and stand without it. The parser should not have been on that
+  list.
+  Against that set (`scripts/eval_gold_html.py`): boundary and
   attribution **P=1.000 R=1.000 F1=1.000 on all 195 annotated turns**, events
-  P=1.000 R=1.000 on 62, under either reader's annotation.
+  P=1.000 R=1.000 on 62, under either reading.
   It did not start there. The set found one turn the parser was losing and one
   rule of its own that was wrong, and both are described under "what reading
   it twice was for" below.
@@ -337,9 +355,10 @@ as its own HTML export for most of 1998–2003; both are read here.
   one of these files: it opened every source with pdfplumber, so the 214 HTML
   sittings sat outside the conservation and coverage checks entirely.
 - **What reading it twice was for.** Both things the HTML gold set found in its
-  first run were found because two people read the same page and wrote down
-  where they hesitated. The parser's defect: the sitting of 18 November 1998
-  prints, inside one centred bold run with no space and no break between them,
+  first run were found because the same model read the same page twice and
+  wrote down where it hesitated each time. The parser's defect: the sitting
+  of 18 November 1998 prints, inside one centred bold run with no space and
+  no break between them,
   `Orden del Día N° 1230Sr. PRESIDENTE.-` — a document's title welded to the
   chair's next label. The title made the paragraph look like a heading and the
   label inside it was never reached, so the turn was lost. Both readers flagged
