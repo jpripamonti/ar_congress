@@ -2050,8 +2050,20 @@ and 21.5 million words of attributed speech become 25.7.
 - [x] The ordinal-as-E is already repaired and was reported here as a finding
       by mistake: `parse.py` maps ("WPMathA", "E") to the degree sign and
       documents its 3,229 occurrences, so the corpus reads "artículo 5°". The
-      residue is 26 rows — 11 in the HTML era, where a `Courier New` run is the
-      signal, and 15 in the PDFs, where there is no signal at all.
+      residue is 26 rows carrying 36 marks (some rows hold two, "incisos 1E y
+      3E"), and it is concentrated in three sittings rather than scattered:
+      1999-05-05_r15 has 15 rows, 1998-05-06_r13 has 9, 2001-03-23_r12 has 2.
+      Recounted row by row against the corpus, so the 26 is a count and not
+      an estimate; two regex hits are excluded as genuine text, an
+      engineering group code "G2E" and a YouTube id.
+      Of the 11 HTML rows only 9 carry a font signal — the broken E is an
+      isolated `Courier New` run glued to a digit, against a body with no font
+      wrapper. The 2 rows in 2001-03-23_r12 have none: "artículo 1E de la ley
+      24.452" sits in the same `Arial` run as a correctly drawn "artículo 8°"
+      a few words earlier in that paragraph. So the font machinery reaches 9
+      of 26; the other 17 are as unrecoverable as the PDF cases and should be
+      left alone, which is this project's existing stance on a character the
+      source never drew unambiguously.
 - [ ] **The audit's apparatus check is keyed on a string a symbol font
       defeats.** It matches the literal `P[áa]g\.\s*\d+`
       (`scripts/audit_parse.py:81`). Scanning all 605 PDFs by FONT instead of
