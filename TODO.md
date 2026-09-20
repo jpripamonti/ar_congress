@@ -1745,6 +1745,16 @@ label was therefore written nowhere at all.
       heading. Row 159 is `Montero.-Gracias, señor presidente...` — **3,591
       words, the largest orphaned block in the corpus**, her whole budget
       speech, with no speaker on it while the row above it names her.
+      **Two more of the same family, from the HTML era**, found by the new
+      split-bold-label check and verified row by row: `2002-08-01_r17` seq
+      1631 prints `Sr. Presidented (Maqueda). -- Pasamos a considerar los
+      órdenes del día...` — a stray "d" welded to "Presidente" — and
+      `2003-02-27_r01` seq 151 prints `Sr. Presidente (Gioja), -- Corresponde
+      elegir al vicepresidente 2...` with a comma where the full stop goes.
+      Both land as `other` with no speaker, and both are the chair. Out of
+      14,443 labels of that shape only these two fail, so the pattern is
+      sound and it is the printing that defeats it — same as `S. ALASINO.—`
+      and `r. Pichetto.—` above.
       The 42 was a floor because it matched how a turn OPENS and these open
       mid-sentence. The 152 rows of 2 to 50 words were not read and almost
       certainly hold more of the same: the entry above quotes "Pido la
