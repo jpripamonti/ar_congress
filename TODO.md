@@ -2027,7 +2027,20 @@ and 21.5 million words of attributed speech become 25.7.
       exactly where it opens. 2019-07-17_r07 is the same. Both were reported
       to this project as lost floor speech and neither is. **The symptom to
       scan for is not a late start but a parsed date that disagrees with the
-      sitting's own date**, and nothing checks that today.
+      sitting's own date**. That check is now written and run
+      (`scratchpad/date_mismatch.py`): it reads the date out of the opening
+      stage note, "a las 15 y 33 del miercoles 28 de abril de 2010", and
+      compares it with the sitting's own. **Six hits corpus-wide, and only one
+      is a defect**: 2014-09-03_r13 above. Of the other five, two are the
+      chamber's own typing — 2008-09-03_r14 and 2012-08-15_r12 each open with
+      the year one short of the masthead's ("3 de septiembre de 2007" under a
+      masthead reading 2008; "15 de agosto de 2011" under 2012), and the
+      parser preserves the error, which is right — and three are off by a
+      single day because the sitting ran past midnight (2003-11-27_r38,
+      2004-11-10_r32, 2018-06-27_r08). Six alerts, one defect, every false
+      positive explainable. **Move it into `scripts/audit_parse.py` as a
+      standing check**: it would have caught 2014-09-03_r13 with nobody
+      reading a page.
       Scan of first/last page per sitting: `scratchpad/late_start.csv`.
       Found while checking a claim of ~217,000 lost words. That figure does
       not survive: half of it was 2010-04-28_r07's front matter. The confirmed
