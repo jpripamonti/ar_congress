@@ -2039,6 +2039,32 @@ and 21.5 million words of attributed speech become 25.7.
       2005-11-29 p5 — which would defeat a header-stripping rule that matches
       on "Pág." — a missing Orden del Día number in a heading on 2003-05-28
       p28, and an uncleared yellow editing highlight on the 2009-03-01 roll.
+- [x] The ordinal-as-E is already repaired and was reported here as a finding
+      by mistake: `parse.py` maps ("WPMathA", "E") to the degree sign and
+      documents its 3,229 occurrences, so the corpus reads "artículo 5°". The
+      residue is 26 rows — 11 in the HTML era, where a `Courier New` run is the
+      signal, and 15 in the PDFs, where there is no signal at all.
+- [ ] **The audit's apparatus check is keyed on a string a symbol font
+      defeats.** It matches the literal `P[áa]g\.\s*\d+`
+      (`scripts/audit_parse.py:81`). Scanning all 605 PDFs by FONT instead of
+      by text found **628 pages in 19 sittings whose running header is set in a
+      symbol face**, where the letters extract into the private use area at
+      U+F000 + the ASCII code and that pattern can match nothing. None of the
+      628 leaked into the corpus — but the check did not establish that; the
+      repeated-header rule did, and it never looks at the text. The check
+      passes for a reason other than the one it states, which is the failure
+      mode this project has already written down. Re-key it on position and
+      repetition across pages. The 19 sittings run 1998 to 2022 and are not a
+      handful of stray pages: 2008-10-01 has 112 such pages, 2004-08-11 has 85,
+      2008-08-06 has 76, 1998-04-01 has 65.
+- [x] `86°°` — a doubled ordinal sign in 12 rows across 5 sittings
+      (2003-12-17_r41, 2004-10-20_r30, 2005-06-01_r15, 2006-11-01_r26,
+      2007-04-11_r04). Not a repair artifact: the PDF holds two consecutive
+      U+F0B0 Symbol glyphs at x0=223.25 and x0=228.05, 4.8pt apart, so two
+      glyphs printed side by side, and a rendered crop confirms the page reads
+      "el 86°° aniversario del grito de Córdoba". The typesetter keyed it
+      twice and the parser preserves it, which is correct — the corpus keeps
+      the edition's errors the way it keeps a misspelled surname.
 - [ ] Two sittings are set in a sans-serif face with no header, footer or page
       number at all (1998-07-23 p7, 2003-07-23 p74), which looks typeset from a
       different source. Worth knowing how many sittings are like that before
