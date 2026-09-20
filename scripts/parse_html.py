@@ -32,8 +32,9 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from parse import SPEAKER_RE, classify_event  # noqa: E402
 from provenance import decode_html  # noqa: E402
+from session_kind import session_kind_for  # noqa: E402
 
-PARSER_VERSION = "0.5.5-html"
+PARSER_VERSION = "0.5.6-html"
 
 # A paragraph break: WordPerfect writes <p> with no closing tag and uses <br>
 # for the lines of a masthead or the two lines of a heading.
@@ -564,6 +565,7 @@ def blocks_to_frame(blocks, chapters, meta):
             "session_id": meta["session_id"],
             "session_date": meta["session_date"],
             "session_type": meta["session_type"],
+            "session_kind": session_kind_for(meta["session_type"]),
             "sesion": meta["sesion"],
             "reunion": meta["reunion"],
             "seq": seq,

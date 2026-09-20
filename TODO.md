@@ -2140,8 +2140,26 @@ and 21.5 million words of attributed speech become 25.7.
       from a real parenthesis, and only a corpus-wide count can show it does.
 
 
-- [ ] Group the chamber's own `session_type` labels before counting: `EN
-      MINORÍA` and `ESPECIAL EN MINORÍA` name the same thing.
+- [x] Group the chamber's own `session_type` labels before counting: `EN
+      MINORÍA` and `ESPECIAL EN MINORÍA` name the same thing. Done as a
+      `session_kind` column beside the raw label, never in place of it, from a
+      mapping in `reference/senado/session_type_map.csv` that carries the
+      reasoning for each of the 13 labels and flags the four folded in by
+      judgment rather than identity. Verified over all 817 files: every row
+      has the column and no label went unmapped. Parsers 0.4.41 and
+      0.5.6-html.
+- [ ] `session_kind` holds two dimensions in one column, and something should
+      eventually separate them. `ordinaria` / `extraordinaria` / `especial`
+      say how a sitting was called and in what period; `en_minoria` and
+      `sin_quorum` say whether it had a quorum. A sitting held in minority is
+      also ordinary or special, and one column cannot say both — so counting
+      `ordinaria` today silently excludes the 34 sittings that were ordinary
+      AND short of quorum. The mapping's own notes already say this ("not a
+      convocation type: the chamber's own label for a sitting that failed to
+      reach quorum") and then group it in the same column anyway. The
+      dictionary warns about it. Two columns would be the honest shape, but
+      the chamber gives one label per sitting, so the second would have to be
+      inferred, and that needs evidence rather than a default.
 
 ## Explicitly not building
 
