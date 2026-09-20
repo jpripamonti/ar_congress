@@ -1720,6 +1720,35 @@ label was therefore written nowhere at all.
       65 rows over 50 words outside the five known sittings are worth reading
       before deciding. Worth a look because these are senators speaking with no
       name on them, unlike everything else in that number.
+- [ ] **They were read, and it is one fault.** The entry above was written at
+      0.4.37 against the 559-sitting PDF corpus; on the same PDF-only universe
+      today the unattributed rows are 948, not 1,109, and the long rows
+      outside the five known sittings are 45, not 65. All 45 were read against
+      the printed page. **23 of them are real floor speech that lost its
+      label, across 16 sittings.** The other 22 are correctly unattributed:
+      21 are insertions, where a senator hands in a written text instead of
+      speaking and the record prints it under "PARA INSERTAR" or "SOLICITADA
+      POR", and one is a roster of appointments.
+      The 23 are one fault with three faces, and the fault is that A BOLD RUN
+      IS READ AS A SECTION HEADING, WHICH ENDS THE TURN. Either the label is
+      printed but does not match the pattern (`S. ALASINO.—` for Sr., a bare
+      surname `Negre de Alonso`, `S r a . Corregido.—` with the letters spaced
+      apart, or a label whose first letter was pulled onto the tail of the
+      previous sentence: `r. Pichetto.—`, `ra. Di Perna.—`,
+      `r. Petcoff Naidenoff.—`); or the title and the surname fall in
+      different style runs; or the bold run is not a label at all — a
+      decorative drop cap, an emphasised word inside a spoken list, an
+      expediente number — and it breaks the turn anyway.
+      The worst case, verified here row by row: 2014-10-29_r18 pages 34-39.
+      Row 157 is the chair saying "Muchas gracias, senador Fernández. Senadora
+      Montero, tiene la palabra." Row 158 is `Sra.- ` alone, typed as a
+      heading. Row 159 is `Montero.-Gracias, señor presidente...` — **3,591
+      words, the largest orphaned block in the corpus**, her whole budget
+      speech, with no speaker on it while the row above it names her.
+      The 42 was a floor because it matched how a turn OPENS and these open
+      mid-sentence. The 152 rows of 2 to 50 words were not read and almost
+      certainly hold more of the same: the entry above quotes "Pido la
+      palabra." as an example, and that is three words.
 - [ ] The parser's open items are the five ordinal marks Phase 27 found but a
       neighbouring size mismatch keeps out of reach, and the 91 printed labels
       that still leave no row of their own. The secretary reading a document
