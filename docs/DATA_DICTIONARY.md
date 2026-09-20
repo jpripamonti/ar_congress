@@ -7,17 +7,18 @@ one row per PDF, and the limits measured on them are summarised in the
 [README](../README.md).
 
 The corpus is the stenographic record of the Argentine Senate: what was said on
-the floor, who said it, and what the stenographer noted around it. 559 sittings
-spanning 2000 to 2024, 21.5 million words.
+the floor, who said it, and what the stenographer noted around it. 817 sittings
+spanning February 1998 to September 2026, 29.5 million words, of which 25.7
+million are attributed speech.
 
 ## The three tables
 
 | File | One row is | Rows |
 | --- | --- | --- |
-| `data/processed/senado/blocks/<sitting>.parquet` | a passage of one sitting — a turn of speech, a stenographer's note, a heading, or page matter | 233,408 across 558 files (one sitting fails to parse) |
+| `data/processed/senado/blocks/<sitting>.parquet` | a passage of one sitting — a turn of speech, a stenographer's note, a heading, or page matter | 432,564 across 817 files (one sitting of the 818 attempted fails to parse) |
 | `data/processed/senado/speakers.parquet` | one printed speaker label in one sitting, resolved to a person and to the caucus they sat with | one per (sitting, label) pair |
-| `data/processed/senado/parse_stats.csv` | one sitting, with 40 counts of what the parser did to it | 559 |
-| `reference/senado/bloque_observado.csv` | one day the chamber's composition was actually recorded, for one senator | 23,325 over 336 dates, 2000–2024 |
+| `data/processed/senado/parse_stats.csv` | one sitting, with 40 counts of what the parser did to it | 818 |
+| `reference/senado/bloque_observado.csv` | one day the chamber's composition was actually recorded, for one senator | 24,813 over 357 dates, 2000–2026 |
 
 There is one file of passages per sitting rather than one big file, so that a
 single sitting can be read without loading the corpus. Concatenating them all is
@@ -226,9 +227,10 @@ what the analysis in this repository does, and it says so.
 
 - **The text is what the page prints, not what was said.** A stenographic record
   is edited. Senators correct their own words afterwards.
-- **Two sittings of November 2001 are scans read by character recognition**, and
-  their text is unreliable. The parser flags them; exclude them from any text
-  analysis. They are `2001-11-21_r72` and `2001-11-29_r74`.
+- **Three held files are scans read by character recognition**, and their text
+  is unreliable. The parser flags them; exclude them from any text analysis.
+  Two are in the corpus — `2001-11-21_r72` and `2001-11-29_r74` — and the
+  third, `1997-12-18_r117`, does not parse at all and contributes no rows.
 - **The caucus is observed, never continuous.** It is recorded on 357 days
   from 25 May 2000 to 17 September 2026 — roll-call days from 2005, and sixteen
   archived captures of the Senate's own bloc-roster page before that. Every row
@@ -245,33 +247,61 @@ what the analysis in this repository does, and it says so.
   over time.
 - **Roughly a fifth of each document is dropped on purpose**: contents pages,
   attendance rolls, appendices and inserted documents that were never spoken.
-  The median sitting keeps 79.0% of its printed text.
-- **One sitting fails to parse**: a November 2001 sitting that never reached
-  quorum and therefore has no opening for the parser to find.
+  The median sitting keeps 82.8% of its printed text, and the two formats
+  differ: 79.3% for the PDFs against 91.2% for the HTML export, which has no
+  repeated page headers or footers to drop.
+- **One sitting fails to parse**: `1997-12-18_r117`, the impeachment tribunal
+  of December 1997, a scan whose character recognition leaves no opening the
+  parser can find. 818 files are attempted and 817 produce rows.
 
 ## How far it has been checked
 
-Three layers, summarised in the [README](../README.md):
+Three layers, summarised in the [README](../README.md). Each measures a
+different thing, and the strongest number rests on the smallest sample.
 
-- **36 pages annotated by hand**, spanning 2003–2024: boundary and attribution
-  F1 = 0.996, 124 of 125 turns and 29 of 31 stenographer's notes. Scored twice
-  — on the printed label alone, and on the label together with the turn's own
-  opening words — because a page where the chair speaks four times has four
-  identical labels, and counting labels alone cannot tell a parser that found
-  those turns from one that found four turns in the wrong places. Both scores
-  are the same on this set. Neither checks the order the turns came out in.
-- **All 558 parsed sittings audited against their source files**: no turn carries a
-  second speaker's label, no text is written out twice, and every turn is
-  checked for beginning and ending the way speech does.
-- **5,463 turns read blind** across nine rounds, by a reader that was never
-  shown the parser's answer: agreement on who is speaking in all but twenty-two,
-  and all twenty-two resolved in the parser's favour afterwards — pages that print
-  the quoted phrase more than once, and pages that print no label at all because
-  the speech began earlier. Every one of those answers is re-asked of the
-  current corpus on each release, by the project's own release checks, because the
-  rounds were run months and a dozen parser versions ago and a repair could
-  quietly move a passage to somebody else: 5,459 still resolve to the person
-  the round named, none resolves to anybody else, and the 4 left cannot be
-  re-asked at all — two quotes are all an unmapped font left of a passage, two
-  are notes that a repair has since moved out of speech. This is the only check
-  in the project whose ground truth was produced without sight of the parser.
+- **320 turns annotated by hand**, in two sets, and this is the only layer that
+  measures whether a turn was found at all.
+  **36 PDF pages** spanning 2003–2024: boundary and attribution F1 = 0.996,
+  124 of 125 turns and 29 of 31 stenographer's notes. **24 stretches of the
+  HTML era** spanning 1998–2003, each about 7,000 characters and cut on the
+  source rather than at anything the parser found: F1 = 1.000, 195 of 195
+  turns and 62 of 62 notes, under either of the two readers who annotated them
+  independently. How far those two agree is reported by `check_gold_html.py`
+  before either is believed, and on the committed annotations they agree on
+  every one of the 195 turn starts and on all 24 stretches.
+  The PDF set is scored twice, on the printed label alone and on the label
+  together with the turn's own opening words, because a page where the chair
+  speaks four times has four identical labels and counting labels alone cannot
+  tell a parser that found those turns from one that found four turns in the
+  wrong places. Both scores are the same on it.
+  **Read the interval, not the point.** One miss in 320 puts the 95% interval
+  on recall at 0.983 to 0.999, those 320 turns are 0.13% of the 247,471 in the
+  corpus, and two thirds of the PDF pages are 2020 or later — on the record
+  before 2016 the measure rests on twelve pages. Neither set checks the order
+  the turns came out in.
+- **All 817 parsed sittings audited against their source files**: no page
+  apparatus inside a turn and no turn carrying a second speaker's label outside
+  the three scans, no sitting whose output is longer than the page it came from,
+  160,180 blocks probed for being findable in the file they came from with
+  0.006% not located once the scans are set aside and no sitting above 1%, and
+  every turn checked for beginning and ending the way speech does — 8 turns of
+  247,471 open mid-word and every one of them is printed that way.
+- **6,819 turns read blind** across thirteen rounds on 691 sittings, by readers
+  that were never shown the parser's answer. Twenty-four disagreed at the time
+  of reading and each was then checked against the printed page: **two were
+  real defects of the parser**, both since fixed — a centred section number read
+  as words the chair said, and a bold label split across three font runs that
+  cost four senators their turns — and the other twenty-two were the page
+  printing no label at all because the speech began earlier, the sheet sending
+  a reader to a different printing of the same stock phrase, or one reader's
+  own slip. Every answer is re-asked of the current corpus by the project's own
+  release checks, because the rounds were run months and many parser versions
+  ago and a repair could quietly move a passage to somebody else: 6,549 still
+  resolve to the person the round named, **none resolves to anybody else**, and
+  270 cannot be re-asked at all — 264 quote words the page prints under more
+  than one name, 3 are notes a repair has since moved out of speech, 2 are all
+  an unmapped font left of a passage, and 1 has no words recorded.
+  This is the only check in the project whose ground truth was produced without
+  sight of the parser, and it measures attribution only: it asks whether a turn
+  the parser emitted belongs to the person it names, and can never find a turn
+  the parser never emitted. That is what the annotated sets above are for.

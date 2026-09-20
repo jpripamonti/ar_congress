@@ -32,8 +32,8 @@ as its own HTML export for most of 1998–2003; both are read here.
   that last group final would invent a fact about 134 sittings. Read it from
   the raw file: the parser drops the masthead as page apparatus, so parsed text
   puts every PDF at "not provisional" when 261 of 605 are.
-- Corpus parsed: 247,469 speaker-attributed speech blocks and 60,905 typed
-  stenographer events in 432,563 rows over 817 sittings, as per-session Parquet
+- Corpus parsed: 247,471 speaker-attributed speech blocks and 60,905 typed
+  stenographer events in 432,564 rows over 817 sittings, as per-session Parquet
   under `data/processed/senado/`. 25.7 million words of attributed speech, of
   which the HTML side contributes 5.9 million. The PDF side is parser 0.4.40 and
   the HTML side `scripts/parse_html.py` at 0.5.5-html; the two share the speaker
@@ -306,7 +306,7 @@ as its own HTML export for most of 1998–2003; both are read here.
   is absorbed by the section title above it, no page apparatus leaks into speech
   outside the three scans, no text is written out twice, every one of 160,180
   probed blocks is found in the file it came from (0.006% not located once the
-  scans are set aside, and no sitting above 1%), 8 turns of 247,469 open
+  scans are set aside, and no sitting above 1%), 8 turns of 247,471 open
   mid-word and every one of them is printed that way, and a median 82.8% of each
   document's printed text is kept (the rest — contents pages, attendance rolls,
   appendices — is dropped by design). Three sittings are scans with OCR text and
@@ -358,14 +358,16 @@ as its own HTML export for most of 1998–2003; both are read here.
   brief. Whether "…señor presidente. (Aplausos.)" closing a speech should
   really count as that senator's words is a fair question about the corpus, and
   it is open in TODO.md rather than settled here.
-- **Three blind rounds on the HTML era, the tenth to the twelfth overall** — 60
+- **Four blind rounds on the HTML era, the tenth to the thirteenth overall** — 60
   passages read by five readers
   ([blind_read_60_html.csv](reference/verification/blind_read_60_html.csv)),
   300 more read by twenty
   ([blind_read_300_html.csv](reference/verification/blind_read_300_html.csv)),
-  and 498 more read by twenty again
+  498 more read by twenty again
   ([blind_read_500_html.csv](reference/verification/blind_read_500_html.csv)),
-  each round drawn so as not to overlap the last.
+  and 498 more still
+  ([blind_read_500_html_r2.csv](reference/verification/blind_read_500_html_r2.csv)),
+  each round drawn so as not to repeat the last.
   Each reader was given the source file and the words and never the parser's
   answer. **Of the first 360, 345 name the same speaker; 11 the first round's
   readers refused to pin down and were right to; 2 were the sheet miscounting;
@@ -394,9 +396,32 @@ as its own HTML export for most of 1998–2003; both are read here.
   own counts exactly. No answer in the round turned on it — but a sheet that
   sends a reader to the wrong passage is a sheet whose agreements are worth as
   little as its disagreements, and that is the defect this round bought.
-  **All 6,321 records from the twelve rounds are re-asked of the
+- **The fourth round is the cleanest the project has run: 497 of 498, and the
+  one disagreement is the reader's.** 498 passages drawn fresh, read by twenty
+  readers who saw the page and never the parser's answer, with no answer left
+  unclear. The single miss is at `2000-07-12_r37`, where the page prints
+  `Sr. Pardo. --` directly above the passage and the reader read up past it to
+  the chair's previous label. It did not start at 497: ten rows disagreed, and
+  checking each against the printed page showed all ten to be the sheet, from
+  two faults in how it numbers a passage. **A string count is not a block
+  count** — a sitting prints its contents list before the debate, so the first
+  "Tiene la palabra el señor senador por San Juan." in the file is a line of the
+  summary and not a turn. **A folded quote matches inside longer words** —
+  "Sí." folds to "si." and was being found inside "así.". The count is now
+  taken by walking the sitting's blocks forward through the source and
+  refusing any match whose preceding character is alphanumeric, all 498 rows
+  land on the block whose speaker they print, and `--sample-seed` lets a later
+  round draw passages this one did not see. Nineteen of the twenty readers
+  also reported, unprompted, the same shape: the bold run that should wrap a
+  label opens in the section heading above it and closes partway through the
+  name. The parser reads these correctly — that is what the round measured —
+  but no check yet states that it does, and it is the commonest shape in the
+  era. One reader took a page for encoding damage and found instead that the
+  export stores `¿` as `)` where it switched font: 147 of them, plus 16 `¡`
+  stored as `(`, open in TODO.md pending a corpus-wide scan.
+  **All 6,819 records from the thirteen rounds are re-asked of the
   current corpus by `scripts/check_blind_reads.py`**, and none resolves to
-  anybody else. **On 5,463 turns read blind** — every
+  anybody else. **On the nine PDF-era rounds, 5,463 turns read blind** — every
   page rendered as an image and read by an agent that was never shown the
   parser's answer, then compared — the two agree on who is speaking in
   [50 of 50](reference/verification/blind_read_50.csv),
@@ -409,12 +434,15 @@ as its own HTML export for most of 1998–2003; both are read here.
   [1,000 of 1,000](reference/verification/blind_read_1000_0413b.csv) and
   [105 of 115](reference/verification/blind_read_115_0418.csv) on nine
   samples that do not overlap, spread across every year of the span. Re-asking
-  all twelve rounds is what makes them a check rather than a record: of the
-  6,321 records, 6,132 still resolve to the person the round named and 189
-  cannot be re-asked — 184 quote words the page prints under more than one
+  all thirteen rounds is what makes them a check rather than a record: of the
+  6,819 records, 6,549 still resolve to the person the round named and 270
+  cannot be re-asked — 264 quote words the page prints under more than one
   name, so the record cannot say which turn the reader meant; three are notes a
   repair has since moved out of speech; two are all an unmapped font left of a
-  passage — and none resolves to anybody else. Every case left over from the
+  passage; one has no words recorded — and none resolves to anybody else.
+  **Twenty-four of the 6,819 disagreed at the time of reading, and exactly two
+  of those were defects of the parser** — both found in the HTML era, both
+  fixed. Every case left over from the
   rounds themselves was checked afterwards against the page image and the
   parser is right in all of them — pages that print the quoted phrase twice, so the reader could
   not know which occurrence was meant, and, in the ninth round, ten pages that
@@ -601,10 +629,10 @@ and nothing else.
   leaking into speech, undetected speaker changes, duplicated or invented
   text, coverage, scans. `--sample N` also writes a review sheet of N turns
   to be checked by eye against the printed page.
-- `reference/verification/` — the nine blind reads: what the parser said, what
-  an independent reader saw on the page, and whether they agree. 1,000 pages in
-  each of the last three rounds, 500 before them, 998 before that, then 500, 300
-  and 50 in the first.
+- `reference/verification/` — the thirteen blind reads: what the parser said,
+  what an independent reader saw on the page, and whether they agree. 6,819
+  passages in all — nine rounds on the PDF era (50, 300, 500, 998, 500 and
+  three of 1,000, then 115) and four on the HTML era (60, 300, 498 and 498).
 - `reference/` — versioned reference data: roster snapshots, authorities
   tables, gold evaluation set. Provenance: [SOURCES.md](SOURCES.md).
 - `data/` — symlink to the working copy kept outside Git (see

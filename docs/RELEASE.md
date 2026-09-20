@@ -14,7 +14,7 @@ so a release is a separate, frozen bundle.
 | The caucus observations | `reference/senado/bloque_observado.csv` | Every day one senator's caucus was actually recorded, with the record it came from and how far it can be trusted. |
 | The archived bloc-roster pages | `data/raw/senado/bloques_archivados/` | HTML, 17 captures, of which 16 carry names — the seventeenth (14 June 2002) is a truncated Wayback snapshot with no roster in it, kept because it is evidence of the gap. The only copies of a Senate page that no longer exists; the pre-2005 caucus cannot be rebuilt without them. |
 | The parse record | `data/processed/senado/parse_stats.csv` | 40 counts per sitting of what the parser did to it, so every repair can be recomputed rather than trusted. |
-| The per-sitting logs | `data/processed/senado/logs/` | 559 logs, one per sitting, of what the parser did line by line. The parse record counts it; these say it. |
+| The per-sitting logs | `data/processed/senado/logs/` | 605 logs, one per PDF sitting, of what the parser did line by line. The HTML sittings have none. The parse record counts it; these say it. |
 | What the checks printed | `gold_eval.csv`, `blind_read_check.csv`, `audit_source.csv`, `review_sheet.csv` | The output of the verification scripts on the build being released, beside the records they were run against. |
 | The listing snapshots | `data/raw/senado/listings/` | What the portal offered on the day the PDFs were fetched, which is the only evidence of what it lists and does not serve. |
 | The pipeline | `scripts/`, `pyproject.toml`, `uv.lock` | The bundle's whole arrangement is that the sources are not redistributed and can be fetched again — which takes the code, and the pinned versions it was calibrated against, since pdfplumber's character extraction changes between releases. |
@@ -104,8 +104,8 @@ uv run scripts/check_blind_reads.py
   the only ones outside their mandate are the two known cases of the page
   lagging the chamber. `build_bloc_observations.py` stops if a name resolves to
   nobody and prints the lagging ones on every run.
-- Every answer recorded in the nine blind reads still resolves to the same
-  speaker in the re-parsed corpus: `check_blind_reads.py` re-asks all 5,463 and
+- Every answer recorded in the thirteen blind reads still resolves to the same
+  speaker in the re-parsed corpus: `check_blind_reads.py` re-asks all 6,819 and
   exits on the number that do not. Each record is settled against the turn that
   best carries the quoted words, not against every turn any window of them
   touches: the earlier version pooled the labels and asked only whether the
