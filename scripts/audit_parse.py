@@ -214,53 +214,99 @@ def as_read(text):
     return re.sub(r"\s+", "", s)
 
 
-def occurrence(row, opening, _cache={}):
+def _starts(src, quote, at=0):
+    """Positions of `quote` in `src` that are not buried inside a word.
+
+    as_read() folds accents and drops whitespace, so a short quote matches
+    inside longer words: "Sí." folds to "si." and is found inside "así.".
+    The 500-passage round of September 2026 drew a turn whose whole text was
+    "Sí." and sent its reader to the tail of somebody else's sentence. A match
+    only counts when the character before it is not a letter or a digit.
+    """
+    out, i = [], at
+    while True:
+        i = src.find(quote, i)
+        if i == -1:
+            return out
+        if i == 0 or not src[i - 1].isalnum():
+            out.append(i)
+        i += 1
+
+
+def _placed(source_file, corpus, _cache={}):
+    """Where each block of a sitting actually sits in its source file.
+
+    Walking the blocks forward is the only honest way to number a passage,
+    because a string count is not a block count. A sitting prints its contents
+    list before the debate, so the first occurrence of "Tiene la palabra el
+    señor senador por San Juan." in the file is a line of the summary and not
+    a turn at all. Counting strings therefore named occurrence 2 for a turn a
+    reader counting down the page finds at 3 — and that sent ten readers of
+    the 500-passage round of September 2026 to a turn the sheet was not asking
+    about. Every one of those ten read the label the parser had given the turn
+    they landed on, which is why the round reported ten disagreements and held
+    none: the sheet was wrong, not the answer.
+    """
+    if source_file in _cache:
+        return _cache[source_file]
+    try:
+        src = as_read(source_read(source_file))
+    except Exception:
+        _cache[source_file] = None
+        return None
+    rows = corpus[corpus.source_file == source_file]
+    where, pos = {}, 0
+    for idx, text in zip(rows.index, rows.text):
+        t = as_read(text)
+        if not t:
+            continue
+        key = t[:150]
+        # Forward from where the last block ended, so repeated boilerplate
+        # lands on this block and not on the first page that printed it.
+        f = src.find(key, pos)
+        if f == -1:
+            f = src.find(key)
+        if f == -1:
+            continue
+        where[idx] = f
+        pos = max(pos, f + len(t))
+    _cache[source_file] = (src, where)
+    return _cache[source_file]
+
+
+def occurrence(row, opening, corpus):
     """Which occurrence of the quoted words the reader is being sent to.
 
-    Counted the way the reader counts: occurrences of the quoted phrase in
-    the source file, top to bottom. The sheet used to count something else —
-    turns of the sitting whose first 400 characters were identical — and the
-    two are not the same number. Four readers of the 500-passage round of
-    September 2026 reported the gap without being asked about it: the sheet
-    said the 55th of 76 "(Lee:)" where the file holds 78, the 13th of 20
-    "En consecuencia, pasa al Archivo." where the file holds 25. The phrase
-    also occurs in headings, in the contents and inside longer turns, and
-    none of those were being counted. No answer in that round turned on it,
-    because every occurrence in those files belonged to the same speaker —
-    but a sheet that sends a reader to the wrong passage is a sheet whose
-    disagreements cannot be trusted either way.
+    Counted the way the reader counts: occurrences of the quoted phrase in the
+    source file, top to bottom. The sheet used to count something else — turns
+    of the sitting whose first 400 characters were identical — and the two are
+    not the same number. Four readers of the 500-passage round of September
+    2026 reported the gap without being asked about it: the sheet said the 55th
+    of 76 "(Lee:)" where the file holds 78, the 13th of 20 "En consecuencia,
+    pasa al Archivo." where the file holds 25.
 
-    Only for HTML, which has no pages: a PDF row carries its page number,
-    which is how a reader finds the passage there, and reading 500 PDFs to
-    number a phrase nobody counts by would cost an hour for nothing.
+    Only for HTML, which has no pages: a PDF row carries its page number, which
+    is how a reader finds the passage there, and reading 500 PDFs to number a
+    phrase nobody counts by would cost an hour for nothing.
     """
     name = row.source_file
     if not str(name).lower().endswith(".html"):
         return "" if row._of < 2 else f"{row._nth} of {row._of}"
-    if name not in _cache:
-        try:
-            _cache[name] = as_read(source_read(name))
-        except Exception:
-            _cache[name] = None
-    src = _cache[name]
+    placed = _placed(name, corpus)
+    if not placed:
+        return "" if row._of < 2 else f"{row._nth} of {row._of}"
+    src, where = placed
     quote = as_read(opening)
     if not src or not quote:
         return "" if row._of < 2 else f"{row._nth} of {row._of}"
-    total = src.count(quote)
+    hits = _starts(src, quote)
+    total = len(hits)
     if total < 2:
         return ""
-    # Where this turn sits in the file. Identical turns are told apart by the
-    # order they were parsed in, which is the order they are printed in.
-    whole = as_read(row.text)
-    at, seen = -1, 0
-    while seen < row._nth:
-        nxt = src.find(whole, at + 1)
-        if nxt == -1:
-            break
-        at, seen = nxt, seen + 1
-    if at == -1:
+    off = where.get(row.name)
+    if off is None:
         return f"one of {total}"
-    return f"{src.count(quote, 0, at) + 1} of {total}"
+    return f"{sum(1 for h in hits if h < off) + 1} of {total}"
 
 
 def source_text(name):
@@ -470,6 +516,10 @@ def main():
     ap.add_argument("--sample-format", choices=("pdf", "html"), default=None,
                     help="draw the review sheet from one format only, so a round "
                          "can be aimed at an era that has not been read yet")
+    ap.add_argument("--sample-seed", default="20260728",
+                    help="salt for the draw. The default reproduces the round "
+                         "already read; change it to draw passages that round "
+                         "did not see")
     ap.add_argument("--workers", type=int, default=8)
     args = ap.parse_args()
 
@@ -531,7 +581,8 @@ def main():
         print(f"\n   per-session detail: {out_path}")
 
     if args.sample:
-        write_review_sheet(corpus, args.sample, scanned, args.sample_format)
+        write_review_sheet(corpus, args.sample, scanned, args.sample_format,
+                           args.sample_seed)
 
     print(f"\n{'='*66}")
     print("Audit complete." if not problems else
@@ -539,7 +590,8 @@ def main():
     return 1 if problems else 0
 
 
-def write_review_sheet(corpus, n, scanned=frozenset(), only_format=None):
+def write_review_sheet(corpus, n, scanned=frozenset(), only_format=None,
+                       seed_salt="20260728"):
     """Sample turns to be checked by eye against the printed page.
 
     The invariants above cannot tell whether the RIGHT person is behind the
@@ -605,7 +657,10 @@ def write_review_sheet(corpus, n, scanned=frozenset(), only_format=None):
         # The first HTML round drew 60 rows that held only 47 distinct
         # passages, nine of them one sentence repeated.
         page = list(r.pages)[0] if len(r.pages) else ""
-        seed = f"20260728|{r.session_id}|{page}|{r._words}|{r._nth}"
+        # The salt is what makes a second round a second round. Holding it
+        # fixed redraws the passages already answered, which reads nothing
+        # new; changing it draws from the turns the last round did not see.
+        seed = f"{seed_salt}|{r.session_id}|{page}|{r._words}|{r._nth}"
         return int.from_bytes(hashlib.blake2b(seed.encode(), digest_size=7).digest(), "big")
 
     speech["_key"] = speech.apply(sample_key, axis=1)
@@ -623,7 +678,7 @@ def write_review_sheet(corpus, n, scanned=frozenset(), only_format=None):
         # reading. Where even 30 words do not separate the occurrences, the
         # sheet says which one to count to.
         opening = " ".join(str(r.text).split()[:30])
-        nth = occurrence(r, opening)
+        nth = occurrence(r, opening, corpus)
         rows.append({
             "session": r.session_id,
             "source_file": r.source_file,
@@ -638,7 +693,10 @@ def write_review_sheet(corpus, n, scanned=frozenset(), only_format=None):
         })
     # A sheet aimed at one era gets its own name, so drawing one does not
     # overwrite a sheet somebody is part-way through answering.
-    path = OUT_DIR / (f"review_sheet_{only_format}.csv" if only_format else "review_sheet.csv")
+    stem = f"review_sheet_{only_format}" if only_format else "review_sheet"
+    if seed_salt != "20260728":
+        stem += f"_{seed_salt}"
+    path = OUT_DIR / f"{stem}.csv"
     with path.open("w", encoding="utf-8", newline="") as fh:
         w = csv.DictWriter(fh, fieldnames=list(rows[0].keys()))
         w.writeheader()

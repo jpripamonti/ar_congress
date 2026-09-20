@@ -35,11 +35,39 @@ the normal way to work with it.
 | `seq` | Position within the sitting. Sorting by it gives the order the words were printed in, which is the order they were spoken. |
 | `pages` | The printed page or pages the passage came from, as a list. |
 
+**A note printed inside a speaker's paragraph stays inside that speech.**
+Which row a stenographer's note lands in is decided by typography, not by
+what happened: a note set as its own paragraph becomes an `event`, and a
+note printed within a speaker's own paragraph is folded into the words of
+that speech. The chamber prints the same act both ways, so the same act
+lands in different rows in different sittings.
+
+The largest instance is the cue that marks the secretary reading aloud.
+Where the page sets it on its own line under the label, it is an `event`
+carrying that label — 237 rows. Where the page sets it inside the label's
+paragraph, as the HTML era almost always does, the whole turn is a `speech`
+row whose entire text is `(Lee:)` — 5,331 rows, 5,251 of them in the HTML
+era. A note that closes a speech behaves the same way: 1,127 turns end with
+`(Aplausos.)`, `(Risas.)` or the like inside the speech text.
+
+Together that is 6,458 rows, 2.61% of `speech`, holding 8,494 words nobody
+spoke — **0.03% of the 25.4 million words of speech**, small enough to
+ignore for most counting. It is not small in one place: **31.6% of the
+secretary's 16,859 turns are a speech whose whole content is the word
+"Lee"**, so any count of turns or words by the secretary needs them
+removed. A regex over `text` removes them; the parser leaves them where the
+page puts them, which is the same reason the spelling is left alone.
+
+When two annotators were shown these pages without the parser's answer,
+both independently marked `Sr. PROSECRETARIO (Pontaquarto).- (Lee:)` as the
+secretary taking the floor. The rows are where readers of the page expect
+them to be; it is the word count that needs the care.
+
 **Who said it**
 
 | Column | Meaning |
 | --- | --- |
-| `speaker_raw` | The label exactly as printed: `Sr. Pichetto`, `Sra. Presidente (Michetti)`, `Varios señores senadores`. Not normalised, because normalising it would hide what the page actually says. Empty for anything that is not speech, with one exception: **331 stenographer's notes carry a label because the page printed one directly above them** and the note is the whole of what that turn holds — "Sr. Secretario (Estrada). — (Lee:)" is one printed line, and the secretary took the floor there. The row stays `event`; the label says who the note is about. Filter on `type == "speech"` for anything counting words said, which is what `speakers.parquet` does. |
+| `speaker_raw` | The label exactly as printed: `Sr. Pichetto`, `Sra. Presidente (Michetti)`, `Varios señores senadores`. Not normalised, because normalising it would hide what the page actually says. Empty for anything that is not speech, with one exception: **332 stenographer's notes carry a label because the page printed one directly above them** and the note is the whole of what that turn holds — "Sr. Secretario (Estrada). — (Lee:)" is one printed line, and the secretary took the floor there. The row stays `event`; the label says who the note is about. Filter on `type == "speech"` for anything counting words said, which is what `speakers.parquet` does. |
 | `turn_id` | Groups the passages of one continuous turn. A turn whose only content is a stenographer's note has that note as its one row. A turn interrupted by applause, or split across a page break, keeps one `turn_id` across several rows. **Count turns by this, not by rows.** |
 
 To get from a label to a person, join `speakers.parquet` on

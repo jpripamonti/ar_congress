@@ -1,8 +1,8 @@
 """Re-ask every blind read whether its answer still holds.
 
-`reference/verification/blind_read_*.csv` holds nine rounds in which a reader
-was shown a rendered page and asked who was speaking, without ever being shown
-the parser's answer — 5,463 turns across 506 sittings. Each row records the
+`reference/verification/blind_read_*.csv` holds thirteen rounds in which a
+reader was shown a rendered page and asked who was speaking, without ever being
+shown the parser's answer — 6,819 turns across 691 sittings. Each row records the
 sitting, the page, the words the reader quoted, and what the parser said at the
 time. The release checklist has always required that those answers still stand
 in the re-parsed corpus, and nothing implemented the check: the rounds were run

@@ -1973,6 +1973,40 @@ and 21.5 million words of attributed speech become 25.7.
       sittings, and the rule that explained the rest is a keyword heuristic,
       so that figure is a ceiling rather than a measurement. Worth one pass.
 
+## Phase 38 — a second blind round, and the sheet it broke (September 2026)
+
+- [x] 498 HTML passages drawn fresh (28 overlap the first round of 500) and
+      read by twenty readers who saw the page and never the parser's answer.
+      **497 confirm the parser. The one disagreement is the reader's**: at
+      h203 the page prints `Sr. Pardo. --` directly above the passage and the
+      reader read up past it to the chair's previous label. Evidence in
+      `reference/verification/blind_read_500_html_r2.csv`.
+- [x] The round's ten apparent disagreements were all the sheet, not the
+      parser, and they exposed two faults in how a passage is numbered.
+      **A string count is not a block count**: a sitting prints its contents
+      list before the debate, so the first "Tiene la palabra el señor senador
+      por San Juan." in the file is a line of the summary and not a turn.
+      **And a folded quote matches inside longer words**: "Sí." folds to
+      "si." and was found inside "así.", sending a reader to the tail of
+      somebody else's sentence. Blocks are now placed by walking the file, and
+      a match buried inside a word is not counted. Every one of the 498 rows
+      now lands on the block whose speaker it prints; ten did not before.
+- [x] `--sample-seed` on the audit, so a second round draws passages the first
+      did not see instead of redrawing the ones already answered.
+- [x] `scripts/show_passage.py` — opens an HTML transcript at a passage for a
+      reader, marking the bold runs, since these files have no page numbers.
+- [ ] Nineteen of twenty readers reported the same thing unprompted: the bold
+      run that should wrap a speaker's label instead opens at the section
+      heading above it and closes partway through the name, so the label is
+      not a bold run of its own. The parser reads these correctly — that is
+      what the round measured — but no check states that it does, and the
+      readers are describing the single commonest shape in the era.
+- [ ] `¿` is stored as `)` where the export switched font: 147 of them, plus
+      16 `¡` stored as `(`. Found by a reader who took it for encoding
+      damage. Needs a full scan before any repair: the rule has to tell these
+      from a real parenthesis, and only a corpus-wide count can show it does.
+
+
 - [ ] Group the chamber's own `session_type` labels before counting: `EN
       MINORÍA` and `ESPECIAL EN MINORÍA` name the same thing.
 
