@@ -2009,6 +2009,30 @@ and 21.5 million words of attributed speech become 25.7.
       scans, where the fault is the scan. That leaves ~27,700 words across 50
       sittings, and the rule that explained the rest is a keyword heuristic,
       so that figure is a ceiling rather than a measurement. Worth one pass.
+- [ ] **A SITTING HOLDS THE WRONG DOCUMENT. 2014-09-03_r13.** The special
+      sitting of 3 and 4 September 2014 on the debt swap and the RUFO clause
+      prints 264,787 words; the corpus holds 118,986. **The first 214 pages of
+      floor debate are absent** — pages 9, 60, 120 and 180 were probed on
+      their body text and none is in the corpus, while 223, 224 and 300 are.
+      Worse than the absence: the parser began reading at page 224, where a
+      COMMITTEE MEETING OF 19 AUGUST is appended, and the first row of the
+      corpus for this sitting reads "a las 17 y 18 del martes 19 de agosto de
+      2014". So a large part of what ships under this session_id is a
+      different document of a different date, with its participants counted
+      among the sitting's 58 speakers.
+      **Not a late start.** 37 of 514 PDF sittings begin after page 10 and
+      almost all are legitimate: 2010-04-28_r07 begins at PDF page 96, which
+      carries the printed header "Pág. 9" — 95 pages of contents and Orden del
+      Día listings precede the sitting's own first page, and the parser starts
+      exactly where it opens. 2019-07-17_r07 is the same. Both were reported
+      to this project as lost floor speech and neither is. **The symptom to
+      scan for is not a late start but a parsed date that disagrees with the
+      sitting's own date**, and nothing checks that today.
+      Scan of first/last page per sitting: `scratchpad/late_start.csv`.
+      Found while checking a claim of ~217,000 lost words. That figure does
+      not survive: half of it was 2010-04-28_r07's front matter. The confirmed
+      loss is ~145,800 words in this one sitting, which is still five times
+      the ceiling recorded above for all fifty.
 
 ## Phase 38 — a second blind round, and the sheet it broke (September 2026)
 
