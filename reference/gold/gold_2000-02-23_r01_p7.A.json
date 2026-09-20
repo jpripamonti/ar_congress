@@ -1,0 +1,44 @@
+{
+  "pdf": "2000-02-23_r01_PREPARATORIA.pdf",
+  "page": 7,
+  "page_id": "2000-02-23_r01_p7",
+  "annotator": "A",
+  "opens_mid_utterance": false,
+  "utterance_starts": [
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "Señor senador Antonio Francisco Cafiero: ¿Juráis a la Patria, por Dios y estos Santos Evangelios"
+    },
+    {
+      "speaker_label": "Sr. CAFIERO.-",
+      "first_words": "¡Sí, juro!"
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "Si así no lo hiciereis, Dios y la Patria os lo demanden. (Aplausos.)"
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "Señor senador José Genoud: ¿Juráis a la Patria, por Dios y estos Santos Evangelios"
+    },
+    {
+      "speaker_label": "Sr. GENOUD.-",
+      "first_words": "¡Sí, juro!"
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "Si así no lo hiciereis, Dios y la Patria os lo demanden. (Aplausos.)"
+    }
+  ],
+  "events": [
+    "-Puestos de pie los señores senadores y el público:",
+    "-Puestos de pie los señores senadores y el público:",
+    "-Son las 14 y 28."
+  ],
+  "headings": [],
+  "furniture_seen": [
+    "dateline: 23 de febrero de 2000 | Versión provisional - sesión preparatoria | 7 (with a rule under it)",
+    "signature block at the foot of the text: MARIO A. BALLESTER / Director del Cuerpo de Taquígrafos"
+  ],
+  "notes": "Six printed labels, six turns: the swearing-in of Cafiero as vicepresidente and of Genoud as presidente provisional. The identical stenographer line '-Puestos de pie los señores senadores y el público:' is printed twice, once before each oath, and I listed it twice — it is two separate printed paragraphs, not a duplication error on my part. The '(Aplausos.)' in the chair's third and sixth turns sits inside the speech paragraph, so by rule 4 it is not an event. Both of those turns run on into an unlabelled indented line kept inside the same turn ('Invito al señor senador José Genoud a acercarse al estrado...' and 'Como se ha cumplido con el objetivo propuesto, queda concluida esta sesión preparatoria.'). Typographic point worth flagging: the fourth label is printed with NO space after its terminator — 'Sr. PRESIDENTE.-Señor senador José Genoud:' — whereas every other label on the page has one. I verified this at high magnification; the label itself is unchanged, so I recorded it as 'Sr. PRESIDENTE.-'. In the first turn the colon after 'Cafiero' is set bold like the label, while the parallel colon after 'Genoud' in the fourth turn is not. The chair is printed without a surname throughout. The signature of the Director del Cuerpo de Taquígrafos closes the provisional version and is furniture, not speech; below it the bottom third of the page is blank."
+}

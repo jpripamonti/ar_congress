@@ -1,0 +1,18 @@
+{
+  "pdf": "2000-10-03_r54_ESPECIAL.pdf",
+  "page": 1,
+  "page_id": "2000-10-03_r54_p1",
+  "annotator": "A",
+  "opens_mid_utterance": false,
+  "utterance_starts": [],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [
+    "national coat of arms, centred at the top of the page",
+    "title block: H. SENADO DE LA NACIÓN / VERSIÓN TAQUIGRÁFICA / 54° Reunión – Sesión especial en minoría - 3 de octubre de 2000",
+    "presiding and staff block: Presidencia del señor presidente provisional del H. Senado,doctor José Genoud / Secretarios: señor Mario L. Pontaquarto, doctor Ricardo Mitre y señor Juan Carlos Oyarzún / Prosecretarios: señor Alejandro L. Colombo, doctor Miguel Augusto Fernández Alías, doctor Víctor Ramón Vannini y señor Rodolfo Bernardini (with a rule under it)",
+    "attendance roll in two columns under the label SENADORES:, from AGÚNDEZ, Jorge Alfredo to ZALAZAR, Horacio Aníbal",
+    "absence block at the foot of the right column: LICENCIA / CANTARERO, Emilio Marcelo"
+  ],
+  "notes": "This is the cover and attendance page of the sitting: coat of arms, title block, the presiding officer and secretaries, then the two-column roll of senators present and one on licencia. NOTHING on this page was spoken and no speaker label is printed anywhere, so utterance_starts is empty — anything the parser attributes to a speaker here is a false positive. I left headings empty on purpose: the centred bold lines at the top ('H. SENADO DE LA NACIÓN', 'VERSIÓN TAQUIGRÁFICA', '54° Reunión – Sesión especial en minoría - 3 de octubre de 2000') are the cover's own title matter rather than section headings within the debate, and 'SENADORES:' and 'LICENCIA' are labels on the roll; all of them are recorded under furniture_seen instead. No running header, no page number and no footer are printed on this page — the dateline appears only as part of the title block. Two things look like defects. First, a stray pale-orange dot about three pixels across is printed twice in the body of the roll, once in the right column between 'ZALAZAR, Horacio Aníbal' and 'LICENCIA' and once in the left column below 'MENEM, Eduardo'; it is the only colour on the page apart from the coat of arms, it is not a bullet for any list item, and it looks like a leftover marker from the word-processor file. Second, the presiding line is printed with a missing space, 'H. Senado,doctor José Genoud'. The left column of the roll ends at 'MENEM, Eduardo' and the right column resumes at 'MIKKELSEN LÖTH, Jorge F.', so the roll is continuous and nothing is missing between the columns."
+}

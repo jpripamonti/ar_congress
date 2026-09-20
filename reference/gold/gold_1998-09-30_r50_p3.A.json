@@ -1,0 +1,76 @@
+{
+  "pdf": "1998-09-30_r50_EN_MINORIA.pdf",
+  "page": 3,
+  "page_id": "1998-09-30_r50_p3",
+  "annotator": "A",
+  "opens_mid_utterance": false,
+  "utterance_starts": [
+    {
+      "speaker_label": "Sr. AVELÍN.-",
+      "first_words": "Pido la palabra."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "Tiene la palabra el señor senador por San Juan."
+    },
+    {
+      "speaker_label": "Sr. AVELÍN.-",
+      "first_words": "Señor presidente: ¿cuánto tiempo vamos a esperar para poder formar quórum?"
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "La Presidencia va a llamar por quince minutos improrrogables. Transcurrido ese lapso, si no"
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "Por Secretaría se pasará lista."
+    },
+    {
+      "speaker_label": "Sr. ALASINO.-",
+      "first_words": "Pido la palabra."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "Tiene la palabra el señor senador por Entre Ríos."
+    },
+    {
+      "speaker_label": "Sr. ALASINO.-",
+      "first_words": "Propongo que se llame por cinco minutos más."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "A pedido del presidente del bloque justicialista, se va a llamar por un término"
+    },
+    {
+      "speaker_label": "Sr. LÓPEZ.-",
+      "first_words": "Que se deje constancia de mi presencia, señor presidente."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "Se ha dejado constancia, señor senador."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "Transcurridos los cinco minutos y excedidos todos los plazos establecidos por la Presidencia"
+    }
+  ],
+  "events": [
+    "-En Buenos Aires, a las 17 y 53 del miércoles 30 de septiembre de 1998:",
+    "-Se continúa llamando.",
+    "-A las 18 y 9:",
+    "-Así se hace.",
+    "-Están presentes los señores senadores Aguirre Lanari, Agúndez, Alasino,  Avelín, Bauzá, Cabana, de la Sota, Del Piero, Figueroa, García Arecha, León, López, Losada, Maglietti, Martínez Almudevar, Maya, Melgarejo, Meneghini, Menem, Moreau, O'Donnell, Oyarzún, Pardo, Peña de López, Preto, Romero Feris, Sáez, Sager, Salum, Solana, Storani, Ulloa...",
+    "- ...Uzandizaga, Villarroel y Villaverde.",
+    "-Son las 18 y 15.",
+    "-A las 18 y 20:",
+    "-Son las 18 y 21."
+  ],
+  "headings": [
+    "Manifestaciones en minoría"
+  ],
+  "furniture_seen": [
+    "dateline: 30 de septiembre de 1998 | Versión provisional - sesión ordinaria | 3 (with a rule under it)",
+    "signature block at the foot of the text: MARIO A. BALLESTER / Director del Cuerpo de Taquígrafos"
+  ],
+  "notes": "Twelve labels are printed, so twelve turns, six of them the chair with the identical label 'Sr. PRESIDENTE.-' and different opening words. The eleventh turn ('Se ha dejado constancia, señor senador.') is followed by two indented unlabelled paragraphs ('Ruego a los senadores...' and 'La Presidencia continuará pasando lista...'); by rule 2 I kept them inside that same turn rather than opening new ones — they read as the chair continuing. The chair is printed with no surname throughout, as the pre-2016 convention has it, and I recorded it that way. Every stenographer line here opens with a plain hyphen glued to the word ('-Se continúa llamando.') except the roll-call continuation, which prints a space and an ellipsis after the dash ('- ...Uzandizaga, Villarroel y Villaverde.') — I kept both exactly as printed. The attendance roll is split into two stenographer paragraphs, interrupted by the chair's turns, and I counted them as two separate events since they stand as separate paragraphs. The roll also contains a double space ('Alasino,  Avelín'). Typographic oddity worth flagging: inside the long roll paragraph, the single line 'Maya, Melgarejo, Meneghini, Menem, Moreau, O'Donnell, Oyarzún,' is rendered noticeably lighter and thinner than the lines above and below it, as if that one line carried a different font or weight. The signature of the Director del Cuerpo de Taquígrafos closes the provisional version; it is not speech, so I filed it as furniture. Below it roughly the bottom quarter of the page is blank."
+}

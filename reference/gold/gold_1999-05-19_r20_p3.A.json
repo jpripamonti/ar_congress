@@ -1,0 +1,49 @@
+{
+  "pdf": "1999-05-19_r20_EN_MINORIA.pdf",
+  "page": 3,
+  "page_id": "1999-05-19_r20_p3",
+  "annotator": "A",
+  "opens_mid_utterance": false,
+  "utterance_starts": [
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "Hoy soy yo quien va a dar el uso de la palabra al señor senador por San Juan. (Aplausos.)"
+    },
+    {
+      "speaker_label": "Sr. AVELÍN.-",
+      "first_words": "Señor presidente: según tenía entendido, la sesión iba a comenzar a las 17 y 30."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "Tengo conocimiento de que hay un número muy reducido de señores senadores en la Casa"
+    },
+    {
+      "speaker_label": "Sr. AVELÍN.-",
+      "first_words": "Gracias, señor presidente."
+    },
+    {
+      "speaker_label": "Sr. GENOUD.-",
+      "first_words": "Pido la palabra."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "Para una manifestación en minoría tiene la palabra el señor presidente del bloque de la"
+    },
+    {
+      "speaker_label": "Sr. GENOUD.-",
+      "first_words": "Señor presidente: ante la inminencia del levantamiento de esta sesión por falta de quórum"
+    }
+  ],
+  "events": [
+    "-En Buenos Aires, a las 17 y 37 del miércoles 19 de mayo de 1999:",
+    "-Se continúa llamando.",
+    "-A las 17 y 45:"
+  ],
+  "headings": [
+    "Manifestaciones en minoría"
+  ],
+  "furniture_seen": [
+    "dateline: 19 de mayo de 1999 | Sesión en minoría | 3 (with a rule under it)"
+  ],
+  "notes": "Seven printed labels, seven turns; the chair is printed without a surname ('Sr. PRESIDENTE.-') as the era's convention has it. The '(Aplausos.)' closing the chair's first turn sits inside that same paragraph, so by rule 4 it is part of the words and not an event. The chair's third turn runs on into an unlabelled indented line ('La Presidencia va a llamar por diez minutos más.'), kept inside that turn. Genoud's final turn covers the whole lower half of the page in five indented unlabelled paragraphs, all one turn, and it runs on to page 4. The chair's opening line ('Hoy soy yo quien va a dar el uso de la palabra...') is unusual in the first person but it is plainly the chair speaking, so I listed it as an ordinary turn. Nothing on this page is an inserted document. Typographically the page is clean; no footer, motto or footnote line is printed, and roughly the bottom fifth is blank."
+}

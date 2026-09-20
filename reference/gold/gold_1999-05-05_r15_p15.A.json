@@ -1,0 +1,66 @@
+{
+  "pdf": "1999-05-05_r15_ORDINARIA.pdf",
+  "page": 15,
+  "page_id": "1999-05-05_r15_p15",
+  "annotator": "A",
+  "opens_mid_utterance": false,
+  "utterance_starts": [
+    {
+      "speaker_label": "Sr. SECRETARIO (Oyarzún).-",
+      "first_words": "(Lee:)"
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "En consideración en general. Si no se hace uso de la palabra, se va a votar."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "Queda aprobada la resolución. Se harán las comunicaciones correspondientes."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "Corresponde considerar el dictamen de la Comisión de Acuerdos en el mensaje del Poder Ejecutivo por el que"
+    },
+    {
+      "speaker_label": "Sr. SECRETARIO (Oyarzún).-",
+      "first_words": "(Lee:)"
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "En consideración en general. Si no se hace uso de la palabra, se va a votar."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "Queda aprobada la resolución. Se harán las comunicaciones correspondientes."
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "Corresponde considerar el dictamen de la Comisión de Acuerdos en el mensaje del Poder Ejecutivo por el que"
+    },
+    {
+      "speaker_label": "Sr. SECRETARIO (Oyarzún).-",
+      "first_words": "(Lee:)"
+    },
+    {
+      "speaker_label": "Sr. PRESIDENTE.-",
+      "first_words": "En consideración en general. Si no se hace uso de la palabra, se va a votar."
+    }
+  ],
+  "events": [
+    "-La votación resulta afirmativa.",
+    "-En particular es igualmente afirmativa.",
+    "-La votación resulta afirmativa.",
+    "-En particular es igualmente afirmativa."
+  ],
+  "headings": [
+    "Incorporar dictamen",
+    "19. Ministro plenipotenciario de primera clase, Categoría “B”",
+    "Incorporar dictamen",
+    "20. Ministro plenipotenciario de primera clase, Categoría “B”",
+    "Incorporar dictamen"
+  ],
+  "furniture_seen": [
+    "dateline: 05 de mayo de 1999 | Sesión Ordinaria | 15 (with a rule under it)"
+  ],
+  "notes": "The page opens with a printed label on its very first line ('Sr. SECRETARIO (Oyarzún).- (Lee:)'), so nothing here is a continuation from page 14 and opens_mid_utterance is false. Ten labels, ten turns. The secretary's three turns consist of nothing but '(Lee:)' — by rule 3 that parenthesis is the secretary taking the floor, not an event, so I recorded '(Lee:)' as the first words of his turn. What he was to read is NOT printed: in its place the page prints a small centred bold line 'Incorporar dictamen' ('insert the committee report'), which is a typesetter's insertion placeholder rather than a real section title. I filed those three lines under headings because that is exactly how they are set on the page (centred, bold), but a maintainer should decide whether they belong there or under furniture — they are not section titles and they are not speech. The three 'En consideración en general.' turns each run on into an unlabelled indented line ('Si no se hace uso de la palabra, se va a votar.'), which I kept inside the same turn. The two numbered section headings print the number on its own line above the title, and I joined them in the example's style ('19. Ministro plenipotenciario...'); both carry the identical title, differing only in the nominee named in the chair's following turn (Juan De Lezica for 19, Jorge Alberto Stok Capella for 20). The category letter is printed with curly quotes, Categoría “B”. Minor typographic note: in both of the chair's 'Corresponde considerar' paragraphs the closing words 'categoría “B”.' are set in a visibly lighter, thinner impression than the rest of the line. The last turn on the page runs on to page 16. No footer, no footnote line and no motto are printed."
+}
