@@ -1,0 +1,26 @@
+{
+  "pdf": "2015-02-27_r01_PREPARATORIA.pdf",
+  "page": 7,
+  "page_id": "2015-02-27_r01_p7",
+  "annotator": "A",
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {"speaker_label": "Sr. Giustiniani.-", "first_words": "Pido la palabra."},
+    {"speaker_label": "Sr. Presidente.-", "first_words": "Tiene la palabra el señor senador Giustiniani."},
+    {"speaker_label": "Sr. Giustiniani.-", "first_words": "Señor presidente: en el mismo sentido, quiero plantear una cuestión de privilegio."},
+    {"speaker_label": "Sr. González.-", "first_words": "Pido la palabra."},
+    {"speaker_label": "Sr. Presidente.-", "first_words": "Tiene la palabra el señor senador González."},
+    {"speaker_label": "Sr. González.-", "first_words": "Gracias, señor presidente."}
+  ],
+  "events": [],
+  "headings": [
+    "4. Cuestión de privilegio.",
+    "5. Cuestión de privilegio."
+  ],
+  "furniture_seen": [
+    "top motto: “2015 - Año del Bicentenario del Congreso de los Pueblos Libres”",
+    "dateline: 27 de febrero de 2015 | Sesión preparatoria | Pág. 7",
+    "footer: Dirección General de Taquígrafos"
+  ],
+  "notes": "Six turns, no stenographer's notes. The page opens inside a senator's speech already under way, the tail of an earlier cuestión de privilegio: it quotes at length a draft resolution about suspending Amado Boudou and closes with 'Queda planteada, señor presidente.' That long quoted resolution is spoken aloud by the senator, not an inserted document — he says so himself ('este texto que acabo de leer') — so it stays part of the unlisted opening speech and I did not treat it as a document without a speaker. Both headings are numbered section titles printed bold on their own line; I recorded them with the number and the trailing period as printed. The chair is printed bare, 'Sr. Presidente.-', with no surname, which is normal for this era; I supplied no name. Typographic detail: the terminator's weight is inconsistent — in 'Sr. Giustiniani.-' (first turn) and both 'Sr. Presidente.-' the dash and period sit partly outside the bold, and in the later 'Sr. Giustiniani.-' and 'Sr. González.-' labels the bold stops before the period ('Sr. González' bold, '.-' roman). All are the same kind of label and I normalised none of them away. González's last turn starts at the foot of the page and runs on."
+}

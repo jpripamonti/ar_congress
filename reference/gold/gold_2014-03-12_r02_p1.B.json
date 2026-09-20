@@ -1,0 +1,24 @@
+{
+  "pdf": "2014-03-12_r02_ORDINARIA.pdf",
+  "page": 1,
+  "page_id": "2014-03-12_r02_p1",
+  "annotator": "B",
+  "opens_mid_utterance": false,
+  "utterance_starts": [],
+  "events": [],
+  "headings": [
+    "PRESENTES:",
+    "AUSENTES, CON AVISO:"
+  ],
+  "furniture_seen": [
+    "top motto: \"2014 -Año de Homenaje al Almirante Guillermo Brown, en el Bicentenario del Combate Naval de Montevideo\"",
+    "national coat of arms (image, centred)",
+    "title block: REPÚBLICA ARGENTINA / VERSIÓN TAQUIGRÁFICA / (PROVISIONAL) / CÁMARA DE SENADORES DE LA NACIÓN / Período 132° / 2° Reunión - 1° Sesión ordinaria - 12 de Marzo de 2014",
+    "Presidencia del señor vicepresidente de la Nación, D. Amado Boudou",
+    "Secretarios: señor D. JuanHéctorEstrada y señor D. Juan Horacio Zabaleta",
+    "Prosecretarios: señor D. Luis Borsani, señor D. Mario Daniele y señor D.José Lepere",
+    "attendance roll: two columns of surnames, AGUILAR…ZAMORA under PRESENTES, four names under AUSENTES, CON AVISO",
+    "footer: Dirección General de Taquígrafos"
+  ],
+  "notes": "This is the cover page of the sitting: motto, coat of arms, title block, the presiding officer and the secretaries, then the attendance roll. NO speech is printed on it, so utterance_starts is empty and any speaker the parser reports on this page is a false positive. There is no running dateline row here (the date appears inside the title block instead), and no page number is printed. I listed 'PRESENTES:' and 'AUSENTES, CON AVISO:' as headings because they are printed bold as the roll's own headings; a maintainer may prefer to count them as furniture, since they head a list and not a section of debate. The bold personal names in the title block are set in a heavier weight than the surrounding words, which is decoration, not a speaker label. Typographic defects, printed exactly so: 'JuanHéctorEstrada' with no spaces, 'señor D.José Lepere' with no space after 'D.', and the motto opening '\"2014 -Año de Homenaje' with the space on the wrong side of the dash. The roll lists 'ROJKES de ALPEROVICH' and 'NEGRE DE ALONSO' with inconsistent capitalisation of the particle."
+}

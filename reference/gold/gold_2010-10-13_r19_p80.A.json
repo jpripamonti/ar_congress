@@ -1,0 +1,14 @@
+{
+  "pdf": "2010-10-13_r19_ORDINARIA.pdf",
+  "page": 80,
+  "page_id": "2010-10-13_r19_p80",
+  "annotator": "A",
+  "opens_mid_utterance": true,
+  "utterance_starts": [],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [
+    "dateline: 13 y 14 de octubre de 2010 | Versión Provisional | Pág. 80"
+  ],
+  "notes": "The whole page is the uninterrupted continuation of one speech that began before this page and runs past its foot: eight justified paragraphs, not one speaker label anywhere, no stenographer note, no heading, no footnote and no footer. utterance_starts is therefore legitimately empty and anything the parser attributes to a speaker starting here is a false positive. The only italics are the foreign word 'default' (twice), which is emphasis inside the speech, not a stenographer note. The index CSV's opening_words shows the running header as '1 3 y 14 de octubre'; the page itself prints '13 y 14 de octubre de 2010' with no gap, so that space is an extraction artefact, not something printed."
+}

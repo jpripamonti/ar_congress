@@ -1,0 +1,26 @@
+{
+  "pdf": "2015-02-27_r01_PREPARATORIA.pdf",
+  "page": 7,
+  "page_id": "2015-02-27_r01_p7",
+  "annotator": "B",
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {"speaker_label": "Sr. Giustiniani.-", "first_words": "Pido la palabra."},
+    {"speaker_label": "Sr. Presidente.-", "first_words": "Tiene la palabra el señor senador Giustiniani."},
+    {"speaker_label": "Sr. Giustiniani.-", "first_words": "Señor presidente: en el mismo sentido, quiero plantear una cuestión de privilegio."},
+    {"speaker_label": "Sr. González.-", "first_words": "Pido la palabra."},
+    {"speaker_label": "Sr. Presidente.-", "first_words": "Tiene la palabra el señor senador González."},
+    {"speaker_label": "Sr. González.-", "first_words": "Gracias, señor presidente."}
+  ],
+  "events": [],
+  "headings": [
+    "4. Cuestión de privilegio.",
+    "5. Cuestión de privilegio."
+  ],
+  "furniture_seen": [
+    "top motto: “2015 - Año del Bicentenario del Congreso de los Pueblos Libres”",
+    "dateline: 27 de febrero de 2015 | Sesión preparatoria | Pág. 7",
+    "footer: Dirección General de Taquígrafos"
+  ],
+  "notes": "The page opens inside a cuestión de privilegio already under way — the speaker is quoting his own earlier proyecto de resolución about suspending Amado Boudou — so that speech is not listed as a start; it ends with 'Queda planteada, señor presidente.' The long quoted resolución is inside that speaker's own words (he says 'este texto que acabo de leer'), so I did NOT treat it as an inserted document and it gets no speaker of its own. Headings are printed bold and flush left with a number, a full stop and a trailing full stop ('4. Cuestión de privilegio.'), not centred as in later years; I kept the printed form exactly. The label terminator is inconsistent on this page and I recorded each as printed, all as '.-': in 'Sr. Giustiniani.-' and 'Sr. González.-' the full stop is bold and part of the name, while in 'Sr. Presidente.-' the full stop and hyphen fall outside the bold. The chair is printed with no surname; none supplied. The last turn, González's, runs on past the foot of the page. No stenographer notes on this page."
+}

@@ -1,0 +1,14 @@
+{
+  "pdf": "2006-07-05_r14_ESPECIAL.pdf",
+  "page": 36,
+  "page_id": "2006-07-05_r14_p36",
+  "annotator": "B",
+  "opens_mid_utterance": true,
+  "utterance_starts": [],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [
+    "dateline: 5 de julio de 2006 | Versión provisional - Sesión especial | Pág. 36"
+  ],
+  "notes": "This page carries no speaker label at all: it is five paragraphs from the middle of one senator's speech, which begins before this page and continues past its foot (the last sentence breaks mid-clause). So there is no turn start here, no stenographer's note standing as its own paragraph, and no section heading — anything the parser attributes to a speaker beginning on this page is a false positive. The speaker is addressing the chair ('Más aún, señor presidente') and is not named anywhere on the page, so I did not try to identify him. The page is not an inserted document: it is continuous first-person floor speech about the cuenta de inversión and the debate with the jefe de Gabinete, not a text read into the record. Typography: the speech uses em dashes as parenthetical marks inside sentences ('—la oposición, por supuesto—', '—entre comillas—'), which look at a glance like the dash that opens a stenographer's note but are mid-paragraph and not italic; 'leit motiv' is set in italic inside a roman paragraph; and the first paragraph prints a double space in 'tuvimos que  realizar un seminario'. No footer line is printed."
+}

@@ -1,0 +1,22 @@
+{
+  "pdf": "2001-10-31_r68_EN_MINORIA.pdf",
+  "page": 1,
+  "page_id": "2001-10-31_r68_p1",
+  "annotator": "B",
+  "opens_mid_utterance": false,
+  "utterance_starts": [],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [
+    "national coat of arms, centred at the top of the page",
+    "title block: REPÚBLICA ARGENTINA / VERSIÓN TAQUIGRÁFICA / CÁMARA DE SENADORES DE LA NACIÓN",
+    "sitting line: 68° Reunión - Sesión en minoría - 31 de octubre de 2001",
+    "Presidencia del señor presidente provisional del H. Senado, don Mario A. Losada",
+    "Secretarios: señor Juan Carlos Oyarzún, señor José D. Canata y señor Miguel J. Mamy",
+    "Prosecretarios: señor Juan J. Canals, doctor Miguel Augusto Fernández Alías y señor Rodolfo Bernardini",
+    "horizontal rule below the masthead",
+    "roll heading: SENADORES:",
+    "attendance roll of senator surnames in two columns, AGÚNDEZ to MENEGHINI (left) and MENEM to ZALAZAR (right)"
+  ],
+  "notes": "This is the cover page of a sitting held without quorum ('en minoría'): masthead, the officers of the day, and the two-column list of senators. Nobody speaks on it, so utterance_starts is empty and anything the parser attributes to a speaker here is a false positive. The list is a roll of names only — no 'presentes/ausentes' labels, no stenographer's note. The lower third of the page is blank. Typographic points worth knowing: the officers' names are bold inside roman text, so a bold-run detector may pick 'Mario A. Losada', 'Juan Carlos Oyarzún', 'José D. Canata', 'Miguel J. Mamy', 'Juan J. Canals', 'Miguel Augusto Fernández Alías' and 'Rodolfo Bernardini' out of the masthead and mistake them for speaker labels; none of them ends in a dash. Surnames in the roll are printed in full caps with mixed accenting ('RODRIGUEZ, Manuel Augusto' unaccented next to 'SÁEZ, José María' accented), and 'MIKKELSEN-LÖTH, Jorge F.' carries a hyphen and an umlaut. Nothing looks damaged; the scan is clean."
+}

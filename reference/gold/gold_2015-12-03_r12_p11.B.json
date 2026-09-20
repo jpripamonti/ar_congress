@@ -1,0 +1,96 @@
+{
+  "pdf": "2015-12-03_r12_ESPECIAL.pdf",
+  "page": 11,
+  "page_id": "2015-12-03_r12_p11",
+  "annotator": "B",
+  "opens_mid_utterance": false,
+  "utterance_starts": [
+    {
+      "speaker_label": "Sr. Presidente.-",
+      "first_words": "Entonces, senadora Michetti, tiene la palabra."
+    },
+    {
+      "speaker_label": "Sra. Michetti.-",
+      "first_words": "Vamos a hacer la propuesta para el cargo de presidente provisional del Senado en la persona"
+    },
+    {
+      "speaker_label": "Sr. Presidente.-",
+      "first_words": "Lo ponemos en consideración."
+    },
+    {
+      "speaker_label": "Sr. Presidente.-",
+      "first_words": "Aprobado por unanimidad."
+    },
+    {
+      "speaker_label": "Sr. Pinedo.-",
+      "first_words": "¡Sí, juro!"
+    },
+    {
+      "speaker_label": "Sr. Presidente.-",
+      "first_words": "Si así no lo hiciereis, Dios y la Patria os lo demanden."
+    },
+    {
+      "speaker_label": "Sra. Michetti.-",
+      "first_words": "Me parece que, de acuerdo a lo que dijo el senador Pichetto, serían las autoridades"
+    },
+    {
+      "speaker_label": "Sr. Presidente.-",
+      "first_words": "Sí."
+    },
+    {
+      "speaker_label": "Sra. Michetti.-",
+      "first_words": "Ahí querría que el senador Pichetto propusiera al vicepresidente."
+    },
+    {
+      "speaker_label": "Sr. Presidente.-",
+      "first_words": "Tiene la palabra el señor senador Pichetto."
+    },
+    {
+      "speaker_label": "Sr. Pichetto.-",
+      "first_words": "Señor presidente: a mí me interesa siempre tratar de que la gente, cuando yo hablo, me entienda"
+    },
+    {
+      "speaker_label": "Sr. Presidente.-",
+      "first_words": "Lo ponemos en consideración."
+    },
+    {
+      "speaker_label": "Sr. Presidente.-",
+      "first_words": "Aprobado por unanimidad."
+    },
+    {
+      "speaker_label": "Sr. Presidente.-",
+      "first_words": "Por favor, senador Zamora."
+    },
+    {
+      "speaker_label": "Sr. Zamora.-",
+      "first_words": "¡Sí, juro!"
+    },
+    {
+      "speaker_label": "Sr. Presidente.-",
+      "first_words": "Si así no lo hiciereis, Dios y la Patria os lo demanden."
+    },
+    {
+      "speaker_label": "Sr. Presidente.-",
+      "first_words": "Para hacer su propuesta, tiene la palabra el señor senador Rozas."
+    },
+    {
+      "speaker_label": "Sr. Rozas.-",
+      "first_words": "Señor presidente, señores senadores: en nombre del bloque de la Unión"
+    }
+  ],
+  "events": [
+    "- Se practica la votación.",
+    "- Se practica la votación."
+  ],
+  "headings": [
+    "6. Designación y juramento de presidente provisional del Honorable Senado de la Nación.",
+    "7. Designación y juramento de vicepresidente del Honorable Senado de la Nación.",
+    "8. Designación y juramento del señor vicepresidente 1º del Honorable Senado de la Nación."
+  ],
+  "furniture_seen": [
+    "top motto: “2015 - Año del Bicentenario del Congreso de los Pueblos Libres”",
+    "dateline: 3 de diciembre de 2015 | Sesión especial | Pág. 11",
+    "footer: Dirección General de Taquígrafos"
+  ],
+  "notes": "The page begins with heading 6, not inside a speech, so opens_mid_utterance is false. Eighteen printed labels, eighteen turns: the chair speaks repeatedly in a row ('Lo ponemos en consideración.' then, after the votación note, 'Aprobado por unanimidad.', and in section 7 'Aprobado por unanimidad.' followed immediately by a separately labelled 'Por favor, senador Zamora.'), and each printed label is counted, per rule 2. Unlabelled indented paragraphs that follow a label are NOT counted as new turns: 'Si no se hace uso de la palabra, se va a votar.', 'Le vamos a tomar juramento al senador Pinedo.', the two oath formulas addressed to Pinedo and to Zamora ('Señor senador don … ¿juráis a la Patria…?'), and 'Vamos a pedirle ahora, señora senadora, la propuesta de los secretarios.' — all of these continue the chair's preceding turn. '(Aplausos.)' appears twice printed inside the chair's own paragraph after 'os lo demanden.', so per rule 4 it is part of that turn's words and is not listed as an event; I left it out of first_words. The two stenographer notes are identical in wording, italic, indented, opening with a dash. Nothing here is an inserted document: the oath formulas are spoken by the chair. Both '¡Sí, juro!' turns are one-line answers and are easy to lose. The heading terminator is a full stop in all three, and heading 8 prints the ordinal as '1º' (masculine ordinal sign). Label weight is inconsistent across the page — sometimes the full stop before the hyphen is bold ('Sr. Presidente.-' in the juramento lines), sometimes roman ('Sr. Presidente.-' elsewhere) — but the characters are the same and I recorded one form. Rozas's turn runs on past the foot of the page."
+}

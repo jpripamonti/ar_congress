@@ -1,0 +1,25 @@
+{
+  "pdf": "2006-09-06_r21_ORDINARIA.pdf",
+  "page": 33,
+  "page_id": "2006-09-06_r21_p33",
+  "annotator": "B",
+  "opens_mid_utterance": false,
+  "utterance_starts": [],
+  "events": [],
+  "headings": [
+    "Votación Nominal",
+    "VOTACIÓN EN GENERAL Y PARTICULAR"
+  ],
+  "furniture_seen": [
+    "contents link: (volver), blue and underlined, top right",
+    "masthead: the national coat of arms with the wordmark “Senado de la Nación”",
+    "sitting line: 124° Período Legislativo -  Ordinario - 19° Sesión",
+    "subject caption: DICTAMEN EN EL PROYECTO DE LEY TRANSFIRIENDO A LA MUNICIPALIDAD DE MARCOS JUÁREZ, CÓRDOBA, INMUEBLES E INSTALACIONES DEL ESTADO NACIONAL DONDE FUNCIONÓ LA ESTACIÓN FERROVIARIA DE LA EX LÍNEA GENERAL BARTOLOMÉ MITRE.",
+    "ÓRDEN DEL DÍA 751 (printed in blue)",
+    "(S-539/06) (printed in blue)",
+    "vote header block: Acta N°: 3 | Fecha: 06-09-06 | Hora: 17:55:05 | Tipo de Quórum: mas de la mitad de los miembros del cuerpo | Mayoría Requerida: mas de la mitad de los presentes | Miembros del Cuerpo: 72 | Presidente: PAMPURO José Juan | Desempate: NO",
+    "two-column roll-call table with the column heads “Apellido y Nombre” / “VOTO”, listing every senator with AFIRMATIVO or AUSENTE",
+    "page number printed at the foot: 2"
+  ],
+  "notes": "NO SPEECH ON THIS PAGE. It is an inserted roll-call record (Acta N° 3) on the Senate's own vote-sheet stationery, not floor debate: a masthead, a subject caption, a vote header block and a two-column table of names against AFIRMATIVO/AUSENTE. Nobody utters any of it, so utterance_starts and events are empty, and anything the parser attributes to a speaker here is a false positive — the surnames in the table are the obvious trap, since many of them appear as speaker labels elsewhere in the volume. Judgement call on 'headings': the page has no Diario section number or title, so I listed only the sheet's own two centred title lines ('Votación Nominal', letterspaced and italic bold, and 'VOTACIÓN EN GENERAL Y PARTICULAR') and put the rest of the centred matter under furniture; a maintainer who prefers it may move both to furniture without changing the turn count, which is zero. I set opens_mid_utterance false because the page is a self-contained inserted document rather than the continuation of a speech. STRANGE/DAMAGED: (1) a stray curved pen-like stroke runs down the left margin and crosses into the names column over the rows from GOMEZ DIEZ to KIRCHNER, partly overlapping the first letters of 'GOMEZ DIEZ', 'GONZALEZ de DUHALDE', 'GUINLE', 'IBARRA', 'ISIDORI' and 'KIRCHNER' — it looks like an ink mark or scanning artefact on the original, not typesetting, and the names remain readable. (2) The foot of the page prints '2', the vote sheet's own pagination, while the running page in the volume is 33; this page carries no Diario dateline header at all. (3) 'ÓRDEN DEL DÍA 751' is printed with an accent on the O, which is a misspelling of 'ORDEN'. (4) 'mas de la mitad' appears twice without the accent on 'más'. (5) 'MERA Mario Ruben' is printed with no comma between surname and given names, unlike every other row, and 'PINCHETTI de SIERRA M. Delia' and 'M. PASS  de CRESTO, Laura' are also irregular — the last with a double space."
+}

@@ -1,0 +1,14 @@
+{
+  "pdf": "2006-07-05_r14_ESPECIAL.pdf",
+  "page": 36,
+  "page_id": "2006-07-05_r14_p36",
+  "annotator": "A",
+  "opens_mid_utterance": true,
+  "utterance_starts": [],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [
+    "dateline: 5 de julio de 2006 | Versión provisional - Sesión especial | Pág. 36"
+  ],
+  "notes": "The page holds no printed speaker label at all: it is the unbroken middle of one senator's speech (addressed to ‘señor presidente’), running from the top of the page to the foot and continuing on the next page. Five indented unlabelled paragraphs follow the opening one; by the run-on rule none of them starts a turn, so utterance_starts is empty and that is the real annotation — any speaker the parser attributes on this page is a false positive. No stenographer's note stands as its own paragraph, so there are no events, and there are no headings. Nothing is illegible or damaged. Small typographic points, none of which change the reading: a double space inside ‘tuvimos que  realizar un seminario’, the foreign phrase ‘leit motiv’ set in italic inside the speech (it is emphasis, not a stenographer's note), speech dashes set as em dashes around parentheticals (‘—la oposición, por supuesto—’), and a grammatical slip in the printed text, ‘un organismo de control creada por la reforma constitucional de 1994’, which I left exactly as printed."
+}

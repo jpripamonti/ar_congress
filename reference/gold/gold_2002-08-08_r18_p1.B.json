@@ -1,0 +1,22 @@
+{
+  "pdf": "2002-08-08_r18_EN_MINORIA.pdf",
+  "page": 1,
+  "page_id": "2002-08-08_r18_p1",
+  "annotator": "B",
+  "opens_mid_utterance": false,
+  "utterance_starts": [],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [
+    "national coat of arms, centred at the top of the page",
+    "title block: REPÚBLICA ARGENTINA / VERSIÓN TAQUIGRÁFICA / CÁMARA DE SENADORES DE LA NACIÓN",
+    "sitting line: 18° Reunión - Sesión en minoría - 8 de agosto de 2002",
+    "Presidencia del señor presidente provisional del H. Senado, doctor Juan Carlos Maqueda,",
+    "Secretarios: señor Juan Carlos Oyarzún y señor Jorge Horacio Amarfil",
+    "Prosecretarios: señor Juan J. Canals, señor José D. Canata y señor Alfredo A. Luques",
+    "horizontal rule below the masthead",
+    "roll heading: PRESENTES:",
+    "attendance roll in two columns, AGÚNDEZ to LEZCANO (left) and LÓPEZ ARIAS to ZAVALÍA (right)"
+  ],
+  "notes": "Cover page of a sitting held without quorum, matching the 2001-10-31 cover in layout: masthead, officers of the day, and the roll of those present. No speech at all, so utterance_starts is empty and any speaker the parser finds here is a false positive. Unlike the 2001 cover the roll is headed 'PRESENTES:' rather than 'SENADORES:', and it lists only those present — there is no 'AUSENTES' block on the page, and the bottom third is blank. Typographic oddity worth flagging: the right-hand column starts one line HIGHER than the left, so 'LÓPEZ ARIAS, Marcelo Eduardo' sits level with the rule and above the 'PRESENTES:' heading; read in reading order that first name arrives before the heading that introduces the list. Also, the masthead sets the officers' names in bold inside roman text, so a bold-run detector may take 'Juan Carlos Maqueda', 'Juan Carlos Oyarzún', 'Jorge Horacio Amarfil', 'Juan J. Canals', 'José D. Canata' or 'Alfredo A. Luques' for speaker labels; none ends in a dash. Accenting inside the roll is inconsistent as printed ('MARTI, Rubén Américo' next to 'MARTÍN, Floriana Nélida', 'SEGUI' and 'MAYANS' unaccented). The scan itself is clean."
+}

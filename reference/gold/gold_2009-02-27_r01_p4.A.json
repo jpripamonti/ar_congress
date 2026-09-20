@@ -1,0 +1,24 @@
+{
+  "pdf": "2009-02-27_r01_PREPARATORIA.pdf",
+  "page": 4,
+  "page_id": "2009-02-27_r01_p4",
+  "annotator": "A",
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Tiene la palabra el señor senador Alfredo Martínez."},
+    {"speaker_label": "Sr. Martínez (Alfredo).—", "first_words": "Señor presidente: de acuerdo con lo charlado entre los miembros de los distintos bloques"},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Tiene la palabra el señor senador Petcoff Naidenoff."},
+    {"speaker_label": "Sr. Petcoff Naidenoff.—", "first_words": "Señor presidente: pedí la palabra, en nombre del bloque de la Unión Cívica Radical"},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Tiene la palabra el señor senador Pichetto."},
+    {"speaker_label": "Sr. Pichetto. —", "first_words": "Señor presidente: también quiero ratificar la propuesta de ratificar al señor Juan José Canals"},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Tiene la palabra el señor senador Rodríguez Saá."},
+    {"speaker_label": "Sr. Rodríguez Saá.—", "first_words": "Señor presidente: en nombre del Interbloque Federal vamos a apoyar las propuestas del bloque"}
+  ],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [
+    "dateline: 27 de febrero de 2009 | Sesión preparatoria | Pág. 4",
+    "horizontal rule under the dateline"
+  ],
+  "notes": "Eight labels, eight turns, four of them the chair with an identical label and different words. The page opens mid-speech (the senator proposing Rubén Marín is still speaking) and the last turn, Rodríguez Saá's, runs on past the foot of the page. 'Sr. Martínez (Alfredo).—' carries a parenthesised FORENAME, not an office holder: it distinguishes this Martínez from another senator of the same surname, and the chair's own line calls him 'el señor senador Alfredo Martínez'. I recorded the label exactly as printed rather than normalising it. Terminators are mixed again: a space before the em dash in the chair's four labels and in 'Sr. Pichetto. —', none in 'Sr. Martínez (Alfredo).—', 'Sr. Petcoff Naidenoff.—' and 'Sr. Rodríguez Saá.—'; in every chair label the full stop is roman while the name is bold. The dateline sits unusually high and 'Pág. 4' is printed slightly above the line of the date, overlapping the rule. Typographic oddity inside the speech: 'Unión Cívica Radial' for 'Radical' in Rodríguez Saá's turn, and 'vicepresidente 1°' uses a degree sign. No footer is printed on this page."
+}

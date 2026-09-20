@@ -1,0 +1,26 @@
+{
+  "pdf": "2010-07-14_r14_ORDINARIA.pdf",
+  "page": 77,
+  "page_id": "2010-07-14_r14_p77",
+  "annotator": "A",
+  "opens_mid_utterance": false,
+  "utterance_starts": [
+    {"speaker_label": "Sr. Torres. –", "first_words": "Sí, yo voy a pedir la tolerancia que tuvieron algunos…"},
+    {"speaker_label": "Sr. Presidente (Pampuro). –", "first_words": "Usted iba a insertar."},
+    {"speaker_label": "Sr. Torres. –", "first_words": "Pero quiero terminar. Voy a finalizar diciendo: “El amor es sufrido y bondadoso"},
+    {"speaker_label": "Sra. Negre de Alonso. –", "first_words": "Pido la palabra para una interrupción."},
+    {"speaker_label": "Sr. Presidente (Pampuro). –", "first_words": "La senadora Negre de Alonso le pide una interrupción."},
+    {"speaker_label": "Sr. Torres. –", "first_words": "Ya termino."},
+    {"speaker_label": "Sra. Escudero. –", "first_words": "Fue aludida."},
+    {"speaker_label": "Sr. Torres. –", "first_words": "Bueno, pero que se compute el tiempo."},
+    {"speaker_label": "Sr. Presidente (Pampuro). –", "first_words": "Se lo computo."},
+    {"speaker_label": "Sra. Negre de Alonso. –", "first_words": "Quiero hacer una aclaración. No he discriminado. Creo que estas quince o diecisiete audiencias"},
+    {"speaker_label": "Sr. Torres. –", "first_words": "Con respecto a la adopción, señor presidente, creo que es mucho más importante la adopción"}
+  ],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [
+    "dateline: 14 y 15 de julio de 2010 | Versión Provisional | Pág. 77"
+  ],
+  "notes": "The page opens directly on a printed label (Sr. Torres.), so nothing is mid-utterance at the top. Eleven labels, all en dash with a space on either side; the dash is set bold in some lines and roman in others (e.g. 'Sr. Torres. –' at the top vs. the third label, where the closing period and dash are roman) — treated as the same label per the brief. After 'Sr. Presidente (Pampuro). – Se lo computo.' an unlabelled indented paragraph follows ('Para una interrupción, tiene la palabra la señora senadora Negre de Alonso.'); I read it as a run-on of the chair's same turn, not a new start, per rule 2. No stenographer notes, no headings, no footnotes, no footer printed on this page. The italics on the page are only the standard long-quotation/emphasis kind inside speech, not stenographer notes."
+}

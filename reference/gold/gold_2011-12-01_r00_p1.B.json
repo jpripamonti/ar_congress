@@ -1,0 +1,22 @@
+{
+  "pdf": "2011-12-01_r00_ASAMBLEA.pdf",
+  "page": 1,
+  "page_id": "2011-12-01_r00_p1",
+  "annotator": "B",
+  "opens_mid_utterance": false,
+  "utterance_starts": [],
+  "events": [],
+  "headings": [
+    "SENADORES PRESENTES:",
+    "AUSENTES, CON AVISO:"
+  ],
+  "furniture_seen": [
+    "national coat of arms (engraving) centred at the top",
+    "title block: REPÚBLICA ARGENTINA / VERSIÓN TAQUIGRÁFICA / ASAMBLEA LEGISLATIVA / 1° de diciembre de 2011",
+    "presidency block: Presidencia del señor presidente provisional del H. Senado, senador José Juan Bautista Pampuro / Ocupa el sitial a la derecha de la Presidencia el señor presidente de la Honorable Cámara de Diputados, diputado Eduardo Alfredo Fellner",
+    "secretaries block: Secretarios: Señor D. Juan Héctor Estrada, secretario del Honorable Senado, y señor D. Enrique Hidalgo, secretario de la Honorable Cámara de Diputados",
+    "horizontal rule under the secretaries block",
+    "two-column attendance roll of senators present and senators absent with notice"
+  ],
+  "notes": "This is the cover page of the Legislative Assembly of 1 December 2011: coat of arms, title block, who is in the chair, the two secretaries, and then a two-column attendance roll. NO SPEECH IS PRINTED ON IT — utterance_starts and events are both empty, and anything the parser attributes to a speaker here is a false positive (rule 8). I listed the two bold column heads of the roll, 'SENADORES PRESENTES:' and 'AUSENTES, CON AVISO:', as headings because they are printed as bold section heads; the title, presidency and secretaries blocks I treated as title-page furniture rather than headings. Note that the presidency block is descriptive matter set roman/bold on the cover, not an italic stenographer's note, so I did not record it as an event. Two typographic defects: (1) a stray full stop is printed alone in the left margin, level with the line 'y señor D. Enrique Hidalgo...', with nothing attached to it — it looks like a stray keystroke that survived into the printed page; (2) in the roll the entry reads 'MORANDINI. Norma E.' with a full stop where every other entry has a comma ('MORALES, Gerardo R.'). Both are as printed and I did not tidy them. The roll is set in a smaller size than the title block but is fully legible."
+}

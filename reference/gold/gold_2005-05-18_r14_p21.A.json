@@ -1,0 +1,49 @@
+{
+  "pdf": "2005-05-18_r14_ORDINARIA.pdf",
+  "page": 21,
+  "page_id": "2005-05-18_r14_p21",
+  "annotator": "A",
+  "opens_mid_utterance": false,
+  "utterance_starts": [
+    {"speaker_label": "Sr. Presidente (Guinle). —", "first_words": "En consideración en general."},
+    {"speaker_label": "Sr. Presidente (Guinle). —", "first_words": "Queda aprobada la declaración. Se procederá en consecuencia."},
+    {"speaker_label": "Sr. Presidente (Guinle). —", "first_words": "Corresponde considerar el dictamen de la Comisión de Educación, Cultura, Ciencia y Tecnología en el proyecto de declaración"},
+    {"speaker_label": "Sr. Presidente (Guinle). —", "first_words": "En consideración en general."},
+    {"speaker_label": "Sr. Presidente (Guinle). —", "first_words": "Queda aprobada la declaración. Se procederá en consecuencia."},
+    {"speaker_label": "Sr. Presidente (Guinle). —", "first_words": "Corresponde considerar el dictamen de la Comisión de Educación, Cultura, Ciencia y Tecnología en el proyecto de declaración"},
+    {"speaker_label": "Sr. Presidente (Guinle). —", "first_words": "En consideración en general."},
+    {"speaker_label": "Sr. Presidente (Guinle). —", "first_words": "Queda aprobada la declaración. Se procederá en consecuencia."},
+    {"speaker_label": "Sr. Presidente (Guinle). —", "first_words": "Corresponde considerar el dictamen de la Comisión de Educación, Cultura, Ciencia y Tecnología en el proyecto de declaración"},
+    {"speaker_label": "Sr. Presidente (Guinle). —", "first_words": "En consideración en general."},
+    {"speaker_label": "Sr. Presidente (Guinle). —", "first_words": "Queda aprobada la declaración. Se procederá en consecuencia."}
+  ],
+  "events": [
+    "— La votación resulta afirmativa.",
+    "— En particular es igualmente afirmativa.",
+    "— El texto es el siguiente:",
+    "— La votación resulta afirmativa.",
+    "— En particular es igualmente afirmativa.",
+    "— El texto es el siguiente:",
+    "— La votación resulta afirmativa.",
+    "— En particular es igualmente afirmativa.",
+    "— El texto es el siguiente:",
+    "— La votación resulta afirmativa.",
+    "— En particular es igualmente afirmativa."
+  ],
+  "headings": [
+    "54",
+    "Investigación realizada por alumnos de la Universidad Nacional de la Patagonia San Juan Bosco",
+    "55",
+    "Certamen Nacional de Escritura 2004",
+    "56",
+    "Edificio del correo de Rawson, Chubut",
+    "57"
+  ],
+  "furniture_seen": [
+    "dateline: 18 de mayo de  2005 | Versión provisional - Sesión ordinaria | Pág. 21",
+    "contents link: Orden del Día Nº 293, bold blue underlined, on its own line",
+    "contents link: Orden del Día Nº 294, bold blue underlined, on its own line",
+    "contents link: Orden del Día Nº 295, bold blue underlined, on its own line"
+  ],
+  "notes": "The whole page is the chair alone, disposing of three orders of the day in an identical four-step cycle, so eleven turns carry the same label and only the first words differ; nobody else takes the floor. The page opens with a printed label, so it does not open mid-utterance. In each cycle the indented, unlabelled sentence ‘Si no se hace uso de la palabra, se va a votar.’ continues the chair's ‘En consideración en general.’ turn and is not counted as a new turn (four such paragraphs on the page). After each ‘— El texto es el siguiente:’ the bold blue underlined ‘Orden del Día Nº 293 / 294 / 295’ stands alone on its line: that is the contents hyperlink standing in for the inserted text, never spoken, so it is listed as furniture and given no speaker. The last thing printed on the page is the bare section number ‘57’ with no title — the title falls on the following page — and I listed the orphaned number as a heading. Typographic detail: the dateline prints a double space (‘de mayo de  2005’) and each ‘Corresponde considerar’ turn prints a double space in ‘proyecto de declaración  de la señora senadora Giusti’. The label is set with the office bold, the surname roman in parentheses and the terminator bold, which is one label."
+}

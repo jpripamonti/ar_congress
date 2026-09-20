@@ -1,0 +1,18 @@
+{
+  "pdf": "2012-04-25_r04_ESPECIAL.pdf",
+  "page": 119,
+  "page_id": "2012-04-25_r04_p119",
+  "annotator": "B",
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {"speaker_label": "Sra. Presidenta (Rojkés de Alperovich). –", "first_words": "Tiene la palabra el señor senador Artaza."},
+    {"speaker_label": "Sr. Artaza. –", "first_words": "Señor presidente: leía un libro de anécdotas de un encuentro entre Perón y Balbín"}
+  ],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [
+    "dateline: 25 y 26 de abril de 2012 | Sesión especial | Pág. 119",
+    "a stray full stop printed alone in the left margin just below the dateline rule"
+  ],
+  "notes": "The page opens in the middle of a woman senator's speech on the YPF expropriation (ten unlabelled indented paragraphs, ending 'enarbolar tan fuerte y tan alta la bandera argentina.'), so opens_mid_utterance is true and that speech is not listed as a start. Only two turns START here: the chair giving the floor, and Artaza, whose turn runs onto the next page. No stenographer notes and no headings. The chair is printed as 'Sra. Presidenta (Rojkés de Alperovich). –', bold office, roman surname in parentheses, bold full stop, en dash; Artaza nevertheless opens with 'Señor presidente:' although the chair is a woman — that is what the page prints and I did not tidy it. Two defects worth a maintainer's eye: (1) a stray full stop sits alone in the left margin under the dateline, the same stray mark that appears on the two Assembly pages of 2011-12-01 and 2012-03-01 that I also annotated, so it looks like a recurring template artifact rather than page damage; (2) the ink weight changes in mid-line in several places — the run from 'es imposible imaginar un país. Ya decía el general Perón –a quien por mi orgullosa pertenencia peronista no puedo dejar de nombrar–' is set noticeably lighter and thinner than the text around it, and the same lightness returns in the last two lines of the page. Everything stays legible; it reads like a font substitution or a re-keyed passage pasted into the page, not like loss of text."
+}

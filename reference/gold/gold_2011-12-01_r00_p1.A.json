@@ -1,0 +1,23 @@
+{
+  "pdf": "2011-12-01_r00_ASAMBLEA.pdf",
+  "page": 1,
+  "page_id": "2011-12-01_r00_p1",
+  "annotator": "A",
+  "opens_mid_utterance": false,
+  "utterance_starts": [],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [
+    "national coat of arms, centred at the top",
+    "masthead: REPÚBLICA ARGENTINA / VERSIÓN TAQUIGRÁFICA / ASAMBLEA LEGISLATIVA / 1° de diciembre de 2011",
+    "presidency block: Presidencia del señor presidente provisional del H. Senado, senador José Juan Bautista Pampuro",
+    "presidency block: Ocupa el sitial a la derecha de la Presidencia el señor presidente de la Honorable Cámara de Diputados, diputado Eduardo Alfredo Fellner",
+    "secretaries block: Secretarios: Señor D. Juan Héctor Estrada, secretario del Honorable Senado, y señor D. Enrique Hidalgo, secretario de la Honorable Cámara de Diputados",
+    "horizontal rule under the secretaries block",
+    "roll column heading: SENADORES PRESENTES:",
+    "roll column heading: AUSENTES, CON AVISO:",
+    "two-column attendance roll of senators (BANICEVICH … OSUNA in the left column, PAMPURO … VIGO then the absentees in the right column)",
+    "stray lone period in the left margin, level with the 'y señor D. Enrique Hidalgo' line"
+  ],
+  "notes": "This is the cover of the Asamblea Legislativa plus the senators' attendance roll: no floor speech at all, so utterance_starts, events and headings are all legitimately empty and anything the parser attributes to a speaker on this page is a false positive. The roll is not an inserted document in the rule-3 sense either — it is a printed list of who was present, never read out here. Judgement call worth recording: 'VERSIÓN TAQUIGRÁFICA' / 'ASAMBLEA LEGISLATIVA' are centred and bold and could be read as headings, but they are the masthead of the volume rather than a section heading of the debate, so I filed the whole block, and the two bold roll labels 'SENADORES PRESENTES:' and 'AUSENTES, CON AVISO:', under furniture. There is no running header and no footer on this page. TYPOGRAPHY, two things that look like defects in the original: a stray isolated period sits alone in the left margin beside the Hidalgo line, and one roll entry is punctuated 'MORANDINI. Norma E.' with a period where every other entry uses a comma."
+}

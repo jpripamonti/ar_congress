@@ -1,0 +1,39 @@
+{
+  "pdf": "2004-10-06_r27_ORDINARIA.pdf",
+  "page": 43,
+  "page_id": "2004-10-06_r27_p43",
+  "annotator": "A",
+  "opens_mid_utterance": false,
+  "utterance_starts": [
+    {"speaker_label": "Sr. Secretario (Estrada). —", "first_words": "Se registraron 37 votos por la afirmativa y 16 por la negativa. La votación resulta afirmativa."},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Queda aprobado"},
+    {"speaker_label": "Sra. Colombo. —", "first_words": "Señor presidente: solicito que se deje constancia de mi voto afirmativo."},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Se deja constancia."},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Tiene la palabra la señora senadora por Buenos Aires."},
+    {"speaker_label": "Sr. Müller. —", "first_words": "Este artículo expresa: “Sin perjuicio de lo dispuesto en el artículo anterior, conocerá la jurisdicción federal"},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "¿Este texto está consensuado?"},
+    {"speaker_label": "Sr. Escudero. —", "first_words": "Sí, señor presidente."},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Si no se hace uso de la palabra, se va a votar el artículo 3° con la redacción propuesta."},
+    {"speaker_label": "Sr. Secretario (Estrada). —", "first_words": "Se registraron 51 votos por la afirmativa, 3 por la negativa y ninguna abstención."},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Queda aprobado."},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Tiene la palabra la señora senadora por Buenos Aires."},
+    {"speaker_label": "Sr. Müller. —", "first_words": "En este artículo, el proyecto expresa: “En caso de duda sobre la jurisdicción competente prevalecerá la federal.”"},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "¿Existe acuerdo?"},
+    {"speaker_label": "Sra. Escudero. —", "first_words": "Aceptamos la modificación propuesta, señor presidente."},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Tiene la palabra el señor senador por Salta."},
+    {"speaker_label": "Sr. López Arias. —", "first_words": "Señor presidente: quiero proponer algunas reglas prácticas para tratar de resolver problemas que seguramente"}
+  ],
+  "events": [
+    "— El resultado de la votación surge del Acta N°  4",
+    "— Se enuncia el artículo 3°:",
+    "— Se practica la votación por medios electrónicos.",
+    "— El resultado de la votación surge del Acta N°  5",
+    "— Se enuncia el artículo 4°:"
+  ],
+  "headings": [],
+  "furniture_seen": [
+    "dateline: 6 de octubre de 2004 | Versión provisional - Sesión ordinaria | Pág. 43",
+    "contents links: “Acta N°  4” and “Acta N°  5” printed in blue inside the two stenographer lines about the voting result"
+  ],
+  "notes": "The page opens with a printed label (Sr. Secretario (Estrada).), so it does not open mid-utterance; the last turn (Sr. López Arias) runs on past the foot of the page. Labels printed as ‘Sr. Presidente.’ with no surname, as this era does. Two typographic oddities, recorded as printed and not tidied: (a) the chair twice gives the floor to ‘la señora senadora por Buenos Aires’ and the label that answers is ‘Sr. Müller.’, and (b) the same person answers as ‘Sr. Escudero.’ in one turn and ‘Sra. Escudero.’ a few lines later — the ‘Sr.’ forms look like typist errors. In two of the chair's labels the period after ‘Presidente’ is set roman while the name is bold (‘Sr. Presidente. —’ before ‘Queda aprobado’), which is weight variation inside one label, not two labels. The first ‘Queda aprobado’ is printed with no closing period; the second has one. The dash after the label varies: ‘Sr. Presidente. —Tiene la palabra’ has no space after the em dash, and one has a doubled space (‘. —   Si no se hace uso’). Inside Sr. Müller's first turn the stenographer's bracketed aside ‘[falta la “b”, porque el despacho dice “sujetiva”, de sujeto]’ sits inside the quoted article text, so it stays part of that speech. Later in López Arias's speech the page prints ‘del artículo 4E:’ where the sense requires 4°, and his quotation opens with a straight double quote (\") rather than the curly quotes used elsewhere on the page. The two blue ‘Acta N° 4/5’ strings are contents hyperlinks, but they are set inside the italic stenographer lines, so I kept each whole line as one event and also listed the links as furniture. No inserted document on this page: everything López Arias reads is inside his own speech."
+}

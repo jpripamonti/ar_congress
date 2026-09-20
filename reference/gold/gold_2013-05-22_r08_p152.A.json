@@ -1,0 +1,16 @@
+{
+  "pdf": "2013-05-22_r08_ORDINARIA.pdf",
+  "page": 152,
+  "page_id": "2013-05-22_r08_p152",
+  "annotator": "A",
+  "opens_mid_utterance": true,
+  "utterance_starts": [],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [
+    "top motto: “2013 - Año del Bicentenario de la Asamblea General Constituyente de 1813”",
+    "dateline: 22 de mayo de 2013 | Sesión ordinaria | Pág. 152",
+    "footer: Dirección General de Taquígrafos"
+  ],
+  "notes": "The page carries no speaker label at all: it is one continuous stretch of a single senator's speech that began on an earlier page, so opens_mid_utterance is true and utterance_starts is empty. Anything the parser attributes to a speaker on this page is a false positive. The speech ends at 'Solo se oponen los que siempre se oponen.' roughly 60% down the page and the rest of the type area is blank, which suggests the passage is a speech inserted into the record (an 'inserción') set to end on its own page rather than floor speech running on; I did not, however, find any printed marker saying so, so I have left it as ordinary speech and only flag the blank remainder. Typographically strange: several passages are set in a visibly different, lighter, more monoline face than the surrounding serif — the quotation '“Es injusto porque premia a los que evadieron” dicen. Pero yo, desde mis años de argentina,', the sentence beginning 'Como dice Alfredo Zaiat: “…su objetivo es macroeconómico…”', and 'Pero los opositores de siempre se siguen oponiendo… Hay voces que claman por una devaluación, 40% se ha llegado a decir….Otros reclaman'. That looks like a font-substitution accident in the PDF rather than deliberate emphasis; the ellipses in those stretches also render as spaced dots and 'decir….Otros' is printed with no space after the ellipsis. The word 'argentina' in 'desde mis años de argentina' is printed lowercase. Only 'blue' and 'todos' are genuine italic/bold emphasis."
+}

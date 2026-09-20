@@ -1,0 +1,29 @@
+{
+  "pdf": "2005-11-29_r39_ESPECIAL.pdf",
+  "page": 5,
+  "page_id": "2005-11-29_r39_p5",
+  "annotator": "B",
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {"speaker_label": "Sra. senadora electa Fellner. —", "first_words": "¡Sí, juro!"},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Si así no lo hiciereis, Dios y la Patria os lo demanden. (Aplausos.)"},
+    {"speaker_label": "Sr. senador electo Jenefes. —", "first_words": "¡Sí, juro!"},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Si así no lo hiciereis, Dios y la Patria os lo demanden. (Aplausos.)"},
+    {"speaker_label": "Sr. senador electo Morales. —", "first_words": "¡Sí, juro!"},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Si así no lo hiciereis, Dios y la Patria os lo demanden. (Aplausos.)"},
+    {"speaker_label": "Sra. senadora electa Maza. —", "first_words": "¡Sí, juro!"},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Si así no lo hiciereis, Dios y la Patria os lo demanden. (Aplausos.)"},
+    {"speaker_label": "Sr. senador electo Menem. —", "first_words": "¡Sí, juro!"},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Si así no lo hiciereis, Dios y la Patria os lo demanden. (Aplausos.)"},
+    {"speaker_label": "Sra. senadora electa Quintela. —", "first_words": "¡Sí, juro!"},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Si así no lo hiciereis, Dios y la Patria os lo demanden. (Aplausos.)"},
+    {"speaker_label": "Sr. senador electo Closs. —", "first_words": "¡Sí, juro!"},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Si así no lo hiciereis, Dios y la Patria os lo demanden. (Aplausos.)"}
+  ],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [
+    "dateline: 29 de noviembre de 2005 | Sesión especial | Πάγ. 5 (the page-number word is printed in Greek letters, see notes)"
+  ],
+  "notes": "A swearing-in page: the chair puts the oath to each senator-elect in turn and each answers '¡Sí, juro!'. The page opens in the middle of the chair's oath question to Fellner (the first two lines, 'que ella os ha confiado para el Congreso Legislativo Federal...'), so that turn is not listed. Fourteen printed labels, fourteen turns; the seven chair turns are word-for-word identical in their opening sentence, and I left first_words identical rather than reaching into the following paragraph, because that paragraph (the next oath question, e.g. 'Señor senador nacional electo por la provincia de Jujuy, doctor Guillermo Raúl Jenefes: ...') is an unlabelled run-on of the same chair turn, not a new turn. No events: every '(Aplausos.)' on the page is printed in italic inside the chair's own paragraph, at the end of his sentence, never as a paragraph of its own, so by the convention they belong to that turn's words. The senators-elect are labelled with the full formula 'Sr./Sra. senador(a) electo/a <surname>. —', which I recorded as printed rather than reducing to the surname form used elsewhere in the volume. DAMAGE WORTH CHECKING: the running header prints the page-number word in Greek characters — 'Πάγ. 5' instead of 'Pág. 5' — on this page. The same substitution does not occur on the other pages I annotated, and it looks like a font or encoding accident in this sitting's file rather than anything the chamber printed. Also the header omits 'Versión provisional -', which the other pages carry. Minor: 'licenciada Teresita  Nicolasa Quintela' is printed with a double space. The page ends mid-sentence in the chair's oath question to Viana."
+}

@@ -1,0 +1,18 @@
+{
+  "pdf": "2008-03-12_r02_ORDINARIA.pdf",
+  "page": 18,
+  "page_id": "2008-03-12_r02_p18",
+  "annotator": "A",
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Tiene la palabra el señor senador Filmus."},
+    {"speaker_label": "Sr. Filmus. —", "first_words": "Señor presidente: es para apoyar desde el bloque del Frente para la Victoria la iniciativa"}
+  ],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [
+    "dateline: 12 de marzo de 2008 | Versión provisional - Sesión ordinaria | Pág. 18",
+    "horizontal rule under the dateline"
+  ],
+  "notes": "The page opens in the middle of the previous senator's speech (it ends '...más racionalidad, más Argentina.'), so that speech is not listed. Two labels start turns here; the chair is printed with no surname, as usual before 2016. In both labels the bold runs through the full stop but the em dash is roman, with a space on each side. Filmus's turn runs on past the foot of the page. The word 'royalties' is set in italics inside Filmus's speech — it is a foreign word in running text, not a stenographer's note. No footer is printed on this page."
+}

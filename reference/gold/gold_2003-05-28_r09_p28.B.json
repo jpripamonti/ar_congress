@@ -1,0 +1,45 @@
+{
+  "pdf": "2003-05-28_r09_ORDINARIA.pdf",
+  "page": 28,
+  "page_id": "2003-05-28_r09_p28",
+  "annotator": "B",
+  "opens_mid_utterance": false,
+  "utterance_starts": [
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Queda aprobada la comunicación. Se procederá en consecuencia."},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Corresponde considerar el dictamen de la Comisión de Presupuesto y Hacienda en el proyecto de resolución del señor senador Morales"},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "En consideración en general."},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Queda aprobada la resolución. Se procederá en consecuencia."},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Corresponde considerar el dictamen de la Comisión de Presupuesto y Hacienda en el proyecto de comunicación de la señora senadora Perceval"},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "En consideración en general."},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Queda aprobada la comunicación. Se procederá en consecuencia."},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Corresponde considerar el dictamen de la Comisión de Presupuesto y Hacienda en el proyecto de comunicación del señor senador Lamberto"},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "En consideración en general."},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Queda aprobada la comunicación. Se procederá en consecuencia."}
+  ],
+  "events": [
+    "— La votación resulta afirmativa.",
+    "— En particular es igualmente afirmativa.",
+    "— El texto es el siguiente:",
+    "— La votación resulta afirmativa.",
+    "— En particular es igualmente afirmativa.",
+    "— El texto es el siguiente:",
+    "— La votación resulta afirmativa.",
+    "— En particular es igualmente afirmativa.",
+    "— El texto es el siguiente:",
+    "— La votación resulta afirmativa.",
+    "— En particular es igualmente afirmativa."
+  ],
+  "headings": [
+    "35 / Orden del Día N° / Partidas asignadas a universidades",
+    "36 / Orden del Día N° 25 / Incremento de partidas presupuestarias",
+    "37 / Orden del Día N° 26 / Convenio de Financiamiento Ordenado",
+    "38 / Orden del Día N° 27"
+  ],
+  "furniture_seen": [
+    "dateline: 28 de mayo de 2003 | Sesión ordinaria | Pág 28, with a rule under it",
+    "contents link, blue and underlined: Orden del Día Nº 24",
+    "contents link, blue and underlined: Orden del Día Nº 25",
+    "contents link, blue and underlined: Orden del Día Nº 26"
+  ],
+  "notes": "A page of routine approvals: the chair is the only voice, ten labels, ten turns, all printed WITHOUT a surname ('Sr. Presidente. —'), which is the pre-2016 convention — I did not supply a name. Three complete items (35, 36, 37) plus the tail of one from the previous page at the top and the head of item 38 at the bottom. Each chair turn beginning 'En consideración en general.' runs on in an unlabelled paragraph ('Si no se hace uso de la palabra, se va a votar.'); that is the same turn, not a new one. Eleven notes stand as their own paragraphs, so all eleven are events, including the three 'El texto es el siguiente:' lines. Where that line announces the text of an Orden del Día, the text itself is NOT printed here: what follows is a blue underlined contents link ('Orden del Día Nº 24', '25', '26') standing in for it, which is navigation furniture, not speech, and not an inserted document printed on this page. DEFECT worth a maintainer's attention: the heading of item 35 prints 'Orden del Día N°' with the number missing altogether, although the chair's paragraph right below it and the link under it both say Nº 24. Items 36, 37 and 38 carry their numbers normally, so this is a one-off hole in the heading, not a scan problem. Note also that the headings use a degree sign ('N°') while the body text and the links use the ordinal ('Nº'), and the dateline prints 'Pág 28' with no period. Item 38's title did not fit on the page; only its number and 'Orden del Día N° 27' are printed here."
+}

@@ -1,0 +1,27 @@
+{
+  "pdf": "2002-08-22_r20_EN_MINORIA.pdf",
+  "page": 5,
+  "page_id": "2002-08-22_r20_p5",
+  "annotator": "A",
+  "opens_mid_utterance": false,
+  "utterance_starts": [
+    {"speaker_label": "Sr. Busti. —", "first_words": "Perdón, señor presidente. La senadora Bar está presente."},
+    {"speaker_label": "Sr. Presidente (López Arias). —", "first_words": "Quedará constancia."},
+    {"speaker_label": "Sr. Presidente (López Arias). —", "first_words": "Señores senadores: la buena voluntad de esta Presidencia excedió largamente las reglas establecidas"},
+    {"speaker_label": "Sr. Menem. —", "first_words": "Pido la palabra..."},
+    {"speaker_label": "Sr. Presidente (López Arias). —", "first_words": "De modo que, senador Menem, queda levantada la sesión por falta de quórum."}
+  ],
+  "events": [
+    "— Se encuentran presentes los señores senadores Agúndez, Baglini, Busti...",
+    "— Se incorpora a la sesión la señora senadora Bar.",
+    "— ... Chiappe, Colazo, Curletti, Escudero, Falcó, Gómez de Bertone, Gómez Diez, Guinle, Jenefes, Lescano, Losada, Maestro, Marti, Mazza, Menem, Morales, Moro, Passo, Paz, Prades, Puerta, Raso, Salvatori, Sapag, Seguí, Taffarel, Terragno, Usandizaga, Walter y López Arias.",
+    "— Son las 13 y 50."
+  ],
+  "headings": [],
+  "furniture_seen": [
+    "dateline: 22 de agosto de 2002 | Versión provisional - sesión en minoría | Πáγ. 5 (the page number is printed in corrupted glyphs — see notes)",
+    "rule under the dateline",
+    "sign-off block at the end of the sitting: RUBÉN A. MARINO / Director del Cuerpo de Taquígrafos"
+  ],
+  "notes": "5 turns, 4 events. This is the last page of the sitting: the chair lifts it for want of a quorum, the closing time note follows, and the stenographers' director signs off. The bottom two thirds of the page are blank.\n\nopens_mid_utterance is false. The first thing printed is a stenographer's note that begins with its own dash ('— Se encuentran presentes los señores senadores Agúndez, Baglini, Busti...'), so no speech is in progress across the page break; the roll-call it belongs to carries over from the previous page, but nobody's words are cut off here. The trailing '...' on that note and the leading '...' on the third note ('— ... Chiappe, Colazo, ...') are the printer's way of showing the roll continues; both are recorded as printed. The unlabelled indented line 'Continúa la toma de lista de los senadores presentes.' runs on from the chair's 'Quedará constancia.' turn and is not a separate turn.\n\nDAMAGE / TYPESETTING DEFECT, the clearest thing on the page: the page number in the running header is not 'Pág. 5'. It is set in Greek or Symbol glyphs — a capital Pi, then 'á', then a lowercase gamma — printing as 'Πáγ. 5', and it sits too low, so the descender of the gamma crosses the horizontal rule under the header. The word is legible only by context. A text layer over this header will not yield 'Pág'.\n\nThe label terminator is an em dash with a space each side throughout. In the first two chair labels the period after the parenthesis is bold; in the last one ('De modo que, senador Menem...') the same period is set roman. I treated all three as the same label, 'Sr. Presidente (López Arias). —', since the brief says a mixed-weight label is still one label.\n\nSenator Menem's turn is a bare interruption, 'Pido la palabra...', printed with a trailing ellipsis and cut off by the chair; it is short but it is a turn and it is listed. The names inside the roll-call notes are printed with accents that differ from the cover-page roll of the same Senate ('Marti' and 'Seguí' here, 'MARTI' and 'SEGUI' there); I recorded them as this page prints them."
+}

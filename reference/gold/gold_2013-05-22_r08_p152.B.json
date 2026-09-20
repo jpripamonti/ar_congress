@@ -1,0 +1,16 @@
+{
+  "pdf": "2013-05-22_r08_ORDINARIA.pdf",
+  "page": 152,
+  "page_id": "2013-05-22_r08_p152",
+  "annotator": "B",
+  "opens_mid_utterance": true,
+  "utterance_starts": [],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [
+    "top motto: “2013 - Año del Bicentenario de la Asamblea General Constituyente de 1813”",
+    "dateline: 22 de mayo de 2013 | Sesión ordinaria | Pág. 152",
+    "footer: Dirección General de Taquígrafos"
+  ],
+  "notes": "No speaker label is printed anywhere on this page: it is the continuation of a speech begun earlier (on el blanqueo de capitales / el dólar blue), so opens_mid_utterance is true and utterance_starts is empty. Anything the parser attributes to a speaker starting here is a false positive. Two things look typographically wrong. (1) The printed text stops after 'Solo se oponen los que siempre se oponen.' at roughly two thirds down the page and the lower third is blank, with no heading, no stenographer note and no label to close the speech — the speech seems to be cut off by the page break rather than finished. (2) Several stretches are set in a visibly lighter, narrower serif than the surrounding body text and switch back mid-sentence: '“Es injusto porque premia a los que evadieron”' (switches back at 'dicen.'), 'Como dice Alfredo Zaiat: “…su objetivo es macroeconómico … energética…”.', and 'Pero los opositores de siempre se siguen oponiendo… Hay voces…' with further patches in that same paragraph ('devaluación, 40% ... ha llegado a decir….Otros reclaman volver al mercado de capitales y el'). This looks like a font-substitution or paste-in defect in the source file and may affect text extraction of exactly those runs. Also printed with no space after the ellipsis: 'decir….Otros'."
+}

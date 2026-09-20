@@ -1,0 +1,21 @@
+{
+  "pdf": "2000-10-03_r54_ESPECIAL.pdf",
+  "page": 1,
+  "page_id": "2000-10-03_r54_p1",
+  "annotator": "B",
+  "opens_mid_utterance": false,
+  "utterance_starts": [],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [
+    "coat of arms of Argentina, centred at the head of the page",
+    "masthead: H. SENADO DE LA NACIÓN / VERSIÓN TAQUIGRÁFICA / 54° Reunión – Sesión especial en minoría - 3 de octubre de 2000",
+    "presiding block: Presidencia del señor presidente provisional del H. Senado,doctor José Genoud",
+    "Secretarios: señor Mario L. Pontaquarto, doctor Ricardo Mitre y señor Juan Carlos Oyarzún",
+    "Prosecretarios: señor Alejandro L. Colombo, doctor Miguel Augusto Fernández Alías, doctor Víctor Ramón Vannini y señor Rodolfo Bernardini",
+    "horizontal rule below the presiding block",
+    "roll heading: SENADORES: followed by the two-column attendance list, AGÚNDEZ to ZALAZAR",
+    "roll heading: LICENCIA followed by CANTARERO, Emilio Marcelo"
+  ],
+  "notes": "This is the COVER PAGE of the sitting: masthead, presiding officers, and the attendance roll in two columns. NO SPEECH AT ALL — utterance_starts is deliberately empty, so anything the parser attributes to a speaker on this page is a false positive. I judged the presiding block and the roll to be page furniture rather than headings, and left headings empty, because nothing here opens an item of business; a maintainer could defensibly put 'SENADORES:' and 'LICENCIA' under headings instead, and that is the one call on this page I was genuinely unsure about. The names are printed surname-first in caps, which is the roll format, not speaker labels. Two flaws to flag. First, a typesetting slip in the presiding line: 'H. Senado,doctor José Genoud' has no space after the comma. Second, the page carries two small pale-orange square marks sitting alone on otherwise blank lines — one between the end of the right-hand column ('ZALAZAR, Horacio Aníbal') and the word 'LICENCIA', another far down the empty left margin near the foot of the page. I enlarged both; they are not characters and not punctuation, and they look like broken image placeholders or stray bullets left in the file. Nothing is illegible."
+}

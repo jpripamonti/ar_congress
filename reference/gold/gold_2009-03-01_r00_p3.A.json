@@ -1,0 +1,19 @@
+{
+  "pdf": "2009-03-01_r00_ASAMBLEA.pdf",
+  "page": 3,
+  "page_id": "2009-03-01_r00_p3",
+  "annotator": "A",
+  "opens_mid_utterance": false,
+  "utterance_starts": [],
+  "events": [],
+  "headings": [
+    "AUSENTES CON AVISO",
+    "LICENCIA"
+  ],
+  "furniture_seen": [
+    "attendance roll: two columns of surnames continuing from the previous page (MERCHAN … ROMÁN on the left, ROSSI … ZAVALLO on the right)",
+    "vertical rule dividing the two columns, and a horizontal rule closing the right-hand column",
+    "editorial marginal note, highlighted in yellow: *RIVAS, Jorge – no incorporado"
+  ],
+  "notes": "Attendance roll of the Legislative Assembly, continued from the previous page: no speech, no stenographer's note, no dateline, no running header and no footer anywhere on the page, so utterance_starts is empty and anything the parser attributes to a speaker here is a false positive. The bold 'AUSENTES CON AVISO' and 'LICENCIA' are listed as headings because they are printed as standalone bold headings of the lower half of the roll; a maintainer may prefer to count them as furniture along with the roll. DEFECT WORTH FLAGGING: the line '*RIVAS, Jorge – no incorporado' is printed on a YELLOW HIGHLIGHT under LICENCIA — a working annotation left in by whoever prepared the file, not chamber text. It carries a leading asterisk and an en dash, and no other line on the page is highlighted; the asterisk has no matching footnote on this page. The two names beginning with a lower-case particle ('del CAMPILLO, Héctor Eduardo') and the unaccented surnames (MERCHAN, RODRIGUEZ, MARTINEZ GARBINO) are printed that way. The entries under AUSENTES CON AVISO and LICENCIA are indented by one space relative to the names above them, and 'AGOSTO, Walter Alfredo' by two."
+}

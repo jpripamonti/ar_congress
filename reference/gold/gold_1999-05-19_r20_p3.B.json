@@ -1,0 +1,28 @@
+{
+  "pdf": "1999-05-19_r20_EN_MINORIA.pdf",
+  "page": 3,
+  "page_id": "1999-05-19_r20_p3",
+  "annotator": "B",
+  "opens_mid_utterance": false,
+  "utterance_starts": [
+    {"speaker_label": "Sr. PRESIDENTE.-", "first_words": "Hoy soy yo quien va a dar el uso de la palabra al señor senador por San Juan. (Aplausos.)"},
+    {"speaker_label": "Sr. AVELÍN.-", "first_words": "Señor presidente: según tenía entendido, la sesión iba a comenzar a las 17 y 30."},
+    {"speaker_label": "Sr. PRESIDENTE.-", "first_words": "Tengo conocimiento de que hay un número muy reducido de señores senadores en la Casa; sólo cuarenta y dos."},
+    {"speaker_label": "Sr. AVELÍN.-", "first_words": "Gracias, señor presidente."},
+    {"speaker_label": "Sr. GENOUD.-", "first_words": "Pido la palabra."},
+    {"speaker_label": "Sr. PRESIDENTE.-", "first_words": "Para una manifestación en minoría tiene la palabra el señor presidente del bloque de la Unión Cívica Radical."},
+    {"speaker_label": "Sr. GENOUD.-", "first_words": "Señor presidente: ante la inminencia del levantamiento de esta sesión por falta de quórum"}
+  ],
+  "events": [
+    "-En Buenos Aires, a las 17 y 37 del miércoles 19 de mayo de 1999:",
+    "-Se continúa llamando.",
+    "-A las 17 y 45:"
+  ],
+  "headings": [
+    "Manifestaciones en minoría"
+  ],
+  "furniture_seen": [
+    "dateline: 19 de mayo de 1999 | Sesión en minoría | 3"
+  ],
+  "notes": "Seven turns, three stenographer's notes. The '(Aplausos.)' closing the chair's first turn is printed inside that paragraph, so per rule 4 it is part of the speech and not an event. The chair's third turn runs on into an indented unlabelled paragraph ('La Presidencia va a llamar por diez minutos más.') which is the same turn, not a new one. Senator Genoud's final speech starts here and continues past the foot of the page, so it is listed as a start. The chair label carries no surname throughout. Nothing looked damaged; the only oddity is that the dashes the speech uses for parenthetical asides ('-cosa que lamentamos seriamente-', '-más de setecientas viviendas...-') are plain hyphens identical to the dash that opens a stenographer's note, so a parser keying on a leading dash could mistake a wrapped line for a note — none of them start a line on this page, though."
+}

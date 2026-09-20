@@ -1,0 +1,20 @@
+{
+  "pdf": "2007-03-14_r02_ORDINARIA.pdf",
+  "page": 1,
+  "page_id": "2007-03-14_r02_p1",
+  "annotator": "B",
+  "opens_mid_utterance": false,
+  "utterance_starts": [],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [
+    "national coat of arms, centred at the top of the page",
+    "masthead: REPÚBLICA ARGENTINA / VERSIÓN TAQUIGRÁFICA / (PROVISIONAL) / CÁMARA DE SENADORES DE LA NACIÓN",
+    "sitting line: 2° Reunión - 1° Sesión ordinaria - 14 de marzo de 2007",
+    "presidency line: Presidencia del señor vicepresidente de la Nación, licenciado Daniel Osvaldo Scioli, del señor presidente provisional del H. Senado, doctor José Juan Bautista Pampuro y de la señora vicepresidenta 1° del H. Senado, doctora Mirian Belén Curletti",
+    "Secretarios: señor Juan Héctor Estrada y señor Carlos Alberto Machiaroli",
+    "Prosecretarios: señor Juan J. Canals, señor Néstor H. Righetti y señor Roberto Vicente Maiques",
+    "attendance roll in two columns under the bold column headings PRESENTES, AUSENTES CON AVISO and LICENCIA"
+  ],
+  "notes": "Title page of the sitting plus the attendance roll: there is no floor speech on it at all, so utterance_starts is empty and anything the parser attributes to a speaker here is a false positive. I put PRESENTES / AUSENTES CON AVISO / LICENCIA under furniture rather than headings: they are bold column labels of the roll, not section headings of the debate, and treating them as headings would create sections that hold no speech. There is no running header and no 'Dirección General de Taquígrafos' footer on this page. Typographic defect: the roll prints 'FELLNER, Lilia na B.' with a space inside the forename — checked at high magnification, the printed page really reads 'Lilia na', a broken 'Liliana'. 'GOMEZ DIEZ Ricardo' is printed with no comma after the surname, unlike every other line in the list."
+}

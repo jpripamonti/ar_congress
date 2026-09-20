@@ -1,0 +1,17 @@
+{
+  "pdf": "2012-03-01_r00_ASAMBLEA.pdf",
+  "page": 2,
+  "page_id": "2012-03-01_r00_p2",
+  "annotator": "A",
+  "opens_mid_utterance": false,
+  "utterance_starts": [],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [
+    "dateline: 1° de marzo de 2012 | Versión provisional – Asamblea Legislativa | Pág. 2",
+    "roll column heading: DIPUTADOS NACIONALES:",
+    "two-column attendance roll of deputies, alphabetical, running ABDALA DE MATARAZZO … CREMER de BUSTI in the left column and CUCCOVILLO … LARROQUE in the right, continuing onto the next page",
+    "stray lone period in the left margin just below the header rule"
+  ],
+  "notes": "An attendance roll and nothing else: no speaker label, no stenographer note, no section heading, no speech of any kind, so the three content lists are legitimately empty and anything the parser attributes to a speaker here is a false positive. opens_mid_utterance is false because no utterance is in progress — the page continues a list, not a speech. The roll runs off the foot of the page mid-alphabet. As on the other Asamblea page I annotated, I filed the bold 'DIPUTADOS NACIONALES:' as a roll column label under furniture rather than as a section heading. TYPOGRAPHY: the same stray isolated period appears in the left margin under the header rule as on the 2011 Asamblea cover and on 25 April 2012 page 119 — it recurs across sittings, so it looks like a template artefact rather than a one-off. Two roll entries carry what look like typing errors in the original and I transcribed nothing from them, but a maintainer should know: 'ASPIAZU, Lucio Bernanrdo' and 'GDANSKY, Calos Alberto'."
+}

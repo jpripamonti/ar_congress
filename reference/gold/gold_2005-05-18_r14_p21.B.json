@@ -1,0 +1,44 @@
+{
+  "pdf": "2005-05-18_r14_ORDINARIA.pdf",
+  "page": 21,
+  "page_id": "2005-05-18_r14_p21",
+  "annotator": "B",
+  "opens_mid_utterance": false,
+  "utterance_starts": [
+    {"speaker_label": "Sr. Presidente (Guinle). —", "first_words": "En consideración en general."},
+    {"speaker_label": "Sr. Presidente (Guinle). —", "first_words": "Queda aprobada la declaración. Se procederá en consecuencia."},
+    {"speaker_label": "Sr. Presidente (Guinle). —", "first_words": "Corresponde considerar el dictamen de la Comisión de Educación, Cultura, Ciencia y Tecnología en el proyecto de declaración de la señora senadora Giusti por el que se declara de interés cultural y educativo"},
+    {"speaker_label": "Sr. Presidente (Guinle). —", "first_words": "En consideración en general."},
+    {"speaker_label": "Sr. Presidente (Guinle). —", "first_words": "Queda aprobada la declaración. Se procederá en consecuencia."},
+    {"speaker_label": "Sr. Presidente (Guinle). —", "first_words": "Corresponde considerar el dictamen de la Comisión de Educación, Cultura, Ciencia y Tecnología en el proyecto de declaración de la señora senadora Giusti por el que se manifiesta beneplácito por la actuación de los alumnos chubutenses"},
+    {"speaker_label": "Sr. Presidente (Guinle). —", "first_words": "En consideración en general."},
+    {"speaker_label": "Sr. Presidente (Guinle). —", "first_words": "Queda aprobada la declaración. Se procederá en consecuencia."},
+    {"speaker_label": "Sr. Presidente (Guinle). —", "first_words": "Corresponde considerar el dictamen de la Comisión de Educación, Cultura, Ciencia y Tecnología en el proyecto de declaración de la señora senadora Giusti por el que se manifiesta beneplácito por la declaración de patrimonio histórico"},
+    {"speaker_label": "Sr. Presidente (Guinle). —", "first_words": "En consideración en general."},
+    {"speaker_label": "Sr. Presidente (Guinle). —", "first_words": "Queda aprobada la declaración. Se procederá en consecuencia."}
+  ],
+  "events": [
+    "— La votación resulta afirmativa.",
+    "— En particular es igualmente afirmativa.",
+    "— El texto es el siguiente:",
+    "— La votación resulta afirmativa.",
+    "— En particular es igualmente afirmativa.",
+    "— El texto es el siguiente:",
+    "— La votación resulta afirmativa.",
+    "— En particular es igualmente afirmativa.",
+    "— El texto es el siguiente:",
+    "— La votación resulta afirmativa.",
+    "— En particular es igualmente afirmativa."
+  ],
+  "headings": [
+    "54. Investigación realizada por alumnos de la Universidad Nacional de la Patagonia San Juan Bosco",
+    "55. Certamen Nacional de Escritura 2004",
+    "56. Edificio del correo de Rawson, Chubut",
+    "57"
+  ],
+  "furniture_seen": [
+    "dateline: 18 de mayo de  2005 | Versión provisional - Sesión ordinaria | Pág. 21",
+    "contents links: Orden del Día Nº 293, Orden del Día Nº 294 and Orden del Día Nº 295, each centred on its own line in blue bold underlined type"
+  ],
+  "notes": "The page is three near-identical dispatch blocks plus the tail of a fourth, and every turn on it is the chair's, always labelled 'Sr. Presidente (Guinle). —'. Eleven labels are printed, so I listed eleven turns even though several are word-for-word repeats; the three 'Corresponde considerar...' turns share their first fifteen words and only diverge afterwards, so I extended those first_words far enough to tell them apart. The unlabelled 'Si no se hace uso de la palabra, se va a votar.' after each 'En consideración en general.' is a run-on paragraph of that same turn, not a new turn. The last thing printed on the page is the bare section number '57', centred and bold, with its title falling on the next page; I listed it as a heading with no title rather than dropping it. Each centred blue underlined 'Orden del Día Nº ...' line stands where the text of the order would be inserted, and no document text is actually printed here, so nothing on this page should be attributed to a speaker beyond the chair. Typographic oddity: the dateline prints a double space ('18 de mayo de  2005'), and the same double space appears inside each dispatch paragraph at 'proyecto de declaración  de la señora senadora Giusti'; I collapsed it in first_words."
+}

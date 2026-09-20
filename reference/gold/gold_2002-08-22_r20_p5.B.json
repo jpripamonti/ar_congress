@@ -1,0 +1,26 @@
+{
+  "pdf": "2002-08-22_r20_EN_MINORIA.pdf",
+  "page": 5,
+  "page_id": "2002-08-22_r20_p5",
+  "annotator": "B",
+  "opens_mid_utterance": false,
+  "utterance_starts": [
+    {"speaker_label": "Sr. Busti. —", "first_words": "Perdón, señor presidente. La senadora Bar está presente."},
+    {"speaker_label": "Sr. Presidente (López Arias). —", "first_words": "Quedará constancia."},
+    {"speaker_label": "Sr. Presidente (López Arias). —", "first_words": "Señores senadores: la buena voluntad de esta Presidencia excedió largamente las reglas establecidas"},
+    {"speaker_label": "Sr. Menem. —", "first_words": "Pido la palabra..."},
+    {"speaker_label": "Sr. Presidente (López Arias). —", "first_words": "De modo que, senador Menem, queda levantada la sesión por falta de quórum."}
+  ],
+  "events": [
+    "— Se encuentran presentes los señores senadores Agúndez, Baglini, Busti...",
+    "— Se incorpora a la sesión la señora senadora Bar.",
+    "— ... Chiappe, Colazo, Curletti, Escudero, Falcó, Gómez de Bertone, Gómez Diez, Guinle, Jenefes, Lescano, Losada, Maestro, Marti, Mazza, Menem, Morales, Moro, Passo, Paz, Prades, Puerta, Raso, Salvatori, Sapag, Seguí, Taffarel, Terragno, Usandizaga, Walter y López Arias.",
+    "— Son las 13 y 50."
+  ],
+  "headings": [],
+  "furniture_seen": [
+    "dateline: 22 de agosto de 2002 | Versión provisional - sesión en minoría | Pág. 5, with a rule under it — the page number is printed with broken glyphs (see notes)",
+    "sign-off block at the foot of the text: RUBÉN A. MARINO / Director del Cuerpo de Taquígrafos"
+  ],
+  "notes": "The last page of a sitting lifted for want of a quorum: five labels, five turns, and the roll-call being read into the record around them. I set opens_mid_utterance false, and that is the one call I was unsure about. The roll-call plainly continues from the previous page — the first note trails off in an ellipsis ('Agúndez, Baglini, Busti...') and the third resumes with one ('... Chiappe, Colazo...') — but nothing on this page is a continuing paragraph of SPEECH: the page's first line is a fresh dash-opened stenographer's note, so by the brief's test no turn is left dangling from the previous page. If the convention is meant to cover a continuing note as well, this should be true. The chair's second turn runs on in an unlabelled paragraph ('Continúa la toma de lista de los senadores presentes.'), which I did not count as a separate turn. The three roll-call lines and the closing time are each their own paragraph, so all four are events. Two things look defective. First, the running header's page number is typographically broken: instead of 'Pág. 5' the page prints what look like Greek letters — a capital Pi, then 'á', then a gamma — so it reads 'Πáγ. 5'. The rest of the header is normal. Second, senator Menem's turn is cut off in mid-sentence by the chair ('Pido la palabra...'), which is the transcript recording an interruption rather than a defect, but it leaves a turn whose words are three dots and an ellipsis. Also note the sign-off of the Director del Cuerpo de Taquígrafos at the end of the text: it is printed matter, not speech. The bottom half of the page is blank."
+}

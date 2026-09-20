@@ -1,0 +1,21 @@
+{
+  "pdf": "2002-08-08_r18_EN_MINORIA.pdf",
+  "page": 1,
+  "page_id": "2002-08-08_r18_p1",
+  "annotator": "A",
+  "opens_mid_utterance": false,
+  "utterance_starts": [],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [
+    "national coat of arms, centred at the top of the page",
+    "title block: REPÚBLICA ARGENTINA / VERSIÓN TAQUIGRÁFICA / CÁMARA DE SENADORES DE LA NACIÓN",
+    "sitting line: 18° Reunión - Sesión en minoría - 8 de agosto de 2002",
+    "Presidencia del señor presidente provisional del H. Senado, doctor Juan Carlos Maqueda,",
+    "Secretarios: señor Juan Carlos Oyarzún y señor Jorge Horacio Amarfil",
+    "Prosecretarios: señor Juan J. Canals, señor José D. Canata y señor Alfredo A. Luques",
+    "horizontal rule under the title block",
+    "attendance roll headed PRESENTES:, set in two columns, running AGÚNDEZ, Jorge Alfredo … LEZCANO, Marcela Fabiana (left column) and LÓPEZ ARIAS, Marcelo Eduardo … ZAVALÍA, José (right column)"
+  ],
+  "notes": "Cover page of the sitting: no speech at all, so utterance_starts is empty and anything the parser attributes to a speaker here is a false positive. The page is the masthead plus the roll of senators present; the roll is a list of names, carries no stenographer's dash, and is not an event. There is no running dateline header and no 'Dirección General de Taquígrafos' footer; the masthead is the page furniture. The bottom third of the page is blank.\n\nTypographic oddities: the column heading 'PRESENTES:' appears only over the left column, and the right column's first entry ('LÓPEZ ARIAS, Marcelo Eduardo') is set one line higher than that heading, so the two columns are not aligned at the top and the right column has no heading of its own. 'CÁMARA DE SENADORES DE LA NACIÓN' sits lower here than on the comparable 2001 cover page, separated from the VERSIÓN TAQUIGRÁFICA line. Accents are applied inconsistently in the roll: MARTÍN, Floriana Nélida is accented while MARTI, Rubén Américo on the line above is not, and GÓMEZ DIEZ, SEGUI and TAFFAREL are printed unaccented; 'MÜLLER, Mabel Hilda' carries a diaeresis. The line 'Presidencia del señor presidente provisional...' ends with a comma before the next line, where the 2001 page has none."
+}

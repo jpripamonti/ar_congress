@@ -1,0 +1,14 @@
+{
+  "pdf": "2010-10-13_r19_ORDINARIA.pdf",
+  "page": 80,
+  "page_id": "2010-10-13_r19_p80",
+  "annotator": "B",
+  "opens_mid_utterance": true,
+  "utterance_starts": [],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [
+    "dateline: 13 y 14 de octubre de 2010 | Versión Provisional | Pág. 80"
+  ],
+  "notes": "The whole page is the continuation of a single speech already under way: there is no speaker label anywhere on it, no stenographer note and no heading, so no turn STARTS here and utterance_starts is empty by rule 1. Anything the parser attributes to a new speaker on this page is a false positive. The page is eight indented paragraphs of one senator arguing about the 2011 budget and the ANSeS; the closing paragraph quotes a newspaper piece inside the speech (running text, not an inserted document, and not set off typographically). The only italics are the foreign word 'default' (twice, in the third paragraph) — italic here marks a loanword, not a stenographer's note. No footer is printed."
+}

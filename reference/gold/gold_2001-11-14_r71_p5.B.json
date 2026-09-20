@@ -1,0 +1,37 @@
+{
+  "pdf": "2001-11-14_r71_ORDINARIA.pdf",
+  "page": 5,
+  "page_id": "2001-11-14_r71_p5",
+  "annotator": "B",
+  "opens_mid_utterance": false,
+  "utterance_starts": [
+    {"speaker_label": "Sr. Presidente (Menem). —", "first_words": "Corresponde considerar si se trata sobre tablas el proyecto de resolución del señor senador Maya"},
+    {"speaker_label": "Sr. Presidente (Menem). —", "first_words": "Por Secretaría se dará lectura."},
+    {"speaker_label": "Sr. Secretario (Oyarzún).—", "first_words": "(Lee:)"},
+    {"speaker_label": "Sr. Presidente (Menem). —", "first_words": "En consideración en general."},
+    {"speaker_label": "Sr. Presidente (Menem). —", "first_words": "Queda aprobada la resolución. Se procederá en consecuencia."},
+    {"speaker_label": "Sr. Presidente (Menem). —", "first_words": "Los señores senadores recibieron oportunamente la lista de Asuntos Entrados desde la última sesión."},
+    {"speaker_label": "Sr. Secretario (Oyarzún).-", "first_words": "Fojas números 1, 2: Mensaje del Poder Ejecutivo número 1.461/01, solicitando acuerdo para promover"},
+    {"speaker_label": "Sr. Cafiero. —", "first_words": "Pido la palabra."},
+    {"speaker_label": "Sr. Presidente (Menem). —", "first_words": "Tiene la palabra el señor senador Cafiero."},
+    {"speaker_label": "Sr. Cafiero. —", "first_words": "Señor presidente: solicito autorización para poder pronunciar un breve discurso en torno a la personalidad"},
+    {"speaker_label": "Sr. Presidente (Menem). —", "first_words": "Señor senador: ya pasó el momento de los homenajes y el proyecto de resolución pertinente ya fue aprobado."},
+    {"speaker_label": "Sr. Cafiero. —", "first_words": "Señor presidente: dada su amabilidad, voy a entregar después un breve discurso en homenaje"},
+    {"speaker_label": "Sr. Presidente (Menem). —", "first_words": "Desde ya que la Presidencia adhiere a su homenaje, porque comparte sus ideas sobre Arturo Jauretche."}
+  ],
+  "events": [
+    "— La votación resulta afirmativa.",
+    "— La votación resulta afirmativa.",
+    "— En particular es igualmente afirmativa.",
+    "— La votación resulta afirmativa."
+  ],
+  "headings": [
+    "Incorporar S. 1627/01",
+    "5. Asuntos Entrados",
+    "6. Inserción"
+  ],
+  "furniture_seen": [
+    "dateline: 14 de noviembre de 2001 | Sesión ordinaria | pág. 5, with a rule under it"
+  ],
+  "notes": "Thirteen labels, so thirteen turns; the chair speaks nine of them and several labels follow one another with only a stenographer's line or a heading between, which is still a new turn each time. Two judgement calls. (1) 'Incorporar S. 1627/01' is set centred and bold, like a section heading, but it is not a numbered section: it is the typesetter's marker for the text of resolution S.1627/01 being dropped into the record at that point, sitting inside the secretary's reading turn. I listed it under headings because that is how it is printed, and I flag it here because it could equally be read as an inserted-document marker with no speaker of its own. The document it announces is not printed on this page. (2) The secretary's '(Lee:)' is the whole of his first turn's visible words — the reading itself is replaced by that insertion marker — and per the brief it is part of his turn, not an event. His second turn, the Asuntos Entrados roll ('Fojas números...'), is spoken aloud by him and runs on in unlabelled paragraphs ('Fojas números 3, 4, 5...', 'Fojas 14, 15, 16 y 17 última.'), which I did not count as new turns. Terminators are inconsistent on this one page and I recorded each as printed: the chair and senator Cafiero get a spaced em dash ('. —'), the secretary's first label an unspaced em dash ('.—'), and his second label a plain hyphen ('.-'). Nothing is damaged; no footer, no footnotes, and the bottom quarter of the page is blank."
+}

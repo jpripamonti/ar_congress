@@ -1,0 +1,32 @@
+{
+  "pdf": "2004-12-16_r36_ORDINARIA.pdf",
+  "page": 28,
+  "page_id": "2004-12-16_r36_p28",
+  "annotator": "B",
+  "opens_mid_utterance": false,
+  "utterance_starts": [
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Queda aprobada la resolución. Se procederá en consecuencia."},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Corresponde considerar el dictamen de la Comisión de Acuerdos en el mensaje del Poder Ejecutivo"},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "En consideración en general."},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Queda aprobada la resolución. Se procederá en consecuencia."},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Tiene la palabra el señor senador Pichetto."},
+    {"speaker_label": "Sr. Pichetto. —", "first_words": "Solicito el tratamiento sobre tablas del pliego del doctor Morín, aunque falta una firma en el dictamen."},
+    {"speaker_label": "Sr. Morales. —", "first_words": "Pido la palabra."},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Tiene la palabra el señor senador Morales."},
+    {"speaker_label": "Sr. Morales. —", "first_words": "Señor presidente: en verdad, desde el bloque de la Unión Cívica Radical, no estamos de acuerdo"}
+  ],
+  "events": [
+    "— El texto es el siguiente:",
+    "— La votación resulta afirmativa.",
+    "— En particular es igualmente afirmativa."
+  ],
+  "headings": [
+    "17. Juez de la Cámara Nacional de Apelaciones en lo Civil de la Capital Federal, Sala B",
+    "18. Juez de Cámara en el Tribunal Oral en lo Criminal N° 7 de la Capital Federal"
+  ],
+  "furniture_seen": [
+    "dateline: 16 de diciembre de  2004 | Versión provisional - Sesión ordinaria | Pág. 28",
+    "contents link: Orden del Día Nº 1849, set centred in blue bold underlined type on its own line, below the italic line '— El texto es el siguiente:'"
+  ],
+  "notes": "Every turn on this page is the chair's except Pichetto's and Morales's; the chair is printed with no surname, as the era's convention has it, and I did not supply one. The two section numbers (17 and 18) are printed centred on their own line above their centred bold titles, and I joined each number to its title in 'headings'. Three points where the page is typographically odd: the dateline prints a double space in '16 de diciembre de  2004'; heading 18 sets the character after 'Criminal N' as a small raised ring rather than the masculine ordinal used elsewhere on the page ('N˚ 7' vs 'Nº 1849'), and I normalised it to 'N° 7' in the heading text; and heading 18's last word, 'Federal', overflows onto a second line that is set flush left instead of centred, so it can read as a stray line rather than part of the title. The blue underlined 'Orden del Día Nº 1849' is a contents link standing where the inserted text of the order would be — no text of the document is actually printed on this page, so there is nothing to attribute to a speaker there. The unlabelled paragraph 'Si no se hace uso de la palabra, se va a votar.' is a run-on of the chair's 'En consideración en general.' turn, not a new turn. The page ends mid-sentence inside Morales's speech."
+}

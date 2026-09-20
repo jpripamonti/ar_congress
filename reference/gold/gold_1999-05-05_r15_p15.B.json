@@ -1,0 +1,38 @@
+{
+  "pdf": "1999-05-05_r15_ORDINARIA.pdf",
+  "page": 15,
+  "page_id": "1999-05-05_r15_p15",
+  "annotator": "B",
+  "opens_mid_utterance": false,
+  "utterance_starts": [
+    {"speaker_label": "Sr. SECRETARIO (Oyarzún).-", "first_words": "(Lee:)"},
+    {"speaker_label": "Sr. PRESIDENTE.-", "first_words": "En consideración en general. Si no se hace uso de la palabra, se va a votar."},
+    {"speaker_label": "Sr. PRESIDENTE.-", "first_words": "Queda aprobada la resolución. Se harán las comunicaciones correspondientes."},
+    {"speaker_label": "Sr. PRESIDENTE.-", "first_words": "Corresponde considerar el dictamen de la Comisión de Acuerdos en el mensaje del Poder Ejecutivo por el que se solicita acuerdo para designar a don Juan De Lezica"},
+    {"speaker_label": "Sr. SECRETARIO (Oyarzún).-", "first_words": "(Lee:)"},
+    {"speaker_label": "Sr. PRESIDENTE.-", "first_words": "En consideración en general. Si no se hace uso de la palabra, se va a votar."},
+    {"speaker_label": "Sr. PRESIDENTE.-", "first_words": "Queda aprobada la resolución. Se harán las comunicaciones correspondientes."},
+    {"speaker_label": "Sr. PRESIDENTE.-", "first_words": "Corresponde considerar el dictamen de la Comisión de Acuerdos en el mensaje del Poder Ejecutivo por el que se solicita acuerdo para designar a don Jorge Alberto Stok Capella"},
+    {"speaker_label": "Sr. SECRETARIO (Oyarzún).-", "first_words": "(Lee:)"},
+    {"speaker_label": "Sr. PRESIDENTE.-", "first_words": "En consideración en general. Si no se hace uso de la palabra, se va a votar."}
+  ],
+  "events": [
+    "-La votación resulta afirmativa.",
+    "-En particular es igualmente afirmativa.",
+    "-La votación resulta afirmativa.",
+    "-En particular es igualmente afirmativa."
+  ],
+  "headings": [
+    "Incorporar dictamen",
+    "19",
+    "Ministro plenipotenciario de primera clase, Categoría “B”",
+    "Incorporar dictamen",
+    "20",
+    "Ministro plenipotenciario de primera clase, Categoría “B”",
+    "Incorporar dictamen"
+  ],
+  "furniture_seen": [
+    "dateline: 05 de mayo de 1999 | Sesión Ordinaria | 15"
+  ],
+  "notes": "DEFECT WORTH A MAINTAINER'S ATTENTION: three times on this page, where the committee report the secretary is reading aloud should have been pasted into the record, the page instead prints the centred bold line 'Incorporar dictamen' — a production instruction to the typesetter ('insert report here') that was published by mistake. I verified it by enlarging the line. It is set exactly like a section heading (centred, bold, smaller than the body), so I listed it under headings, but it is neither a heading nor speech, and nothing at all was inserted: each 'Sr. SECRETARIO (Oyarzún).- (Lee:)' turn therefore has only the words '(Lee:)' as its content. Per rule 3 the secretary reading is a real turn and '(Lee:)' printed in that same line is part of it, not an event; that gives three secretary turns whose entire recorded speech is '(Lee:)'. Ten turns, four events. Section 19 and 20 carry the SAME title, 'Ministro plenipotenciario de primera clase, Categoría “B”', for two different nominees (Juan De Lezica, then Jorge Alberto Stok Capella) — not an error, just repetition, but it makes the two blocks nearly identical and easy to collapse by accident. The number and the title are printed on two lines each; I listed them as two headings apiece. The chair label has no surname. Bottom of the page cuts off mid-business after 'Si no se hace uso de la palabra, se va a votar.', so the matching votación note falls on page 16. Minor: in both 'Corresponde considerar' turns the closing quote and full stop of 'categoría “B”.' render faintly, and the label 'Sr. PRESIDENTE.-' appears once with wide letterspacing from justification ('Sr.  PRESIDENTE.-'); I normalised that to single spaces."
+}

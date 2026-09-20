@@ -1,0 +1,23 @@
+{
+  "pdf": "2014-03-12_r02_ORDINARIA.pdf",
+  "page": 1,
+  "page_id": "2014-03-12_r02_p1",
+  "annotator": "A",
+  "opens_mid_utterance": false,
+  "utterance_starts": [],
+  "events": [],
+  "headings": [
+    "PRESENTES:",
+    "AUSENTES, CON AVISO:"
+  ],
+  "furniture_seen": [
+    "top motto: \"2014 -Año de Homenaje al Almirante Guillermo Brown, en el Bicentenario del Combate Naval de Montevideo\"",
+    "national coat of arms (escudo) centred below the motto",
+    "masthead block: REPÚBLICA ARGENTINA / VERSIÓN TAQUIGRÁFICA / (PROVISIONAL) / CÁMARA DE SENADORES DE LA NACIÓN / Período 132° / 2° Reunión - 1° Sesión ordinaria - 12 de Marzo de 2014",
+    "presiding line: Presidencia del señor vicepresidente de la Nación, D. Amado Boudou",
+    "officers block: Secretarios: señor D. JuanHéctorEstrada y señor D. Juan Horacio Zabaleta / Prosecretarios: señor D. Luis Borsani, señor D. Mario Daniele y señor D.José Lepere",
+    "two-column attendance roll of senators present and absent",
+    "footer: Dirección General de Taquígrafos"
+  ],
+  "notes": "This is the cover and attendance page of the sitting: masthead, presiding officer, secretaries and prosecretaries, then the two-column roll of senators present and the short list of those absent with notice. Nobody speaks on it, so utterance_starts is empty and anything the parser attributes to a speaker here is a false positive. Judgement call: I treated the centred masthead, the presiding line and the officers block as furniture rather than headings, because they are the cover's standing matter and not section titles of the debate; the only two things printed in the manner of a heading (bold, standing alone above a block) are 'PRESENTES:' and 'AUSENTES, CON AVISO:', so those are in headings. A maintainer who prefers the masthead counted as headings can move them. Typographically strange: two secretary names are printed with the spaces missing — 'JuanHéctorEstrada' for Juan Héctor Estrada, and 'señor D.José Lepere' with no space after 'D.'. The motto on this sitting is set with straight double quotes and a missing space ('\"2014 -Año'), unlike the curly quotes used in 2013 and 2015."
+}

@@ -1,0 +1,31 @@
+{
+  "pdf": "2008-09-10_r15_ORDINARIA.pdf",
+  "page": 37,
+  "page_id": "2008-09-10_r15_p37",
+  "annotator": "B",
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {
+      "speaker_label": "Sr. Presidente. —",
+      "first_words": "Tiene la palabra el señor senador Rodríguez Saá."
+    },
+    {
+      "speaker_label": "Sr. Rodríguez Saá.—",
+      "first_words": "Señor presidente: en 2004, se dictó la Ley 25880, para ordenar todo el tema"
+    },
+    {
+      "speaker_label": "Sr. Presidente. —",
+      "first_words": "Oportunamente pondremos en consideración las abstenciones."
+    },
+    {
+      "speaker_label": "Sra. Corregido. —",
+      "first_words": "Señor presidente: en el orden del día de hoy tenemos el expediente S-513/08"
+    }
+  ],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [
+    "dateline: 10 de septiembre de 2008 | Versión provisional - Sesión ordinaria | Pág. 37"
+  ],
+  "notes": "Four labels, four turns. The one I weighed: the chair's third turn runs on into a second, unlabelled indented paragraph ('Tiene la palabra la señora senadora Corregido.'); I treated it as a continuation of that same turn, not a fifth turn, since no label is printed before it. The page opens inside an unlabelled speech that ends 'Ratifico que esta posición...', which I did not list because it does not start here. The two chair labels are not identical as printed: the first has the full stop in roman ('Sr. Presidente. —') and the second has it in bold ('Sr. Presidente. —'); Rodríguez Saá's label has no space before the em dash while the others do. I recorded each as printed. FONT DEFECT worth a maintainer's attention: every ordinal masculine sign on this page has been substituted by a capital E — the page prints 'el artículo 5E', 'a partir del 1E de setiembre', 'el artículo 8E', where the text means 5º, 1º and 8º. I verified this at high magnification; it is a glyph substitution in the PDF's font, not my misreading, and any extraction of this sitting will carry it. Also 'maestro ciruela' is set with straight ASCII double quotes while the rest of the page uses curly quotes. No stenographer notes, no headings and no footer on the page."
+}

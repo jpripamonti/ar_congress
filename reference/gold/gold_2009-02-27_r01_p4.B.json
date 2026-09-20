@@ -1,0 +1,47 @@
+{
+  "pdf": "2009-02-27_r01_PREPARATORIA.pdf",
+  "page": 4,
+  "page_id": "2009-02-27_r01_p4",
+  "annotator": "B",
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {
+      "speaker_label": "Sr. Presidente. —",
+      "first_words": "Tiene la palabra el señor senador Alfredo Martínez."
+    },
+    {
+      "speaker_label": "Sr. Martínez (Alfredo).—",
+      "first_words": "Señor presidente: de acuerdo con lo charlado entre los miembros de los distintos bloques"
+    },
+    {
+      "speaker_label": "Sr. Presidente. —",
+      "first_words": "Tiene la palabra el señor senador Petcoff Naidenoff."
+    },
+    {
+      "speaker_label": "Sr. Petcoff Naidenoff.—",
+      "first_words": "Señor presidente: pedí la palabra, en nombre del bloque de la Unión Cívica Radical"
+    },
+    {
+      "speaker_label": "Sr. Presidente. —",
+      "first_words": "Tiene la palabra el señor senador Pichetto."
+    },
+    {
+      "speaker_label": "Sr. Pichetto. —",
+      "first_words": "Señor presidente: también quiero ratificar la propuesta de ratificar al señor Juan José Canals"
+    },
+    {
+      "speaker_label": "Sr. Presidente. —",
+      "first_words": "Tiene la palabra el señor senador Rodríguez Saá."
+    },
+    {
+      "speaker_label": "Sr. Rodríguez Saá.—",
+      "first_words": "Señor presidente: en nombre del Interbloque Federal vamos a apoyar las propuestas"
+    }
+  ],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [
+    "dateline: 27 de febrero de 2009 | Sesión preparatoria | Pág. 4"
+  ],
+  "notes": "Eight labels, eight turns, alternating chair and senator. The page opens inside an unlabelled speech proposing senator Rubén Marín for the vice-presidency (senator Pichetto, from the reference to him further down), which I did not list because it starts earlier. Two of the senators' turns run on into a second unlabelled paragraph — Petcoff Naidenoff's 'Todos conocen la idoneidad...' and Pichetto's 'Valoramos su tarea...' — and I kept each as part of the turn above it rather than opening a new one. 'Sr. Martínez (Alfredo).—' is the case the brief describes where the parenthesis is set in roman against a bold surname; here the parenthesis disambiguates two senators named Martínez rather than naming an office-holder, and I recorded the whole thing as one label. The dateline sits unusually low and its 'Pág. 4' is printed above the rule rather than on it, which makes the header overlap the first line of text slightly. Small typographic oddities left as printed: 'En definitiva,  fue un gobernador' has a doubled space, and the dashes around 'Proceso de Reorganización Nacional — es decir, por la dictadura tan dura de aquel entonces —' are spaced on both sides, unlike the closed em dashes used elsewhere in the corpus. No stenographer notes, no headings and no footer."
+}

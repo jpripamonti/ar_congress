@@ -1,0 +1,15 @@
+{
+  "pdf": "2007-12-19_r21_ORDINARIA.pdf",
+  "page": 29,
+  "page_id": "2007-12-19_r21_p29",
+  "annotator": "A",
+  "opens_mid_utterance": true,
+  "utterance_starts": [],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [
+    "dateline: 19 de diciembre de 2007 | Versión provisional - Sesión ordinaria | Pág. 29",
+    "horizontal rule under the dateline"
+  ],
+  "notes": "The whole page is the continuation of a single speech that began earlier; there is no speaker label, no stenographer's note and no heading printed anywhere on it, and the speech runs on past the foot of the page. Every paragraph after the first is an indented run-on of that same turn, so by rule 1 nothing is listed as a start. No footer is printed on this page. Typographic oddities: the first paragraph ends without a full stop ('...y no se puede explicar de qué se trata'); there are doubled or stray spaces inside lines ('la calidad institucional  es pésima', 'y  no se logre investigar'); and 'Tomar la decisión en base...' starts with a capital T in mid-sentence after a semicolon."
+}

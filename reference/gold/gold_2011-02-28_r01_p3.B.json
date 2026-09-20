@@ -1,0 +1,38 @@
+{
+  "pdf": "2011-02-28_r01_PREPARATORIA.pdf",
+  "page": 3,
+  "page_id": "2011-02-28_r01_p3",
+  "annotator": "B",
+  "opens_mid_utterance": false,
+  "utterance_starts": [
+    {"speaker_label": "Sr. Presidente. –", "first_words": "Queda abierta la sesión preparatoria."},
+    {"speaker_label": "Sr. Presidente. –", "first_words": "Invito a la señora senadora Negre de Alonso a izar la bandera nacional en el mástil"},
+    {"speaker_label": "Sr. Presidente. –", "first_words": "Se incorporará en el Diario de Sesiones el decreto de la Presidencia por el que se convoca"},
+    {"speaker_label": "Sr. Presidente. –", "first_words": "De acuerdo con el artículo 1º del Reglamento de esta Honorable Cámara, corresponde fijar"},
+    {"speaker_label": "Sr. Pichetto. –", "first_words": "Señor presidente: proponemos los días miércoles y jueves a las 15 para las sesiones de tablas."},
+    {"speaker_label": "Sr. Presidente. –", "first_words": "Si no se hace uso de la palabra, se va a votar."},
+    {"speaker_label": "Sr. Presidente. –", "first_words": "Aprobado. Se procederá en consecuencia."},
+    {"speaker_label": "Sr. Presidente. –", "first_words": "De acuerdo con el artículo 58 de la Constitución Nacional y demás disposiciones reglamentarias"},
+    {"speaker_label": "Sr. Pichetto. –", "first_words": "Señor presidente: en representación del Frente para la Victoria, vamos a proponer en el recinto"},
+    {"speaker_label": "Sr. Presidente. –", "first_words": "Que se hagan todas las propuestas y luego las someteremos a consideración en conjunto."},
+    {"speaker_label": "Sr. Morales. –", "first_words": "Señor presidente: propongo al senador Juan Carlos Marino para la Vicepresidencia 1°"},
+    {"speaker_label": "Sr. Presidente. –", "first_words": "Tiene la palabra el señor senador Rodríguez Saá."},
+    {"speaker_label": "Sr. Rodríguez Saá. –", "first_words": "Señor presidente: en nombre del Interbloque Federal propongo para el"}
+  ],
+  "events": [
+    "– En la Ciudad Autónoma de Buenos Aires, a las 17 y 20 del lunes 28 de febrero de 2011:",
+    "– Puestos de pie los presentes, la señora senadora Negre de Alonso procede a izar la bandera nacional en el mástil del recinto. (Aplausos.)",
+    "– Se practica la votación."
+  ],
+  "headings": [
+    "1 IZAMIENTO DE LA BANDERA NACIONAL",
+    "2 CONVOCATORIA A SESIÓN PREPARATORIA",
+    "3 DÍAS Y HORA DE SESIÓN",
+    "4 RATIFICACIÓN DE AUTORIDADES DE LA CÁMARA"
+  ],
+  "furniture_seen": [
+    "dateline: 28 de febrero de 2011 | Sesión preparatoria | Pág. 3",
+    "footnote rule and footnote line: 2 Ver el Apéndice."
+  ],
+  "notes": "Thirteen turns, three stenographer notes, four numbered section headings (the number is printed centred on its own line above the centred title; I joined number and title in one string). The chair is printed with no surname, 'Sr. Presidente. –', as the brief says is usual before 2016, and I supplied no name. Ten of the thirteen turns are the chair's: each printed label counts, including the three that merely resume after a heading or after the votación note (rule 2). Judgement calls: (a) the opening italic line 'En la Ciudad Autónoma de Buenos Aires, a las 17 y 20...' is a stenographer's note, so the page does NOT open mid-utterance — the first speech starts here with the chair's 'Queda abierta la sesión preparatoria.'; (b) '(Aplausos.)' at the end of the flag-raising note is inside that italic note's own paragraph, so it is part of that event, not a separate one; (c) the second chair turn ends 'esta sesión preparatoria.2' — the 2 is the footnote pointer for 'Ver el Apéndice.' and I left it out of the words; (d) the unlabelled indented lines 'Tiene la palabra el señor senador Pichetto.' (twice) and 'Tiene la palabra el señor senador Morales.' run on from the chair's preceding paragraph and are not separate turns. Typographic oddity: the Morales paragraph is the only one on the page set flush-left/ragged-right instead of justified, and its first line stops short — it looks like a paste-in that lost its justification; the text itself is legible and complete. Last turn (Rodríguez Saá) runs onto the next page."
+}

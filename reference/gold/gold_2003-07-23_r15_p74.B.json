@@ -1,0 +1,18 @@
+{
+  "pdf": "2003-07-23_r15_ORDINARIA.pdf",
+  "page": 74,
+  "page_id": "2003-07-23_r15_p74",
+  "annotator": "B",
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {"speaker_label": "Sra. Perceval. —", "first_words": "Pido la palabra."},
+    {"speaker_label": "Sr. Presidente (Gioja). —", "first_words": "Tiene la palabra la señora senadora Perceval."},
+    {"speaker_label": "Sra. Perceval. —", "first_words": "Al presentar este proyecto para la aprobación del protocolo facultativo simplemente quiero resaltar"},
+    {"speaker_label": "Sr. Presidente (Gioja). —", "first_words": "Tiene la palabra el señor senador Maestro."},
+    {"speaker_label": "Sr. Maestro. —", "first_words": "Señor presidente: el bloque del radicalismo va a acompañar plenamente este proyecto"}
+  ],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [],
+  "notes": "Continuous floor debate on the optional protocol on the sale of children: five labels, five turns, no stenographer's notes, no headings. The page opens in the middle of a speech carried over from page 73 ('conciencia de este tema. No podíamos aprobar esto...'), so opens_mid_utterance is true and that speech is not listed as a start; from the reference to senator Cafiero in Perceval's turn, the carried-over speaker is probably Cafiero, but I did not list him because his turn does not start here and the page itself gives no label for him. Both long turns (Perceval's, Maestro's) continue in unlabelled indented paragraphs, which are the same turn; Maestro's is still running at the foot of the page. STRANGE, and the main thing to flag: this page carries NO page furniture whatsoever — no running header with date and page number, no footer, no motto — and it is set in a SANS-SERIF face, unlike every other page I read in this batch and unlike the serif face the brief describes. It looks like a stretch of the sitting typeset from a different source file and pasted in. Word spacing inside it is visibly uneven (lines alternate between tightly and loosely tracked, e.g. 'venido avanzando en instrumentos' set almost without spaces), and there are two double spaces inside sentences ('la importancia que  le asigna', 'esta oportunidad  para destacar'). Maestro's turn uses em dashes as parenthetical marks inside the sentence ('de trabajar —y en este caso, legislar— teniendo especial cuidado'), which are punctuation, not a speaker terminator, and could mislead a dash-based label detector."
+}

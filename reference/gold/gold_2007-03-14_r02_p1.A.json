@@ -1,0 +1,25 @@
+{
+  "pdf": "2007-03-14_r02_ORDINARIA.pdf",
+  "page": 1,
+  "page_id": "2007-03-14_r02_p1",
+  "annotator": "A",
+  "opens_mid_utterance": false,
+  "utterance_starts": [],
+  "events": [],
+  "headings": [
+    "PRESENTES",
+    "AUSENTES CON AVISO",
+    "LICENCIA"
+  ],
+  "furniture_seen": [
+    "national coat of arms, centred at the top of the page",
+    "masthead: REPÚBLICA ARGENTINA / VERSIÓN TAQUIGRÁFICA / (PROVISIONAL) / CÁMARA DE SENADORES DE LA NACIÓN",
+    "sitting line: 2° Reunión - 1° Sesión ordinaria - 14 de marzo de 2007",
+    "presidency line: Presidencia del señor vicepresidente de la Nación, licenciado Daniel Osvaldo Scioli, del señor presidente provisional del H. Senado, doctor José Juan Bautista Pampuro y de la señora vicepresidenta 1° del H. Senado, doctora Mirian Belén Curletti",
+    "Secretarios: señor Juan Héctor Estrada y señor Carlos Alberto Machiaroli",
+    "Prosecretarios: señor Juan J. Canals, señor Néstor H. Righetti y señor Roberto Vicente Maiques",
+    "horizontal rule under the masthead, and the vertical rule dividing the two columns of the roll",
+    "attendance roll itself: two columns of surnames under PRESENTES, AUSENTES CON AVISO and LICENCIA"
+  ],
+  "notes": "Cover page of the sitting: masthead plus the attendance roll. No speech at all, so utterance_starts is empty and anything the parser attributes to a speaker on this page is a false positive. The three bold words PRESENTES / AUSENTES CON AVISO / LICENCIA are listed as headings because they are printed as standalone bold headings, but they head the roll rather than a numbered section of business; a maintainer may prefer to treat them as furniture. There is no running dateline and no footer on this page — the masthead replaces them. Typographic oddities: the roll prints 'FELLNER, Lilia na B.' with a space inside the forename (should be 'Liliana'), and 'GOMEZ DIEZ Ricardo' with no comma between surname and forename, unlike every other entry. Several surnames carry no accents where the names normally do (GOMEZ, GONZALEZ DE DUHALDE, MARTINEZ PASS DE CRESTO), which is how the page prints them."
+}

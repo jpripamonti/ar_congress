@@ -1,0 +1,40 @@
+{
+  "pdf": "2001-11-14_r71_ORDINARIA.pdf",
+  "page": 5,
+  "page_id": "2001-11-14_r71_p5",
+  "annotator": "A",
+  "opens_mid_utterance": false,
+  "utterance_starts": [
+    {"speaker_label": "Sr. Presidente (Menem). —", "first_words": "Corresponde considerar si se trata sobre tablas el proyecto de resolución del señor senador Maya"},
+    {"speaker_label": "Sr. Presidente (Menem). —", "first_words": "Por Secretaría se dará lectura."},
+    {"speaker_label": "Sr. Secretario (Oyarzún).—", "first_words": "(Lee:)"},
+    {"speaker_label": "Sr. Presidente (Menem). —", "first_words": "En consideración en general."},
+    {"speaker_label": "Sr. Presidente (Menem). —", "first_words": "Queda aprobada la resolución. Se procederá en consecuencia."},
+    {"speaker_label": "Sr. Presidente (Menem). —", "first_words": "Los señores senadores recibieron oportunamente la lista de Asuntos Entrados desde la última sesión."},
+    {"speaker_label": "Sr. Secretario (Oyarzún).-", "first_words": "Fojas números 1, 2: Mensaje del Poder Ejecutivo número 1.461/01, solicitando acuerdo"},
+    {"speaker_label": "Sr. Cafiero. —", "first_words": "Pido la palabra."},
+    {"speaker_label": "Sr. Presidente (Menem). —", "first_words": "Tiene la palabra el señor senador Cafiero."},
+    {"speaker_label": "Sr. Cafiero. —", "first_words": "Señor presidente: solicito autorización para poder pronunciar un breve discurso en torno"},
+    {"speaker_label": "Sr. Presidente (Menem). —", "first_words": "Señor senador:  ya pasó el momento de los homenajes y el proyecto de resolución pertinente"},
+    {"speaker_label": "Sr. Cafiero. —", "first_words": "Señor presidente: dada su amabilidad, voy a entregar después un breve discurso en homenaje"},
+    {"speaker_label": "Sr. Presidente (Menem). —", "first_words": "Desde ya que la Presidencia adhiere a su homenaje, porque comparte sus ideas sobre Arturo Jauretche."}
+  ],
+  "events": [
+    "— La votación resulta afirmativa.",
+    "— La votación resulta afirmativa.",
+    "— En particular es igualmente afirmativa.",
+    "— La votación resulta afirmativa."
+  ],
+  "headings": [
+    "Incorporar S. 1627/01",
+    "5",
+    "Asuntos Entrados",
+    "6",
+    "Inserción"
+  ],
+  "furniture_seen": [
+    "dateline: 14 de noviembre de 2001 | Sesión ordinaria | pág. 5",
+    "rule under the dateline"
+  ],
+  "notes": "13 turns, 4 events. The page opens with a printed label on its first line, so it does not open mid-utterance. The chair speaks six times in a row with only votes, headings and unlabelled run-on paragraphs between; each printed label is listed separately, and the unlabelled indented paragraphs ('Si no se hace uso de la palabra, se va a votar.', 'De esta forma quedan rendidos los homenajes...', 'En todo caso, esta Presidencia le ruega...', 'Se va a votar el pedido de inserción.', and the secretary's 'Fojas números 3, 4, 5...' and 'Fojas 14, 15, 16 y 17 última.') are continuations, not new turns.\n\nThe terminator is inconsistent on this one page: the chair is always 'Sr. Presidente (Menem). —' with a space each side of an em dash; the first secretary label is 'Sr. Secretario (Oyarzún).—' with no space before the em dash; the second secretary label, in Asuntos Entrados, is 'Sr. Secretario (Oyarzún).-' with a plain hyphen. All three are recorded exactly as printed.\n\nCase I was unsure about: the centred bold line 'Incorporar S. 1627/01' sits between the secretary's '(Lee:)' label and the chair's next label. It is set like a section heading (centred, bold), so I listed it under headings, but it reads as an unresolved typesetting instruction — a note to insert the text of S. 1627/01 — rather than a real section title, and the text of that resolution never appears on the page. That is the one thing on the page that looks like a typesetting accident. Because of it, the secretary's turn consists only of '(Lee:)': per the brief, '(Lee:)' printed in the same paragraph as the label is part of that turn, not a separate event, so it is the turn's first words and not in the events list.\n\nThe four italic dashed lines stand as their own paragraphs and are events. The 'S.1627/01' in the chair's opening paragraph is a bill number inside the speech, not furniture. 'Señor senador:  ya pasó' is printed with two spaces after the colon."
+}

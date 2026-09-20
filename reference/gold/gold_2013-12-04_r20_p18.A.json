@@ -1,0 +1,19 @@
+{
+  "pdf": "2013-12-04_r20_ORDINARIA.pdf",
+  "page": 18,
+  "page_id": "2013-12-04_r20_p18",
+  "annotator": "A",
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {"speaker_label": "Sr. Presidente.-", "first_words": "Tiene la palabra el senador Lores."},
+    {"speaker_label": "Sr. Lores.-", "first_words": "Señor presidente: yo también culmino hoy mi tarea como senador de la Nación"}
+  ],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [
+    "top motto: “2013 - Año del Bicentenario de la Asamblea General Constituyente de 1813”",
+    "dateline: 4 de diciembre de 2013 | Sesión ordinaria | Pág. 18",
+    "footer: Dirección General de Taquígrafos"
+  ],
+  "notes": "The page opens inside a departing senator's farewell speech that began earlier (it thanks the bloc president, the prosecretario administrativo and colleagues, and mentions senator Estenssoro), so that speech is not listed as a start. The chair is printed with no surname, 'Sr. Presidente.-', as is normal before 2016; I did not supply a name. Sr. Lores's turn starts here and runs on past the foot of the page — it is still a start. Everything after his opening sentence is unlabelled run-on paragraphs of the same turn, not new turns. No stenographer's notes and no headings on this page."
+}

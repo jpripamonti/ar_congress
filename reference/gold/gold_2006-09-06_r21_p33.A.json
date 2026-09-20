@@ -1,0 +1,24 @@
+{
+  "pdf": "2006-09-06_r21_ORDINARIA.pdf",
+  "page": 33,
+  "page_id": "2006-09-06_r21_p33",
+  "annotator": "A",
+  "opens_mid_utterance": false,
+  "utterance_starts": [],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [
+    "contents link: (volver), blue italic underlined, top right corner",
+    "Senate coat of arms with the words ‘Senado de la Nación’ beside it",
+    "title block: Votación Nominal (letter-spaced bold italic)",
+    "124° Período Legislativo -  Ordinario - 19º Sesión",
+    "subject line: DICTAMEN EN EL PROYECTO DE LEY TRANSFIRIENDO A LA MUNICIPALIDAD DE MARCOS JUÁREZ, CÓRDOBA, INMUEBLES E INSTALACIONES DEL ESTADO NACIONAL DONDE FUNCIONÓ LA ESTACIÓN FERROVIARIA DE LA EX LÍNEA GENERAL BARTOLOMÉ MITRE.",
+    "ÓRDEN DEL DÍA 751 (printed in blue)",
+    "(S-539/06) (printed in blue)",
+    "VOTACIÓN EN GENERAL Y PARTICULAR",
+    "vote header fields: Acta N°: 3 | Fecha: 06-09-06 | Hora: 17:55:05 | Tipo de Quórum: mas de la mitad de los miembros del cuerpo | Mayoría Requerida: mas de la mitad de los presentes | Miembros del Cuerpo: 72 | Presidente: PAMPURO José Juan | Desempate: NO",
+    "two-column roll-call table headed ‘Apellido y Nombre / VOTO’, 72 senators with AFIRMATIVO or AUSENTE",
+    "footer: page number 2 standing alone at the foot"
+  ],
+  "notes": "This page carries NO speech at all. It is the printed record of a roll-call vote (Acta N° 3) from the appendix — coat of arms, title ‘Votación Nominal’, the subject of the vote, and a two-column table of 72 senators with AFIRMATIVO or AUSENTE beside each name. Nobody utters any of it, so utterance_starts and events are empty and anything the parser attributes to a speaker here is a false positive. I also left headings empty on purpose: the bold centred lines here are the title block of an inserted document, not Diario section headings of the ‘number over a title’ kind, so I listed them under furniture instead — a maintainer who wants them counted as headings should note that choice. DAMAGE: a thin grey curved stroke, like a scanned pen mark or a stray graphic, runs down the left edge of the first name column from about the GOMEZ DIEZ row to the KIRCHNER row, crossing the initial letters of GONZALEZ de DUHALDE, GUINLE, IBARRA, ISIDORI and JAQUE; the names stay legible. Typographic oddities: ‘ÓRDEN DEL DÍA 751’ is printed with an accent on ‘ÓRDEN’, which is wrong Spanish and unlike the ‘Orden del Día’ printed elsewhere in the Diario; ‘mas de la mitad’ appears twice without the accent of ‘más’; the ordinal is printed ‘124°’ in one place and ‘19º’ in another on the same line; the table prints ‘MERA Mario Ruben’ with no comma where every other row has one, and ‘PINCHETTI de SIERRA M. Delia’ is truncated in the same way. The number at the foot of the page is ‘2’, the inserted document's own numbering, not the Diario page number 33 that this PDF page carries."
+}

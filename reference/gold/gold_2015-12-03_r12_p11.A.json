@@ -1,0 +1,42 @@
+{
+  "pdf": "2015-12-03_r12_ESPECIAL.pdf",
+  "page": 11,
+  "page_id": "2015-12-03_r12_p11",
+  "annotator": "A",
+  "opens_mid_utterance": false,
+  "utterance_starts": [
+    {"speaker_label": "Sr. Presidente.-", "first_words": "Entonces, senadora Michetti, tiene la palabra."},
+    {"speaker_label": "Sra. Michetti.-", "first_words": "Vamos a hacer la propuesta para el cargo de presidente provisional del Senado en la persona"},
+    {"speaker_label": "Sr. Presidente.-", "first_words": "Lo ponemos en consideración."},
+    {"speaker_label": "Sr. Presidente.-", "first_words": "Aprobado por unanimidad."},
+    {"speaker_label": "Sr. Pinedo.-", "first_words": "¡Sí, juro!"},
+    {"speaker_label": "Sr. Presidente.-", "first_words": "Si así no lo hiciereis, Dios y la Patria os lo demanden."},
+    {"speaker_label": "Sra. Michetti.-", "first_words": "Me parece que, de acuerdo a lo que dijo el senador Pichetto, serían las autoridades"},
+    {"speaker_label": "Sr. Presidente.-", "first_words": "Sí."},
+    {"speaker_label": "Sra. Michetti.-", "first_words": "Ahí querría que el senador Pichetto propusiera al vicepresidente."},
+    {"speaker_label": "Sr. Presidente.-", "first_words": "Tiene la palabra el señor senador Pichetto."},
+    {"speaker_label": "Sr. Pichetto.-", "first_words": "Señor presidente: a mí me interesa siempre tratar de que la gente, cuando yo hablo, me entienda"},
+    {"speaker_label": "Sr. Presidente.-", "first_words": "Lo ponemos en consideración."},
+    {"speaker_label": "Sr. Presidente.-", "first_words": "Aprobado por unanimidad."},
+    {"speaker_label": "Sr. Presidente.-", "first_words": "Por favor, senador Zamora."},
+    {"speaker_label": "Sr. Zamora.-", "first_words": "¡Sí, juro!"},
+    {"speaker_label": "Sr. Presidente.-", "first_words": "Si así no lo hiciereis, Dios y la Patria os lo demanden."},
+    {"speaker_label": "Sr. Presidente.-", "first_words": "Para hacer su propuesta, tiene la palabra el señor senador Rozas."},
+    {"speaker_label": "Sr. Rozas.-", "first_words": "Señor presidente, señores senadores: en nombre del bloque de la Unión"}
+  ],
+  "events": [
+    "- Se practica la votación.",
+    "- Se practica la votación."
+  ],
+  "headings": [
+    "6. Designación y juramento de presidente provisional del Honorable Senado de la Nación.",
+    "7. Designación y juramento de vicepresidente del Honorable Senado de la Nación.",
+    "8. Designación y juramento del señor vicepresidente 1º del Honorable Senado de la Nación."
+  ],
+  "furniture_seen": [
+    "top motto: “2015 - Año del Bicentenario del Congreso de los Pueblos Libres”",
+    "dateline: 3 de diciembre de 2015 | Sesión especial | Pág. 11",
+    "footer: Dirección General de Taquígrafos"
+  ],
+  "notes": "Eighteen turns, two events, three numbered section headings. The page begins with heading 6, not inside a speech, so opens_mid_utterance is false. Two calls the count depends on, both made under rule 2: the two 'Sr. Presidente.-' labels round each vote are separate turns ('Lo ponemos en consideración.' then, after the votación note, 'Aprobado por unanimidad.'), and under heading 7 the chair is labelled twice in a row with nothing between — 'Aprobado por unanimidad.' and then 'Por favor, senador Zamora.' — which is two turns because two labels are printed, although under heading 6 the same two sentences run on inside a single labelled turn. The oath formula 'Señor senador don Federico Pinedo: ¿juráis a la Patria...' and its twin for Zamora are unlabelled paragraphs continuing the chair's turn, not separate turns and not inserted documents: the chair speaks them. '(Aplausos.)' appears twice, both times inside the chair's paragraph at the end of 'Dios y la Patria os lo demanden.', so under rule 4 it is part of that turn and not an event; I left it out of first_words as it falls after the quoted opening. The two italic '- Se practica la votación.' lines each stand as their own paragraph and are events. The chair is printed with no surname throughout, so I supplied none. Typographic detail: the bold stops before the terminator on most labels ('Sr. Presidente' bold, '.-' roman) but a few are fully bold ('Sr. Pinedo.-', 'Sr. Zamora.-', 'Sr. Presidente.-' at 'Si así no lo hiciereis'); same label either way. Heading 8 uses an ordinal masculine 'º' where headings 6 and 7 have no ordinal. Rozas's turn starts at the foot of the page and runs on."
+}

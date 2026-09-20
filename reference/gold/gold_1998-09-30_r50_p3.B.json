@@ -1,0 +1,40 @@
+{
+  "pdf": "1998-09-30_r50_EN_MINORIA.pdf",
+  "page": 3,
+  "page_id": "1998-09-30_r50_p3",
+  "annotator": "B",
+  "opens_mid_utterance": false,
+  "utterance_starts": [
+    {"speaker_label": "Sr. AVELÍN.-", "first_words": "Pido la palabra."},
+    {"speaker_label": "Sr. PRESIDENTE.-", "first_words": "Tiene la palabra el señor senador por San Juan."},
+    {"speaker_label": "Sr. AVELÍN.-", "first_words": "Señor presidente: ¿cuánto tiempo vamos a esperar para poder formar quórum?"},
+    {"speaker_label": "Sr. PRESIDENTE.-", "first_words": "La Presidencia va a llamar por quince minutos improrrogables. Transcurrido ese lapso, si no se forma quórum"},
+    {"speaker_label": "Sr. PRESIDENTE.-", "first_words": "Por Secretaría se pasará lista."},
+    {"speaker_label": "Sr. ALASINO.-", "first_words": "Pido la palabra."},
+    {"speaker_label": "Sr. PRESIDENTE.-", "first_words": "Tiene la palabra el señor senador por Entre Ríos."},
+    {"speaker_label": "Sr. ALASINO.-", "first_words": "Propongo que se llame por cinco minutos más."},
+    {"speaker_label": "Sr. PRESIDENTE.-", "first_words": "A pedido del presidente del bloque justicialista, se va a llamar por un término improrrogable de cinco minutos."},
+    {"speaker_label": "Sr. LÓPEZ.-", "first_words": "Que se deje constancia de mi presencia, señor presidente."},
+    {"speaker_label": "Sr. PRESIDENTE.-", "first_words": "Se ha dejado constancia, señor senador."},
+    {"speaker_label": "Sr. PRESIDENTE.-", "first_words": "Transcurridos los cinco minutos y excedidos todos los plazos establecidos por la Presidencia, queda levantada la sesión"}
+  ],
+  "events": [
+    "-En Buenos Aires, a las 17 y 53 del miércoles 30 de septiembre de 1998:",
+    "-Se continúa llamando.",
+    "-A las 18 y 9:",
+    "-Así se hace.",
+    "-Están presentes los señores senadores Aguirre Lanari, Agúndez, Alasino,  Avelín, Bauzá, Cabana, de la Sota, Del Piero, Figueroa, García Arecha, León, López, Losada, Maglietti, Martínez Almudevar, Maya, Melgarejo, Meneghini, Menem, Moreau, O'Donnell, Oyarzún, Pardo, Peña de López, Preto, Romero Feris, Sáez, Sager, Salum, Solana, Storani, Ulloa...",
+    "- ...Uzandizaga, Villarroel y Villaverde.",
+    "-Son las 18 y 15.",
+    "-A las 18 y 20:",
+    "-Son las 18 y 21."
+  ],
+  "headings": [
+    "Manifestaciones en minoría"
+  ],
+  "furniture_seen": [
+    "dateline: 30 de septiembre de 1998 | Versión provisional - sesión ordinaria | 3",
+    "signature block at the foot of the sitting: MARIO A. BALLESTER / Director del Cuerpo de Taquígrafos"
+  ],
+  "notes": "Twelve turns, nine stenographer's notes. The turn 'Se ha dejado constancia, señor senador.' is followed by two indented unlabelled paragraphs ('Ruego a los senadores...' and 'La Presidencia continuará pasando lista...') which are the same chair turn running on, not new turns (rule 2). The chair label is printed with no surname throughout, as the pre-2016 convention has it. The roll call is printed as one italic stenographer's note broken over six printed lines, ending in an ellipsis, and resumed later as a second note that opens with an ellipsis ('- ...Uzandizaga, Villarroel y Villaverde.') because the chair spoke in between; I recorded them as two separate events since each stands as its own italic paragraph. In the roll there is a doubled space after 'Alasino,' before 'Avelín', kept as printed. The resumed roll is the only note on the page whose dash is followed by a space; all the others print the dash tight against the word. Page ends with the sitting adjourned for want of a quorum; the lower half is blank."
+}

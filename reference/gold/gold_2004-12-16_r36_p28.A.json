@@ -1,0 +1,34 @@
+{
+  "pdf": "2004-12-16_r36_ORDINARIA.pdf",
+  "page": 28,
+  "page_id": "2004-12-16_r36_p28",
+  "annotator": "A",
+  "opens_mid_utterance": false,
+  "utterance_starts": [
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Queda aprobada la resolución. Se procederá en consecuencia."},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Corresponde considerar el dictamen de la Comisión de Acuerdos en el mensaje del Poder Ejecutivo"},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "En consideración en general."},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Queda aprobada la resolución. Se procederá en consecuencia."},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Tiene la palabra el señor senador Pichetto."},
+    {"speaker_label": "Sr. Pichetto. —", "first_words": "Solicito el tratamiento sobre tablas del pliego del doctor Morín, aunque falta una firma en el dictamen."},
+    {"speaker_label": "Sr. Morales. —", "first_words": "Pido la palabra."},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Tiene la palabra el señor senador Morales."},
+    {"speaker_label": "Sr. Morales. —", "first_words": "Señor presidente: en verdad, desde el bloque de la Unión Cívica Radical, no estamos de acuerdo"}
+  ],
+  "events": [
+    "— El texto es el siguiente:",
+    "— La votación resulta afirmativa.",
+    "— En particular es igualmente afirmativa."
+  ],
+  "headings": [
+    "17",
+    "Juez de la Cámara Nacional de Apelaciones en lo Civil de la Capital Federal, Sala B",
+    "18",
+    "Juez de Cámara en el Tribunal Oral en lo Criminal N˚ 7 de la Capital Federal"
+  ],
+  "furniture_seen": [
+    "dateline: 16 de diciembre de  2004 | Versión provisional - Sesión ordinaria | Pág. 28",
+    "contents link: Orden del Día Nº 1849, bold blue underlined, on its own line"
+  ],
+  "notes": "The page opens with a printed label, so it does not open mid-utterance; the closing turn (Sr. Morales) runs on past the foot of the page. Every chair label is printed ‘Sr. Presidente. —’ with no surname, as this era does, and the same chair speaks four separate times before the debate on item 18, so four identical labels are listed. In the third chair turn the sentence ‘Si no se hace uso de la palabra, se va a votar.’ is an unlabelled indented paragraph continuing ‘En consideración en general.’, so I kept it inside that turn rather than making it a new one. The stenographer line ‘— El texto es el siguiente:’ is followed by the bold blue underlined ‘Orden del Día Nº 1849’ standing alone on its line: that is the contents hyperlink standing in for the inserted text of the order of the day, not speech and not a heading, so it is listed as furniture — no speaker is invented for it. The number/title pairs 17 and 18 are listed as separate heading entries, matching the number-above-title layout. Typesetting oddity: the title under 18 is centred on its first line but its runover word ‘Federal’ is set flush to the left margin instead of centred, so the heading looks broken; the same title prints the ordinal as ‘N˚’ with a ring rather than the ‘Nº’ used in ‘Orden del Día Nº 1849’, and the dateline prints a double space in ‘de  2004’."
+}

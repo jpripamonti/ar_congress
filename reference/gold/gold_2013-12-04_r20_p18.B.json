@@ -1,0 +1,19 @@
+{
+  "pdf": "2013-12-04_r20_ORDINARIA.pdf",
+  "page": 18,
+  "page_id": "2013-12-04_r20_p18",
+  "annotator": "B",
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {"speaker_label": "Sr. Presidente.-", "first_words": "Tiene la palabra el senador Lores."},
+    {"speaker_label": "Sr. Lores.-", "first_words": "Señor presidente: yo también culmino hoy mi tarea como senador de la Nación"}
+  ],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [
+    "top motto: “2013 - Año del Bicentenario de la Asamblea General Constituyente de 1813”",
+    "dateline: 4 de diciembre de 2013 | Sesión ordinaria | Pág. 18",
+    "footer: Dirección General de Taquígrafos"
+  ],
+  "notes": "The page opens inside a farewell speech by an unnamed outgoing senator (she thanks her bloc chair and mentions senator Estenssoro, and calls herself 'una senadora'), so that speech is not listed as a start. Two labels are printed, both in bold with a full stop and a hyphen and no space before it. The chair is printed 'Sr. Presidente.-' in mixed case, not the all-caps 'Sr. PRESIDENTE.-' the brief mentions for this era, and with no surname — recorded as printed, no name supplied. Lores's turn runs on past the foot of the page. No stenographer notes and no headings on this page. Body typo printed as-is near the foot: 'siempre tuvimos un trato aturado y respetuoso' (probably 'mesurado'); it is inside the speech, not in a label."
+}

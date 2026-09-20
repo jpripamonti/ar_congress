@@ -1,0 +1,18 @@
+{
+  "pdf": "2003-07-23_r15_ORDINARIA.pdf",
+  "page": 74,
+  "page_id": "2003-07-23_r15_p74",
+  "annotator": "A",
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {"speaker_label": "Sra. Perceval. —", "first_words": "Pido la palabra."},
+    {"speaker_label": "Sr. Presidente (Gioja). —", "first_words": "Tiene la palabra la señora senadora Perceval."},
+    {"speaker_label": "Sra. Perceval. —", "first_words": "Al presentar este proyecto para la aprobación del protocolo facultativo simplemente quiero resaltar"},
+    {"speaker_label": "Sr. Presidente (Gioja). —", "first_words": "Tiene la palabra el señor senador Maestro."},
+    {"speaker_label": "Sr. Maestro. —", "first_words": "Señor presidente: el bloque del radicalismo va a acompañar plenamente este proyecto"}
+  ],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [],
+  "notes": "5 turns, no events, no headings, and no page furniture at all.\n\nThe page opens mid-utterance: the first line begins in lower case mid-sentence, 'conciencia de este tema. No podíamos aprobar esto como un proyecto de declaración más...', continuing a speech that started on page 73, so that speech is not listed as a start. The last turn on the page, senator Maestro's, runs on past the foot of the page and is listed, since it starts here.\n\nEvery paragraph after each label is an unlabelled indented continuation of the turn above it; I checked the whole lower half of the page at magnification and there is no further bold label. The label terminator is an em dash with a space each side throughout, and the chair carries a surname here ('Sr. Presidente (Gioja). —'), unlike the bare 'Sr. Presidente. —' of the 28 May 2003 sitting two months earlier.\n\nTYPOGRAPHY, worth a maintainer's attention: this page is NOT set in the Diario's usual serif face. The whole page, labels included, is set in a sans-serif (Arial-like) face at a larger size, with the same justified single column. It also carries no running header, no dateline, no page number and no 'Dirección General de Taquígrafos' footer — the text begins at the top margin and runs to the bottom margin. Either this stretch of the sitting was typeset from a different source file or the furniture layer is missing from these pages. A parser keyed to the serif face or to the header line will behave differently here.\n\nSpacing inside the text is irregular in places — double spaces at 'resaltar que, junto con otros señores senadores,  hemos venido', 'la importancia que  le asigna', 'que hoy  tuvimos la oportunidad', 'sirva  para la protección', and 'esta oportunidad  para destacar' — which looks like justification artefacts rather than meaning. In senator Maestro's third paragraph an em-dash parenthesis is used inside the sentence, '—y en este caso, legislar—'; it is an aside within his own words, set on the line and not as its own paragraph, so it is not a stenographer's note and not an event."
+}

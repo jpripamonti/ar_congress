@@ -1,0 +1,17 @@
+{
+  "pdf": "2012-03-01_r00_ASAMBLEA.pdf",
+  "page": 2,
+  "page_id": "2012-03-01_r00_p2",
+  "annotator": "B",
+  "opens_mid_utterance": false,
+  "utterance_starts": [],
+  "events": [],
+  "headings": [
+    "DIPUTADOS NACIONALES:"
+  ],
+  "furniture_seen": [
+    "dateline: 1° de marzo de 2012 | Versión provisional – Asamblea Legislativa | Pág. 2",
+    "two-column attendance roll of national deputies, running from ABDALA DE MATARAZZO to CREMER de BUSTI in the left column and from CUCCOVILLO to LARROQUE in the right"
+  ],
+  "notes": "An attendance roll and nothing else: two columns of deputies' names under the single bold head 'DIPUTADOS NACIONALES:'. No speaker label, no stenographer note, no speech — utterance_starts and events are empty (rule 8), and any speaker the parser reports on this page is a false positive. The roll is alphabetical and continues onto the next page (it stops mid-alphabet at CREMER de BUSTI / LARROQUE), so nothing is missing from the page itself. opens_mid_utterance is false because no speech is under way here at all; the page interrupts a roll, not an utterance. Typographic oddities, all left exactly as printed: a stray full stop sits alone in the left margin just above 'DIPUTADOS NACIONALES:' (the same stray mark appears on the 2011 Assembly cover page I also annotated); 'ASPIAZU, Lucio Bernanrdo' has the letters of 'Bernardo' transposed; 'GDANSKY, Calos Alberto' is missing the r of 'Carlos'. Lower-case particles are printed inconsistently in the surname position ('de PEDRO', 'de PRAT GAY', 'di TULLIO', 'FERRÁ de BARTOL', 'BLANCO de PERALTA' against the all-caps of the rest), which is how the chamber sets them and not damage. The roll is set small but legible throughout."
+}

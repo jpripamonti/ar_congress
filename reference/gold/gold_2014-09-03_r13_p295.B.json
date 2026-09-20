@@ -1,0 +1,30 @@
+{
+  "pdf": "2014-09-03_r13_ESPECIAL.pdf",
+  "page": 295,
+  "page_id": "2014-09-03_r13_p295",
+  "annotator": "B",
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {"speaker_label": "Sr. Presidente (Fuentes).-", "first_words": "Tiene la palabra el señor secretario de Comercio, Augusto Costa."},
+    {"speaker_label": "Sr. Costa.-", "first_words": "Gracias senador por los comentarios y las preguntas. Voy a ser breve porque sé que hay muchas inquietudes"},
+    {"speaker_label": "Sr. Costa.-", "first_words": "Senador, le estoy respondiendo a las preguntas. En todo caso, ¿espero? ¿Termino?"},
+    {"speaker_label": "Sr. Costa.-", "first_words": "Claro, pero eso parte de pensar que esta es una propuesta de apuro en función de que usted"},
+    {"speaker_label": "Sr. Presidente (Petcoff Naidenoff).-", "first_words": "Las decisiones que aplicaron para la microeconomía las quieren llevar a aplicar para la macro"},
+    {"speaker_label": "Sr. Costa.-", "first_words": "Esa es una explicación de usted."},
+    {"speaker_label": "Sr. Presidente (Petcoff Naidenoff).-", "first_words": "Claro, con los números."},
+    {"speaker_label": "Sr. Costa.-", "first_words": "Perdón, estoy explicando."},
+    {"speaker_label": "Sr. Presidente (Petcoff Naidenoff).-", "first_words": "Sí, “métale” tranquilo."},
+    {"speaker_label": "Sr. Costa.-", "first_words": "El Poder Ejecutivo, la Secretaria de Comercio, el Ministerio de Economía tomaron millones de decisiones"}
+  ],
+  "events": [
+    "- Se realizan manifestaciones fuera del alcance del micrófono.",
+    "- El señor senador Petcoff Naidenoff realiza manifestaciones fuera del alcance del micrófono."
+  ],
+  "headings": [],
+  "furniture_seen": [
+    "top motto: \"2014 -Año de Homenaje al Almirante Guillermo Brown, en el Bicentenario del Combate Naval de Montevideo\"",
+    "dateline: 3 y 4 de septiembre de 2014 | Sesión especial | Pág. 295",
+    "footer: Dirección General de Taquígrafos"
+  ],
+  "notes": "The page opens inside an answer already in progress (on jurisdicción and mediación), so that speech is not counted as a start. Ten labels are printed and each one opens a turn, including the three consecutive 'Sr. Costa.-' turns that are only separated by the two stenographer notes — under rule 2 each printed label is its own start even though the same man is speaking. Both stenographer notes are set in italics, indented and centred, opening with a dash; the second wraps onto a second line ('del micrófono.'). The exchange at the foot is a rapid interruption: five very short turns in a row, the shortest being 'Claro, con los números.' and 'Perdón, estoy explicando.' The label 'Sr. Presidente (Petcoff Naidenoff).-' is the one thing I was genuinely unsure about: the chair changes from '(Fuentes)' to '(Petcoff Naidenoff)' with no stenographer note announcing the change, and what the man labelled 'Presidente' says ('han fracasado, terminó de la peor manera') reads like an opposition senator arguing, not like a chair conducting business. I recorded the labels exactly as printed and supplied nothing; a maintainer should know the chair attribution on this page may be the chamber's own error. Printed without the accent in the last turn: 'la Secretaria de Comercio'. Nothing on the page is an inserted document; it is all floor speech at a joint committee sitting."
+}

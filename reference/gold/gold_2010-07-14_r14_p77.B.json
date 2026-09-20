@@ -1,0 +1,26 @@
+{
+  "pdf": "2010-07-14_r14_ORDINARIA.pdf",
+  "page": 77,
+  "page_id": "2010-07-14_r14_p77",
+  "annotator": "B",
+  "opens_mid_utterance": false,
+  "utterance_starts": [
+    {"speaker_label": "Sr. Torres. –", "first_words": "Sí, yo voy a pedir la tolerancia que tuvieron algunos…"},
+    {"speaker_label": "Sr. Presidente (Pampuro). –", "first_words": "Usted iba a insertar."},
+    {"speaker_label": "Sr. Torres. –", "first_words": "Pero quiero terminar. Voy a finalizar diciendo: “El amor es sufrido y bondadoso"},
+    {"speaker_label": "Sra. Negre de Alonso. –", "first_words": "Pido la palabra para una interrupción."},
+    {"speaker_label": "Sr. Presidente (Pampuro). –", "first_words": "La senadora Negre de Alonso le pide una interrupción."},
+    {"speaker_label": "Sr. Torres. –", "first_words": "Ya termino."},
+    {"speaker_label": "Sra. Escudero. –", "first_words": "Fue aludida."},
+    {"speaker_label": "Sr. Torres. –", "first_words": "Bueno, pero que se compute el tiempo."},
+    {"speaker_label": "Sr. Presidente (Pampuro). –", "first_words": "Se lo computo."},
+    {"speaker_label": "Sra. Negre de Alonso. –", "first_words": "Quiero hacer una aclaración. No he discriminado. Creo que estas quince o diecisiete audiencias"},
+    {"speaker_label": "Sr. Torres. –", "first_words": "Con respecto a la adopción, señor presidente, creo que es mucho más importante la adopción"}
+  ],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [
+    "dateline: 14 y 15 de julio de 2010 | Versión Provisional | Pág. 77"
+  ],
+  "notes": "Eleven labelled turns, no stenographer notes, no headings. The page opens WITH a label ('Sr. Torres. –' on the first text line), so it does not open mid-utterance. After the chair's 'Se lo computo.' an unlabelled indented paragraph follows ('Para una interrupción, tiene la palabra la señora senadora Negre de Alonso.'); by rule 2 that is a run-on paragraph of the same chair turn, not a new turn. Label terminator throughout is an en dash preceded by a period; the period is set bold in some labels ('Sr. Torres. –') and roman in others ('Sr. Torres. –' on the third line, 'Sra. Escudero. –'), the office/holder split is bold 'Sr. Presidente' + roman '(Pampuro)'. I recorded every label in the same normalised spelling 'Name. –' because the difference is one of weight, not of characters. The chair label carries a surname here (Pampuro) even though this is a pre-2016 page. Typographic oddity: 'Sr. Presidente (Pampuro). –  La senadora...' has a double space after the dash, and inside Torres's long speech there is a double space after '¿cómo se le va a enseñar a un chico estas cosas?  Entonces'. No footer is printed on this page."
+}

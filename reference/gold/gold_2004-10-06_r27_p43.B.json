@@ -1,0 +1,39 @@
+{
+  "pdf": "2004-10-06_r27_ORDINARIA.pdf",
+  "page": 43,
+  "page_id": "2004-10-06_r27_p43",
+  "annotator": "B",
+  "opens_mid_utterance": false,
+  "utterance_starts": [
+    {"speaker_label": "Sr. Secretario (Estrada). —", "first_words": "Se registraron 37 votos por la afirmativa y 16 por la negativa. La votación resulta afirmativa."},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Queda aprobado"},
+    {"speaker_label": "Sra. Colombo. —", "first_words": "Señor presidente: solicito que se deje constancia de mi voto afirmativo."},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Se deja constancia."},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Tiene la palabra la señora senadora por Buenos Aires."},
+    {"speaker_label": "Sr. Müller. —", "first_words": "Este artículo expresa: “Sin perjuicio de lo dispuesto en el artículo anterior, conocerá la jurisdicción federal"},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "¿Este texto está consensuado?"},
+    {"speaker_label": "Sr. Escudero. —", "first_words": "Sí, señor presidente."},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Si no se hace uso de la palabra, se va a votar el artículo 3° con la redacción propuesta."},
+    {"speaker_label": "Sr. Secretario (Estrada). —", "first_words": "Se registraron 51 votos por la afirmativa, 3 por la negativa y ninguna abstención."},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Queda aprobado."},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Tiene la palabra la señora senadora por Buenos Aires."},
+    {"speaker_label": "Sr. Müller. —", "first_words": "En este artículo, el proyecto expresa: “En caso de duda sobre la jurisdicción competente prevalecerá la federal.”"},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "¿Existe acuerdo?"},
+    {"speaker_label": "Sra. Escudero. —", "first_words": "Aceptamos la modificación propuesta, señor presidente."},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Tiene la palabra el señor senador por Salta."},
+    {"speaker_label": "Sr. López Arias. —", "first_words": "Señor presidente: quiero proponer algunas reglas prácticas para tratar de resolver problemas"}
+  ],
+  "events": [
+    "— El resultado de la votación surge del Acta N° 4",
+    "— Se enuncia el artículo 3°:",
+    "— Se practica la votación por medios electrónicos.",
+    "— El resultado de la votación surge del Acta N° 5",
+    "— Se enuncia el artículo 4°:"
+  ],
+  "headings": [],
+  "furniture_seen": [
+    "dateline: 6 de octubre de 2004 | Versión provisional - Sesión ordinaria | Pág. 43",
+    "contents links: “Acta N° 4” and “Acta N° 5” set in blue inside the two italic stenographer lines"
+  ],
+  "notes": "The page opens with a printed label (Sr. Secretario (Estrada)), so it does not open mid-utterance. Terminators are em dashes throughout; in 'Sr. Presidente. — Queda aprobado' (both occurrences) the full stop after 'Presidente' is roman while the name is bold, and in the label before 'Tiene la palabra la señora senadora por Buenos Aires' (first occurrence) the em dash is set tight against the word ('—Tiene'), with no space. Gender inconsistencies in the labels, recorded exactly as printed and not corrected: Müller is announced by the chair as 'la señora senadora por Buenos Aires' but labelled 'Sr. Müller.' twice; Escudero is labelled 'Sr. Escudero.' the first time and 'Sra. Escudero.' the second. 'Queda aprobado' (first occurrence) is printed with no closing full stop. Inside Müller's first turn the page prints an editorial interpolation in square brackets, '[falta la \"b\", porque el despacho dice \"sujetiva\", de sujeto]' — it is inside her quoted words, not a stenographer's note, so it is not an event. In López Arias's last paragraph the page prints 'del artículo 4E:' where the context (an added paragraph to article 4) makes '4°' the evident reading — this looks like a typesetting/character accident and I left it as printed. That last paragraph quotes a proposed legal text using straight ASCII double quotes ('\"Las cuestiones...'), unlike the curly quotes used elsewhere on the page; it is text López Arias reads aloud within his own turn, so it is not an inserted document. The page ends mid-sentence in his speech. No footer line ('Dirección General de Taquígrafos') and no section heading are printed on this page."
+}

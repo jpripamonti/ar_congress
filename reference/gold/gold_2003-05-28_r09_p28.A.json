@@ -1,0 +1,53 @@
+{
+  "pdf": "2003-05-28_r09_ORDINARIA.pdf",
+  "page": 28,
+  "page_id": "2003-05-28_r09_p28",
+  "annotator": "A",
+  "opens_mid_utterance": false,
+  "utterance_starts": [
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Queda aprobada la comunicación. Se procederá en consecuencia."},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Corresponde considerar el dictamen de la Comisión de Presupuesto y Hacienda en el proyecto de resolución del señor senador Morales"},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "En consideración en general."},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Queda aprobada la resolución. Se procederá en consecuencia."},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Corresponde considerar el dictamen de la Comisión de Presupuesto y Hacienda en el proyecto de comunicación de la señora senadora Perceval"},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "En consideración en general."},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Queda aprobada la comunicación. Se procederá en consecuencia."},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Corresponde considerar el dictamen de la Comisión de Presupuesto y Hacienda en el proyecto de comunicación del señor senador Lamberto"},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "En consideración en general."},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Queda aprobada la comunicación. Se procederá en consecuencia."}
+  ],
+  "events": [
+    "— La votación resulta afirmativa.",
+    "— En particular es igualmente afirmativa.",
+    "— El texto es el siguiente:",
+    "— La votación resulta afirmativa.",
+    "— En particular es igualmente afirmativa.",
+    "— El texto es el siguiente:",
+    "— La votación resulta afirmativa.",
+    "— En particular es igualmente afirmativa.",
+    "— El texto es el siguiente:",
+    "— La votación resulta afirmativa.",
+    "— En particular es igualmente afirmativa."
+  ],
+  "headings": [
+    "35",
+    "Orden del Día N°",
+    "Partidas asignadas a universidades",
+    "36",
+    "Orden del Día N° 25",
+    "Incremento de partidas presupuestarias",
+    "37",
+    "Orden del Día N° 26",
+    "Convenio de Financiamiento Ordenado",
+    "38",
+    "Orden del Día N° 27"
+  ],
+  "furniture_seen": [
+    "dateline: 28 de mayo de 2003 | Sesión ordinaria | Pág 28 (printed without a period after 'Pág')",
+    "rule under the dateline",
+    "contents link, blue and underlined: Orden del Día Nº 24",
+    "contents link, blue and underlined: Orden del Día Nº 25",
+    "contents link, blue and underlined: Orden del Día Nº 26"
+  ],
+  "notes": "10 turns, 11 events. Every turn on this page is the chair, printed with no surname: 'Sr. Presidente. —', ten times over. The page is three identical procedural cycles (introduce the dictamen, put it in general consideration, declare it approved) plus the tail of a fourth cycle at the top and the head of a fifth at the bottom.\n\nopens_mid_utterance is false: the first two printed lines are stenographer's notes with their own dashes ('— La votación resulta afirmativa.' / '— En particular es igualmente afirmativa.'), not speech. The vote they record belongs to a turn that began on page 27, but no words are carried over onto this page, so nothing is cut mid-sentence here. A reader who took 'somebody's speech is in progress' to include the surrounding procedure could set this true; I read the rule as being about words, and the page's first words are a note.\n\nThe unlabelled indented line 'Si no se hace uso de la palabra, se va a votar.' appears three times and each time runs on from the chair's 'En consideración en general.' turn; none of them is a new turn.\n\nDEFECT: the heading of section 35 is printed as 'Orden del Día N°' with the number missing altogether. The chair's paragraph directly underneath names it, '(Orden del Día Nº 24)', and the blue contents link below reads 'Orden del Día Nº 24', so the heading should read 'N° 24'. Sections 36, 37 and 38 all carry their numbers. I recorded the heading exactly as printed, with nothing after 'N°'.\n\nTwo different ordinal glyphs are in use on the same page: the centred bold headings use 'N°' with a degree-like ring, while the chair's speech and the blue links use 'Nº' with the masculine ordinal. I kept each as printed. The running header prints 'Pág 28' with no period, unlike the 'Pág.' of other years.\n\nThe blue underlined 'Orden del Día Nº 24 / 25 / 26' lines are contents links to the inserted texts, not speech and not stenographer's notes, so they are furniture. The text of each Orden del Día is not printed on this page; only the link stands where it would go. The italic '— El texto es el siguiente:' lines are standalone paragraphs and are recorded as events."
+}

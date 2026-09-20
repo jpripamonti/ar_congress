@@ -1,0 +1,26 @@
+{
+  "pdf": "2000-02-23_r01_PREPARATORIA.pdf",
+  "page": 7,
+  "page_id": "2000-02-23_r01_p7",
+  "annotator": "B",
+  "opens_mid_utterance": false,
+  "utterance_starts": [
+    {"speaker_label": "Sr. PRESIDENTE.-", "first_words": "Señor senador Antonio Francisco Cafiero: ¿Juráis a la Patria, por Dios y estos Santos Evangelios"},
+    {"speaker_label": "Sr. CAFIERO.-", "first_words": "¡Sí, juro!"},
+    {"speaker_label": "Sr. PRESIDENTE.-", "first_words": "Si así no lo hiciereis, Dios y la Patria os lo demanden. (Aplausos.)"},
+    {"speaker_label": "Sr. PRESIDENTE.-", "first_words": "Señor senador José Genoud: ¿Juráis a la Patria, por Dios y estos Santos Evangelios"},
+    {"speaker_label": "Sr. GENOUD.-", "first_words": "¡Sí, juro!"},
+    {"speaker_label": "Sr. PRESIDENTE.-", "first_words": "Si así no lo hiciereis, Dios y la Patria os lo demanden. (Aplausos.)"}
+  ],
+  "events": [
+    "-Puestos de pie los señores senadores y el público:",
+    "-Puestos de pie los señores senadores y el público:",
+    "-Son las 14 y 28."
+  ],
+  "headings": [],
+  "furniture_seen": [
+    "dateline: 23 de febrero de 2000 | Versión provisional - sesión preparatoria | 7",
+    "signature block at the foot of the sitting: MARIO A. BALLESTER / Director del Cuerpo de Taquígrafos"
+  ],
+  "notes": "Six turns, three stenographer's notes, no section headings. Both '(Aplausos.)' are printed inside the chair's paragraphs, so by rule 4 they belong to those turns and are not events. The chair's third and sixth turns each run on into an indented unlabelled paragraph ('Invito al señor senador José Genoud...' and 'Como se ha cumplido con el objetivo propuesto...'), which stay part of the same turn. Typographic oddities: the fourth label is printed WITHOUT the usual space after the terminator — 'Sr. PRESIDENTE.-Señor senador José Genoud' — and I recorded the label as 'Sr. PRESIDENTE.-' exactly as printed; the colon after 'Cafiero' in the first turn is set in bold along with the label, while the equivalent colon after 'Genoud' is roman, so the two oath turns are typeset inconsistently. The same two events are printed identically, which is correct (two separate swearings-in) and not a duplication error. The lower third of the page is blank after the signature block; the sitting closes here."
+}

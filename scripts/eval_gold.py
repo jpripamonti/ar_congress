@@ -22,6 +22,7 @@ data/processed/senado/gold_eval.csv. The gold set is machine-assisted
 (annotated from rendered pages) and pending owner verification.
 """
 
+import argparse
 import json
 import re
 import sys
@@ -117,8 +118,30 @@ def multiset_overlap(a, b):
     return sum(min(ca[k], cb[k]) for k in ca)
 
 
+def gold_files(reading):
+    """One annotation per page.
+
+    The pages drawn in September 2026 were read twice, by annotators who never
+    saw each other, and are stored as `gold_<page>.A.json` and `.B.json`. The
+    36 older pages have a single reading and no letter. Taking the glob whole
+    would score the twice-read pages twice over, so a reading is chosen and the
+    single-reading files come along with it. Run it for both and compare: a
+    score that moves between readings is measuring the annotators.
+    """
+    single = [p for p in GOLD_DIR.glob("gold_*.json")
+              if not re.search(r"\.[AB]\.json$", p.name)]
+    paired = list(GOLD_DIR.glob(f"gold_*.{reading}.json"))
+    return sorted(single + paired)
+
+
 def main():
-    golds = sorted(GOLD_DIR.glob("gold_*.json"))
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("--reading", default="A", choices=["A", "B"],
+                    help="which annotator's reading to score the twice-read "
+                         "pages against (default A)")
+    args = ap.parse_args()
+
+    golds = gold_files(args.reading)
     if not golds:
         sys.exit(f"No gold files in {GOLD_DIR}")
 
@@ -199,8 +222,10 @@ def main():
     er = df.event_tp.sum() / max(df.gold_events.sum(), 1)
     leak = df[df.appendix_page].speech_rows_on_page.sum()
 
+    twice = sum(1 for g in golds if re.search(r"\.[AB]\.json$", g.name))
     print(f"Gold evaluation — parser {parser_version}, {len(df)} pages "
-          f"({int(df.appendix_page.sum())} appendix)")
+          f"({int(df.appendix_page.sum())} appendix), "
+          f"{twice} of them on reading {args.reading}")
     print(f"  Utterance boundary+attribution: P={up:.3f} R={ur:.3f} F1={uf1:.3f} "
           f"({int(deb.utt_tp.sum())}/{int(deb.gold_utt.sum())} gold turns matched)")
     print(f"  ...with the turn's opening words too: P={wp:.3f} R={wr:.3f} F1={wf1:.3f} "

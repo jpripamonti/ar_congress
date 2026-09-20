@@ -1,0 +1,20 @@
+{
+  "pdf": "2008-09-10_r15_ORDINARIA.pdf",
+  "page": 37,
+  "page_id": "2008-09-10_r15_p37",
+  "annotator": "A",
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Tiene la palabra el señor senador Rodríguez Saá."},
+    {"speaker_label": "Sr. Rodríguez Saá.—", "first_words": "Señor presidente: en 2004, se dictó la Ley 25880, para ordenar todo el tema"},
+    {"speaker_label": "Sr. Presidente. —", "first_words": "Oportunamente pondremos en consideración las abstenciones."},
+    {"speaker_label": "Sra. Corregido. —", "first_words": "Señor presidente: en el orden del día de hoy tenemos el expediente S-513/08"}
+  ],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [
+    "dateline: 10 de septiembre de 2008 | Versión provisional - Sesión ordinaria | Pág. 37",
+    "horizontal rule under the dateline"
+  ],
+  "notes": "Four labels, four turns; the page opens mid-speech (the previous senator finishes '...del bloque del ARI de Tierra del Fuego.'). The third turn, the chair's 'Oportunamente pondremos en consideración las abstenciones.', is followed by an unlabelled indented paragraph 'Tiene la palabra la señora senadora Corregido.' — by rule 2 that run-on belongs to the same turn and is NOT listed separately, which is the one judgement call on this page. Terminators are inconsistent: 'Sr. Presidente. —' and 'Sra. Corregido. —' have a space before the em dash, 'Sr. Rodríguez Saá.—' does not; in the first chair label the full stop is roman while the name is bold, in the second the full stop is bold. TYPOGRAPHIC DEFECT: the masculine ordinal sign is broken throughout this page — it prints as a capital-E-like glyph, so the text reads 'el artículo 5E', 'el 1E de setiembre', 'el artículo 8E' where the chamber meant 5º, 1º and 8º. Also 'Ley 25880' is printed without the usual dot separator, and the quotation marks around \"maestro ciruela\" are straight typewriter quotes where the rest of the page uses curly ones. No footer is printed on this page."
+}

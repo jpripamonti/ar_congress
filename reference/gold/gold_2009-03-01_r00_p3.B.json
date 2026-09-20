@@ -1,0 +1,16 @@
+{
+  "pdf": "2009-03-01_r00_ASAMBLEA.pdf",
+  "page": 3,
+  "page_id": "2009-03-01_r00_p3",
+  "annotator": "B",
+  "opens_mid_utterance": false,
+  "utterance_starts": [],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [
+    "attendance roll continued in two columns, running from MERCHAN, Paula Cecilia to ZAVALLO, Gustavo Marcelo",
+    "bold column headings AUSENTES CON AVISO and LICENCIA in the lower half of the page",
+    "horizontal rules closing the upper right column and the two lower columns"
+  ],
+  "notes": "A roll page of the Legislative Assembly: nothing but lists of names, with no speech, no speaker label, no stenographer note and no section heading, so utterance_starts is empty and any speaker the parser finds here is a false positive. The list of present members carries over from the previous page and ends mid-page; the lower half restarts with the absent and leave-of-absence lists. As on the other roll page in my set I filed AUSENTES CON AVISO and LICENCIA as furniture rather than headings, since they label columns of the roll and not sections of a debate. This page has no running header, no page number and no footer printed on it at all — unusual for the corpus and worth knowing, since the date and page cannot be recovered from the page itself. DEFECT worth a maintainer's attention: the last line of the LICENCIA column, '*RIVAS, Jorge – no incorporado', is printed over a bright yellow highlight. It is an editing mark that was never cleared before the record was published, and it is the only coloured element on the page; I verified it at high magnification. Its leading asterisk has no matching footnote anywhere on the page."
+}
