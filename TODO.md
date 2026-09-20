@@ -1955,9 +1955,17 @@ and 21.5 million words of attributed speech become 25.7.
       today, which makes "Aplausos" a word the senator spoke. An annotator
       raised it; applause closing a speech is probably the commonest note in
       the corpus, so the count it affects is not small.
-- [ ] Fix the annotation brief before the next set is drawn: say that an event
+- [x] Fix the annotation brief before the next set is drawn: say that an event
       stands as its own paragraph, and that a printed label always opens a
-      turn. Both cost a re-emission this round.
+      turn. Both cost a re-emission this round. Both rules went in with the
+      set itself (a94c38a) and this entry outlived them. They are now keyed to
+      the markup rather than asserted about "paragraphs", which mean nothing
+      obvious in a WordPerfect export: `<P>` is a separator that is never
+      closed (2,013 of them in 2000-08-23_r46, none closed), so an event is a
+      note with a fresh `<P>` opened in front of it. The italics are not the
+      test — 2000-08-23_r46 prints two `(Aplausos.)` inside one running `<P>`
+      of speech, one italicising the word and the other the whole
+      parenthesis, and neither is an event.
 
 ## Phase 37 — where the dropped text goes (September 2026)
 

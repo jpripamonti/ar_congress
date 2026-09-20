@@ -16,11 +16,25 @@ Read the MARKUP, not a stripped version: the typography is the evidence.
   full stop and no dash, `Sr. Salvatori, --` with a comma. All are labels.
 - WordPerfect puts each accented letter in a font of its own, so a label can
   be split across runs — `Sr. AVEL` + `Í` + `N.-` is one label.
-- An event is a note printed as its OWN paragraph. A parenthesised note that
-  sits inside a speaker's paragraph — including one that closes it, "...señor
-  presidente. (Aplausos.)" — belongs to that speech and is NOT an event; the
-  corpus merges it back in (TODO.md, Phase 2). Getting this wrong cost six
-  re-emissions in the first round.
+- An event is a note printed as its OWN paragraph. Because `<P>` is a
+  separator that is never closed, "its own paragraph" means a run that opens
+  with a fresh `<P>` before the note starts — usually the whole run to the
+  next `<P>` is italic and opens with a dash, `<p><i>-La votación resulta
+  afirmativa.</i>`. A parenthesised or italicised note with no `<P>` opened in
+  front of it belongs to the speech it sits inside and is NOT an event — even
+  one that closes a speech, "...señor presidente. (Aplausos.)", and even one
+  that recurs twice inside a single running `<P>` of speech: "...que nos
+  honra. (<i>Aplausos</i>.) ¡Cafiero no está imputado de nada! ¡Es un hombre
+  honorable! <i>(Aplausos.)</i>" is one turn with no events in it, not a turn
+  interrupted twice. The corpus merges a note like this back into the speech
+  (TODO.md, Phase 2). Whether the note itself is in `<i>` is not the test —
+  some typists forget the italics on a note that still opens its own `<P>`,
+  and that is still an event; the `<P>` boundary decides, not the font.
+  Typography decides this, not what happened in the room: this is the corpus
+  convention and it is what the parser is scored against. If the markup
+  around a note is too tangled to tell whether a `<P>` truly opened before
+  it, say so in `notes` with what you decided and why. Getting this wrong
+  cost six re-emissions in the first round.
 - The stenographer's notes are set in italics and usually open with a dash:
   `<I>— Se practica la votación por medios electrónicos.</I>`. Nobody utters
   them. A parenthesised note like `(Aplausos.)` or `(Risas.)` is also an
@@ -54,11 +68,16 @@ Rules that decide the hard cases:
    the middle of somebody's speech, set opens_mid_utterance true and do not
    list that speech as a start.
 2. A PRINTED LABEL ALWAYS OPENS A TURN, even where the same person was
-   speaking before it and only a note or a heading intervened. This rule
-   reaches only an UNLABELLED paragraph that runs on: that is not a new turn.
-   Where the typist re-sets the label, list it. (TODO.md Phase 2; the PDF gold
-   set does the same.) Getting this wrong cost four re-emissions in the first
-   round.
+   speaking before it and only a note or a heading intervened. A stretch
+   where the chair speaks four times holds four entries, with four identical
+   labels and four different `first_words`. This is the ordinary shape of a
+   vote: `<p><b>Sr. PRESIDENTE (Cafiero).-</b> En consideración en general.`,
+   then an unlabelled sentence, then one or more `<p><i>` votación notes, then
+   a fresh `<p><b>Sr. PRESIDENTE (Cafiero).-</b> Queda aprobada...` — two
+   turns for the chair, not one continuous one. This rule reaches only an
+   UNLABELLED paragraph that runs on: that is not a new turn. Where the
+   typist re-sets the label, list it. (TODO.md Phase 2; the PDF gold set does
+   the same.) Getting this wrong cost four re-emissions in the first round.
 3. An inserted document — a bill, a letter, a committee report handed in for
    the record — has no speaker. Do not invent one. Say so in notes.
    But a document a secretary READS ALOUD is that secretary's turn.
