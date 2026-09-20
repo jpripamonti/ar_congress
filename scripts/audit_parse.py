@@ -9,7 +9,14 @@ checked everywhere, by looking for things that must never happen:
    a speaker never utters them, so finding one inside a turn means the
    header/footer strip missed a page. Counted as a fault, not merely printed:
    the one page whose footer landed inside a senator's question was on the
-   screen for weeks while the audit went on reporting nothing wrong.
+   screen for weeks while the audit went on reporting nothing wrong. The
+   running header used to be one more entry in this dictionary, keyed on the
+   words "Pág. N" — but 628 pages across 19 sittings set that header in a
+   symbol font, where the letters extract into the Unicode private use area
+   and the words are not there to match. That sub-check is now its own pass,
+   RUNNING HEADERS below: it finds a header by POSITION AND REPETITION across
+   a document's pages instead of by its words, which survives a symbol font,
+   a page number set in Greek letters, and a page with no number at all.
 2. GLUED LABELS — a complete printed speaker label sitting inside a turn's
    text. This is the worst error the parser can make: it means a change of
    speaker went undetected, so one senator is credited with another's words.
@@ -36,14 +43,24 @@ checked everywhere, by looking for things that must never happen:
    it interrupted, a scrap of an editorial note left as a two-character turn.
    The conservation check looks inside blocks and never at their first and last
    characters, so nothing else asks this.
+7. RUNNING HEADERS — every PDF page's own top strip, read by position and
+   checked for repetition across the document, rather than by matching the
+   word "Pág.". This is what LEAKAGE's dateline entry used to do by text
+   alone, and it went blind on 628 pages set in a symbol font.
+8. HTML SPLIT LABELS — the commonest label shape of the 1998-2003 HTML era:
+   WordPerfect's own export sometimes leaves a <b> tag open across a
+   paragraph break, so the bold run that should belong to a speaker's label
+   instead opens at the section heading above it and closes partway through
+   the name. The parser reads these correctly; this asserts that it keeps
+   doing so, over every instance the shape actually occurs in the corpus.
 
 Sessions that are scans with OCR text are reported first and excluded from the
 counts: their faults belong to the scan, not to the parser.
 
-Checks 1, 2 and 5 read only the parsed output and are fast. Checks 3 and 4
-re-read every held file — the PDFs of 2004 on and the HTML of 1998-2003 alike,
-each stripped independently of the reader that parsed it; pass --skip-source to
-leave them out.
+Checks 1, 2 and 5 read only the parsed output and are fast. Checks 3, 4, 7 and
+8 re-read every held file — the PDFs of 2004 on and the HTML of 1998-2003
+alike, each stripped independently of the reader that parsed it; pass
+--skip-source to leave them out.
 
 Usage:
     uv run scripts/audit_parse.py               # everything
@@ -58,6 +75,7 @@ import html
 import re
 import sys
 import unicodedata
+from collections import Counter
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from pathlib import Path
 
@@ -76,9 +94,10 @@ OUT_DIR = REPO_ROOT / "data" / "processed" / "senado"
 SPEAKERS = OUT_DIR / "speakers.parquet"
 
 # Printed apparatus. None of it is ever spoken, so none of it may appear
-# inside a speech turn.
+# inside a speech turn. The running header used to be keyed here on the words
+# "Pág. N" (see check_running_headers below for why that is no longer how it
+# is found).
 FURNITURE = {
-    "dateline (Pág. N)": re.compile(r"P[áa]g\.\s*\d+"),
     "stenographers' office": re.compile(r"Direcci[óo]n General de Taquígrafos"),
     "masthead": re.compile(r"VERSI[ÓO]N TAQUIGR[ÁA]FICA|C[ÁA]MARA DE SENADORES DE LA NACI[ÓO]N"),
     "sitting header": re.compile(r"\d+[ªº°]\s*Reuni[óo]n\s*[-–]\s*\d+[ªº°]?\s*Sesi[óo]n"),
@@ -506,6 +525,378 @@ def check_attribution_windows(corpus):
     return bad
 
 
+# -- running headers, found by position and repetition rather than by word --
+# 628 pages across 19 sittings set their running header in a symbol font: the
+# letters extract into the Unicode private use area at U+F000 + the ASCII
+# code, so a check keyed on the literal words "Pág. N" matches nothing on
+# those pages and reports them clean without ever having examined them. Two
+# more pages print the page number in Greek letters ("Πáγ. 5"), and some
+# pages carry a header with no page number in it at all. None of that stops
+# the header from sitting in the same place on every page of the document, so
+# that is what this looks for instead: a line of text that repeats, position
+# for position, across a document's pages.
+_PUA_LO, _PUA_HI = 0xF000, 0xF0FF
+
+
+def decode_symbol_font(s):
+    """Undo a font's mapping of its glyphs into the Unicode private-use area.
+
+    This is the one piece of interpretation this check allows itself, and it
+    is a fixed, content-blind fact about how such a font is built, not a
+    judgement about what the header says: a symbol face maps each glyph to
+    U+F000 plus the ASCII code the typist pressed, so shifting back is always
+    correct, whatever the header turns out to say once it is legible.
+    """
+    return "".join(chr(ord(c) - _PUA_LO) if _PUA_LO <= ord(c) <= _PUA_HI else c
+                   for c in s)
+
+
+def page_top_strip(page, frac=0.10):
+    """The text sitting in the top strip of one page, in reading order.
+
+    Position only — nothing here asks what the strip says. The band matches
+    the one a running header sits in on every layout this corpus holds.
+    """
+    height = page.height or 1
+    top = [c for c in page.chars if c["top"] < height * frac]
+    if not top:
+        return ""
+    top.sort(key=lambda c: (round(c["top"]), c["x0"]))
+    return decode_symbol_font("".join(c["text"] for c in top)).strip()
+
+
+def header_signature(line):
+    """The part of a top-strip line that must survive from page to page.
+
+    A running header repeats verbatim except for its own page number — and
+    sometimes a day or a year printed in the running text repeats too, so
+    every digit is stripped, not just a trailing number. What is left is the
+    skeleton that has to recur if this is a header and not a line that
+    happened to sit near the top of one page only.
+    """
+    return re.sub(r"\d+", "", flatten(line))
+
+
+def find_running_header(strips, min_len=12, min_count=3, min_share=0.3):
+    """The signature that repeats across most of a document's pages, if any.
+
+    A header is defined by POSITION AND REPETITION — the thing that sits in
+    the same place on many pages of the same document — never by its words.
+    Keying on a word like "Pág." fails wherever the typesetter did not print
+    that word in plain Latin text; this does not care what the words are.
+
+    Compared by a PREFIX, not the whole strip: where the header is a single
+    short line, the 10%-of-height band that finds it also catches the first
+    words of the body text below, which differ on every page and would keep
+    any two pages from agreeing on the whole line. How much of the line is
+    compared is not fixed, and not read off any one page either — one page
+    with an unusually short scrap at the top (a stray word, no header at
+    all) would otherwise set it and produce a match on nothing. Instead the
+    prefix is GROWN one character at a time, for as long as doing so does not
+    cost most of the pages that were agreeing at the length before: the
+    header is however much of the line survives being compared before pages
+    start disagreeing, which is where the header ends and the page's own,
+    differing text begins.
+    """
+    sigs = {p: header_signature(s) for p, s in strips.items() if s}
+    long_enough = {p: s for p, s in sigs.items() if len(s) >= min_len}
+    if not long_enough:
+        return None, set()
+
+    def enough(n):
+        # BOTH floors, not either: a document of 3 pages would otherwise
+        # accept a single page's own sentence as "the header" (1 already
+        # clears 30% of 3), and a document of 115 pages would accept five
+        # pages that happen to open on the same boilerplate title ("Pedido
+        # de informes sobre...") as "the header" because five clears the flat
+        # floor of three. Requiring both is requiring actual repetition
+        # relative to the document's own size.
+        return n >= min_count and n >= min_share * max(len(sigs), 1)
+
+    best_sig, best_n = None, 0
+    length = min_len
+    cap = max((len(s) for s in long_enough.values()), default=min_len)
+    while length <= cap:
+        counts = Counter(s[:length] for s in long_enough.values() if len(s) >= length)
+        if not counts:
+            break
+        sig, n = counts.most_common(1)[0]
+        if best_sig is None:
+            if not enough(n):
+                break
+        # Past the first accepted length, growth is stopped by RETENTION —
+        # is this still substantially the same group of pages agreeing? —
+        # rather than by the bare floor above. A floor alone never stops the
+        # walk: some small clique of pages keeps agreeing by coincidence for
+        # a while after the real header has ended and each page's own,
+        # different text has begun, and the walk would chase that
+        # coincidence past the header's true end instead of stopping there.
+        elif n < 0.8 * best_n:
+            break
+        best_sig, best_n = sig, n
+        length += 1                        # keep growing while it still repeats
+    if best_sig is None:
+        return None, set()
+    # Pages whose strip carries the header, however long that page's own
+    # strip runs on past it.
+    return best_sig, {p for p, s in sigs.items() if s.startswith(best_sig)}
+
+
+def audit_running_header(args):
+    """One PDF: find its running header by position, then hand back where."""
+    session_id, source_name = args
+    path = RAW_DIR / source_name
+    try:
+        with pdfplumber.open(path) as pdf:
+            strips = {i: page_top_strip(pg) for i, pg in enumerate(pdf.pages, start=1)}
+    except Exception as exc:
+        return {"session_id": session_id, "pages_examined": 0, "header_sig": None,
+                "header_pages": [], "error": str(exc)[:70]}
+    sig, pages = find_running_header(strips)
+    return {"session_id": session_id, "pages_examined": len(strips),
+            "header_sig": sig, "header_pages": sorted(pages), "error": None}
+
+
+def check_running_headers(corpus, scanned, workers=8):
+    """Re-key LEAKAGE's dateline entry on position and repetition, and run it.
+
+    A page's header is found by re-reading the PDF, never by trusting the
+    already-parsed text — the same discipline as the CONSERVATION and
+    COVERAGE checks below. Once a document's header is located this way, its
+    presence in the parsed output is checked the same way the old entry
+    checked it: for any speech turn on that page, does the header's own
+    skeleton (its words, minus every digit) turn up inside it.
+    """
+    print(f"\n{'='*66}\nRUNNING HEADERS — found by position and repetition, not by word"
+          f"\n{'='*66}")
+    sessions = (corpus[corpus.source_file.str.lower().str.endswith(".pdf")]
+                .groupby("session_id").source_file.first())
+    jobs = [(sid, name) for sid, name in sessions.items() if sid not in scanned]
+    rows = []
+    with ProcessPoolExecutor(max_workers=workers) as pool:
+        futures = [pool.submit(audit_running_header, j) for j in jobs]
+        for i, fut in enumerate(as_completed(futures), 1):
+            rows.append(fut.result())
+            if i % 100 == 0:
+                print(f"   {i}/{len(jobs)} PDFs scanned for a running header")
+
+    errs = [r for r in rows if r["error"]]
+    ok = [r for r in rows if not r["error"]]
+    with_header = [r for r in ok if r["header_sig"]]
+    pages_examined = sum(r["pages_examined"] for r in ok)
+    pages_with_header = sum(len(r["header_pages"]) for r in with_header)
+    print(f"   {len(ok)} PDFs opened, {pages_examined:,} pages examined by position")
+    print(f"   {len(with_header)} PDFs carry a running header found this way, "
+          f"across {pages_with_header:,} pages")
+    if errs:
+        print(f"   !! {len(errs)} PDFs could not be opened")
+        for r in errs[:5]:
+            print(f"          {r['session_id']}: {r['error']}")
+
+    speech = corpus[(corpus.type == "speech") & ~corpus.session_id.isin(scanned)]
+    leaked = []
+    for r in with_header:
+        sig = r["header_sig"]
+        if len(sig) < 12 or not r["header_pages"]:
+            continue
+        header_pages = set(r["header_pages"])
+        on = speech[speech.session_id == r["session_id"]]
+        if on.empty:
+            continue
+        on = on[on.pages.apply(lambda ps: bool(header_pages & {int(p) for p in ps}))]
+        for idx, row in on.iterrows():
+            if sig in flatten(row.text):
+                leaked.append((r["session_id"], idx, str(row.text)[:120]))
+
+    print(f"\n   {len(leaked):6}  speech turns carrying their own page's running "
+          f"header (must be 0)")
+    for sid, idx, snippet in leaked[:5]:
+        print(f"          [{sid}] row {idx}: {snippet!r}")
+    return len(leaked)
+
+
+# -- HTML split labels: the era's commonest label shape, and the check that
+# did not exist for it -------------------------------------------------------
+# Nineteen of twenty blind readers of the September 2026 round reported the
+# same thing unprompted, looking at show_passage.py's rendering: the bold run
+# that should wrap a speaker's label instead opens at the section heading
+# above it. Checked against the raw markup, the tags are not actually
+# unclosed — the heading and the label are each a normal, self-contained
+# <b>...</b> — but nothing separates the heading's closing tag from the
+# label's opening one except the paragraph break itself: a `</center>`, a
+# blank line, a `<p>`, a `<font>` wrapper, none of which print a visible
+# character. To an eye (or to show_passage.py's own renderer, built to join a
+# label bold split across several font runs — "Sr. AVEL" + "Í" + "N.-" — so a
+# reader can read it as one label) two bold runs with nothing visible between
+# them are one run, so the heading and the label read as a single bold span.
+# parse_html.py never sees it that way — it splits on the same break tags
+# that separate the two <b>s — but nothing asserted that it keeps not seeing
+# it that way, for the single commonest label shape of the era.
+#
+# Found here at the tag level, independently of parse_html.py's own paragraph
+# and bold tracking, for the same reason source_read() strips the HTML on its
+# own rather than through parse_html.py: a check that reused the parser's own
+# reading of the markup would be marking the parser's work with its own pen.
+# Only the literal fact of the tags is used — where a <b> opens and closes,
+# where a break tag falls — never a judgement about what a run means.
+_HTML_TAG_RE = re.compile(r"<[^>]+>|[^<]+")
+_HTML_TAGNAME_RE = re.compile(r"</?\s*([a-zA-Z][a-zA-Z0-9]*)")
+HTML_BREAK_TAGS = {"p", "br", "hr", "li", "tr", "div", "h1", "h2", "h3", "h4",
+                    "center", "table", "ul", "multicol", "blockquote", "dir"}
+HTML_BOLD_TAGS = {"b", "strong"}
+HTML_CSS_BOLD_RE = re.compile(r"font-weight\s*:\s*(bold|[6-9]00)", re.I)
+# The same honorifics GLUED_LABEL looks for above: enough to say a paragraph
+# opens with a printed label, without borrowing parse_html.py's own, looser
+# pattern for what a label may look like.
+HTML_LABEL_START_RE = re.compile(r"^(?:Sr|Sra|Srta)\.", re.I)
+HTML_LABEL_TERM_RE = re.compile(r"[.,;:]*\s*[-–—]{1,2}")
+
+
+def html_paragraphs_with_bold(raw_html):
+    """Non-blank paragraphs, each as (text, per-character bold flags).
+
+    Paragraphs are split on the same break tags parse_html.py splits on --
+    that boundary is a fact about the markup, not a judgement this check
+    would be wrong to borrow. Bold is a plain tag-nesting depth; it is not
+    reused across a paragraph, only compared across the boundary afterwards.
+    """
+    raw = re.sub(r"(?is)<(script|style).*?</\1>", " ", raw_html)
+    paragraphs = []
+    buf = []
+    bold_depth = 0
+    for m in _HTML_TAG_RE.finditer(raw):
+        tok = m.group(0)
+        if tok[0] == "<":
+            nm = _HTML_TAGNAME_RE.match(tok)
+            if not nm:
+                continue
+            name = nm.group(1).lower()
+            closing = tok[1:2] == "/"
+            if name in HTML_BOLD_TAGS or HTML_CSS_BOLD_RE.search(tok):
+                bold_depth = max(0, bold_depth - 1) if closing else bold_depth + 1
+            if name in HTML_BREAK_TAGS:
+                if buf:
+                    paragraphs.append(buf)
+                buf = []
+        else:
+            for ch in html.unescape(tok):
+                buf.append((ch, bold_depth > 0))
+    if buf:
+        paragraphs.append(buf)
+    return [(("".join(c for c, _ in p)), [b for _, b in p]) for p in paragraphs
+            if "".join(c for c, _ in p).strip()]
+
+
+def find_split_bold_labels(raw_html):
+    """Labels whose bold run visually continues the paragraph above them.
+
+    A match needs: the paragraph opens with a speaker honorific, bold from
+    its very first character; and the paragraph immediately before it (the
+    heading, almost always) is ALSO still bold at its own last visible
+    character. Nothing but the paragraph break sits between those two bold
+    runs, so nothing on the page tells a reader where one run ends and the
+    other begins -- while parse_html.py, which never looks at bold across a
+    break, is unaffected by the run it does not see.
+    """
+    out = []
+    paras = html_paragraphs_with_bold(raw_html)
+    for (prev_text, prev_bold), (text, bold) in zip(paras, paras[1:]):
+        stripped = text.lstrip()
+        if not stripped or not HTML_LABEL_START_RE.match(stripped):
+            continue
+        offset = len(text) - len(stripped)
+        if not bold[offset]:
+            continue                       # the label itself is not bold at all
+        prev_stripped = prev_text.rstrip()
+        if not prev_stripped or not prev_bold[len(prev_stripped) - 1]:
+            continue                       # nothing bold ends right where this begins
+        term = HTML_LABEL_TERM_RE.search(text, offset)
+        if term is None:
+            continue
+        label = text[offset:term.start()].strip().rstrip(".")
+        speech = text[term.end():]
+        out.append({"label": label, "speech": speech, "heading": prev_stripped[:60]})
+    return out
+
+
+def _label_core(label):
+    """The name or office in a label, honorific and parenthetical aside."""
+    core = re.sub(r"^(?:Sr|Sra|Srta)\.?\s*", "", label, flags=re.I)
+    core = re.sub(r"\([^)]*\)", "", core)
+    return flatten(core)
+
+
+def check_html_split_bold_labels(corpus, scanned):
+    """Assert the mis-nested-label shape is found, and that it is attributed.
+
+    Found independently in the raw markup (see the block comment above), then
+    checked against the parsed output the same way every other check here
+    checks output against source: by content, not by trusting a row number.
+    A candidate counts as attributed when some speech row of the same
+    session opens with the candidate's own words and carries a speaker_raw
+    whose core matches the candidate's label. Anything found but not
+    attributed is a regression on the single commonest label shape of the
+    HTML era, and fails the audit.
+    """
+    print(f"\n{'='*66}\nHTML SPLIT LABELS — the era's commonest label shape"
+          f"\n{'='*66}")
+    html_sessions = (corpus[corpus.source_file.str.lower().str.endswith(".html")]
+                     .groupby("session_id").source_file.first())
+    speech_by_session = {sid: g for sid, g in
+                         corpus[corpus.type == "speech"].groupby("session_id")}
+
+    found, attributed, misses = 0, 0, []
+    for sid, name in html_sessions.items():
+        if sid in scanned:
+            continue
+        try:
+            raw = decode_html((RAW_DIR / name).read_bytes())
+        except Exception:
+            continue
+        candidates = find_split_bold_labels(raw)
+        if not candidates:
+            continue
+        rows = speech_by_session.get(sid)
+        for cand in candidates:
+            found += 1
+            opening = flatten(cand["speech"])[:50]
+            core = _label_core(cand["label"])
+            ok = False
+            if rows is not None and opening:
+                for _, row in rows.iterrows():
+                    if not core or core in flatten(row.speaker_raw or ""):
+                        out = flatten(row.text)
+                        # A very short opening ("(Lee:)", "Sí.") is only safe
+                        # to match at the very start of the row: found
+                        # anywhere in it, it would also turn up inside a
+                        # longer, unrelated word ("leemos"), the same
+                        # fold-collision SOURCES.md and occurrence() above
+                        # were written to avoid. A short sentence that is the
+                        # whole of a merged turn's own opening ("Muy bien.
+                        # Tiene la palabra...", the parser correctly joining
+                        # two paragraphs of the same speaker) still starts
+                        # the row even though it is not the whole of it.
+                        if (len(opening) < 8 and out.startswith(opening)) or \
+                           (len(opening) >= 8 and opening[:20] in out):
+                            ok = True
+                            break
+            if ok:
+                attributed += 1
+            else:
+                misses.append((sid, cand["label"], cand["speech"][:60]))
+
+    print(f"   {found:6}  labels found with this shape")
+    print(f"   {attributed:6}  found AND attributed to the matching speaker")
+    print(f"   {len(misses):6}  found but NOT attributed correctly (must be 0)")
+    for sid, label, snippet in misses[:8]:
+        print(f"          [{sid}] {label!r}: {snippet!r}")
+    problems = len(misses)
+    if found == 0:
+        print("   !! none found at all — the detector may not be looking at anything")
+        problems += 1
+    return problems
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -579,6 +970,9 @@ def main():
             for _, r in errs.iterrows():
                 print(f"          {r.session_id}: {r.error}")
         print(f"\n   per-session detail: {out_path}")
+
+        problems += check_running_headers(corpus, scanned, workers=args.workers)
+        problems += check_html_split_bold_labels(corpus, scanned)
 
     if args.sample:
         write_review_sheet(corpus, args.sample, scanned, args.sample_format,
