@@ -2171,7 +2171,60 @@ and 21.5 million words of attributed speech become 25.7.
       "el 86°° aniversario del grito de Córdoba". The typesetter keyed it
       twice and the parser preserves it, which is correct — the corpus keeps
       the edition's errors the way it keeps a misspelled surname.
-- [ ] Two sittings are set in a sans-serif face with no header, footer or page
+- [ ] **THE HEADER RULE DELETES REAL SPEECH. Verified in the shipped corpus.**
+      Page 31 of 2003-07-23_r15 prints 2,119 characters and the corpus holds
+      1,246 — **41% of the page is gone, and it is the chair speaking**:
+      "Sr. Presidente (Gioja). — En consideración.", "— En consecuencia, pasa
+      al Archivo.", "— Queda aprobada la declaración.", three Orden del Día
+      headings and the text of an Auditoría General report. 9,254 characters
+      in that sitting (`header_chars_removed` in parse_stats).
+      The mechanism: that document has NO running header on any page, but the
+      detector works by repetition rather than by words, so ordinary
+      procedural phrasing recurring five or more times at a matching height
+      is taken for a header and removed. The rule that survives a symbol font
+      and a Greek page number (see above) fails the opposite way here.
+      **Scope, stated honestly.** Two sittings confirmed: this one, losing
+      speech, and 2004-10-20_r30, where six pages of 103 lose
+      "— El texto es el siguiente:" as if it were a header. Of the seven
+      all-Helvetica 2003 sittings only this one removes anything at all — the
+      other six are at zero, so it is not a property of that cluster but of
+      sittings where no header AND repeating pagination coincide. A signature
+      of nonzero removal with a header found on under 80% of pages, 8 pages or
+      more, gives **27 candidates**, unverified; one checked turned out to be
+      a legitimate second banner, so the list is candidates and not defects.
+      Corpus-wide 4,216,547 characters are removed as header across 573
+      sittings, median 5,074, and the overwhelming bulk of that is correct.
+      **The opposite failure, same rule.** It needs a line repeated five times
+      before it will call anything a header, so a sitting under five pages can
+      never have one detected, real or not. 23 such sittings, mostly
+      EN MINORÍA quorum failures. Three ship the header as a row —
+      1998-06-17_r25, 1998-07-22_r30, 1998-12-08_r69, the last carrying
+      "8 de diciembre de 1998 Versión provisional - sesión ordinaria" on page
+      4. All three landed as `furniture`, so no turn was corrupted; they are a
+      leak, not damage.
+      Both modes are confirmed against rendered pages and the shipped parquet,
+      not inferred. Fixing this is a parser change and a version bump, and the
+      27 candidates want a pass before anyone decides what the fix is.
+- [x] Two sittings are said to be set in a sans-serif face with no header,
+      footer or page number (1998-07-23 p7, 2003-07-23 p74). Scanned all 605
+      PDFs, 48,815 pages, reusing the parser's own `extract_all_characters`,
+      `strip_page_headers` and `strip_page_footers` rather than a
+      reimplementation. **One of the two reports was wrong**: 1998-07-23 p7
+      (Mandela addressing the joint session) is sans-serif, but it does carry
+      a running header and page number — an italic banner over a rule, on
+      every content page — which the repeat detector catches correctly. Only
+      2003-07-23 p74 is genuinely bare. The properties do not travel together
+      and are counted apart: sans-serif body 14,404 pages in 306 sittings
+      (31%, almost all the 2020-2026 Arial format and the WordPerfect-era
+      Helvetica substitution); no header found 2,763 pages (5.7%), but 484 of
+      the 515 sittings touched have exactly one such page, which is the cover
+      and is by design; no page number 2,942 (6.0%); no footer 21,400 (44%),
+      expected because only the 2024 format ever had one. All three absent on
+      a sans-serif page: 439 pages in 64 sittings, of which 38 are a lone
+      cover. The real multi-page shape is 26 sittings, and the mid-document
+      stretches in 2005-2009 are appended annexes, correctly tagged furniture.
+      Scan at `scratchpad/furniture_scan.csv`.
+- [ ] (superseded) Two sittings are set in a sans-serif face with no header, footer or page
       number at all (1998-07-23 p7, 2003-07-23 p74), which looks typeset from a
       different source. Worth knowing how many sittings are like that before
       trusting any rule that keys on the running header.
