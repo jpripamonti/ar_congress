@@ -2001,6 +2001,16 @@ and 21.5 million words of attributed speech become 25.7.
       not a bold run of its own. The parser reads these correctly — that is
       what the round measured — but no check states that it does, and the
       readers are describing the single commonest shape in the era.
+- [ ] The HTML gold set's inter-annotator figure does not reproduce. a94c38a
+      records 99.2% of turn starts and 22 of the 24 stretches identical;
+      `check_gold_html.py` on the annotations committed in that same commit
+      prints 195 of 195 and 24 of 24, and neither the annotations nor the
+      checker have been touched since. Either the message was written from a
+      run before the set was finalised, or the two readings were reconciled
+      before committing — which would mean the set is not two independent
+      readings and the claim has to be weakened. The docs now quote only what
+      the committed files reproduce. Settle which it was before the next
+      release quotes either number.
 - [ ] `¿` is stored as `)` where the export switched font: 147 of them, plus
       16 `¡` stored as `(`. Found by a reader who took it for encoding
       damage. Needs a full scan before any repair: the rule has to tell these
