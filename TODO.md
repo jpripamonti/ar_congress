@@ -2001,6 +2001,54 @@ and 21.5 million words of attributed speech become 25.7.
       not a bold run of its own. The parser reads these correctly — that is
       what the round measured — but no check states that it does, and the
       readers are describing the single commonest shape in the era.
+## Phase 39 — 36 more gold pages, and the note the parser swallows (September 2026)
+
+- [x] 36 pages drawn from 1998-2015 by `scripts/draw_gold.py`, two a year, by
+      page so the sample's boundaries are the document's and not the parser's,
+      and rendered to images so no annotator ever sees extracted text. Page
+      images are dropped by the parser's own `page_is_scanned`, page by page
+      and not sitting by sitting.
+- [x] Each read twice by annotators who never saw each other. The two readings
+      agree on all 195 turn starts and all 36 pages
+      (`scripts/check_gold_pages.py`). Turn recall holds: 318 of 320, F1 0.997,
+      identical under either reading. The pre-2016 sample goes from 8 pages and
+      50 turns to 44 pages and 195.
+- [ ] **"— El texto es el siguiente:" is sometimes an event and sometimes part
+      of the chair's words.** The page prints it on its own indented italic
+      line before an inserted document; the parser folds it into the end of the
+      preceding speech turn. Corpus-wide it is an `event` 3,503 times and glued
+      to a speech turn 4,162 times, plus 359 mid-turn, across 242 sittings.
+      Both annotators independently called it an event on 2003-05-28 p28, and
+      the printed page agrees with them. **Before changing anything, check the
+      LAYOUT of the 4,162, not the text**: the corpus convention is that
+      typography decides, so a note genuinely printed inside the paragraph is
+      correctly folded and only the ones set on their own line are wrong. A
+      keyword count cannot tell those apart — that is the same mistake the
+      residue figure makes. Touching this is a parser change and a version
+      bump.
+- [ ] The parser emits one `event` row where the page prints two note lines
+      ("— La votación resulta afirmativa." / "— En particular es igualmente
+      afirmativa."). No text is lost and no speech is affected, but event
+      counts are not comparable with a reader's, and it is most of the gap
+      between event recall 0.705 and the 0.935 the old 36 pages showed. Decide
+      whether the unit is the printed line or the note, and say so in the data
+      dictionary either way.
+- [ ] Annotators flagged printing defects worth their own scan: the ordinal
+      sign printed as a capital E ("el artículo 5E" for 5º) on 2008-09-10 p37,
+      a page number set in Greek glyphs ("Πáγ. 5") on 2002-08-22 p5 and
+      2005-11-29 p5 — which would defeat a header-stripping rule that matches
+      on "Pág." — a missing Orden del Día number in a heading on 2003-05-28
+      p28, and an uncleared yellow editing highlight on the 2009-03-01 roll.
+- [ ] Two sittings are set in a sans-serif face with no header, footer or page
+      number at all (1998-07-23 p7, 2003-07-23 p74), which looks typeset from a
+      different source. Worth knowing how many sittings are like that before
+      trusting any rule that keys on the running header.
+- [ ] `check_gold_pages.py` and `check_gold_html.py` report 100% agreement
+      between two readings, but both readings are the same model working from
+      the same brief. That is weaker evidence than two people, and the write-up
+      should say so rather than quoting the number bare. It also probably
+      explains the entry below.
+
 - [ ] The HTML gold set's inter-annotator figure does not reproduce. a94c38a
       records 99.2% of turn starts and 22 of the 24 stretches identical;
       `check_gold_html.py` on the annotations committed in that same commit
