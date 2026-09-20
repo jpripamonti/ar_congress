@@ -2063,6 +2063,63 @@ and 21.5 million words of attributed speech become 25.7.
       keyword count cannot tell those apart — that is the same mistake the
       residue figure makes. Touching this is a parser change and a version
       bump.
+- [ ] **Measured by layout, September 2026. The three event questions below
+      are one decision, and it is not a judgement call.** All 184 PDFs that
+      print "— El texto es el siguiente:" were scanned by printed line,
+      indent and font, nine pages were read as images, and the two known
+      failure modes of the line test (two-column OCR, and the sitting whose em
+      dash extracts as "C") were found and corrected that way.
+      **Q1.** The phrase appears 8,026 times in 242 sittings. Of the 4,165
+      folded into a speech turn, **4,164 are printed on their own line**. The
+      decisive measure is not the line but the indent: the folded ones sit 123
+      points right of the body margin and the ones already called events sit
+      at 122 — same indent, same italic face, same furniture, opposite
+      treatment. Only four occurrences corpus-wide are genuinely printed
+      inside a paragraph. The cause is not the phrase: the note's opening em
+      dash is stored at the end of the roman run above it, so the italic block
+      starts at "El" and the dash test in `classify_blocks` fails. In 4,500 of
+      4,509 the character before the phrase IS that dash. So key any fix on
+      the dash, not on the words — tried on 20 sittings of 2003-2006 that rule
+      fires 201 times, 182 on this phrase and **19 on other notes lost the
+      same way** ("Se llama para formar quórum.", "Así se hace."), and leaves
+      every dashless italic run alone ("default", "ad referéndum", "shock").
+      Cost: ~4,500 new event rows, ~27,000 words leave attributed speech
+      (0.10%), turn counts and the 0.997 turn F1 untouched because `turn_id`
+      advances only on a printed label. `parse_html.py` needs nothing.
+      **Q2.** 60,905 event rows hold 68,211 printed note lines; 6,447 rows
+      hold more than one and hide 7,306 lines. It is purely a PDF artefact —
+      the HTML half is 26,179 rows to 26,179 lines, exactly one to one.
+      **Verified here: the pair "La votación resulta afirmativa." / "En
+      particular es igualmente afirmativa." is welded into one row 4,713 times
+      in the PDF era and zero times in the HTML era.** The corpus contradicts
+      itself, so this is not a free choice between two conventions. It also
+      mis-files subtypes: 1,527 merged rows swallow a line of a different
+      subtype, including 429 pauses filed under `vote` and 295 timestamps that
+      disappear.
+      **Event recall under each unit**, identical under either reading: as
+      shipped 0.705, by printed line 0.905, by note 0.883. Do not decide on
+      those numbers — 0.905 against 0.883 decides nothing. Decide on the fact
+      that the HTML half already uses the printed line 26,179 times out of
+      26,179. **And the cleanest result: under the printed-line unit all nine
+      remaining misses are Q1. Fix Q1 and Q2 together and the gold set reads
+      95 of 95, recall 1.000.** All thirteen false positives are Q3.
+      **Q3 is a different kind of problem: the two halves already answer it,
+      and they answer it oppositely.** 7,998 notes sit inside attributed
+      speech, 10,772 words, 0.042% of the 25.7 million — but 7,865 of them are
+      HTML and only 133 are PDF. The PDF parser makes a paragraph-closing note
+      an event because the italic run breaks the block; the HTML parser folds
+      it into the speech because the paragraph is the block. The dictionary's
+      rule is implemented in one half and contradicted in the other, and the
+      dictionary blames the chamber for what is the parser's doing. So the
+      question is not "what should the third position be" but "why do the two
+      formats disagree", and either answer costs a parser change. Lifting the
+      note out in the HTML era is the smaller one, matches what the gold
+      annotators read off the page, takes event precision from 0.869 to about
+      1.000, and removes the wart where 31.6% of the secretary's turns are a
+      speech whose entire content is the word "Lee".
+      Nothing here is done. All three are parser changes and version bumps,
+      and Q3 needs the convention settled before any code moves.
+
 - [ ] The parser emits one `event` row where the page prints two note lines
       ("— La votación resulta afirmativa." / "— En particular es igualmente
       afirmativa."). No text is lost and no speech is affected, but event
