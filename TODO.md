@@ -1706,7 +1706,7 @@ label was therefore written nowhere at all.
 - [x] **0.4.37 is cut and deposited.** Notes in `docs/releases/0.4.37.md`,
       bundle built by `scripts/make_release.py` and checksummed beside the data,
       tag `v0.4.37`, published on Zenodo under 10.5281/zenodo.22661019.
-- [ ] **At least 42 passages are real floor speech that lost its label.** They
+- [x] (done, Phase 40) **At least 42 passages are real floor speech that lost its label.** They
       sit in the 1,109 rows the parser gives no speaker, which is otherwise
       inserted documents and scan damage: 362 rows are the two November 2001
       scans, 321 are three sittings whose record is mostly a list of judicial
@@ -2019,7 +2019,7 @@ and 21.5 million words of attributed speech become 25.7.
       scans, where the fault is the scan. That leaves ~27,700 words across 50
       sittings, and the rule that explained the rest is a keyword heuristic,
       so that figure is a ceiling rather than a measurement. Worth one pass.
-- [ ] **A SITTING HOLDS THE WRONG DOCUMENT. 2014-09-03_r13.** The special
+- [x] (done, Phase 40) **A SITTING HOLDS THE WRONG DOCUMENT. 2014-09-03_r13.** The special
       sitting of 3 and 4 September 2014 on the debt swap and the RUFO clause
       prints 264,787 words; the corpus holds 118,986. **The first 214 pages of
       floor debate are absent** — pages 9, 60, 120 and 180 were probed on
@@ -2110,7 +2110,7 @@ and 21.5 million words of attributed speech become 25.7.
       keyword count cannot tell those apart — that is the same mistake the
       residue figure makes. Touching this is a parser change and a version
       bump.
-- [ ] **Measured by layout, September 2026. The three event questions below
+- [x] (Q1 and Q2 done, Phase 40; Q3 still open) **Measured by layout, September 2026. The three event questions below
       are one decision, and it is not a judgement call.** All 184 PDFs that
       print "— El texto es el siguiente:" were scanned by printed line,
       indent and font, nine pages were read as images, and the two known
@@ -2167,7 +2167,7 @@ and 21.5 million words of attributed speech become 25.7.
       Nothing here is done. All three are parser changes and version bumps,
       and Q3 needs the convention settled before any code moves.
 
-- [ ] The parser emits one `event` row where the page prints two note lines
+- [x] (done, Phase 40 — the unit is the printed line) The parser emits one `event` row where the page prints two note lines
       ("— La votación resulta afirmativa." / "— En particular es igualmente
       afirmativa."). No text is lost and no speech is affected, but event
       counts are not comparable with a reader's, and it is most of the gap
@@ -2243,7 +2243,7 @@ and 21.5 million words of attributed speech become 25.7.
       "el 86°° aniversario del grito de Córdoba". The typesetter keyed it
       twice and the parser preserves it, which is correct — the corpus keeps
       the edition's errors the way it keeps a misspelled surname.
-- [ ] **THE HEADER RULE DELETES REAL SPEECH. Verified in the shipped corpus.**
+- [x] (done, Phase 40) **THE HEADER RULE DELETES REAL SPEECH. Verified in the shipped corpus.**
       Page 31 of 2003-07-23_r15 prints 2,119 characters and the corpus holds
       1,246 — **41% of the page is gone, and it is the chair speaking**:
       "Sr. Presidente (Gioja). — En consideración.", "— En consecuencia, pasa
@@ -2342,6 +2342,78 @@ and 21.5 million words of attributed speech become 25.7.
       dictionary warns about it. Two columns would be the honest shape, but
       the chamber gives one label per sitting, so the second would have to be
       inferred, and that needs evidence rather than a default.
+
+## Phase 40 — four fixes, and the two they exposed (September 2026 — parsers 0.5.0 and 0.5.7-html)
+
+- The sitting that held the wrong document is fixed. The body size is no
+  longer the most frequent size: every candidate is tried and the one whose
+  opening line comes earliest in the file wins. 2014-09-03_r13 goes from
+  118,986 words to 251,293 and opens on 3 September, not 19 August. Of 605
+  PDFs only 4 change their cut point and the other three all gain.
+
+- A file that prints its sitting twice now keeps the first copy. It fires on
+  exactly one file of 605. The first version of this cut compared the opening
+  line alone, and where the opening is a speaker's label — which recurs in
+  the same document — it cut the preparatory sitting of 29 November 2001 in
+  half and took the swearing-in of senator Maqueda with it. It now asks for a
+  genuine opening event at both ends and for a line of at least 40 characters.
+
+- Exposed by that work: a sitting's body size can wobble by a fraction of a
+  point. Sizes within 0.5 of it now count as body. Only 4 sittings hold more
+  than 500 words there, and all 4 recover speech — 2001-11-21_r72 from 9,159
+  to 17,164 attributed words. The tolerance is deliberately kept out of the
+  front-matter cut, where it changed which size was chosen as the body at all.
+
+- The header rule no longer deletes speech. A repeating line is confirmed as
+  a running header only if it opens the page on at least 80% of its
+  appearances. Position consistency, the first hypothesis, does not separate
+  them: real headers drift up to 31 points, and the false ones in
+  2003-07-23_r15 are perfectly consistent because the page is set solid. All
+  three defects are repaired, including one found in the course of checking
+  (2006-12-20_r32, an insertion caption). 30 sittings change, none removes
+  more than before.
+
+- Q1 and Q2 are answered, and the unit is the printed line. A block that
+  reads like a sentence and follows a run ending on a dash is a note, because
+  the dash is stored at the end of the run above; and a block is split
+  wherever a sentence ends and a dash opens the next, which is how two notes
+  in the same italic run arrive welded. Event rows go 60,905 to 74,186. On
+  the gold set events reach P=0.877 R=0.979, and both remaining misses are on
+  the one page annotated off an appended committee meeting.
+
+- 97 PDF passages of floor speech had lost their speaker to a damaged label,
+  not the 23 first reported — those were only the ones leaving a long orphan
+  paragraph. A new repair pass takes 66 and widening the collective form
+  takes 31. All 97 read against the page: no genuine section heading is
+  swallowed. Nine are left as headings because the page gives no honorific to
+  settle who speaks (Connor seven times, Avelín, Di Tullio). The HTML side
+  gains 12 labels the same way.
+
+- Found in passing and fixed: NOTE_TAIL_RE was bound twice at module level,
+  so reattach_note_tails had been matching ordinal scraps against a pattern
+  for parenthesis tails; and write_stats keeps a fixed column list that
+  silently dropped any new counter, which is why the two new stats were
+  computed and thrown away.
+
+- [ ] **Gold page 295 of 2014-09-03_r13 was annotated on the wrong document.**
+      It was drawn before the fix above, from the committee meeting of 19
+      August that the file appends and the corpus no longer attributes to that
+      sitting. It now accounts for all 12 missed turns and both missed events
+      in the PDF gold set: excluding it, turns are 308 of 310 and events 93 of
+      93. Leaving it in puts a ceiling of 0.963 on recall that no correct
+      parser can pass, and hides any real regression underneath it. Proposed:
+      draw and annotate a replacement page from the same sitting, and keep
+      this one out of the scored set with a note saying why, rather than
+      delete it. **Waiting on Juan.**
+
+- [ ] The gold-score prose in README.md and DATA_DICTIONARY.md still quotes
+      the older 125-turn figures (F1 = 0.996). It should be rewritten once the
+      page above is settled, since that decision changes the numbers.
+
+- [ ] Still open from before: Q3, the note that closes a speaker's paragraph,
+      where the two halves of the corpus answer oppositely — 7,865 of the
+      7,998 are HTML and 133 are PDF. The convention has to be settled before
+      either parser changes.
 
 ## Explicitly not building
 
