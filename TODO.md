@@ -2410,6 +2410,30 @@ and 21.5 million words of attributed speech become 25.7.
       the older 125-turn figures (F1 = 0.996). It should be rewritten once the
       page above is settled, since that decision changes the numbers.
 
+- **How often does a PDF insert a committee meeting behind the sitting?
+  Once.** The question was asked because 2014-09-03_r13 was not supposed to
+  be a one-off. Two scans failed first, in opposite directions, and neither
+  number should be quoted: looking for the heading at the top of a page found
+  64 files and missed 2014 itself, where the announcement sits in the body
+  under the sitting's own running header; looking for the phrase anywhere on
+  the page found 38, most of them a senator talking about a committee
+  transcript mid-debate. In the largest of those, 2006-07-12_r16, the line is
+  a senator saying she consulted it, and the chamber is still sitting on that
+  page and every page after.
+
+  What separates an insertion from a mention is that an insertion announces
+  the meeting the way the record opens any sitting, with the hour and the
+  date: "...a las 17 y 18 del martes 19 de agosto de 2014:". Asking for the
+  announcement and a dated opening in the same sentence returns exactly one
+  file of 605, the 2014 one, where the corpus now holds 0 speech rows behind
+  page 224. All 37 the rule dropped were read: every one is a senator
+  speaking about a transcript, not a document being reproduced.
+
+  The rule only sees files that use this wording at all. The standing backstop
+  for the rest is the opening-date check in the audit, which is what would
+  have caught 2014 and today flags two sittings, both a year out because of a
+  misprinted date rather than a wrong document.
+
 - [ ] Still open from before: Q3, the note that closes a speaker's paragraph,
       where the two halves of the corpus answer oppositely — 7,865 of the
       7,998 are HTML and 133 are PDF. The convention has to be settled before
