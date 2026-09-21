@@ -38,8 +38,8 @@ as its own HTML export for most of 1998–2003; both are read here.
   which the HTML side contributes 5.9 million. The PDF side is parser 0.5.2 and
   the HTML side `scripts/parse_html.py` at 0.5.7-html; the two share the speaker
   pattern and the event subtypes, so a passage means the same thing in either.
-  One sitting fails to parse: the 1997 impeachment tribunal, which does not open
-  like an ordinary sitting. It used to be two — the no-quorum sitting of 29
+  One sitting fails to parse: the 1997 impeachment tribunal, a photocopy saved
+  as page images with no text layer at all, so there is nothing to read. It used to be two — the no-quorum sitting of 29
   November 2001 joined the corpus in 0.4.38, when the front-matter cut learned
   to recognise an opening whose dash the file had set in roman with the page
   number before it. Text that

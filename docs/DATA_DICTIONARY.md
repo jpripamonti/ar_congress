@@ -252,8 +252,9 @@ what the analysis in this repository does, and it says so.
   differ: 79.3% for the PDFs against 91.2% for the HTML export, which has no
   repeated page headers or footers to drop.
 - **One sitting fails to parse**: `1997-12-18_r117`, the impeachment tribunal
-  of December 1997, a scan whose character recognition leaves no opening the
-  parser can find. 818 files are attempted and 817 produce rows.
+  of December 1997, a photocopy saved as eight page images with no text layer
+  at all — no character recognition was ever run on it, so there is nothing
+  for the parser to read. 818 files are attempted and 817 produce rows.
 
 ## How far it has been checked
 
