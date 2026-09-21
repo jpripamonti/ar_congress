@@ -297,6 +297,10 @@ def load_presiding_by_file():
     df = pd.read_csv(OBSERVED, dtype=str).fillna("")
     out = {}
     for _, r in df.iterrows():
+        # a list of office holders names every vice-president, presiding or
+        # not, so it says nothing about who held the gavel that day
+        if r.get("basis") == "roster":
+            continue
         if not PRESIDING_OFFICES.match(r["office"]) or "de la nacion" in r["office"]:
             continue
         if r["person"]:
@@ -552,7 +556,29 @@ def match_authorities(auth, key, d, role_hint=None):
         # without this the wrong one wins and the senator is never reached.
         family = role_family(role_stem(role_hint))
         hits = [a for a in hits if role_family(a["role_stem"]) == family]
-    return hits
+    return prefer_curated(hits)
+
+
+def prefer_curated(hits):
+    """One person, two records valid on the same day: keep the curated one.
+
+    Where both tables know an officer, the curated row is meant to win. Order
+    made it win only for a label that names the office, which takes the first
+    hit; a bare surname — "Sr. Clark" — needs exactly one, and the same man
+    held twice, curated as "Lucas Martín Clark" and read off the cover as
+    "Lucas Clark", left it unresolved. The test is taken on the day, among
+    records already valid on it, and not across whole spans: a curated row may
+    cover a few weeks of a tenure the covers show for years (Tunessi, curated
+    only around December 2019, seen on the covers from 2015), and dropping the
+    cover record for the whole span lost every label in between.
+    """
+    curated = [h for h in hits if h["person_id"].startswith("auth:")]
+    if not curated:
+        return hits
+    return curated + [
+        h for h in hits if not h["person_id"].startswith("auth:")
+        and not any(role_family(h["role_stem"]) == role_family(c["role_stem"])
+                    and h["keys"] & c["keys"] for c in curated)]
 
 
 def break_tie(sens, label, presiding, gender):

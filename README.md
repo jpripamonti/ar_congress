@@ -644,7 +644,9 @@ and nothing else.
   caucus spells and file each caucus under the analysis's party families.
 - `scripts/extract_authorities.py` — read each sitting's masthead into
   `reference/senado/authorities_observed.csv`: who presided and who sat at
-  the secretaries' table, per sitting.
+  the secretaries' table, per sitting. From December 2023 the cover prints a
+  list of office holders instead, which says who held each office but not who
+  presided; the `basis` column (`masthead` or `roster`) keeps the two apart.
 - `scripts/resolve_speakers.py` — resolve speaker labels to persons
   (`data/processed/senado/speakers.parquet`).
 - `scripts/eval_gold.py` — score the parser against the gold annotations

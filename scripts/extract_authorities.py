@@ -20,6 +20,10 @@ Both formats the portal serves are read: the PDFs of 2000 on through their
 first two pages, the HTML of 1998-2003 through the opening of the document.
 The masthead reads the same in both.
 
+From December 2023 the cover carries a list of office holders instead (see
+roster_rows), which says who held each office but not who presided; the
+`basis` column tells the two apart: `masthead` or `roster`.
+
 Output: reference/senado/authorities_observed.csv
 """
 
@@ -202,12 +206,73 @@ def html_cover_text(raw):
     return re.sub(r"[ \t]+", " ", text)[:HTML_COVER_CHARS]
 
 
+# From December 2023 the cover no longer says who presided. It prints a
+# standing list headed "A U T O R I D A D E S": each office on a line of its
+# own and its holder on the next, vacant posts included —
+#
+#     Presidencia del Senado          Victoria Villarruel
+#     Presidencia Provisional         Bartolomé Esteban Abdala
+#     Vicepresidencia primera         Carolina Losada
+#     Secretaría Administrativa       Vacante
+#
+# That is a different statement from the masthead's. "Presidencia del señor
+# vicepresidente…, y del señor presidente provisional…" says who presided THIS
+# sitting; the list says who HOLDS each office, and names every vice-president
+# whether or not they took the chair that day. So its rows are marked
+# basis=roster, and resolve_speakers takes them for tenure and never for who
+# presided — reading them as the latter would hand the chair to a
+# vice-president who was not in it.
+ROSTER_HEAD_RE = re.compile(r"A\s*U\s*T\s*O\s*R\s*I\s*D\s*A\s*D\s*E\s*S")
+ROSTER_END_RE = re.compile(r"Direcci[óo]n\s+General\s+de\s+Taqu[íi]grafos", re.I)
+# The office lines the list uses, and the office each is recorded under. The
+# Senate's presidency is the Nation's vice-presidency (Constitution, art. 57),
+# and it is recorded under that name so the tenure it feeds is the same one
+# the older mastheads feed.
+ROSTER_OFFICES = [
+    (re.compile(r"^presidencia del senado$", re.I), "presidencia del senado (vicepresidencia de la nacion)"),
+    (re.compile(r"^presidencia provisional$", re.I), "presidencia provisional"),
+    (re.compile(r"^vicepresidencia(?:\s+(primera|segunda|tercera))?$", re.I), "vicepresidencia"),
+    (re.compile(r"^prosecretar[íi]a\s+(.+)$", re.I), "prosecretaria"),
+    (re.compile(r"^secretar[íi]a\s+(.+)$", re.I), "secretaria"),
+]
+
+
+def roster_rows(text, name):
+    """Rows for the office-holder list, or [] when the cover has none."""
+    head = ROSTER_HEAD_RE.search(text)
+    if not head:
+        return []
+    body = text[head.end():]
+    end = ROSTER_END_RE.search(body)
+    lines = [ln.strip() for ln in body[:end.start() if end else 1500].splitlines()
+             if ln.strip()]
+    rows = []
+    i = 0
+    while i < len(lines) - 1:
+        for rx, office in ROSTER_OFFICES:
+            m = rx.match(lines[i])
+            if not m:
+                continue
+            if m.groups() and m.group(1):
+                office = f"{office} {unicodedata.normalize('NFD', m.group(1).lower()).encode('ascii', 'ignore').decode()}"
+            holder = lines[i + 1]
+            person = "" if holder.lower() == "vacante" else clean_name(holder)
+            if person:
+                rows.append({"file": name, "office": office, "person": person,
+                             "basis": "roster"})
+            i += 2
+            break
+        else:
+            i += 1
+    return rows
+
+
 def extract_one(path):
     name = Path(path).stem
     try:
         text = cover_text(path)
     except Exception as exc:                        # unreadable file: recorded, not fatal
-        return [{"file": name, "office": "ERROR", "person": str(exc)[:80]}]
+        return [{"file": name, "office": "ERROR", "person": str(exc)[:80], "basis": ""}]
 
     rows = []
     cover = COVER_RE.search(text)
@@ -223,8 +288,13 @@ def extract_one(path):
         if m:
             for person in split_people(m.group("body")[:MAX_LINE]):
                 rows.append({"file": name, "office": office, "person": person})
+    for r in rows:
+        r.setdefault("basis", "masthead")
     if not rows:
-        rows.append({"file": name, "office": "NONE", "person": ""})
+        # only where the masthead gave nothing: no older row is replaced
+        rows = roster_rows(text, name)
+    if not rows:
+        rows.append({"file": name, "office": "NONE", "person": "", "basis": ""})
     return rows
 
 
@@ -253,7 +323,7 @@ def main():
 
     OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     with OUT_PATH.open("w", encoding="utf-8", newline="") as fh:
-        w = csv.DictWriter(fh, fieldnames=["session_date", "file", "office", "person"])
+        w = csv.DictWriter(fh, fieldnames=["session_date", "file", "office", "person", "basis"])
         w.writeheader()
         w.writerows({k: r[k] for k in w.fieldnames} for r in out)
 

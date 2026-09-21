@@ -1808,10 +1808,29 @@ and 21.5 million words of attributed speech become 25.7.
       Maqueda left the Senate for the Supreme Court on 27 December 2002 — the
       chamber's own documents carrying a stale label. 15 blocks, left
       unmatched rather than assigned to a man who was not there.
-- [ ] 39 sittings of 2024-2026 have no readable masthead: the cover page
-      changed again and `extract_authorities.py` does not follow it. It costs
-      nothing today, because the manual authorities table covers those years,
-      and it will cost something the moment it does not.
+- [x] (done, 21 September 2026) 39 sittings of 2024-2026 have no readable
+      masthead: the cover page changed again and `extract_authorities.py`
+      does not follow it. It was 40, from 13 December 2023 on. The new cover
+      is not a masthead in another layout but a different statement: an
+      "A U T O R I D A D E S" list of who HOLDS each office, every
+      vice-president included and vacant posts marked, where the masthead
+      said who PRESIDED that sitting. It is read now, into a new `basis`
+      column (`roster` against `masthead`), and resolve_speakers takes roster
+      rows for tenure and never for who held the gavel — reading them that way
+      would hand a same-surname chair to a vice-president who was not in it.
+      "It costs nothing today" was not quite true: three officers the curated
+      table does not have — Fitzgerald, Viramonte Olmos, Finochietto — had
+      labels going unresolved, and now resolve from the cover. Adding the
+      roster also exposed that the curated row only won over a cover-page row
+      for labels naming the office; a bare surname with both records valid on
+      the day was left unresolved (Tunessi, 20 December 2019). Fixed on the
+      day, not across spans: a first attempt dropped the cover record wherever
+      the two overlapped, and since the curated Tunessi covers weeks where the
+      covers show four years, it lost 73 of his labels. Net: 4 labels
+      resolved, none lost, unresolved 124 to 120. Six sittings still have no
+      cover read, each for its own reason — the image-only 1997 tribunal, the
+      two joint sittings of both chambers, the November 2001 scan and two
+      tribunal sittings of November 2003.
 - [ ] One sitting does not parse: the 1997 impeachment tribunal
       (1997-12-18_r117, 117th reunión, 21st sitting as tribunal, the trial of
       judge Francisco Miguel Ángel Trovato). The reason recorded here before —
