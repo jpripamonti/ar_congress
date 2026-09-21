@@ -1,0 +1,16 @@
+{
+  "pdf": "2014-09-03_r13_ESPECIAL.pdf",
+  "page": 72,
+  "page_id": "2014-09-03_r13_p72",
+  "annotator": "B",
+  "opens_mid_utterance": true,
+  "utterance_starts": [],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [
+    "top motto: \"2014 -Año de Homenaje al Almirante Guillermo Brown, en el Bicentenario del Combate Naval de Montevideo\"",
+    "dateline: 3 y 4 de septiembre de 2014 | Sesión especial | Pág. 72",
+    "footer: Dirección General de Taquígrafos"
+  ],
+  "notes": "Pure continuation page: not a single bold speaker label, italic stenographer note, centred heading, footnote line or contents link is printed anywhere on it. Every one of the thirteen paragraphs is an ordinary indented body paragraph of one running speech, so opens_mid_utterance is true and utterance_starts, events and headings are all empty. Anything the parser attributes to a speaker beginning on this page is a false positive.\n\nThe speech is a continuous first-person floor argument about Argentina's debt: the economy put at the service of the big financial corporations and the IMF, the decades of asset sales and frozen pensions, 2003 and Néstor Kirchner as the turning point (\"no nos endeudamos más, por el contrario, vamos a comenzar a desendeudarnos\"), growth first so as to pay down debt, the 2005 and 2010 debt swaps, debt falling from 166 per cent of GDP to under 40, the 92,4 per cent who accepted the restructuring, and finally the holdout \"fondos buitre\" who bought bonds at 40 million dollars and claim 1.500 million. The first line on the page continues a sentence begun on page 71 (it starts lower-case, \"herramientas de la economía y se puso al servicio de...\"), and the last line breaks off mid-sentence on a comma (\"...y que tiene expresiones concretas,\"), so the turn also runs on to page 73. One aside inside the text addresses the chair — \"donde usted, vicepresidente, tuvo protagonismo\" — which identifies the presiding officer as the vice-president but is plain speech, not a label, and I recorded nothing from it.\n\nJudgement calls made: (1) The paragraph beginning \"Comenzamos a crecer bajo la premisa que dijo Néstor Kirchner, 'los muertos no pagan...'\" and the one quoting the 2003 decision are quoted speech inside the speaker's own paragraph, not separate turns and not inserted documents; no label precedes them and they are set in the same roman body face, so they stay part of the running speech. (2) No parenthesised note of any kind (no \"(Aplausos.)\", no \"(Lee:)\") appears on the page, so rule 4 never came into play.\n\nNothing is damaged or hard to read: the scan is clean, the type is uniform throughout with no font substitution or weight change, justification is even, and there is no stray mark. The only typographic oddities are in the running header, and both are in the motto as printed: it uses straight typewriter quotes rather than the curly quotes the body text uses for quotations, and the hyphen after the year is set with a space before it and none after (\"2014 -Año\"). Numbers on the page use the Spanish decimal comma and thousands point as printed (\"92,4 por ciento\", \"1.500 millones\", \"1.600 por ciento\") and I left them exactly so."
+}

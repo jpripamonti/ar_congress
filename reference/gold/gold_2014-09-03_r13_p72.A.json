@@ -1,0 +1,18 @@
+{
+  "pdf": "2014-09-03_r13_ESPECIAL.pdf",
+  "page": 72,
+  "page_id": "2014-09-03_r13_p72",
+  "annotator": "A",
+  "opens_mid_utterance": true,
+  "utterance_starts": [],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [
+    "motto line, centred, bold italic: \"2014 -Año de Homenaje al Almirante Guillermo Brown, en el Bicentenario del Combate Naval de Montevideo\"",
+    "dateline row: 3 y 4 de septiembre de 2014 | Sesión especial | Pág. 72",
+    "horizontal rule under the dateline",
+    "horizontal rule above the footer",
+    "footer, centred, grey italic: Dirección General de Taquígrafos"
+  ],
+  "notes": "0 turns, 0 events, 0 headings. The whole page is one continuous, unlabelled stretch of floor speech: thirteen indented paragraphs of justified roman body text, from 'herramientas de la economía y se puso al servicio de lo que nos sugerían las grandes corporaciones financieras...' at the top to '...y que tiene expresiones concretas,' at the foot, which breaks off mid-sentence onto page 73. Nothing on the page is bold, nothing is italic except the running motto and the footer, and no paragraph opens with a dash.\n\nopens_mid_utterance is true: the first line begins mid-sentence, lower-case, with no capital and no label, so a speech is in progress across the page break. Under rule 1 that speech is not listed as a start, and since no printed label appears anywhere on the page there is nothing else to list. utterance_starts is therefore empty, and that is a real annotation, not an omission — any speaker the parser opens on this page is a false positive.\n\nI checked each of the thirteen paragraph openings individually at 1.7x enlargement for a label in a different weight; every one begins with an ordinary indented roman word ('Por eso,', 'Por ello,', 'Pero para', 'Comenzamos', 'Esto es', '¿Quién puede', 'Es decir,', 'A partir', 'Por ello,', 'Estos son'). There is no 'Sr.'/'Sra.' anywhere on the page, no parenthesised stenographer's note standing as its own paragraph, no parenthesised note inside a paragraph either, no centred or bold heading, no footnote marker glued to a word, no footnote line and no '(volver)' contents link.\n\nWho is speaking is not printed on this page, so I have attributed nothing. The internal evidence is only that the speaker is a senator addressing the chair — 'del canje 2005, del canje 2010, donde usted, vicepresidente, tuvo protagonismo' — which identifies the addressee (the vice-president presiding), not the speaker. Supplying a name would mean reading the previous page, which I do not have.\n\nNothing is damaged or illegible; the scan is clean and every word is readable. Two small typographic points for the record. (a) The motto is set with straight ASCII double quotes, not typographic ones, and prints as '\"2014 -Año de Homenaje...' — a space before the hyphen and none after it, which is the page's own spacing, not a transcription slip on my part. (b) The body uses curly typographic quotes for the two quoted passages ('“no nos endeudamos más, por el contrario, vamos a comenzar a desendeudarnos”' and '“los muertos no pagan...”'), so the straight quotes in the motto are inconsistent with the body on the same page. Thousands are printed with a dot and decimals with a comma in the Argentine style: '1.500 millones', '1.600 por ciento', '92,4 por ciento'; none of these is a footnote marker. The paragraph beginning '¿Quién puede negar' is punctuated with an opening '¡' whose sentence closes with '!' several lines later ('...casi del 8 por ciento!'), which is correct Spanish, not a typesetting accident."
+}
