@@ -1,0 +1,16 @@
+{
+  "pdf": "01-03-2020_ASAMBLEA.pdf",
+  "page": 22,
+  "page_id": "2020-03-01_p22",
+  "annotator": "RE",
+  "opens_mid_utterance": true,
+  "utterance_starts": [],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [
+    "year motto: “2020 - Año del General Manuel Belgrano”",
+    "dateline: 1° de marzo de 2020 | Asamblea Legislativa | Pág. 22",
+    "footer: Dirección General de Taquígrafos"
+  ],
+  "notes": "No speaker label (bold, dash-terminated) is printed anywhere on this page; every paragraph is an unindented-face, regular run of the same continuous address (evidently the President's opening speech to the Asamblea Legislativa, covering Mercosur, global insertion, Malvinas/plataforma continental, the fishing regime, and then ANSES/jubilados). Because no label opens a new turn on this page, utterance_starts is empty and opens_mid_utterance is true (the page begins mid-sentence: 'Queremos también que el Mercosur mire...').\n\nFour parenthesised '(Aplausos.)' notes appear, all in italics:\n1) '...la usurpación de las islas Malvinas, Georgias del Sur y Sandwich del Sur. (Aplausos.)' — sits at the end of a paragraph's closing sentence, same line, not on its own line/paragraph. Judged part of that speech, not an event.\n2) '...y de los excombatientes. (Aplausos.)' — likewise closes its paragraph inline, same line as the preceding sentence. Not an event.\n3) '...bajo jurisdicción argentina… (Aplausos.) …o en aguas donde nuestro país tiene soberanía...' — this one interrupts a single sentence mid-flow: the printed ellipses on both sides of the parenthetical show the sentence was broken by applause and then resumed ('...argentina…' / '…o en aguas...'). Zoomed in to confirm the ellipsis marks are genuinely printed on both sides. This is the clearest case of a note embedded inside a paragraph, not standing alone, so it is not an event either.\n4) '...incluye a las islas Malvinas. (Aplausos.)' — again ends its paragraph inline, same line as the preceding sentence. Not an event.\nIn all four cases the note sits inside a paragraph (either closing it on the same line, or interrupting one sentence and being followed immediately by more of that same sentence). None of them stands alone as its own paragraph/line, so per rule 4 none is listed under 'events'; all are left as part of the ongoing speech's text.\n\nNo section heading, no footnote marker (no glued digit like 'Aprobado.5'), and no contents link ('(volver)', blue underlined text) appear on this page. Page is not in reference/gold/pages.csv (this appears to be a newly added gold page outside the original indexed set), so pdf/page were taken from the assignment given, not looked up.\n\nNothing on the page looked typographically damaged or unusual; the print quality and layout are consistent throughout."
+}

@@ -1,0 +1,16 @@
+{
+  "pdf": "24-02-2021_EXTRAORDINARIA.pdf",
+  "page": 56,
+  "page_id": "2021-02-24_p56",
+  "annotator": "RE",
+  "opens_mid_utterance": true,
+  "utterance_starts": [],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [
+    "year motto: \"2021 – Año de Homenaje al Premio Nobel de Medicina Dr. César Milstein\"",
+    "dateline: 24 de febrero de 2021 | Sesión extraordinaria | Pág. 56",
+    "footer: Dirección General de Taquígrafos"
+  ],
+  "notes": "No speaker label (bold, dash-terminated) is printed anywhere on this page. The page opens mid-sentence ('a explicar que estaba todo normal...'), so opens_mid_utterance is true, and every indented paragraph break on the page (Y acá viene la otra parte./Una cosa es tener.../Y fíjense ustedes.../Me acuerdo también.../Nosotros, el bloque nuestro.../Esto pasó.../Entonces, ¿cómo tiene.../La economía americana.../Y, obviamente...) is an unlabelled run-on paragraph of that same turn (rule 2), not a new start, so utterance_starts is empty. One parenthesised note is printed: '(Risas.)', in italics, sitting inside the paragraph between '...¿Verdad?' and 'Y, bueno, después de que Macri pierde las PASO...' — it is mid-sentence, not on its own line or its own paragraph, so per rule 4 it is not an event; it is part of the speaker's words. No section heading, no footnote marker/line, and no inserted document on this page. Page looks clean, no typesetting defects noticed."
+}

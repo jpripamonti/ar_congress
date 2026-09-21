@@ -1,0 +1,25 @@
+{
+  "pdf": "30-06-2022_ORDINARIA.pdf",
+  "page": 101,
+  "page_id": "2022-06-30_p101",
+  "annotator": "RE",
+  "opens_mid_utterance": true,
+  "utterance_starts": [
+    {
+      "speaker_label": "Sra. Presidenta (Ledesma Abdala).-",
+      "first_words": "Gracias senador."
+    },
+    {
+      "speaker_label": "Sr. Fiad.-",
+      "first_words": "Muchas gracias, presidenta."
+    }
+  ],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [
+    "motto: \"2022 - Las Malvinas son argentinas\"",
+    "dateline: 30 de junio de 2022 | Sesión ordinaria | Pág. 101",
+    "footer: Dirección General de Taquígrafos"
+  ],
+  "notes": "The page opens mid-turn with an unlabelled paragraph, 'Muchas gracias, señora presidenta. (Aplausos.)', continuing a speech begun on the previous page; opens_mid_utterance is true and this paragraph is not listed as a start. The parenthesised note '(Aplausos.)' is set in italics inline at the end of that same paragraph, not on its own line/paragraph, so per rule 4 I did not record it as an event — it is the close of the carried-over speech. I zoomed into the image to confirm it sits on the same line as the preceding sentence rather than as a separate centred line. Two labelled turns follow: 'Sra. Presidenta (Ledesma Abdala).- Gracias senador.' (terminator is a plain hyphen, no space, '.-') and 'Sr. Fiad.- Muchas gracias, presidenta.' (same terminator style). The chair's turn continues into a second, unlabelled indented paragraph, 'Tiene la palabra senador Fiad.', which I kept inside the same turn per rule 2 (unlabelled run-on is not a new turn). Fiad's turn then runs for the rest of the page with no further labels, notes, or headings, and continues onto the next page (the last line, '...construido sobre la base de verdaderos consensos y acuerdos', is cut off mid-sentence). No footnote markers, no section heading, and no inserted document appear on this page. The number '8.000' in the text ('más de 8.000 enfermedades poco frecuentes') is an ordinary figure, not a footnote pointer, so I left it as running text. Nothing on the page looked damaged or typeset oddly."
+}

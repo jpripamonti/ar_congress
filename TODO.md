@@ -2460,11 +2460,26 @@ and 21.5 million words of attributed speech become 25.7.
   annotators wrote, separately, that none of the seven "(Aplausos.)" is an
   event, citing the convention.
 
-  So the drop in recall measures the contradiction, not the parser. Pending:
-  re-annotate those four pages blind, from the image, under the brief. If the
-  re-reading agrees with the parser the gold is corrected with the reason on
-  the record. The gold must not be edited to agree with the code on the
-  strength of the code.
+  So the drop in recall measures the contradiction, not the parser. Done, 21
+  September 2026: the four pages were re-read blind from their images, each
+  by an annotator not shown the old file. All four agreed with the original
+  on every turn, label and heading, and all four placed each of the ten notes
+  inside a paragraph. The ten events were removed with the reason written into
+  each file; the re-readings are kept in reference/gold/rereadings/. Gold
+  events now read P=0.988 R=1.000 (83 of 83).
+
+- [ ] **The secretary's "(Lee:)" is filed as an event, against rule 3 of the
+      brief.** "Sr. Secretario (Oyarzún).- (Lee:)" is the secretary taking
+      the floor; the note in his own paragraph is his turn. 256 of the 259
+      "(Lee...)" event rows in the PDFs carry the secretary's label that
+      opened them. It is the last extra event in the gold set AND one of its
+      two missed turns (2001-11-14_r71 p5), so fixing it moves both. It is
+      older than 0.5.1 and a different mechanism:
+      reassign_hyphens_to_italic_blocks moves the LABEL's terminating dash
+      into the italic block, so the note opens with a dash and the leading-dash
+      test makes it an event before any position test is reached. Fixing it
+      means telling a label's terminator from a note's opening dash where the
+      dash is moved, not in classify_blocks.
 
 - [ ] Still open from before: Q3, the note that closes a speaker's paragraph,
       where the two halves of the corpus answer oppositely — 7,865 of the

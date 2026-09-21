@@ -3,14 +3,12 @@
   "page": 56,
   "opens_mid_utterance": true,
   "utterance_starts": [],
-  "events": [
-    "(Risas.)"
-  ],
+  "events": [],
   "headings": [],
   "furniture_seen": [
     "top motto: “2021 – Año de Homenaje al Premio Nobel de Medicina Dr. César Milstein”",
     "dateline: 24 de febrero de 2021 | Sesión extraordinaria | Pág. 56",
     "footer: Dirección General de Taquígrafos"
   ],
-  "notes": "Entire page is a mid-sentence continuation of a senator's speech from p. 55 ('...Me acuerdo cuando Caputo vino acá / a explicar que estaba todo normal...'). No speaker labels, headings, or standalone italic stenographer lines. One inline parenthetical '(Risas.)' appears in roman inside the speech text ('¿Verdad? (Risas.) Y, bueno...'). Parenthesized stenographer notes are recorded as events, per the convention settled in July 2026: nobody utters the word, so the note is the stenographer recording what the chamber did, not speech."
+  "notes": "Entire page is a mid-sentence continuation of a senator's speech from p. 55 ('...Me acuerdo cuando Caputo vino acá / a explicar que estaba todo normal...'). No speaker labels, headings, or standalone italic stenographer lines. One inline parenthetical '(Risas.)' appears in roman inside the speech text ('¿Verdad? (Risas.) Y, bueno...'). Parenthesized stenographer notes are recorded as events, per the convention settled in July 2026: nobody utters the word, so the note is the stenographer recording what the chamber did, not speech. CORRECTED 21 September 2026: this annotation listed 1 event(s) — (Risas.) — that the page prints INSIDE a speaker's paragraph, at the end of or in the middle of a sentence, not as a paragraph of their own. The annotation brief (rule 4) says such a note belongs to the speech and is not an event. The page was re-read blind from its image by a second annotator who was not shown this file, and that reading agreed with this one on every turn, label and heading and differed only here; it is kept at reference/gold/rereadings/gold_2021-02-24_p56.RE.json. The events were removed on the strength of that re-reading and the brief, not because the parser disagreed."
 }
