@@ -1477,26 +1477,99 @@ def rejoin_split_word(blocks, body_size):
     return out, rejoined
 
 
+# The dash that introduces an editorial note, where the file stores it at
+# the end of the line above instead of with the note itself.
+TRAILING_DASH_RE = re.compile(r"\s*[—–-]\s*$")
+
+
+# Where one event row holds two notes: a dash opening a new note after the
+# one before it has closed. The closing mark is what makes it a new note and
+# not a dash inside a sentence — a note is a finished sentence, and the ")"
+# is there because a parenthesised note ("(Aplausos.)") closes that way.
+# The space after the dash is not always printed — the files of the 1990s set
+# "-Se continúa llamando. -A las 18 y 9:" tight — so a capital or an inverted
+# mark after the dash does the same work. Requiring one or the other is what
+# keeps a hyphenated word, which is followed by a lower-case letter and no
+# space, from being read as a new note.
+WELDED_NOTE_RE = re.compile(r"(?<=[.!?:)])\s+(?=[—–-](?:\s|[¡¿A-ZÁÉÍÓÚÑ]))")
+
+
+def split_welded_notes(blocks):
+    """One row per note printed, where the page prints two on two lines.
+
+    The page prints "— La votación resulta afirmativa." and, on the line
+    below, "— En particular es igualmente afirmativa." Both are italic, both
+    body size, and nothing between them changes style, so the grouping pass
+    makes them one block and the corpus ships them as one event row. That
+    pair alone is welded 4,713 times.
+
+    It is not a convention, it is an artefact of how the PDFs are typeset:
+    the HTML half of the corpus, where a paragraph is the block, holds 26,179
+    event rows for 26,179 notes, exactly one to one. So the two halves of the
+    corpus already contradict each other and there is nothing to choose
+    between — this makes the PDF era agree with the HTML era.
+
+    It costs nothing in text and it buys back a subtype: 1,527 welded rows
+    carry a second note of a DIFFERENT kind, so 429 pauses were filed under
+    `vote` and 295 timestamps vanished into the row above them.
+    """
+    out, split = [], 0
+    for b in blocks:
+        if b.get("type") != "event":
+            out.append(b)
+            continue
+        pieces = [p for p in (x.strip() for x in WELDED_NOTE_RE.split(b["text"])) if p]
+        if len(pieces) < 2:
+            out.append(b)
+            continue
+        for piece in pieces:
+            out.append(dict(b, text=piece, event_type=classify_event(piece)))
+        split += len(pieces) - 1
+    if split:
+        print(f"Notas soldadas en una misma fila separadas: {split} filas nuevas.")
+    return out, split
+
+
 def classify_blocks(blocks, body_size):
     """Assign preliminary types: furniture, event (+subtype), inline.
 
     Bold blocks are left for the chapter/speaker passes; normal body-size
     blocks are speech candidates resolved in identify_speakers.
+
+    An editorial note is introduced by an em dash, and the dash is the test.
+    But in most of these files the dash is not stored with the note: it sits
+    at the end of the roman run above, so the italic block opens at "El" and
+    the dash test finds nothing. That is why "— El texto es el siguiente:",
+    printed on its own indented italic line 8,026 times, was folded into the
+    end of the preceding speech turn in 4,164 of them — same indent, same
+    italic face, same furniture as the 3,503 that were read as events, and
+    the opposite treatment.
+
+    So the dash is looked for where the file actually stores it: on the block
+    IN FRONT. The rule is keyed on that dash rather than on the words,
+    because the phrase is not the fault and is not alone in suffering it —
+    over 20 sittings of 2003-2006 the rule fires 201 times, 182 on that
+    phrase and 19 on other notes lost the same way ("Se llama para formar
+    quórum.", "Así se hace."). A dashless italic run is left where it is,
+    which is what keeps an emphasised word inside somebody's sentence
+    ("default", "ad referéndum", "shock") out of it.
     """
     events = 0
-    for b in blocks:
+    for i, b in enumerate(blocks):
         t = b["text"].strip()
         if DGT_RE.match(t) or VOLVER_RE.match(t):
             b["type"] = "furniture"      # office sign-off and plate back-link
             continue
-        if b["size"] != body_size:
+        if not is_body(b["size"], body_size):
             b["type"] = "furniture"      # appendix, footnotes, attendance lists, plates
             continue
         if b["font_style"] == "italic":
             # verb-pattern path requires sentence shape, so a lone italicized
             # word like "votación" stays inline instead of becoming an event
             sentence_like = t[:1].isupper() and (len(t) > 15 or t.endswith("."))
-            if EVENT_DASH_RE.match(t) or t.startswith("(") or \
+            stranded_dash = (i and sentence_like
+                             and TRAILING_DASH_RE.search(blocks[i - 1]["text"]))
+            if EVENT_DASH_RE.match(t) or t.startswith("(") or stranded_dash or \
                     (sentence_like and classify_event(t) != "unspecified"):
                 b["type"] = "event"
                 b["event_type"] = classify_event(t)
@@ -1570,10 +1643,14 @@ def reattach_note_tails(blocks):
     return out, len(scraps)
 
 
-TRAILING_DASH_RE = re.compile(r"\s*[—–-]\s*$")
 LEADING_DASH_RE = re.compile(r"^\s*[—–-]")
 LEADING_COLON_RE = re.compile(r"^\s*:\s")
-NOTE_TAIL_RE = re.compile(r"\)([^)]{1,12})$")
+# What an italic run carries past the note it closes: "(aplausos), s" and
+# the sentence resuming at "i la Argentina...". A different pattern from
+# NOTE_TAIL_RE above, and it needs a different name — sharing one meant
+# the ordinal scraps that reattach_note_tails is written to catch were
+# being matched against this instead, since the later binding wins.
+PAREN_TAIL_RE = re.compile(r"\)([^)]{1,12})$")
 
 
 def return_stage_direction_punctuation(blocks):
@@ -1623,7 +1700,7 @@ def return_stage_direction_punctuation(blocks):
         nxt = blocks[i + 1]
         if b.get("type") != "event" or nxt.get("type") is not None:
             continue
-        m = NOTE_TAIL_RE.search(b["text"].rstrip())
+        m = PAREN_TAIL_RE.search(b["text"].rstrip())
         if not m:
             continue
         tail = m.group(1)
@@ -2375,6 +2452,10 @@ def process_pdf(pdf_path):
     stats["contents_links_cut"] = links
     stats["footnote_markers_cut"] = markers
     stats["wordless_turns_dropped"] = wordless
+
+    # last, so that every pass above still sees a note as one block
+    blocks, welded = split_welded_notes(blocks)
+    stats["welded_notes_split"] = welded
 
     return blocks, chapters, stats
 
