@@ -2442,6 +2442,30 @@ and 21.5 million words of attributed speech become 25.7.
   have caught 2014 and today flags two sittings, both a year out because of a
   misprinted date rather than a wrong document.
 
+- **The gold set contradicts itself about the note at the end of a sentence,
+  and that is the real finding of the 0.877 event precision.** The parser was
+  reading "(Aplausos.)" as an event wherever it appeared, including at the end
+  of a speaker's own sentence — "…Dios y la Patria os lo demanden.
+  (Aplausos.)", the fragment sitting at x=425 in the middle of the printed
+  line. Measured against the page, 3,610 of the 5,370 bare parenthesised event
+  rows sit inside a line rather than opening one. 0.5.1 reads them as part of
+  the speech, which is the convention the annotation brief states as rule 4 in
+  those words.
+
+  Event precision goes 0.877 to 0.988 and recall 1.000 to 0.892. The ten
+  newly missed events are all the same shape and all from the older
+  single-reading pages (2020-03-01 p12 and p22, 2021-02-24 p56, 2022-06-30
+  p101); every one was checked on the printed page and sits mid-line. The
+  pages with two readings say the opposite: on 2005-11-29_r39 p5 both
+  annotators wrote, separately, that none of the seven "(Aplausos.)" is an
+  event, citing the convention.
+
+  So the drop in recall measures the contradiction, not the parser. Pending:
+  re-annotate those four pages blind, from the image, under the brief. If the
+  re-reading agrees with the parser the gold is corrected with the reason on
+  the record. The gold must not be edited to agree with the code on the
+  strength of the code.
+
 - [ ] Still open from before: Q3, the note that closes a speaker's paragraph,
       where the two halves of the corpus answer oppositely — 7,865 of the
       7,998 are HTML and 133 are PDF. The convention has to be settled before

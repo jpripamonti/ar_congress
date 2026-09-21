@@ -55,7 +55,7 @@ import pdfplumber
 
 from session_kind import session_kind_for
 
-PARSER_VERSION = "0.5.0"
+PARSER_VERSION = "0.5.1"
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
@@ -1141,19 +1141,28 @@ def group_characters_into_text_blocks(chars):
     """
     blocks = []
     cur = None
+    prev = None
     for c in chars:
+        # Whether this character is the first on its printed line. It is the
+        # only thing that separates a note set as its own paragraph from one
+        # the typesetter put at the end of a speaker's sentence, and the
+        # convention turns on exactly that.
+        opens_line = (prev is None or c["page"] != prev["page"]
+                      or abs(c["top"] - prev["top"]) > 0.5 * (c["size"] or 10))
         if cur is None:
             cur = {"text": c["text"], "font": c["font"], "font_style": c["font_style"],
-                   "size": c["size"], "pages": [c["page"]]}
+                   "size": c["size"], "pages": [c["page"]], "opens_line": opens_line}
+            prev = c
             continue
         if (cur["font_style"], cur["size"]) != (c["font_style"], c["size"]):
             blocks.append(cur)
             cur = {"text": c["text"], "font": c["font"], "font_style": c["font_style"],
-                   "size": c["size"], "pages": [c["page"]]}
+                   "size": c["size"], "pages": [c["page"]], "opens_line": opens_line}
         else:
             cur["text"] += c["text"]
             if c["page"] not in cur["pages"]:
                 cur["pages"].append(c["page"])
+        prev = c
     if cur is not None:
         blocks.append(cur)
     print(f"Agrupamiento completo. Se generaron {len(blocks)} bloques de texto.")
@@ -1482,6 +1491,10 @@ def rejoin_split_word(blocks, body_size):
 # The dash that introduces an editorial note, where the file stores it at
 # the end of the line above instead of with the note itself.
 TRAILING_DASH_RE = re.compile(r"\s*[—–-]\s*$")
+# A block that is one parenthesised note and nothing else. Only these are
+# read by where they sit on the line; a run that carries more than the
+# bracket is a note whatever its position.
+BARE_PAREN_RE = re.compile(r"^\([^)]{1,60}\)[.\s]*$")
 
 
 # Where one event row holds two notes: a dash opening a new note after the
@@ -1571,7 +1584,28 @@ def classify_blocks(blocks, body_size):
             sentence_like = t[:1].isupper() and (len(t) > 15 or t.endswith("."))
             stranded_dash = (i and sentence_like
                              and TRAILING_DASH_RE.search(blocks[i - 1]["text"]))
-            if EVENT_DASH_RE.match(t) or t.startswith("(") or stranded_dash or \
+            # A parenthesised note is only a note of its own when it is set
+            # as one. "(Aplausos.)" at the end of the chair's sentence —
+            # "…Dios y la Patria os lo demanden. (Aplausos.)" — is his
+            # paragraph, and the corpus convention leaves it in his speech;
+            # the same words opening a line are an event. Measured over the
+            # 605 PDFs, 3,610 of 5,370 such blocks sit inside a line.
+            # ...unless the dash that introduces it is stored at the end of
+            # the run above, which is how these files usually print a note on
+            # its own line: the roman block ends "— " and the italic one opens
+            # at the bracket. "— (Lee:)" is a note; "demanden. (Aplausos.)"
+            # is the chair's own sentence.
+            own_paragraph = (b.get("opens_line", True)
+                             or bool(i and TRAILING_DASH_RE.search(
+                                 blocks[i - 1]["text"])))
+            # and only when the block is the bracket and nothing else: an
+            # italic run that carries the note AND what follows it — "(Aplausos
+            # y manifestaciones.) –Son las 22.04" — is still a note, and the
+            # split into one row per printed line happens later.
+            paren_note = t.startswith("(") and (own_paragraph
+                                                or not BARE_PAREN_RE.match(t))
+            if EVENT_DASH_RE.match(t) or paren_note \
+                    or stranded_dash or \
                     (sentence_like and classify_event(t) != "unspecified"):
                 b["type"] = "event"
                 b["event_type"] = classify_event(t)
@@ -2461,6 +2495,12 @@ def consolidate_speaker_blocks(blocks):
             elif cur is not None:
                 cur["text"] = rejoin(cur["text"], b["text"].strip())
                 cur["pages"] = sorted(set(cur["pages"]) | set(b["pages"]))
+                inline_merged += 1
+            elif out and out[-1].get("type") == "event":
+                # no turn is open because the line it sits in is a note, not
+                # speech: "— Así se hace. (Aplausos.)". It belongs to that note
+                out[-1]["text"] = rejoin(out[-1]["text"], b["text"].strip())
+                out[-1]["pages"] = sorted(set(out[-1]["pages"]) | set(b["pages"]))
                 inline_merged += 1
             else:
                 b["type"] = "inline_italic"   # orphan: no active turn to join
