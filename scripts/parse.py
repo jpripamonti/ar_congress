@@ -45,7 +45,7 @@ import json
 import re
 import sys
 import time
-from collections import Counter
+from collections import Counter, defaultdict
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from datetime import datetime, timezone
 from pathlib import Path
@@ -960,9 +960,12 @@ def strip_page_headers(chars):
 
     Appended plates (roll-call tallies, inserted documents) carry their own
     running header instead of the dateline, so a second pass cuts any line
-    that repeats near the top of five or more pages AT THE SAME HEIGHT.
-    Fixed position is what separates a running header from a stock phrase
-    like "El texto es el siguiente:", which recurs but floats down the page.
+    that repeats near the top of five or more pages AT THE SAME HEIGHT AND
+    OPENS THE PAGE. Repetition at a fixed height alone is not evidence — a
+    sitting set solid, with no running header, prints the same procedural
+    sentence on the same baseline of a dozen pages — so what qualifies a line
+    is that nothing but header furniture stands above it, nearly every time
+    it appears. See the comment on the test below.
     """
     # line assembly per page, top band only
     lines = {}
@@ -984,14 +987,68 @@ def strip_page_headers(chars):
                 break
 
     repeats = Counter()
+    tops_by_text = defaultdict(list)
     for page_lines in per_page.values():
         for text, line_chars in page_lines:
             key = re.sub(r"[\d\s]+", " ", text).strip()
-            if len(key) >= 20:
-                repeats[(key, round(line_chars[0]["top"] / 5))] += 1
-    running = {k for k, n in repeats.items() if n >= 5}
+            repeats[(key, round(line_chars[0]["top"] / 5))] += 1
+            tops_by_text[key].append(line_chars[0]["top"])
+    candidates = {k for k, n in repeats.items()
+                  if n >= 5 and len(k[0]) >= 20}
     # (text, height) rather than text alone: a running header sits at a fixed
     # height on every page, while a recurring stock phrase drifts.
+    #
+    # Repetition at a fixed height is still not enough. A chamber says the
+    # same procedural sentences over and over — "Si no se hace uso de la
+    # palabra, se va a votar." — and a document whose pages are set solid,
+    # with no running header at all, prints them on a grid: the same line of
+    # the paragraph lands on the same baseline on a dozen pages, and the old
+    # test read that grid as a header. 2003-07-23 lost 9,254 characters of
+    # the chair speaking that way, and 2004-10-20 lost "— El texto es el
+    # siguiente:" off six pages.
+    #
+    # What a header does and a sentence in a paragraph cannot is START the
+    # page: nothing but other header furniture stands above it. So a repeated
+    # line is confirmed as a header only when it opens the page on four
+    # fifths of the times it appears at all — counted over every appearance
+    # in the top band, not only the ones at the header's own height, which is
+    # what keeps a phrase that happens to top one page from qualifying.
+    #
+    # "Nothing above it" is read generously, because real headers stack: the
+    # plate banners run "(volver)" / "Senado de la Nación" / "Votación
+    # Nominal" / the legislature line / the dictamen title, and the dateline
+    # shares its baseline with "Pág. N". A line above is therefore let pass
+    # when it is itself anchored — the same words recur within 6 points of
+    # that height on five or more pages, which a banner does even when a page
+    # sits a few points high and the fixed-height buckets disagree — or when
+    # it carries no letters, is the "Pág. N" line, or is on the same line.
+    # ... or when it is a short line that recurs, wherever it sits: the
+    # "(volver)" link at the head of the plates is printed at two different
+    # heights in one file, so it is anchored nowhere, and without this the
+    # banner under it is read as body.
+    furniture = {k for k, v in tops_by_text.items() if len(k) < 20 and len(v) >= 5}
+
+    def _anchored(key, y):
+        return sum(1 for t in tops_by_text[key] if abs(t - y) <= 6) >= 5
+
+    opens, appears = Counter(), Counter()
+    candidate_text = {k[0] for k in candidates}
+    for page_lines in per_page.values():
+        for i, (text, line_chars) in enumerate(page_lines):
+            key = re.sub(r"[\d\s]+", " ", text).strip()
+            if key not in candidate_text:
+                continue
+            appears[key] += 1
+            y = line_chars[0]["top"]
+            if all(_anchored(re.sub(r"[\d\s]+", " ", above).strip(),
+                             above_chars[0]["top"])
+                   or re.sub(r"[\d\s]+", " ", above).strip() in furniture
+                   or not any(ch.isalpha() for ch in above)
+                   or PAG_LINE_RE.search(above)
+                   or above_chars[0]["top"] > y - 3
+                   for above, above_chars in page_lines[:i]):
+                opens[key] += 1
+    running = {k for k in candidates if opens[k[0]] >= 0.8 * appears[k[0]]}
 
     for page, page_lines in per_page.items():
         for text, line_chars in page_lines:
