@@ -38,8 +38,15 @@ Nothing is deleted or corrected. A reading known to be misdated is more useful
 marked than removed, because removing it would hide how much of the Senate's
 own record is like this.
 
+  Archived per-senator pages, 2 February 1998. The same site ran one page per
+  senator, each stating "Bloque: ..." in so many words, and the Archive holds
+  58 of them from three weeks before the first sitting in this corpus — the
+  only record of the chamber's caucuses before May 2000. Read exactly like the
+  roster page, and marked apart from it by source.
+
 Inputs:  reference/senado/bloques_por_fecha.csv     (fetch_blocs.py)
          reference/senado/bloque_por_foto.csv       (fetch_archived_blocs.py)
+         reference/senado/bloque_por_ficha.csv      (fetch_archived_profiles.py)
          reference/senado/blocs_manual.csv          (hand-dated caucus lives)
          reference/senado/senadores_historico.json  (the roster)
 Output:  reference/senado/bloque_observado.csv
@@ -60,6 +67,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 REF = REPO_ROOT / "reference" / "senado"
 ROLLCALL = REF / "bloques_por_fecha.csv"
 SNAPSHOTS = REF / "bloque_por_foto.csv"
+PROFILES = REF / "bloque_por_ficha.csv"
 LIVES = REF / "blocs_manual.csv"
 HISTORICO = REF / "senadores_historico.json"
 OUT = REF / "bloque_observado.csv"
@@ -249,10 +257,79 @@ def from_snapshots(people):
     })
 
 
+def resolve_given_first(printed, when, roster):
+    """Who a per-senator page meant. It prints "AUGUSTO ALASINO", given names
+    first and no comma, so where the surname starts is not written down; a
+    senator in office that day whose surname AND given names both meet the
+    printed words is taken, and only if exactly one does."""
+    def parts(x):
+        return set(norm(x).replace("-", " ").replace(",", " ").split())
+    words = parts(printed)
+    seq = norm(printed).replace("-", " ").split()
+
+    def ends_with_surname(ape):
+        # the page puts the surname last, so "EDUARDO PEDRO VACA" is Vaca and
+        # not De Pedro, Eduardo Enrique, whose names share two of its words
+        tail = norm(ape).replace("-", " ").split()
+        return len(tail) < len(seq) and seq[-len(tail):] == tail
+
+    serving = roster[(roster.ini <= when) & (roster.fin >= when)]
+    for pool, how in ((serving, "in office"), (roster, "any date")):
+        c = pool[pool.ape.map(lambda a: bool(parts(a) & words))
+                 & pool.nom.map(lambda n: bool(parts(n) & words))]
+        if c.ID.nunique() > 1:
+            c = c[c.ape.map(ends_with_surname)]
+        if c.ID.nunique() == 1:
+            return (c.assign(_d=(c.ini - when).abs()).sort_values("_d").iloc[0],
+                    f"surname and given name, {how}")
+    return None, None
+
+
+def from_profiles(people, spelled):
+    """The 2 February 1998 per-senator pages, one observation per page."""
+    if not PROFILES.exists():
+        print(f"  {PROFILES.name} missing — no observations before May 2000")
+        return pd.DataFrame()
+    s = pd.read_csv(PROFILES)
+    known = {}
+    for b in pd.read_csv(LIVES).bloc.dropna().unique():
+        k = re.sub(r"^BLOQUE\s+", "", norm(b).replace(".", " ").replace("-", " "))
+        known[" ".join(k.split())] = b
+    canon = s.bloque_impreso.map(lambda p: canonical_bloc(p, known))
+    ids, names, rules = [], [], []
+    for printed, when in zip(s.senador_impreso, pd.to_datetime(s.capture_date)):
+        hit, how = resolve_given_first(printed, when, people)
+        if hit is None:
+            sys.exit(f"a per-senator page matches nobody in the roster: {printed!r}")
+        ids.append(hit.ID); names.append(hit.SENADOR); rules.append(how)
+        if not (hit.ini <= when <= hit.fin):
+            print(f"  {when:%Y-%m-%d}: a per-senator page still lists {hit.SENADOR}, "
+                  f"whose mandate ran {hit.ini:%Y-%m-%d} to {hit.fin:%Y-%m-%d} — the "
+                  f"page lagged the chamber, kept as printed")
+    print("  per-senator pages resolved by: " + ", ".join(
+        f"{v} {k}" for k, v in pd.Series(rules).value_counts().items()))
+    # a caucus with no dated life keeps its printed name, in the spelling the
+    # roster page already gave it where it gave one, so the same caucus is not
+    # two strings that differ only in capitals
+    bloque = [c or spelled.get(norm(p), p) for c, p in zip(canon, s.bloque_impreso)]
+    return pd.DataFrame({
+        "fecha": s.capture_date,
+        "person_id": ids,
+        "person_name": names,
+        "bloque": bloque,
+        "fiabilidad": ["foto" if c else "foto_bloque_previo" for c in canon],
+        "fuente": "ficha del senador",
+        "procedencia": s.capture_url,
+    })
+
+
 def main():
     people = load_people()
     lives, undated = load_lives()
-    parts = [from_rollcalls(people, lives, undated), from_snapshots(people)]
+    snaps = from_snapshots(people)
+    spelled = {norm(b): b for b in snaps.bloque} if len(snaps) else {}
+    parts = [from_rollcalls(people, lives, undated), snaps,
+             from_profiles(people, spelled)]
     o = pd.concat([p for p in parts if len(p)], ignore_index=True)
     o["familia"] = o.bloque.map(family)
     o = o.sort_values(["fecha", "person_name"]).reset_index(drop=True)

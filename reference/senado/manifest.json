@@ -55,6 +55,20 @@
                 "2004-03-24",
                 "2004-06-19"
             ]
+        },
+        "bloque_por_ficha.csv": {
+            "file": "bloque_por_ficha.csv",
+            "source_url": "https://web.archive.org/web/*/senado.gov.ar/cgi-bin/filtro?/senadores/*",
+            "fetched_at_utc": "2026-09-21T21:15:36+00:00",
+            "sha256": "d75413bf76e2ed281f51cd8e0b63287e4a9a506ef9915a75a363d3cda2c1e50c",
+            "size_bytes": 10837,
+            "row_count": 58,
+            "captures": 1,
+            "years": "1998-1998",
+            "note": "the Senate's own per-senator pages, recovered from the Internet Archive; each states the senator's caucus ('Bloque: ...'). One row per page per capture, names exactly as printed, with the address of the capture it rests on. A capture dates the page, not the chamber.",
+            "captured_on": [
+                "1998-02-02"
+            ]
         }
     },
     "manual": {

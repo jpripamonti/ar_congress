@@ -1804,6 +1804,21 @@ and 21.5 million words of attributed speech become 25.7.
       would cross the December 1998 renewal. Needs a different source — the
       chamber's printed roster, a library holding, or the transcripts' own
       mentions of who spoke for which bloc.
+      PARTLY CLOSED, 21 September 2026. The same site ran one page per
+      senator, and the Archive holds 58 of them from 2 February 1998, each
+      printing "Bloque: …" (scripts/fetch_archived_profiles.py ->
+      reference/senado/bloque_por_ficha.csv, every row with the address of
+      its capture). The 1997 captures print "Partido: …" instead and are not
+      used: a party is not a caucus. One page lagged the chamber (Vaca, gone
+      20 January 1998) and is kept as printed, as the roster page's two are.
+      Result: 5,932 blocks gain a caucus, every one previously empty and every
+      one between 25 February and 19 August 1998; nothing else in the speaker
+      table moved. 13,935 remain, August 1998 to November 1999, beyond 200
+      days from both sources and mostly after the December 1998 renewal.
+      Still open for those: a library holding or the chamber's printed
+      roster. Deliberately not done: carrying a senator's caucus across the
+      gap because it reads the same in February 1998 and May 2000 — that is
+      an inference, and the observations table exists not to make one.
 - [ ] Three sittings of 2003 label the chair "Sr. Presidente (Maqueda)" after
       Maqueda left the Senate for the Supreme Court on 27 December 2002 — the
       chamber's own documents carrying a stale label. 15 blocks, left

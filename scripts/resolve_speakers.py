@@ -740,7 +740,10 @@ def load_bloc_observations():
               "acta_sin_control": "undatable", "foto": "confirmed",
               "foto_bloque_previo": "confirmed"}
     basis = {"acta de votacion": "roll call",
-             "foto de la pagina de bloques": "archived roster"}
+             "foto de la pagina de bloques": "archived roster",
+             # one senator's own page, captured 2 February 1998: dated the
+             # same way as the roster page, by the day it was captured
+             "ficha del senador": "archived senator page"}
     obs = {}
     for r in df.itertuples(index=False):
         # keyed the same way the roster is, so the join is on the person

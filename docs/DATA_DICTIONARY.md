@@ -18,7 +18,7 @@ million are attributed speech.
 | `data/processed/senado/blocks/<sitting>.parquet` | a passage of one sitting — a turn of speech, a stenographer's note, a heading, or page matter | 439,735 across 817 files (one sitting of the 818 attempted fails to parse) |
 | `data/processed/senado/speakers.parquet` | one printed speaker label in one sitting, resolved to a person and to the caucus they sat with | one per (sitting, label) pair |
 | `data/processed/senado/parse_stats.csv` | one sitting, with 42 counts of what the parser did to it | 818 |
-| `reference/senado/bloque_observado.csv` | one day the chamber's composition was actually recorded, for one senator | 24,813 over 357 dates, 2000–2026 |
+| `reference/senado/bloque_observado.csv` | one day the chamber's composition was actually recorded, for one senator | 24,871 over 358 dates, 1998–2026 |
 
 There is one file of passages per sitting rather than one big file, so that a
 single sitting can be read without loading the corpus. Concatenating them all is
@@ -110,8 +110,8 @@ people in different sittings, and sometimes within one sitting.
 | `elected_ticket` | **The list the senator STOOD ON, not the caucus they sat with.** One value per mandate, taken from the roster. See the two-affiliations note below before using it. |
 | `province` | The province the senator represents. |
 | `bloc` | **The caucus the senator SAT WITH.** Taken from the nearest day the chamber's composition was actually recorded — see below. |
-| `bloc_status` | How far that caucus can be trusted, **judged on the date of the sitting, not on the day the caucus was recorded**: `confirmed` (77.6% of senators' floor passages), `anachronistic` (7.0% — the record names a caucus that did not exist on the day of the sitting), `disputed` (0.8% — two records that could each describe the day name different caucuses, so which one held is not established), `undatable` (0.6% — the caucus has no established start, so nothing can be checked). Empty where there is no caucus at all (14.0%, almost all of it 1998–1999). |
-| `bloc_basis` | Where the caucus came from: `roll call` (45.0% of senators' floor passages) or `archived roster` (40.9%, the pre-2005 years). |
+| `bloc_status` | How far that caucus can be trusted, **judged on the date of the sitting, not on the day the caucus was recorded**: `confirmed` (81.3% of senators' floor passages), `anachronistic` (7.0% — the record names a caucus that did not exist on the day of the sitting), `disputed` (0.8% — two records that could each describe the day name different caucuses, so which one held is not established), `undatable` (0.6% — the caucus has no established start, so nothing can be checked). Empty where there is no caucus at all (10.3%, almost all of it August 1998 to November 1999). |
+| `bloc_basis` | Where the caucus came from: `roll call` (44.7% of senators' floor passages), `archived roster` (41.2%, May 2000 to 2004) or `archived senator page` (3.8%, the senators' own pages captured on 2 February 1998, used for sittings to August 1998). `bloque_observado.csv` gives the address of the exact capture for every observation. |
 | `bloc_observed` | The date the caucus was actually recorded on. |
 | `bloc_gap_days` | How many days that is from the sitting. Median 0 — most sittings are themselves roll-call days. Rows further than 200 days from any observation get no caucus. |
 | `match_status` | How the label was resolved. This is the field to filter on, and its values are not interchangeable — see below. |
@@ -238,14 +238,17 @@ what the analysis in this repository does, and it says so.
   says which day it used and how far that is from the sitting. A senator who
   changed caucus between two observations changes on the later one, not on the
   day they moved.
-- **There is no caucus at all for 1998 and most of 1999.** The bloc-roster page
-  is the only record of the chamber's composition before the roll calls begin,
-  and the Internet Archive's earliest capture of it is 25 May 2000; nothing
-  earlier exists. Reaching back from that capture would cross the renewal of
-  December 1998, so those sittings are left without a caucus rather than given
-  one by inference. It is 14% of senators' floor passages, and it is not spread
-  evenly: filter on `session_date >= "1999-11"` for anything comparing caucuses
-  over time.
+- **There is no caucus from August 1998 to November 1999.** Before the roll
+  calls begin, the chamber's composition survives only in its own web pages as
+  the Internet Archive kept them: the bloc-roster page from 25 May 2000, and 58
+  per-senator pages captured on 2 February 1998, each stating the caucus.
+  The 1998 pages reach sittings to August 1998; nothing was captured between
+  them and May 2000. Reaching across would cross the renewal of December 1998,
+  so those sittings are left without a caucus rather than given one by
+  inference. It is 10.3% of senators' floor passages, and it is not spread
+  evenly: filter on `session_date >= "1999-11"` for anything comparing
+  caucuses over time, or keep February to August 1998 and say where it
+  comes from.
 - **Roughly a fifth of each document is dropped on purpose**: contents pages,
   attendance rolls, appendices and inserted documents that were never spoken.
   The median sitting keeps 82.8% of its printed text, and the two formats

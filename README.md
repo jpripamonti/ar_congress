@@ -517,13 +517,16 @@ as its own HTML export for most of 1998–2003; both are read here.
   reading that will not accept a courtesy title can drop them with one filter.
   On the 69 Sapag turns the chair introduces by name, its wording agrees with
   the title in all 69.
-- Caucus attached to **86% of senator speech blocks**. What is missing is
-  almost all 1998–1999 (19,797 of the 21,812 blocks without one): the Senate's
-  bloc-roster page is the only record of the chamber's composition before the
-  roll calls begin in 2005, and the Internet Archive's earliest capture of it
-  is 25 May 2000. There is no capture before that — checked, not assumed — and
-  reaching back from it would cross the December 1998 renewal, which is exactly
-  the kind of inference the caucus data exists to avoid.
+- Caucus attached to **89.7% of senator speech blocks**. What is missing is
+  almost all August 1998 to November 1999 (13,935 of the 15,957 blocks without
+  one). Before the roll calls begin in 2005 the chamber's composition survives
+  only in its own web pages as the Internet Archive kept them: the bloc-roster
+  page from 25 May 2000, and, before that, 58 per-senator pages captured on
+  2 February 1998, each stating "Bloque: …". Those cover sittings to August
+  1998 — 5,932 blocks. Between the two nothing was captured, and reaching
+  across would cross the December 1998 renewal, which is exactly the kind of
+  inference the caucus data exists to avoid. Every caucus carries the capture
+  it came from.
 - **What every column holds and what not to assume about it**:
   [docs/DATA_DICTIONARY.md](docs/DATA_DICTIONARY.md) — written for someone who
   has never seen this project. How a version is cut, checked and cited:
@@ -610,8 +613,12 @@ from the Senate's own bloc-roster page as the Internet Archive kept it — 1,112
 senator-rows over 16 captures from May 2000 to June 2004, every one checked
 against the roster's mandate dates. A capture dates the page, not the chamber:
 it brackets a change between two dates and never fixes one to the day. Before
-25 May 2000 there is no capture and no caucus, so 1998 and 1999 have the ticket
-and nothing else.
+25 May 2000 the roster page was never captured, but the same site's
+per-senator pages were, on 2 February 1998 — 58 of them, each naming the
+caucus (`scripts/fetch_archived_profiles.py`). They reach sittings to August
+1998; from then to November 1999 there is the ticket and nothing else. The
+1997 captures of those pages name the PARTY, not the caucus, and are not
+used.
 
 ## Layout
 
