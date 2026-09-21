@@ -2395,7 +2395,7 @@ and 21.5 million words of attributed speech become 25.7.
   silently dropped any new counter, which is why the two new stats were
   computed and thrown away.
 
-- [ ] **Gold page 295 of 2014-09-03_r13 was annotated on the wrong document.**
+- [x] (done, 21 September 2026) **Gold page 295 of 2014-09-03_r13 was annotated on the wrong document.**
       It was drawn before the fix above, from the committee meeting of 19
       August that the file appends and the corpus no longer attributes to that
       sitting. It now accounts for all 12 missed turns and both missed events
@@ -2404,9 +2404,17 @@ and 21.5 million words of attributed speech become 25.7.
       parser can pass, and hides any real regression underneath it. Proposed:
       draw and annotate a replacement page from the same sitting, and keep
       this one out of the scored set with a note saying why, rather than
-      delete it. **Waiting on Juan.**
+      delete it. Done: both readings and the page image are in
+      reference/gold/retired/ with the reason, and the replacement is page 72,
+      drawn by the same seeded rule from the 214 eligible pages of the floor
+      debate and read independently twice. Both readings agree exactly — no
+      label, no note, no heading, one speech running through the page — and
+      the corpus covers it with a single turn by senator Godoy spanning pages
+      71 to 74. The set loses 10 annotated turns and gains a page that can
+      only catch a false positive: the honest cost of the draw landing on a
+      continuation page, and not a reason to draw again.
 
-- [ ] The gold-score prose in README.md and DATA_DICTIONARY.md still quotes
+- [x] (done, 21 September 2026) The gold-score prose in README.md and DATA_DICTIONARY.md still quoted
       the older 125-turn figures (F1 = 0.996). It should be rewritten once the
       page above is settled, since that decision changes the numbers.
 

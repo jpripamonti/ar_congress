@@ -283,25 +283,30 @@ as its own HTML export for most of 1998–2003; both are read here.
   cut, three of them OCR noise — were typed as section titles, rows saying a
   section began that cannot say which. 0.4.35 and 0.4.36 (`TODO.md`, Phase 29).
 - Two layers of verification, because they answer different questions.
-  **On a hand-annotated sample** — 36 stratified pages spanning 2003–2024 —
-  utterance boundary+attribution F1 = 0.996 (124 of 125 turns), event
-  precision 1.00 and recall 0.935, no speech leaking onto contents pages.
+  **On a hand-annotated sample** — 72 stratified pages spanning 1998–2024 —
+  utterance boundary+attribution F1 = 0.997 (308 of 310 turns), event recall
+  1.000 (93 of 93) at precision 0.877, no speech leaking onto contents pages.
   Scored a second time with each turn's own opening words carried alongside
   its label, so that a label moved onto another speaker's words cannot pass as
-  a match on the strength of the name alone, it comes out the same: 124 of
-  125. Neither score sees the ORDER of the turns on the page — both compare
+  a match on the strength of the name alone, it comes out the same: 308 of
+  310. Neither score sees the ORDER of the turns on the page — both compare
   what is there, not where — so a page whose turns came out shuffled would
   still score full marks; that is a gap in the measure, not a claim about the
-  corpus. **Read that 0.996 as the small sample it is**: one miss in 125 turns
-  puts the 95% interval on recall at 0.956 to 0.999, and the 125 turns come
-  from only 24 documents, so errors could arrive in clusters the interval does
-  not allow for. The 36 pages cover eight kinds of sitting and thirteen years
-  from 2003 to 2024, but two thirds of them are 2020 or later; on the
-  pre-2016 record, where the printed conventions are least like today's, it
-  rests on eight pages carrying 50 of the 125 turns. The
+  corpus. **Read the interval, not the point**: two misses in 310 turns put
+  the 95% interval on recall at 0.977 to 0.998, and the turns come from 55
+  documents, so errors could arrive in clusters the interval does not allow
+  for. The event precision is the weaker number and it is honest: the parser
+  emits 106 notes where the annotators read 93, and the gap is the note that
+  closes a speaker's paragraph, a convention the corpus has not settled
+  (`TODO.md`, Q3). The 72 pages span 25 years and eight kinds of sitting, and
+  44 of them carrying 235 turns are before 2016, which is where the printed
+  conventions least resemble today's. The
   annotations have themselves been checked back against the source PDFs
-  (`scripts/check_gold.py`, 36 of 36 pass) — a second machine reading, not an
-  independent human audit. **On all 817 sessions that parse, in both formats**
+  (`scripts/check_gold.py`, 108 of 108 pass) — a second machine reading, not an
+  independent human audit. One page has been retired from the scoring, kept
+  in full under `reference/gold/retired/` with the reason: it was drawn from
+  a committee meeting the file reproduces behind the sitting, which the
+  corpus no longer attributes to that sitting. **On all 817 sessions that parse, in both formats**
   (`scripts/audit_parse.py`): no turn carries a second speaker's label, no label
   is absorbed by the section title above it, no page apparatus leaks into speech
   outside the three scans, no text is written out twice, every one of 156,739

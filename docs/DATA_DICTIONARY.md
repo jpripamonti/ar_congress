@@ -260,10 +260,12 @@ what the analysis in this repository does, and it says so.
 Three layers, summarised in the [README](../README.md). Each measures a
 different thing, and the strongest number rests on the smallest sample.
 
-- **320 turns annotated by hand**, in two sets, and this is the only layer that
+- **505 turns annotated by hand**, in two sets, and this is the only layer that
   measures whether a turn was found at all.
-  **36 PDF pages** spanning 2003–2024: boundary and attribution F1 = 0.996,
-  124 of 125 turns and 29 of 31 stenographer's notes. **24 stretches of the
+  **72 PDF pages** spanning 1998–2024: boundary and attribution F1 = 0.997,
+  308 of 310 turns and 93 of 93 stenographer's notes, the notes at a
+  precision of 0.877 because the parser emits 106 of them — the excess is the
+  note that closes a speaker's paragraph, which the corpus has not settled. **24 stretches of the
   HTML era** spanning 1998–2003, each about 7,000 characters and cut on the
   source rather than at anything the parser found: F1 = 1.000, 195 of 195
   turns and 62 of 62 notes, under either reading. **Both readings are the
@@ -297,11 +299,19 @@ different thing, and the strongest number rests on the smallest sample.
   speaks four times has four identical labels and counting labels alone cannot
   tell a parser that found those turns from one that found four turns in the
   wrong places. Both scores are the same on it.
-  **Read the interval, not the point.** One miss in 320 puts the 95% interval
-  on recall at 0.983 to 0.999, those 320 turns are 0.13% of the 249,016 in the
-  corpus, and two thirds of the PDF pages are 2020 or later — on the record
-  before 2016 the measure rests on eight pages carrying 50 of those turns.
+  **Read the interval, not the point.** Two misses in 310 put the 95% interval
+  on the PDF recall at 0.977 to 0.998, those 505 turns are 0.20% of the
+  249,016 in the corpus, and 44 of the 72 PDF pages, carrying 235 turns, are
+  before 2016, which is where the printed conventions least resemble today's.
   Neither set checks the order the turns came out in.
+  One PDF page is retired from the scoring and kept in full under
+  `reference/gold/retired/`, with the reason written beside it: it was drawn
+  from a committee meeting the file reproduces behind the sitting, which the
+  corpus no longer attributes to that sitting, so its annotation describes
+  speech that does not belong to it. A page is only retired when the
+  annotation and the parser disagree about WHICH DOCUMENT the page is and the
+  parser is right; a page the parser merely reads differently stays in and
+  counts against it.
 - **All 817 parsed sittings audited against their source files**: no page
   apparatus inside a turn and no turn carrying a second speaker's label outside
   the three scans, no sitting whose output is longer than the page it came from,
