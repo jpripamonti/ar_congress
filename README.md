@@ -32,10 +32,10 @@ as its own HTML export for most of 1998–2003; both are read here.
   that last group final would invent a fact about 134 sittings. Read it from
   the raw file: the parser drops the masthead as page apparatus, so parsed text
   puts every PDF at "not provisional" when 261 of 605 are.
-- Corpus parsed: 249,016 speaker-attributed speech blocks and 74,186 typed
-  stenographer events in 447,954 rows over 817 sittings, as per-session Parquet
+- Corpus parsed: 245,541 speaker-attributed speech blocks and 69,616 typed
+  stenographer events in 439,859 rows over 817 sittings, as per-session Parquet
   under `data/processed/senado/`. 25.7 million words of attributed speech, of
-  which the HTML side contributes 5.9 million. The PDF side is parser 0.5.0 and
+  which the HTML side contributes 5.9 million. The PDF side is parser 0.5.1 and
   the HTML side `scripts/parse_html.py` at 0.5.7-html; the two share the speaker
   pattern and the event subtypes, so a passage means the same thing in either.
   One sitting fails to parse: the 1997 impeachment tribunal, which does not open
@@ -285,7 +285,7 @@ as its own HTML export for most of 1998–2003; both are read here.
 - Two layers of verification, because they answer different questions.
   **On a hand-annotated sample** — 72 stratified pages spanning 1998–2024 —
   utterance boundary+attribution F1 = 0.997 (308 of 310 turns), event recall
-  1.000 (93 of 93) at precision 0.877, no speech leaking onto contents pages.
+  1.000 (83 of 83) at precision 0.988, no speech leaking onto contents pages.
   Scored a second time with each turn's own opening words carried alongside
   its label, so that a label moved onto another speaker's words cannot pass as
   a match on the strength of the name alone, it comes out the same: 308 of
@@ -295,10 +295,11 @@ as its own HTML export for most of 1998–2003; both are read here.
   corpus. **Read the interval, not the point**: two misses in 310 turns put
   the 95% interval on recall at 0.977 to 0.998, and the turns come from 55
   documents, so errors could arrive in clusters the interval does not allow
-  for. The event precision is the weaker number and it is honest: the parser
-  emits 106 notes where the annotators read 93, and the gap is the note that
-  closes a speaker's paragraph, a convention the corpus has not settled
-  (`TODO.md`, Q3). The 72 pages span 25 years and eight kinds of sitting, and
+  for. The parser emits 84 notes where the annotators read 83; the one extra
+  is a secretary's "(Lee:)", which the brief counts as his turn (`TODO.md`).
+  Ten events were removed from four older pages after a blind re-reading
+  showed the page prints them inside a speaker's paragraph, which the brief
+  rules out; the re-readings are kept in `reference/gold/rereadings/`. The 72 pages span 25 years and eight kinds of sitting, and
   44 of them carrying 235 turns are before 2016, which is where the printed
   conventions least resemble today's. The
   annotations have themselves been checked back against the source PDFs
@@ -311,7 +312,7 @@ as its own HTML export for most of 1998–2003; both are read here.
   is absorbed by the section title above it, no page apparatus leaks into speech
   outside the three scans, no text is written out twice, every one of 156,739
   probed blocks is found in the file it came from (0.070% not located once the
-  scans are set aside, and no sitting above 1%), 8 turns of 249,016 open
+  scans are set aside, and no sitting above 1%), 8 turns of 245,541 open
   mid-word and every one of them is printed that way, and a median 82.8% of each
   document's printed text is kept (the rest — contents pages, attendance rolls,
   appendices — is dropped by design). Three sittings are scans with OCR text and
