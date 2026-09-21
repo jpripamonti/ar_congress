@@ -55,7 +55,7 @@ import pdfplumber
 
 from session_kind import session_kind_for
 
-PARSER_VERSION = "0.4.41"
+PARSER_VERSION = "0.5.0"
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
@@ -1254,6 +1254,26 @@ def smooth_micro_islands(blocks):
     return out, merged
 
 
+# How far a block's type size may sit from the body's and still be body text.
+# A document is normally set at one size and the test was equality, but four
+# sittings are set at two sizes a fraction apart — the impeachment tribunal of
+# 6 April 2005 runs at 12 pt to page 16 and at 11.7 from page 17, one hearing
+# with one set of speakers — and under equality the second half was filed as
+# page apparatus. Nothing in these files distinguishes body text from
+# apparatus by a margin this fine: the smallest real step is 10 pt against
+# 12 pt.
+BODY_SIZE_SLACK = 0.5
+
+
+def is_body(size, body_size):
+    return size is not None and abs(size - body_size) <= BODY_SIZE_SLACK
+
+
+def opening_key(text):
+    """The opening line reduced to its letters, for telling two copies apart."""
+    return re.sub(r"[^0-9a-záéíóúñ]", "", text.lower())[:60]
+
+
 def cut_front_matter(blocks, body_size):
     """Start the session at the first opening event or speaker label.
 
@@ -1280,23 +1300,32 @@ def cut_front_matter(blocks, body_size):
     cut in 30, every one of them from the first speaker back to the opening
     event that belongs in front of it, and in none does it lose a match the
     old rule found.
+
+    The size test here is exact, unlike everywhere below it. This pass
+    does not classify a block, it decides WHICH size is the body, and a
+    tolerance would let one candidate match at another candidate's size
+    and win on an opening that is not its own. In the preparatory
+    sitting of 21 November 2001 that flipped the body from 9 pt to 10.5
+    and cost 4,650 words of attributed speech.
+
+    Returns (blocks, mode, index) — the index is where the sitting was found
+    to open, which the caller compares across body-size candidates.
     """
     for i, b in enumerate(blocks):
         t = b["text"].strip()
         if b["size"] != body_size:
             continue
         if b["font_style"] == "italic" and EVENT_DASH_RE.match(t):
-            return blocks[i:], "opening_event"
+            return blocks[i:], "opening_event", i
         if (b["font_style"] == "italic" and i and OPENING_TEXT_RE.match(t)
                 and DASH_TAIL_RE.search(blocks[i - 1]["text"])):
-            return blocks[i:], "stranded_dash"
+            return blocks[i:], "stranded_dash", i
         if b["font_style"] == "bold" and SPEAKER_RE.match(t):
-            return blocks[i:], "first_speaker"
+            return blocks[i:], "first_speaker", i
     for i, b in enumerate(blocks):
         if b["font_style"] == "bold" and b["size"] == body_size and b["text"].strip().startswith("1."):
-            return blocks[i:], "numbered_marker"
-    print("=== Advertencia: no se encontró el inicio de la sesión ===")
-    return [], "none"
+            return blocks[i:], "numbered_marker", i
+    return [], "none", len(blocks)
 
 
 def cut_apparatus_text(blocks, body_size):
@@ -1330,7 +1359,7 @@ def cut_apparatus_text(blocks, body_size):
         cut += n
         if PAGENUM_ONLY_RE.match(CID_UNMAPPED_RE.sub("", text)):
             heading_ahead = any(
-                bb["font_style"] == "bold" and bb["size"] == body_size
+                bb["font_style"] == "bold" and is_body(bb["size"], body_size)
                 and bb["text"].strip() and not bb["text"].strip()[:1].isdigit()
                 and not SPEAKER_RE.match(bb["text"].strip())
                 and len(bb["text"].split()) >= 4
@@ -1432,10 +1461,10 @@ def rejoin_split_word(blocks, body_size):
     for i, b in enumerate(blocks):
         t = b["text"].strip()
         nxt = blocks[i + 1] if i + 1 < len(blocks) else None
-        if (t and b["size"] != body_size and t[-1:].isalpha()
+        if (t and not is_body(b["size"], body_size) and t[-1:].isalpha()
                 and b.get("type") is None
                 and nxt is not None and nxt.get("type") is None
-                and nxt["size"] == body_size and nxt["font_style"] != "bold"
+                and is_body(nxt["size"], body_size) and nxt["font_style"] != "bold"
                 and nxt["text"].lstrip()[:1].islower()):
             piece = re.sub(r"^\s*\.?\s*[–—−─-]\s*", "", t)
             if piece and piece[-1:].isalpha():
@@ -1672,7 +1701,7 @@ def assign_chapter_to_blocks(blocks, body_size):
     for b in blocks:
         t = LEAD_JUNK_RE.sub("", b["text"].strip())
         bold_title = (b.get("type") is None and b["font_style"] == "bold"
-                      and b["size"] == body_size)
+                      and is_body(b["size"], body_size))
         if (bold_title and not t[:1].isdigit() and out
                 and not SPEAKER_RE.match(t) and len(t.split()) >= 4):
             # the section's own number is sometimes set in the body face rather
@@ -1786,7 +1815,7 @@ def split_fused_labels(blocks, body_size):
     for b in blocks:
         t = b["text"].strip()
         if (b.get("type") is None and b["font_style"] == "bold"
-                and b["size"] == body_size and not SPEAKER_RE.match(t)):
+                and is_body(b["size"], body_size) and not SPEAKER_RE.match(t)):
             last = None
             for m in FUSED_LABEL_RE.finditer(t):
                 if m.start() > 0:
@@ -1822,7 +1851,7 @@ def split_inline_labels(blocks, body_size):
     found = 0
     for b in blocks:
         if (b.get("type") is not None or b["font_style"] != "normal"
-                or b["size"] != body_size):
+                or not is_body(b["size"], body_size)):
             out.append(b)
             continue
         text = b["text"]
@@ -1875,7 +1904,7 @@ def reclaim_truncated_label(blocks, body_size):
             continue
         t = b["text"].strip()
         if not (b.get("type") is None and b["font_style"] == "bold"
-                and b["size"] == body_size and SPEAKER_RE.match(t)
+                and is_body(b["size"], body_size) and SPEAKER_RE.match(t)
                 and not LABEL_TERM_RE.search(t)):
             out.append(b)
             continue
@@ -1884,7 +1913,7 @@ def reclaim_truncated_label(blocks, body_size):
         # from as many as it takes, within a budget of 30 characters
         run, chars = [], ""
         for nxt in blocks[idx + 1:idx + 5]:
-            if nxt.get("type") is not None or nxt["size"] != body_size:
+            if nxt.get("type") is not None or not is_body(nxt["size"], body_size):
                 break
             piece = nxt["text"].lstrip() if not run else nxt["text"]
             if not run and not piece[:1].islower():
@@ -1927,7 +1956,7 @@ def split_label_spillover(blocks, body_size):
     for idx, b in enumerate(blocks):
         t = b["text"].strip()
         if (b.get("type") is None and b["font_style"] == "bold"
-                and b["size"] == body_size and SPEAKER_RE.match(t)):
+                and is_body(b["size"], body_size) and SPEAKER_RE.match(t)):
             m = LABEL_TERM_RE.search(t)
             if m and (spill := t[m.end():].strip()):
                 nxt = blocks[idx + 1] if idx + 1 < len(blocks) else None
@@ -1938,7 +1967,7 @@ def split_label_spillover(blocks, body_size):
                 # So the face of the block below does not decide this: only
                 # that it is ordinary text and not a label of its own.
                 if (nxt is not None and nxt.get("type") is None
-                        and nxt["size"] == body_size
+                        and is_body(nxt["size"], body_size)
                         and not SPEAKER_RE.match(nxt["text"].strip())):
                     # the spill opens the very next sentence ("¡" + "Sí!"):
                     # rejoin without a separator, the typesetter had none
@@ -1988,7 +2017,7 @@ def identify_speakers(blocks, body_size):
                 noted += 1
             annotated.append(b)
             continue
-        if b["font_style"] == "bold" and b["size"] == body_size:
+        if b["font_style"] == "bold" and is_body(b["size"], body_size):
             if BOLD_JUNK_RE.match(t):
                 # A punctuation shard of a split label — not a heading, and it
                 # must not reset the running speaker. It also must not stand
@@ -2007,7 +2036,7 @@ def identify_speakers(blocks, body_size):
                 if not LABEL_CLOSED_RE.search(t) and i < len(blocks):
                     nxt = blocks[i]
                     if (nxt.get("type") is None and nxt["font_style"] == "normal"
-                            and nxt["size"] == body_size
+                            and is_body(nxt["size"], body_size)
                             and (m := PAREN_HEAD_RE.match(nxt["text"]))):
                         label = f"{t} {m.group(1)}"
                         rest = nxt["text"][m.end():]
@@ -2020,7 +2049,7 @@ def identify_speakers(blocks, body_size):
                     # "Pampuro). – speech…" — pull the name into the label
                     nxt = blocks[i]
                     if (nxt.get("type") is None and nxt["font_style"] == "normal"
-                            and nxt["size"] == body_size):
+                            and is_body(nxt["size"], body_size)):
                         m = re.match(r"\s*([^()]{1,60}\))", nxt["text"])
                         if m:
                             label = t + m.group(1)
@@ -2032,7 +2061,7 @@ def identify_speakers(blocks, body_size):
                         elif (i + 1 < len(blocks)
                                 and re.fullmatch(r"[^()]{1,60}", nxt["text"].strip())
                                 and blocks[i + 1]["font_style"] == "bold"
-                                and blocks[i + 1]["size"] == body_size
+                                and is_body(blocks[i + 1]["size"], body_size)
                                 and blocks[i + 1]["text"].lstrip().startswith(")")):
                             # both parens bold, the name normal between them:
                             # bold "Sr. Presidente (" + normal "Yoma" + bold
@@ -2063,7 +2092,7 @@ def identify_speakers(blocks, body_size):
                 current = None
                 annotated.append(b)
             continue
-        if b["font_style"] == "normal" and b["size"] == body_size:
+        if b["font_style"] == "normal" and is_body(b["size"], body_size):
             if current:
                 if turn_id != open_turn:
                     # the ". —" that closes the label is printed in its own
@@ -2240,16 +2269,55 @@ def process_pdf(pdf_path):
     stats["blocks_generated"] = len(blocks)
     stats["micro_islands_merged"] = islands
 
-    # try body-size candidates until one yields a session opening
-    body_size, marker_mode, cut_blocks = None, "none", []
-    for cand in body_size_candidates(chars):
-        cut_blocks, marker_mode = cut_front_matter(blocks, cand)
+    # Which body size is the sitting set in? The modal size is usually right,
+    # but not always: short Asambleas are dominated by 10 pt attendance lists,
+    # and a file with a second document bound in behind the transcript is
+    # dominated by whichever of the two is longer.
+    #
+    # The candidate to believe is the one that finds the sitting opening
+    # EARLIEST in the file, not the first candidate that finds one at all.
+    # Taking the first was how 2014-09-03_r13 came to ship a committee meeting
+    # of 19 August: its 214 pages of floor debate are set at 12 pt, the
+    # committee meeting appended behind them at 10 pt and longer, so 10 pt was
+    # tried first, matched the APPENDIX's own opening, and the debate was cut
+    # away in front of it as if it were front matter. A file opens with the
+    # sitting's own transcript and anything bound behind it is appendix, so
+    # the earliest opening is the sitting's.
+    candidates = body_size_candidates(chars)
+    opened = []
+    for cand in candidates:
+        cut_blocks, marker_mode, at = cut_front_matter(blocks, cand)
         if marker_mode != "none":
-            body_size = cand
-            break
-    if body_size is None:
-        body_size = body_size_candidates(chars)[0]
-    blocks = cut_blocks
+            opened.append((at, cand, marker_mode, cut_blocks))
+    # earliest opening wins; never compare the block lists themselves
+    best = min(opened, key=lambda r: r[0], default=None)
+    if best is None:
+        print("=== Advertencia: no se encontró el inicio de la sesión ===")
+        body_size, marker_mode, blocks = candidates[0], "none", []
+    else:
+        at, body_size, marker_mode, blocks = best
+        # Two candidates can find the SAME opening twice, because the file
+        # prints the sitting twice at two type sizes: 2010-04-28_r07 sets it
+        # at 12 pt from page 9 and again at 11.3 pt from page 96, word for
+        # word. Reading from the earlier opening would then ship the sitting
+        # and its own second copy behind it. Where a later candidate's
+        # opening is the same passage, that is where this copy ends.
+        # Only an OPENING EVENT can say this: it is the dateline, and a file
+        # holds one. A speaker label cannot — the chair opens many sittings
+        # and opens them the same way, and keying on one cut 4,578 words off
+        # the preparatory sitting of 29 November 2001, the swearing-in of
+        # senator Maqueda among them, on the strength of "Sra. Presidenta
+        # (Negre de Alonso). —" appearing twice in one document.
+        head = opening_key(blocks[0]["text"])
+        ends = [i for i, c, m, bb in opened
+                if i > at and m in ("opening_event", "stranded_dash")
+                and len(head) >= 40 and opening_key(bb[0]["text"]) == head]
+        if marker_mode not in ("opening_event", "stranded_dash"):
+            ends = []
+        if ends:
+            blocks = blocks[:min(ends) - at]
+            print(f"El archivo imprime la sesión dos veces; se lee la primera "
+                  f"y se descarta la copia que empieza en el bloque {min(ends)}.")
     stats["body_size"] = body_size
     stats["marker_mode"] = marker_mode
     stats["blocks_after_marker"] = len(blocks)
