@@ -2492,10 +2492,22 @@ and 21.5 million words of attributed speech become 25.7.
       "(Lee:)" stay events on purpose: the italic run also carries the start
       of what was read ("(Lee:) “"), and splitting it risks the text.
 
-- [ ] Still open from before: Q3, the note that closes a speaker's paragraph,
-      where the two halves of the corpus answer oppositely — 7,865 of the
-      7,998 are HTML and 133 are PDF. The convention has to be settled before
-      either parser changes.
+- [x] (closed, 21 September 2026) Q3, the note that closes a speaker's
+      paragraph, where the two halves of the corpus answered oppositely —
+      7,865 of the 7,998 were HTML and 133 PDF.
+      The convention was already settled, as rule 4 of the annotation brief:
+      a note inside somebody's paragraph belongs to their speech. The HTML
+      half followed it; the PDF half did not, and 0.5.1 brought it into line.
+      Checked from the other side against the raw HTML, splitting on every
+      block-level tag and not only <p>: the sources hold 2,064 applause,
+      laughter and "manifestaciones" notes, the parsed corpus holds the same
+      2,064, and only 2 are printed as a paragraph of their own — both parsed
+      as events. 1,821 sit in speech, 233 inside longer notes that are their
+      own italic paragraph ("-Puestos de pie los presentes… (Aplausos.)"),
+      7 in inserted speeches, 3 in section titles. So the HTML parser is right,
+      and the gap against the PDF half — 791 applause notes on their own row —
+      is how the two eras were printed: the 1998-2003 WordPerfect exports
+      almost never set applause as a paragraph of its own. Nothing to change.
 
 ## Explicitly not building
 
