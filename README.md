@@ -32,11 +32,11 @@ as its own HTML export for most of 1998–2003; both are read here.
   that last group final would invent a fact about 134 sittings. Read it from
   the raw file: the parser drops the masthead as page apparatus, so parsed text
   puts every PDF at "not provisional" when 261 of 605 are.
-- Corpus parsed: 247,471 speaker-attributed speech blocks and 60,905 typed
-  stenographer events in 432,564 rows over 817 sittings, as per-session Parquet
+- Corpus parsed: 249,016 speaker-attributed speech blocks and 74,186 typed
+  stenographer events in 447,954 rows over 817 sittings, as per-session Parquet
   under `data/processed/senado/`. 25.7 million words of attributed speech, of
-  which the HTML side contributes 5.9 million. The PDF side is parser 0.4.40 and
-  the HTML side `scripts/parse_html.py` at 0.5.5-html; the two share the speaker
+  which the HTML side contributes 5.9 million. The PDF side is parser 0.5.0 and
+  the HTML side `scripts/parse_html.py` at 0.5.7-html; the two share the speaker
   pattern and the event subtypes, so a passage means the same thing in either.
   One sitting fails to parse: the 1997 impeachment tribunal, which does not open
   like an ordinary sitting. It used to be two — the no-quorum sitting of 29
@@ -304,9 +304,9 @@ as its own HTML export for most of 1998–2003; both are read here.
   independent human audit. **On all 817 sessions that parse, in both formats**
   (`scripts/audit_parse.py`): no turn carries a second speaker's label, no label
   is absorbed by the section title above it, no page apparatus leaks into speech
-  outside the three scans, no text is written out twice, every one of 160,180
-  probed blocks is found in the file it came from (0.006% not located once the
-  scans are set aside, and no sitting above 1%), 8 turns of 247,471 open
+  outside the three scans, no text is written out twice, every one of 156,739
+  probed blocks is found in the file it came from (0.070% not located once the
+  scans are set aside, and no sitting above 1%), 8 turns of 249,016 open
   mid-word and every one of them is printed that way, and a median 82.8% of each
   document's printed text is kept (the rest — contents pages, attendance rolls,
   appendices — is dropped by design). Three sittings are scans with OCR text and

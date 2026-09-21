@@ -424,6 +424,8 @@ STATS_COLUMNS = [
     "split_words_rejoined",
     "labels_rejoined",
     "label_spillover_split",
+    "damaged_labels_repaired",
+    "welded_notes_split",
     "apparatus_text_cut",
     "contents_links_cut",
     "footnote_markers_cut",
