@@ -1,0 +1,35 @@
+{
+  "pdf": "2003-08-20_r18_TRIBUNAL_DE_JUICIO_POLITICO.pdf",
+  "page": 3,
+  "page_id": "2003-08-20_p3",
+  "annotator": "RE",
+  "opens_mid_utterance": false,
+  "utterance_starts": [
+    {"speaker_label": "Sr. Presidente. —",
+     "first_words": "Por Secretaría se dará lectura del proyecto de resolución."},
+    {"speaker_label": "Sr. Secretario (Estrada). —",
+     "first_words": "(Lee:)"},
+    {"speaker_label": "Sr. Presidente. —",
+     "first_words": "En consideración. Se requieren dos tercios de los votos..."},
+    {"speaker_label": "Sr. Baglini. —",
+     "first_words": "Pido la palabra."},
+    {"speaker_label": "Sr. Presidente. —",
+     "first_words": "Tiene la palabra el señor senador Baglini."},
+    {"speaker_label": "Sr. Baglini. —",
+     "first_words": "Señor presidente: por Mesa de Entradas he presentado hoy la nota a la Presidencia que"},
+    {"speaker_label": "Sr. Presidente. —",
+     "first_words": "Se va a votar si la Cámara acepta la excusación del senador Baglini."},
+    {"speaker_label": "Sra. Negre de Alonso. —",
+     "first_words": "Pido la palabra."},
+    {"speaker_label": "Sr. Presidente. —",
+     "first_words": "Tiene la palabra la señora senadora Negre de Alonso."},
+    {"speaker_label": "Sra. Negre de Alonso. —",
+     "first_words": "Señor presidente: la excusación que formula el senador Baglini se basa en un artículo del"}
+  ],
+  "events": [],
+  "headings": [],
+  "furniture_seen": [
+    "Expediente S. 1791/03 — centered, bold, blue and underlined, printed like a hyperlink"
+  ],
+  "notes": "Page opens with a bold label at the very top ('Sr. Presidente. — Por Secretaría...'), so opens_mid_utterance is false. All ten labels on the page use the same terminator throughout: '. —' (period, space, em dash, space); I recorded that exactly. In every case ('Sr. Presidente', 'Sr. Baglini', 'Sra. Negre de Alonso') the office/surname is bold and the '. —' itself is printed in roman (unbolded) weight, same convention the brief describes; 'Sr. Secretario' is bold and '(Estrada)' is roman, also matching the brief's example.\n\nParenthesised notes on this page, checked one by one:\n1. '(Estrada)' after 'Sr. Secretario' — this is the office-holder's surname inside the label itself, not a stenographer's note; it is part of the label under the brief's own worked example.\n2. '(Lee:)' — printed in italics directly after the dash, on the SAME LINE as the label 'Sr. Secretario (Estrada). —', i.e. inside that turn's paragraph, not on a line of its own. This matches the brief's own example ('Sr. SECRETARIO (Oyarzún).- (Lee:)') almost verbatim, so by rule 3 it is part of the secretary's turn, not a separate event. It is also the ENTIRETY of what is printed as his spoken/read words on this page (the next line is a new bold label, 'Sr. Presidente'), so first_words for that turn is simply '(Lee:)'.\n\nJudgment call on 'Expediente S. 1791/03': it is centered and bold like a section heading, but it is also rendered in blue with an underline — the exact styling the brief assigns to contents links ('Orden del Día Nº 24 set as a blue underlined link'), not to headings (which the brief shows as plain bold, e.g. '35 / Orden del Día N° 25 / ...'). Nothing else on the page carries this blue-underlined styling. Because it matches the link convention rather than the heading convention, and because no document text follows it before the next speaker label (the record jumps straight from this line to 'Sr. Presidente.— En consideración.'), I read it as a hyperlink-styled cross-reference to the expediente text rather than as either a section heading or as text actually read aloud by the secretary. I therefore filed it under furniture_seen rather than under headings, and did not fold it into the secretary's first_words. This is the one genuinely debatable call on the page; a maintainer who disagrees should reclassify it as a heading (or as part of the secretary's turn) rather than furniture.\n\nNo running header, dateline, footer, or footnote marker is printed anywhere on this page — top and bottom margins are blank. The page is a straightforward excusación debate (senator Baglini asking to be excused from the Moliné O'Connor impeachment tribunal, then senator Negre de Alonso moving to reject the excusal); it ends mid-sentence in Negre de Alonso's speech ('...para que se rechace la excusación del senador en'), which continues onto the next page. No damage, skew, or typesetting oddity was visible; image is clean and fully legible throughout."
+}

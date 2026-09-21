@@ -24,3 +24,19 @@ every one of the ten notes inside a paragraph — two with the prose resuming
 on the same line, one splitting a single sentence between printed ellipses.
 The ten events were removed from the originals, with the reason written into
 each file's notes.
+
+## 21 September 2026 — the secretary's "(Lee:)"
+
+`gold_2003-08-20_p3.json` gave "(Lee:)" both as the first words of the
+secretary's turn and as an event, so the same printed words were counted
+twice. It was annotated in July 2026, under the convention of that time that
+every parenthesised note is an event. Rule 3 of the September brief makes a
+"(Lee:)" printed right after the secretary's label his turn, which is how the
+HTML half has always filed it (5,883 times). The page was re-read blind; the
+re-reading agreed on all ten turns, in order, and placed the note inside the
+secretary's turn. The event was removed.
+
+The re-reading also filed the centred "Expediente S. 1791/03" as furniture,
+because it is printed blue and underlined like a contents link, where the
+original has no heading either. Headings are not scored; recorded here only
+so the call is not lost.

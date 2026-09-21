@@ -2468,7 +2468,7 @@ and 21.5 million words of attributed speech become 25.7.
   each file; the re-readings are kept in reference/gold/rereadings/. Gold
   events now read P=0.988 R=1.000 (83 of 83).
 
-- [ ] **The secretary's "(Lee:)" is filed as an event, against rule 3 of the
+- [x] (done, 0.5.2) **The secretary's "(Lee:)" is filed as an event, against rule 3 of the
       brief.** "Sr. Secretario (Oyarzún).- (Lee:)" is the secretary taking
       the floor; the note in his own paragraph is his turn. 256 of the 259
       "(Lee...)" event rows in the PDFs carry the secretary's label that
@@ -2480,6 +2480,17 @@ and 21.5 million words of attributed speech become 25.7.
       test makes it an event before any position test is reached. Fixing it
       means telling a label's terminator from a note's opening dash where the
       dash is moved, not in classify_blocks.
+      Done otherwise than planned: the dash does not come from the pass that
+      moves hyphens, because the holder "(Oyarzún).—" is set in roman and the
+      terminator is an em dash. What decides it is whether a complete label is
+      the last thing printed before the bracket; the note is then carried to
+      identify_speakers flagged and handed to the label's turn. 266 notes move
+      to the secretary's speech, the PDF half now files them as the HTML half
+      does, and the gold reads 310 of 310 turns and 82 of 82 events. One more
+      July-convention annotation (2003-08-20 p3, counting "(Lee:)" as both the
+      turn's words and an event) was corrected after a blind re-reading. Five
+      "(Lee:)" stay events on purpose: the italic run also carries the start
+      of what was read ("(Lee:) “"), and splitting it risks the text.
 
 - [ ] Still open from before: Q3, the note that closes a speaker's paragraph,
       where the two halves of the corpus answer oppositely — 7,865 of the

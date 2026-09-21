@@ -55,7 +55,7 @@ import pdfplumber
 
 from session_kind import session_kind_for
 
-PARSER_VERSION = "0.5.1"
+PARSER_VERSION = "0.5.2"
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
@@ -1494,7 +1494,28 @@ TRAILING_DASH_RE = re.compile(r"\s*[—–-]\s*$")
 # A block that is one parenthesised note and nothing else. Only these are
 # read by where they sit on the line; a run that carries more than the
 # bracket is a note whatever its position.
-BARE_PAREN_RE = re.compile(r"^\([^)]{1,60}\)[.\s]*$")
+BARE_PAREN_RE = re.compile(r"^\([^)]{1,60}\)[.:\s]*$")
+# A speaker's label, complete with its terminating dash, as the last thing
+# printed before a point: "Sr. Secretario (Oyarzún).—", "Sra. Presidenta
+# (Negre de Alonso). –", "Sr. Pichetto.-". Anchored at the end and not the
+# start, because some files run the label on after the chair's sentence and
+# the extracted line then begins with his words.
+LABEL_LINE_RE = re.compile(
+    r"(?:^|(?<=\s))(?i:Sr|Sra|Srta|Sres)\.?\s+[^.():;,]{1,60}?"
+    r"(?:\s*\([^)]{1,60}\))?\s*\.\s*[—–−-]\s*$")
+
+
+def line_before(blocks, i):
+    """The text printed on block i's line before it, back to where the line
+    opens."""
+    parts = []
+    j = i - 1
+    while j >= 0:
+        parts.append(blocks[j]["text"])
+        if blocks[j].get("opens_line", True):
+            break
+        j -= 1
+    return "".join(reversed(parts)).strip()
 
 
 # Where one event row holds two notes: a dash opening a new note after the
@@ -1598,6 +1619,16 @@ def classify_blocks(blocks, body_size):
             own_paragraph = (b.get("opens_line", True)
                              or bool(i and TRAILING_DASH_RE.search(
                                  blocks[i - 1]["text"])))
+            # When what precedes it on its line is a speaker's label, the dash
+            # closes the label and the bracket is that speaker's first words:
+            # "Sr. Secretario (Oyarzún).— (Lee:)" is the secretary taking the
+            # floor. It is carried to identify_speakers as a flagged event,
+            # which is the shape every pass in between already expects, and
+            # handed to the label's turn there. The holder is often set in
+            # roman rather than bold, so the whole line is read, not the face.
+            if (not b.get("opens_line", True) and BARE_PAREN_RE.match(t)
+                    and LABEL_LINE_RE.search(line_before(blocks, i))):
+                b["label_note"] = True
             # and only when the block is the bracket and nothing else: an
             # italic run that carries the note AND what follows it — "(Aplausos
             # y manifestaciones.) –Son las 22.04" — is still a note, and the
@@ -2322,6 +2353,18 @@ def identify_speakers(blocks, body_size):
                 b["speaker"] = current
                 b["turn_id"] = turn_id
                 noted += 1
+                if b.get("label_note"):
+                    # printed in the label's own paragraph, so it is the
+                    # speaker's turn and not a note about it — rule 3 of the
+                    # annotation brief, and what the HTML half has always done
+                    # (5,883 of its secretary's "(Lee:)" are his speech). The
+                    # dash the label ended on was handed to the note on the
+                    # way here; it goes back to being the label's.
+                    b["type"] = "speech"
+                    b.pop("event_type", None)
+                    b["text"] = EVENT_DASH_RE.sub("", b["text"].lstrip()).lstrip()
+                    open_turn = turn_id
+                    speech += 1
             annotated.append(b)
             continue
         if b["font_style"] == "bold" and is_body(b["size"], body_size):
