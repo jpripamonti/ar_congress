@@ -1812,10 +1812,23 @@ and 21.5 million words of attributed speech become 25.7.
       changed again and `extract_authorities.py` does not follow it. It costs
       nothing today, because the manual authorities table covers those years,
       and it will cost something the moment it does not.
-- [ ] One sitting does not parse, for want of a session opening: the 1997
-      impeachment tribunal, which does not open like an ordinary sitting. It
-      is the only sitting of its year, so it is worth the look. It used to be
-      two; the no-quorum sitting of November 2001 came in with 0.4.38.
+- [ ] One sitting does not parse: the 1997 impeachment tribunal
+      (1997-12-18_r117, 117th reunión, 21st sitting as tribunal, the trial of
+      judge Francisco Miguel Ángel Trovato). The reason recorded here before —
+      that it does not open like an ordinary sitting — was wrong. Looked at
+      21 September 2026: the file is a photocopy saved as eight page images
+      with NO text layer, zero characters on every page. "no_opening_found" is
+      simply the parser finding nothing to read.
+      The pages are legible, two columns, bold labels and italic notes. OCR
+      works tolerably — tesseract with only its English model reads the
+      columns in order and keeps "Sr. Villarroel. — Pido la palabra.", though
+      it mangles accents ("sefiores"); the Spanish model is not installed.
+      What OCR cannot give back is bold and italic, which is how the PDF
+      parser tells a label and a note from speech, so it would need a
+      text-only reader of its own, and the result would carry the same
+      scanned-session flag as the two 2001 scans. Left out for now: eight
+      pages, the only 1997 sitting held, the rest of the corpus 1998-2026.
+      Reopen if a year-1997 sitting is ever wanted.
 - [x] 29 October 2003 is served twice, as reunión 27 and reunión 28, byte for
       byte identical. The document decides it: its masthead reads "28°
       Reunión - 6° Sesión en tribunal", so reunión 27's slot returns the wrong
