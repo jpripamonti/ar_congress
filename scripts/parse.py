@@ -74,7 +74,7 @@ PAG_LINE_RE = re.compile(r"Pág\.\s*\d+")         # page-header dateline invaria
 # "VARIOS SEÑORES SENADORES" are the same speakers as their spelt-out forms.
 SPEAKER_RE = re.compile(
     r"^(?:(?i:Sr|Sra|Srta|Sres)(?:(?:[.\-]\s*)+|\s+)(?=[^\W\d_])"   # Sr. Mayans / Sra. Presidenta (…)
-    r"|(?i:Varios señores|Varias señoras|Un señor|Una señora)"      # anonymous/collective speakers
+    r"|(?i:Varios|Varias|Un|Una)(?:\s+(?i:señores|señoras|señor|señora))?"  # anonymous/collective
     r"\s+(?i:senador))",
     re.UNICODE,
 )
@@ -2059,6 +2059,200 @@ def split_label_spillover(blocks, body_size):
     return out, split
 
 
+# ---------------------------------------------------------------------------
+# A printed label the page damaged badly enough that SPEAKER_RE refuses it.
+#
+# Every one of these still reads as a label to a person holding the page: an
+# honorific that is truncated, letter-spaced or closed with a comma; a name
+# with no honorific at all in front of it; an office and its holder with the
+# terminator pushed into the next run. What they share is the SHAPE — a short
+# name or office, then the ". —" that ends a label — and not one section
+# heading in the corpus has that shape.
+DL_NAME = (r"[A-ZÁÉÍÓÚÜÑ][A-Za-zÁÉÍÓÚÜÑáéíóúüñ'’-]+"
+           r"(?:,?\s+(?:[A-ZÁÉÍÓÚÜÑ][A-Za-zÁÉÍÓÚÜÑáéíóúüñ'’-]+"
+           r"|de|del|la|las|los|y|da|di)){0,4}")
+DL_OFFICE = (r"(?:President[ae]|President|Vicepresident[ae]|Secretari[ao]"
+             r"|Prosecretari[ao]|J?efe de Gabinete(?: de Ministros)?|Ministr[ao])")
+# what is left of "Sr."/"Sra." when the page truncates it ("r.", "ra."), spaces
+# it out ("S r a ."), or closes it with a comma ("Sr,")
+DL_HON = r"(?:S\s*r?\s*t?\s*a?|S\s*e|Sres|r|ra)\s*[.,]+\s*,?\s*"
+DL_PAREN = r"(?:\s*\([^()]{1,60}\))?"
+DL_BODY = rf"(?:{DL_HON})?(?:{DL_OFFICE}|{DL_NAME}){DL_PAREN}"
+DL_DASH = r"[–—−─-]"
+DAMAGED_LABEL_RE = re.compile(rf"^(?P<label>{DL_BODY})\s*[.,]\s*{DL_DASH}\s*$")
+# the honorific alone, its name left to the run that follows ("Sra.-" /
+# "Montero.-Gracias, señor presidente")
+HON_ONLY_RE = re.compile(rf"^(?:Sr|Sra|Sres|Srta)\s*[.,]*\s*{DL_DASH}?\s*$")
+HON_ONLY_NEXT_RE = re.compile(rf"^\s*(?P<name>{DL_NAME}{DL_PAREN})\s*\.\s*{DL_DASH}")
+# the label with no terminator of its own: it opens the next run instead
+# ("Negre de Alonso" / ".— Señor presidente: yo soy miembro…")
+BARE_LABEL_RE = re.compile(rf"^(?P<label>{DL_BODY})$")
+BARE_NEXT_TERM_RE = re.compile(rf"^\s*\.\s*{DL_DASH}\s")
+# an office whose holder is printed in the next run and whose honorific is
+# damaged or missing ("r. Presidente" / "(Losada).— Como hay treinta y cinco…")
+OFFICE_ONLY_RE = re.compile(rf"^(?:{DL_HON})?{DL_OFFICE}$")
+OFFICE_NEXT_RE = re.compile(rf"^\s*(?P<holder>\([^()]{{1,60}}\))\s*\.?\s*{DL_DASH}")
+# a document pointer welded to a label whose honorific never got printed
+# ("Orden del Día Nº 189 Presidente. —")
+WELDED_OFFICE_RE = re.compile(
+    rf"^(?P<head>.*\S)\s+(?P<label>(?:{DL_HON})?{DL_OFFICE}{DL_PAREN}\s*[.,]?\s*{DL_DASH})\s*$")
+# the gender the page itself states, one way or another
+FEMININE_HON_RE = re.compile(r"(?:^|\s)(?:S\s*r\s*a|Sra|Srta|Secretaria|Prosecretaria"
+                             r"|Presidenta|Vicepresidenta|Ministra)", re.UNICODE)
+MASCULINE_HON_RE = re.compile(r"(?:^|\s)(?:Sr|Sres|r|Secretario|Prosecretario"
+                              r"|Presidente|Vicepresidente|Ministro|J?efe)", re.UNICODE)
+# how the chair hands over the floor, which names the person and their gender
+FLOOR_HANDOVER_RE = re.compile(
+    r"\b(?:el se[ñn]or senador|la se[ñn]ora senadora|el senador|la senadora)\s+"
+    r"(?P<name>[^.,;:]{2,45})", re.IGNORECASE)
+
+
+def _label_key(name):
+    """A label's name, stripped to what identifies the person."""
+    return re.sub(r"\s*\(.*", "", name).strip().strip(".,-–—− ").lower()
+
+
+def _sitting_honorifics(blocks):
+    """Which honorific each name is printed with elsewhere in this sitting."""
+    seen = {}
+    for b in blocks:
+        if b.get("type") is not None or b.get("font_style") != "bold":
+            continue
+        t = LEAD_JUNK_RE.sub("", b["text"].strip())
+        m = re.match(r"^((?i:Sr|Sra|Srta|Sres))[.\-]?\s*(.+)$", t)
+        if not m or not SPEAKER_RE.match(t):
+            continue
+        key = _label_key(re.split(rf"\.\s*{DL_DASH}", m.group(2))[0])
+        if key:
+            seen.setdefault(key, m.group(1).title())
+    return seen
+
+
+def _honorific_for(name, printed, sitting, previous_text):
+    """The honorific this label should carry, on the page's own evidence.
+
+    In order: what survives of the one that was printed; what the same person
+    is called elsewhere in the sitting; the gender the office word states; and
+    the chair's handover line above, which names the senator being given the
+    floor. Nothing is guessed — a label the page leaves indeterminate is left
+    alone rather than assigned a sex.
+    """
+    if printed:
+        if FEMININE_HON_RE.match(printed.strip()):
+            return "Sra."
+        if re.match(r"^S\s*r\s*e\s*s", printed.strip()):
+            return "Sres."
+        if re.match(r"^(?:S\s*r\b|Sr|r)\s*[.,]", printed.strip()):
+            return "Sr."
+    key = _label_key(name)
+    if key in sitting:
+        return sitting[key] + "."
+    if FEMININE_HON_RE.search(name):
+        return "Sra."
+    if MASCULINE_HON_RE.search(name):
+        return "Sr."
+    for m in FLOOR_HANDOVER_RE.finditer(previous_text or ""):
+        # the handover prints the surname and sometimes only one given name
+        # ("la senadora López, Florencia" for "López, María Florencia"), so
+        # the surname is what the two are matched on
+        said = _label_key(m.group("name"))
+        if said == key or said.split(",")[0] == key.split(",")[0]:
+            return "Sra." if m.group(0).lower().startswith(("la se")) else "Sr."
+    return None
+
+
+def repair_damaged_labels(blocks, body_size):
+    """Read a damaged speaker label as a label, not as a section heading.
+
+    A bold body-size run that SPEAKER_RE refuses becomes a typed heading, and a
+    heading ends the running turn — so the paragraph under it is left with no
+    speaker at all. That is right for a section title and wrong for a label the
+    page botched, and the corpus holds 101 of the latter: the worst is 3,591
+    words of a budget speech, printed "Sra.- Montero.- Gracias, señor
+    presidente" with the honorific and the surname in separate runs.
+
+    Repaired only on the printed shape — a short name or office closed by the
+    ". —" that ends a label — and only where the page itself supplies the
+    honorific: what survives of the one that was printed, what the same person
+    is called elsewhere in the sitting, the gender the office word carries, or
+    the chair's handover line just above. A label whose honorific none of those
+    four settles is left as it was found, rather than assigned a sex.
+    """
+    sitting = _sitting_honorifics(blocks)
+    out, repaired, unsettled = [], 0, 0
+    skip = 0
+    for idx, b in enumerate(blocks):
+        if skip:
+            skip -= 1
+            continue
+        if (b.get("type") is not None or b.get("font_style") != "bold"
+                or not is_body(b["size"], body_size)):
+            out.append(b)
+            continue
+        t = LEAD_JUNK_RE.sub("", b["text"].strip())
+        if not t or SPEAKER_RE.match(t) or BOLD_JUNK_RE.match(t) or LABEL_FRAGMENT_RE.match(t):
+            out.append(b)
+            continue
+        nxt = blocks[idx + 1] if idx + 1 < len(blocks) else None
+        nxt_ok = (nxt is not None and nxt.get("type") is None
+                  and is_body(nxt["size"], body_size))
+        nxt_text = nxt["text"] if nxt_ok else ""
+        prev_text = out[-1]["text"] if out else ""
+        head = None            # a document pointer to re-emit ahead of the label
+        printed = name = None
+        consume = 0            # characters of the next block the label takes
+
+        m = HON_ONLY_RE.match(t)
+        if m and nxt_ok and (mn := HON_ONLY_NEXT_RE.match(nxt_text)):
+            printed = t
+            name = mn.group("name").strip()
+            consume = mn.end("name")
+        elif m := DAMAGED_LABEL_RE.match(t):
+            printed, name = _split_honorific(m.group("label"))
+        elif (m := BARE_LABEL_RE.match(t)) and nxt_ok and BARE_NEXT_TERM_RE.match(nxt_text):
+            printed, name = _split_honorific(m.group("label"))
+        elif (m := OFFICE_ONLY_RE.match(t)) and nxt_ok and (mh := OFFICE_NEXT_RE.match(nxt_text)):
+            printed, office = _split_honorific(t)
+            name = f"{office} {mh.group('holder')}"
+            consume = mh.end("holder")
+        elif (m := WELDED_OFFICE_RE.match(t)) and len(m.group("head").split()) <= 10:
+            head = m.group("head")
+            printed, name = _split_honorific(m.group("label"))
+            name = re.sub(rf"\s*[.,]?\s*{DL_DASH}\s*$", "", name)
+        if not name:
+            out.append(b)
+            continue
+        # the page lost the first letter of the office too ("efe de Gabinete")
+        name = re.sub(r"^efe de Gabinete", "Jefe de Gabinete", name)
+
+        honorific = _honorific_for(name, printed, sitting, prev_text)
+        if honorific is None:
+            unsettled += 1
+            out.append(b)
+            continue
+        if head:
+            out.append({**b, "text": head})
+            b = {**b, "text": name}
+        if consume:
+            nxt["text"] = nxt["text"][consume:]
+            if not nxt["text"].strip():
+                skip = 1
+        out.append({**b, "text": f"{honorific} {name}.—"})
+        repaired += 1
+    if repaired or unsettled:
+        print(f"Etiquetas dañadas leídas como etiquetas y no como títulos: {repaired}"
+              + (f"; sin honorífico que la página respalde: {unsettled}." if unsettled else "."))
+    return out, repaired
+
+
+def _split_honorific(label):
+    """(what was printed of the honorific, the name) of a damaged label."""
+    m = re.match(rf"^(?P<hon>{DL_HON})(?P<rest>.+)$", label)
+    if m and re.match(rf"^(?:{DL_OFFICE}|{DL_NAME})", m.group("rest")):
+        return m.group("hon").strip(), m.group("rest").strip()
+    return None, label.strip()
+
+
 def identify_speakers(blocks, body_size):
     """Attribute speech to speakers; gate labels on ^Sr./Sra. patterns.
 
@@ -2438,6 +2632,9 @@ def process_pdf(pdf_path):
 
     blocks, spillover = split_label_spillover(blocks, body_size)
     stats["label_spillover_split"] = spillover
+
+    blocks, damaged = repair_damaged_labels(blocks, body_size)
+    stats["damaged_labels_repaired"] = damaged
 
     blocks = identify_speakers(blocks, body_size)
     blocks = clean_speaker_names(blocks)

@@ -34,7 +34,7 @@ from parse import SPEAKER_RE, classify_event  # noqa: E402
 from provenance import decode_html  # noqa: E402
 from session_kind import session_kind_for  # noqa: E402
 
-PARSER_VERSION = "0.5.6-html"
+PARSER_VERSION = "0.5.7-html"
 
 # A paragraph break: WordPerfect writes <p> with no closing tag and uses <br>
 # for the lines of a masthead or the two lines of a heading.
@@ -62,8 +62,22 @@ CSS_ITALIC_RE = re.compile(r"font-style\s*:\s*italic", re.I)
 # The label a paragraph opens with, e.g. "Sr. Presidente" — then the chamber
 # prints the holder in parentheses: "Sr. Presidente (Cafiero). -- Se gira..."
 QUALIFIER_RE = re.compile(r"^\s*\(([^)]{1,60})\)")
+# The same, with one or two characters stranded between the bold label and the
+# holder, which otherwise hide the parenthetical and lose the chair the turn.
+# Two ways round, and the office word settles which: the typist struck a key
+# too many — "<B>Sr. Presidente</B>d (Maqueda). --" — and the letter is
+# dropped; or the bold stopped one letter short — "<B>Sr. President</B>e
+# (Maqueda). --" — and the letter is given back. Read only where the holder
+# and a terminator follow, and only where one of the two readings spells an
+# office the chamber actually prints, so a sentence that merely contains a
+# bracket cannot be mistaken for one.
+STRAY_QUALIFIER_RE = re.compile(r"^(?P<stray>[^\s()]{1,2})\s*\((?P<holder>[^)]{1,60})\)")
 # What separates a label from the speech: ". --", ". –", ".-", or a bare dash.
-TERMINATOR_RE = re.compile(r"^\s*[.:]?\s*[-–—]{1,2}\s*")
+# The stop before the dash is a full stop by convention, but the typist
+# sometimes hits the comma beside it — "Sr. Presidente (Gioja), -- Corresponde
+# elegir al vicepresidente 2" — and the label was refused for it. The dash is
+# what does the work here, so which stop precedes it does not matter.
+TERMINATOR_RE = re.compile(r"^\s*[.,:]?\s*[-–—]{1,2}\s*")
 # What a label is made of, once the honorific is past: a short name or office
 # carrying no stop of its own, and sometimes the holder in parentheses. The
 # cap of five words is what keeps a sentence from being read as a name.
@@ -291,6 +305,21 @@ def italic_share(para):
     return ital / total
 
 
+OFFICES = {"presidente", "presidenta", "vicepresidente", "vicepresidenta",
+           "secretario", "secretaria", "prosecretario", "prosecretaria",
+           "ministro", "ministra"}
+
+
+def mend_stray(label, stray):
+    """(label) with a stray character given back or dropped, else None."""
+    last = label.rsplit(" ", 1)[-1].lower()
+    if (last + stray.lower()) in OFFICES:
+        return label + stray
+    if last in OFFICES:
+        return label
+    return None
+
+
 def split_label(para):
     """(label, speech) when a paragraph opens with a speaker's label, else None.
 
@@ -355,6 +384,13 @@ def split_label(para):
     label = raw.strip().rstrip(".")
     if "(" not in label:
         qualifier = QUALIFIER_RE.match(rest)
+        if qualifier is None and bold:
+            stray = STRAY_QUALIFIER_RE.match(rest)
+            if stray and TERMINATOR_RE.match(rest[stray.end():]):
+                mended = mend_stray(label, stray.group("stray"))
+                if mended is not None:
+                    label = f"{mended} ({stray.group('holder').strip()})"
+                    rest = rest[stray.end():]
         if qualifier:
             label = f"{label} ({qualifier.group(1).strip()})"
             rest = rest[qualifier.end():]
