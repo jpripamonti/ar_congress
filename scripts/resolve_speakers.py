@@ -536,6 +536,17 @@ def match_senators(mandates, surname_key, d, given_key=None, grace_days=0, fuzzy
     return list({m["person_id"]: m for m in cands}.values())
 
 
+def stepped_down(mandates, auth, key, d):
+    """Did someone of exactly this surname hold a seat or office that had
+    ended before d, with nobody of it holding one on d?"""
+    ended = lambda r: r["end"] is not None and r["end"] < d
+    if any(m["surname_key"] == key and in_window(m, d) for m in mandates) \
+            or any(key in a["keys"] and in_window(a, d) for a in auth):
+        return False    # still in some office: a misprint, not a stale name
+    return (any(m["surname_key"] == key and ended(m) for m in mandates)
+            or any(key in a["keys"] and ended(a) for a in auth))
+
+
 def match_authorities(auth, key, d, role_hint=None):
     hits = [a for a in auth if key in a["keys"] and in_window(a, d)]
     if not hits:
@@ -632,6 +643,14 @@ def resolve_one(label, session_date, session_type, mandates, auth, presiding=(),
             return {"match_status": "matched_senator_chair", "person_id": sen["person_id"],
                     "person_name": f"{sen['surname']}, {sen['given']}", "role": m["pre"].strip(),
                     "party": sen["party"], "province": sen["province"], "tiebreak": tiebreak}
+        if not sens and stepped_down(mandates, auth, key, d):
+            # A name left over from an earlier year: the record re-used a
+            # template that still carried it. Maqueda went to the Supreme
+            # Court on 27 December 2002, and three sittings of 2003 still
+            # print "Sr. Presidente (Maqueda)" on routine agenda items. The
+            # label says the chair spoke and nothing more, so it is read as
+            # the bare office, exactly like "Sr. Presidente".
+            return {"match_status": "office_only", "role": m["pre"].strip()}
         return {"match_status": "ambiguous" if sens else "unmatched", "role": m["pre"].strip()}
 
     if m:  # parenthetical WITHOUT role word: "Sra. González (Gladys)" — given in paren

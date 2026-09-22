@@ -1836,10 +1836,21 @@ and 21.5 million words of attributed speech become 25.7.
       caucus 89.7% -> 98.0%, 12,874 blocks gained, no caucus that existed
       changed and no disputed reading added. 1,061 blocks of 1998-1999 remain
       without one — senators the chair never introduced by caucus.
-- [ ] Three sittings of 2003 label the chair "Sr. Presidente (Maqueda)" after
-      Maqueda left the Senate for the Supreme Court on 27 December 2002 — the
-      chamber's own documents carrying a stale label. 15 blocks, left
-      unmatched rather than assigned to a man who was not there.
+- [x] (done, 22 September 2026) Three sittings of 2003 label the chair "Sr.
+      Presidente (Maqueda)" after Maqueda left the Senate for the Supreme
+      Court on 27 December 2002. It is 13 blocks, not 15, all routine agenda
+      items ("Corresponde considerar el dictamen…", "En consideración…")
+      re-used from a template that still carried his name. A chair or officer
+      label whose name nobody held any seat or office under on the day, while
+      someone had before, is now read as the bare office (`office_only`), the
+      same as "Sr. Presidente": the label says the chair spoke and no more.
+      The full scan let through two more of the kind and nothing else —
+      "Sr. Presidente (Losada)" in 2008-12-17_r23 and "Sr. Secretario
+      (Estrada)" in 2017-11-01_r14 — once a first draft, which also caught
+      names still in office, was tightened: "Sr. Presidente (Oyarzún)" in
+      2001, the sitting's own secretary, stays unmatched as a misprint, and
+      "Sra. Presidente (Villarroel)" of 2025-05-07 is Villarruel misspelt and
+      is now a recorded variant. Unmatched passages 190 → 174.
 - [x] (done, 21 September 2026) 39 sittings of 2024-2026 have no readable
       masthead: the cover page changed again and `extract_authorities.py`
       does not follow it. It was 40, from 13 December 2023 on. The new cover

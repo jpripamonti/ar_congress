@@ -194,14 +194,14 @@ chair from anything about party positions.
 
 | Value | Share of speech | What it means |
 | --- | --- | --- |
-| `matched_senator` | 35.6% | A named senator, resolved against the roster and their mandate dates. |
-| `matched_senator_chair` | 27.3% | A senator speaking from the chair, where the page names them. Where two senators of the same surname sat at once, the sitting's own cover page decides which of them held the gavel that day. |
-| `office_only` | 21.5% | **A chamber office speaking under its bare title** — "Sr. Presidente", "Sr. Secretario", with no surname printed. This is how the record was printed before about 2016. **These are deliberately left without a person.** The chair changes hands during a sitting and the page does not say who holds it; the cover names two or more presiding officers in 522 of the 803 sittings whose cover says who presided. Any name here would be a guess. |
-| `matched_authority` | 14.3% | Someone holding a national or chamber office, resolved against a hand-compiled table of office-holders and the office-holders each sitting's cover page names. |
+| `matched_senator` | 35.7% | A named senator, resolved against the roster and their mandate dates. |
+| `matched_senator_chair` | 27.5% | A senator speaking from the chair, where the page names them. Where two senators of the same surname sat at once, the sitting's own cover page decides which of them held the gavel that day. |
+| `office_only` | 22.0% | **A chamber office speaking under its bare title** — "Sr. Presidente", "Sr. Secretario", with no surname printed. This is how the record was printed before about 2016. **These are deliberately left without a person.** The chair changes hands during a sitting and the page does not say who holds it; the cover names two or more presiding officers in 522 of the 803 sittings whose cover says who presided. Any name here would be a guess. Five labels that DO print a name land here too, because the name is left over from an earlier year: nobody of that surname held any office or seat on the day, and someone who had one before did — "Sr. Presidente (Maqueda)" on routine agenda items of three 2003 sittings, after Maqueda left for the Supreme Court. Such a label says the chair spoke and nothing more. |
+| `matched_authority` | 13.7% | Someone holding a national or chamber office, resolved against a hand-compiled table of office-holders and the office-holders each sitting's cover page names. |
 | `out_of_scope` | 0.9% | Correctly not a senator: parties and witnesses at the impeachment trials, deputies, ministers of the national executive, foreign heads of state. |
-| `unmatched` | 0.1% | A genuine failure: 276 passages, nearly all invited outside speakers at public hearings, named by surname alone. |
-| `collective` | 0.1% | "Varios señores senadores" — the record attributing words to several people at once. |
-| `ambiguous` | 0.0% | A surname more than one person could hold on that date, with nothing left to separate them: four senators named Martínez and three named González, all of one gender within each group, and the preparatory sittings where the outgoing and the incoming holder of an office are both in window. 55 passages in all. |
+| `unmatched` | 0.1% | A genuine failure: 174 passages, nearly all invited outside speakers at public hearings, named by surname alone. |
+| `collective` | 0.2% | "Varios señores senadores" — the record attributing words to several people at once. |
+| `ambiguous` | 0.0% | A surname more than one person could hold on that date, with nothing left to separate them: four senators named Martínez and three named González, all of one gender within each group, and the preparatory sittings where the outgoing and the incoming holder of an office are both in window. 48 passages in all. |
 
 **Where a tie was broken, and how.** Two senators named Sapag sat for Neuquén
 together from November 1998 to December 2001, and a label reading "Sapag" and
