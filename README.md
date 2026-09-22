@@ -517,16 +517,18 @@ as its own HTML export for most of 1998–2003; both are read here.
   reading that will not accept a courtesy title can drop them with one filter.
   On the 69 Sapag turns the chair introduces by name, its wording agrees with
   the title in all 69.
-- Caucus attached to **89.7% of senator speech blocks**. What is missing is
-  almost all August 1998 to November 1999 (13,935 of the 15,957 blocks without
-  one). Before the roll calls begin in 2005 the chamber's composition survives
-  only in its own web pages as the Internet Archive kept them: the bloc-roster
-  page from 25 May 2000, and, before that, 58 per-senator pages captured on
-  2 February 1998, each stating "Bloque: …". Those cover sittings to August
-  1998 — 5,932 blocks. Between the two nothing was captured, and reaching
-  across would cross the December 1998 renewal, which is exactly the kind of
-  inference the caucus data exists to avoid. Every caucus carries the capture
-  it came from.
+- Caucus attached to **98.0% of senator speech blocks**; 3,083 have none, and
+  no year holds more than 621 of them. Before the roll calls begin in 2005 the
+  chamber's composition survives in three places, each the chamber's own
+  record: its bloc-roster page as the Internet Archive kept it from 25 May
+  2000; 58 of its per-senator pages captured on 2 February 1998, each stating
+  "Bloque: …"; and, between the two, the transcripts themselves, where the
+  chair giving the floor often named the caucus of the senator it called —
+  "Tiene la palabra el señor senador por Mendoza del bloque de la Unión Cívica
+  Radical." A call is used only where the province named is the speaker's own,
+  and wherever a call and an archived page fall within 200 days of each other
+  they agree, 66 times out of 66. Nothing is carried across a gap by
+  inference, and every caucus carries the page or transcript it came from.
 - **What every column holds and what not to assume about it**:
   [docs/DATA_DICTIONARY.md](docs/DATA_DICTIONARY.md) — written for someone who
   has never seen this project. How a version is cut, checked and cited:
@@ -615,10 +617,12 @@ against the roster's mandate dates. A capture dates the page, not the chamber:
 it brackets a change between two dates and never fixes one to the day. Before
 25 May 2000 the roster page was never captured, but the same site's
 per-senator pages were, on 2 February 1998 — 58 of them, each naming the
-caucus (`scripts/fetch_archived_profiles.py`). They reach sittings to August
-1998; from then to November 1999 there is the ticket and nothing else. The
-1997 captures of those pages name the PARTY, not the caucus, and are not
-used.
+caucus (`scripts/fetch_archived_profiles.py`); the 1997 captures of those
+pages name the PARTY, not the caucus, and are not used. From then to May 2000
+the caucus comes from the transcripts: 153 places where the chair, giving the
+floor, named the caucus of a senator whose province matches
+(`scripts/extract_chair_caucus.py`). "Bloque de la Alianza" is not read as a
+caucus — the Alianza was a coalition of two caucuses that sat apart.
 
 ## Layout
 

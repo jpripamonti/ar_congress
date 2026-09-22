@@ -738,12 +738,15 @@ def load_bloc_observations():
     # it is the caucus and its members printed together, so it attests itself.
     status = {"acta": "confirmed", "acta_anacronica": "anachronistic",
               "acta_sin_control": "undatable", "foto": "confirmed",
-              "foto_bloque_previo": "confirmed"}
+              "foto_bloque_previo": "confirmed",
+              # the chair naming a senator's caucus as it gives the floor
+              "llamado": "confirmed"}
     basis = {"acta de votacion": "roll call",
              "foto de la pagina de bloques": "archived roster",
              # one senator's own page, captured 2 February 1998: dated the
              # same way as the roster page, by the day it was captured
-             "ficha del senador": "archived senator page"}
+             "ficha del senador": "archived senator page",
+             "llamado de la presidencia": "chair's call"}
     obs = {}
     for r in df.itertuples(index=False):
         # keyed the same way the roster is, so the join is on the person

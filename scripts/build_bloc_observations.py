@@ -33,6 +33,7 @@ checked against the caucus's own dated life in blocs_manual.csv, and one of:
   foto ................. from an archived roster page
   foto_bloque_previo ... likewise, but a caucus that died before the roll-call
                          records begin, so it has no entry in blocs_manual.csv
+  llamado .............. named by the chair giving the floor, in the transcript
 
 Nothing is deleted or corrected. A reading known to be misdated is more useful
 marked than removed, because removing it would hide how much of the Senate's
@@ -44,9 +45,18 @@ own record is like this.
   only record of the chamber's caucuses before May 2000. Read exactly like the
   roster page, and marked apart from it by source.
 
+  The chair's call, 1998 to February 2000. Giving the floor, the chair of
+  those years often named the caucus of the senator it called: "Tiene la
+  palabra el señor senador por Mendoza del bloque de la Unión Cívica
+  Radical." extract_chair_caucus.py keeps a call only where the province
+  named is the speaker's own. Where a call and an archived page are within
+  200 days of each other they agree in all 66 cases. Dated to the sitting,
+  and the only source for August 1998 to May 2000.
+
 Inputs:  reference/senado/bloques_por_fecha.csv     (fetch_blocs.py)
          reference/senado/bloque_por_foto.csv       (fetch_archived_blocs.py)
          reference/senado/bloque_por_ficha.csv      (fetch_archived_profiles.py)
+         reference/senado/bloque_por_llamado.csv    (extract_chair_caucus.py)
          reference/senado/blocs_manual.csv          (hand-dated caucus lives)
          reference/senado/senadores_historico.json  (the roster)
 Output:  reference/senado/bloque_observado.csv
@@ -68,6 +78,7 @@ REF = REPO_ROOT / "reference" / "senado"
 ROLLCALL = REF / "bloques_por_fecha.csv"
 SNAPSHOTS = REF / "bloque_por_foto.csv"
 PROFILES = REF / "bloque_por_ficha.csv"
+CHAIR_CALLS = REF / "bloque_por_llamado.csv"
 LIVES = REF / "blocs_manual.csv"
 HISTORICO = REF / "senadores_historico.json"
 OUT = REF / "bloque_observado.csv"
@@ -323,13 +334,36 @@ def from_profiles(people, spelled):
     })
 
 
+def from_chair_calls():
+    """The caucus the chair named when giving the floor, 1998-2000.
+
+    Already resolved to a person by extract_chair_caucus.py, from surname,
+    province and date together, so nothing is looked up here. procedencia is
+    the transcript's address on the Senate's site; the chair's exact words are
+    in bloque_por_llamado.csv beside it.
+    """
+    if not CHAIR_CALLS.exists():
+        print(f"  {CHAIR_CALLS.name} missing — no chair-call observations")
+        return pd.DataFrame()
+    c = pd.read_csv(CHAIR_CALLS, dtype={"person_id": str})
+    return pd.DataFrame({
+        "fecha": c.fecha,
+        "person_id": c.person_id,
+        "person_name": c.person_name,
+        "bloque": c.bloque,
+        "fiabilidad": "llamado",
+        "fuente": "llamado de la presidencia",
+        "procedencia": c.url,
+    })
+
+
 def main():
     people = load_people()
     lives, undated = load_lives()
     snaps = from_snapshots(people)
     spelled = {norm(b): b for b in snaps.bloque} if len(snaps) else {}
     parts = [from_rollcalls(people, lives, undated), snaps,
-             from_profiles(people, spelled)]
+             from_profiles(people, spelled), from_chair_calls()]
     o = pd.concat([p for p in parts if len(p)], ignore_index=True)
     o["familia"] = o.bloque.map(family)
     o = o.sort_values(["fecha", "person_name"]).reset_index(drop=True)

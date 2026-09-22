@@ -1815,10 +1815,25 @@ and 21.5 million words of attributed speech become 25.7.
       one between 25 February and 19 August 1998; nothing else in the speaker
       table moved. 13,935 remain, August 1998 to November 1999, beyond 200
       days from both sources and mostly after the December 1998 renewal.
-      Still open for those: a library holding or the chamber's printed
-      roster. Deliberately not done: carrying a senator's caucus across the
-      gap because it reads the same in February 1998 and May 2000 — that is
-      an inference, and the observations table exists not to make one.
+      Deliberately not done: carrying a senator's caucus across the gap
+      because it reads the same in February 1998 and May 2000 — that is an
+      inference, and the observations table exists not to make one.
+      CLOSED, 22 September 2026, from the transcripts. A Codex agent searched
+      the window and found the chair naming the caucus of the senator it gave
+      the floor to ("…senador por Mendoza del bloque de la Unión Cívica
+      Radical. Sr. GENOUD.-"); it reported 38 such calls, and an exhaustive
+      scan of the same wording found 157 before May 2000.
+      scripts/extract_chair_caucus.py keeps 153: a call counts only where the
+      province the chair names is the speaker's own (four refused — the chair
+      called one senator and another spoke), the chair's wordings are mapped
+      by hand to the names the caucus data uses, and "bloque de la Alianza"
+      is refused (ten calls): a coalition of two caucuses that sat apart.
+      Every row carries the transcript's address and the chair's words
+      verbatim. Where a call and an archived page fall within 200 days of each
+      other they agree 66 times out of 66. Result: senator speech with a
+      caucus 89.7% -> 98.0%, 12,874 blocks gained, no caucus that existed
+      changed and no disputed reading added. 1,061 blocks of 1998-1999 remain
+      without one — senators the chair never introduced by caucus.
 - [ ] Three sittings of 2003 label the chair "Sr. Presidente (Maqueda)" after
       Maqueda left the Senate for the Supreme Court on 27 December 2002 — the
       chamber's own documents carrying a stale label. 15 blocks, left
