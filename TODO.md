@@ -1797,13 +1797,15 @@ and 21.5 million words of attributed speech become 25.7.
       `tiebreak` column, because the title is how the chamber writes and not
       something it states. On the 69 Sapag turns the chair introduces by name,
       its wording agrees with the title in all 69.
-- [ ] No caucus for 1998 and most of 1999 — 19,797 senator speech blocks. The
+- [x] No caucus for 1998 and most of 1999 — 19,797 senator speech blocks. The
       Internet Archive has no capture of the Senate's bloc-roster page before
       25 May 2000 (checked, not assumed: its CDX index holds no bloc page at
       all for the domain before then), and reaching back from that capture
       would cross the December 1998 renewal. Needs a different source — the
       chamber's printed roster, a library holding, or the transcripts' own
       mentions of who spoke for which bloc.
+      Closed by the chair-call source in `scripts/extract_chair_caucus.py`;
+      the exhaustive result and its checks are recorded below.
       PARTLY CLOSED, 21 September 2026. The same site ran one page per
       senator, and the Archive holds 58 of them from 2 February 1998, each
       printing "Bloque: …" (scripts/fetch_archived_profiles.py ->
@@ -2049,13 +2051,15 @@ and 21.5 million words of attributed speech become 25.7.
 - [x] Against the settled set: boundary and attribution P=1.000 R=1.000
       F1=1.000 on all 195 annotated turns, events P=1.000 R=1.000 on 62,
       identical under either reader.
-- [ ] Decide what a note closing a speaker's paragraph is. The convention
+- [x] Decide what a note closing a speaker's paragraph is. The convention
       names two positions, standalone and inline, and the page uses a third:
       "...seguimos siendo pobres, señor presidente. (Aplausos.)" — speech
       before it, nothing after, inside the paragraph. It is treated as inline
       today, which makes "Aplausos" a word the senator spoke. An annotator
       raised it; applause closing a speech is probably the commonest note in
       the corpus, so the count it affects is not small.
+      Settled as rule 4 of `reference/gold/ANNOTATION_BRIEF.md`: a
+      parenthesised note inside the speaker's paragraph belongs to the turn.
 - [x] Fix the annotation brief before the next set is drawn: say that an event
       stands as its own paragraph, and that a printed label always opens a
       turn. Both cost a re-emission this round. Both rules went in with the
@@ -2159,7 +2163,7 @@ and 21.5 million words of attributed speech become 25.7.
       (`scripts/check_gold_pages.py`). Turn recall holds: 318 of 320, F1 0.997,
       identical under either reading. The pre-2016 sample goes from 8 pages and
       50 turns to 44 pages and 195.
-- [ ] **"— El texto es el siguiente:" is sometimes an event and sometimes part
+- [x] **"— El texto es el siguiente:" is sometimes an event and sometimes part
       of the chair's words.** The page prints it on its own indented italic
       line before an inserted document; the parser folds it into the end of the
       preceding speech turn. Corpus-wide it is an `event` 3,503 times and glued
@@ -2172,6 +2176,9 @@ and 21.5 million words of attributed speech become 25.7.
       keyword count cannot tell those apart — that is the same mistake the
       residue figure makes. Touching this is a parser change and a version
       bump.
+      Closed in parser 0.5.0 (Phase 40, Q1): the opening dash is read where
+      the file stores it, at the end of the run above, so the italic line
+      after it is classified as the note it is.
 - [x] (Q1 and Q2 done, Phase 40; Q3 still open) **Measured by layout, September 2026. The three event questions below
       are one decision, and it is not a judgement call.** All 184 PDFs that
       print "— El texto es el siguiente:" were scanned by printed line,
@@ -2284,7 +2291,7 @@ and 21.5 million words of attributed speech become 25.7.
       of 26; the other 17 are as unrecoverable as the PDF cases and should be
       left alone, which is this project's existing stance on a character the
       source never drew unambiguously.
-- [ ] **The audit's apparatus check is keyed on a string a symbol font
+- [x] **The audit's apparatus check is keyed on a string a symbol font
       defeats.** It matches the literal `P[áa]g\.\s*\d+`
       (`scripts/audit_parse.py:81`). Scanning all 605 PDFs by FONT instead of
       by text found **628 pages in 19 sittings whose running header is set in a
@@ -2297,6 +2304,8 @@ and 21.5 million words of attributed speech become 25.7.
       repetition across pages. The 19 sittings run 1998 to 2022 and are not a
       handful of stray pages: 2008-10-01 has 112 such pages, 2004-08-11 has 85,
       2008-08-06 has 76, 1998-04-01 has 65.
+      Closed in `scripts/audit_parse.py`, section "RUNNING HEADERS": it scans
+      the top strip by position and requires repetition across the document.
 - [x] `86°°` — a doubled ordinal sign in 12 rows across 5 sittings
       (2003-12-17_r41, 2004-10-20_r30, 2005-06-01_r15, 2006-11-01_r26,
       2007-04-11_r04). Not a repair artifact: the PDF holds two consecutive
@@ -2378,10 +2387,17 @@ and 21.5 million words of attributed speech become 25.7.
       readings and the claim has to be weakened. The docs now quote only what
       the committed files reproduce. Settle which it was before the next
       release quotes either number.
-- [ ] `¿` is stored as `)` where the export switched font: 147 of them, plus
+- [x] `¿` is stored as `)` where the export switched font: 147 of them, plus
       16 `¡` stored as `(`. Found by a reader who took it for encoding
       damage. Needs a full scan before any repair: the rule has to tell these
       from a real parenthesis, and only a corpus-wide count can show it does.
+      CLOSED in 0.5.8-html and 0.5.3. The raw scan verified all 147/16 HTML
+      font runs and 9/4 PDF glyphs; the output changes exactly 156 `)` to `¿`
+      and 20 `(` to `¡`, with 180,463,050 characters, 150,591,419 non-space
+      characters and all 439,735 row types unchanged. Four question-opening
+      `)` and zero exclamation-opening `(` remain: all four are literal
+      ordinary-font source typos with no recoverable font signal. Both gold
+      evaluations remain at P=R=F1=1.000 for turns and P=R=1.000 for events.
 
 
 - [x] Group the chamber's own `session_type` labels before counting: `EN

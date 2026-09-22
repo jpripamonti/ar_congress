@@ -34,7 +34,7 @@ from parse import SPEAKER_RE, classify_event  # noqa: E402
 from provenance import decode_html  # noqa: E402
 from session_kind import session_kind_for  # noqa: E402
 
-PARSER_VERSION = "0.5.7-html"
+PARSER_VERSION = "0.5.8-html"
 
 # A paragraph break: WordPerfect writes <p> with no closing tag and uses <br>
 # for the lines of a masthead or the two lines of a heading.

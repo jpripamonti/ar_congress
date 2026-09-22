@@ -55,7 +55,7 @@ import pdfplumber
 
 from session_kind import session_kind_for
 
-PARSER_VERSION = "0.5.2"
+PARSER_VERSION = "0.5.3"
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
@@ -263,6 +263,16 @@ SYMBOL_FONT_ALIAS = re.compile(r"[\s-]|,(?:Italic|Bold|BoldItalic|Oblique)$")
 CID_MEANING = {(SYMBOL_FONT_ALIAS.sub("", font), num): read
                for (font, num), read in CID_MEANING.items()}
 SYMBOL_FONT_FAMILIES = {font for font, _ in SYMBOL_FONT_LETTERS}
+# Two WPTypographicSymbols files also contain the literal extraction token
+# "(cid:31)". Its letters make str.islower() classify that punctuation face as
+# a text font and suppress the map above. A scan of all 72 PDFs carrying a
+# mapped symbol family finds exactly 9 ")" and 4 "(" behind that false guard;
+# every page draws ¿ or ¡ there. Keep the exception to those measured marks:
+# lifting the guard wholesale would also rewrite 43 quotes and dashes.
+GUARDED_INVERTED_MARKS = {
+    ("WPTypographicSymbols", ")"),
+    ("WPTypographicSymbols", "("),
+}
 
 
 
@@ -522,7 +532,9 @@ def extract_all_characters(pdf_path, max_pages=None):
                 size = round(c["size"], 1)
                 normalised = SYMBOL_FONT_ALIAS.sub("", family)
                 letter = SYMBOL_FONT_LETTERS.get((normalised, text))
-                if letter is not None and normalised not in sets_words:
+                if (letter is not None
+                        and (normalised not in sets_words
+                             or (normalised, text) in GUARDED_INVERTED_MARKS)):
                     # These files paint one mark several times over itself to
                     # make it heavier: the dash of "Sr. Gómez Diez. —" is four
                     # glyphs stacked at the same place on the line. Read one

@@ -51,6 +51,22 @@ def sniff_format(raw_head):
 LATIN1_ALIASES = {"iso-8859-1", "iso8859-1", "latin-1", "latin1", "l1",
                   "iso-ir-100", "8859-1", "cp819"}
 
+# Three WordPerfect exports store the inverted marks as the ASCII parenthesis
+# that occupies the same slot in their switched font. Across all 214 HTML
+# sources, the only such one-character font runs are 147 questions and 16
+# exclamations; every one closes with ? or !, and none is a real parenthesis.
+INVERTED_MARK_RE = re.compile(
+    r'(<font\b(?=[^>]*\bface\s*=\s*["\'](?:WP TypographicSymbols|Courier New)'
+    r'["\'])[^>]*>\s*)([()])(?=\s*</font\s*>)', re.I)
+
+
+def repair_inverted_marks(text):
+    """Read the inverted mark selected by a WordPerfect font switch."""
+    return INVERTED_MARK_RE.sub(
+        lambda match: match.group(1) + {")": "¿", "(": "¡"}[match.group(2)],
+        text,
+    )
+
 
 def decode_html(raw):
     """Text from a held HTML transcript, in the encoding it declares.
@@ -86,9 +102,10 @@ def decode_html(raw):
     if encoding.lower().replace("_", "-") in LATIN1_ALIASES:
         encoding = "cp1252"
     try:
-        return raw.decode(encoding, "replace")
+        text = raw.decode(encoding, "replace")
     except LookupError:
-        return raw.decode("cp1252", "replace")
+        text = raw.decode("cp1252", "replace")
+    return repair_inverted_marks(text)
 
 
 def html_head_text(raw):
