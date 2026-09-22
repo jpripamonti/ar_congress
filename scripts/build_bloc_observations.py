@@ -34,6 +34,7 @@ checked against the caucus's own dated life in blocs_manual.csv, and one of:
   foto_bloque_previo ... likewise, but a caucus that died before the roll-call
                          records begin, so it has no entry in blocs_manual.csv
   llamado .............. named by the chair giving the floor, in the transcript
+  declaracion .......... stated on the floor by the senator, or of a colleague
 
 Nothing is deleted or corrected. A reading known to be misdated is more useful
 marked than removed, because removing it would hide how much of the Senate's
@@ -53,10 +54,17 @@ own record is like this.
   200 days of each other they agree in all 66 cases. Dated to the sitting,
   and the only source for August 1998 to May 2000.
 
+  The senator's own statement, 1998 to May 2000. "En nombre del bloque
+  justicialista ..." — read by hand, one passage at a time, because the
+  phrase is used too loosely for a pattern (extract_declared_caucus.py says
+  what was refused and why). 32 statements; none disagrees with an
+  observation from another source within 400 days.
+
 Inputs:  reference/senado/bloques_por_fecha.csv     (fetch_blocs.py)
          reference/senado/bloque_por_foto.csv       (fetch_archived_blocs.py)
          reference/senado/bloque_por_ficha.csv      (fetch_archived_profiles.py)
          reference/senado/bloque_por_llamado.csv    (extract_chair_caucus.py)
+         reference/senado/bloque_por_declaracion.csv (extract_declared_caucus.py)
          reference/senado/blocs_manual.csv          (hand-dated caucus lives)
          reference/senado/senadores_historico.json  (the roster)
 Output:  reference/senado/bloque_observado.csv
@@ -79,6 +87,7 @@ ROLLCALL = REF / "bloques_por_fecha.csv"
 SNAPSHOTS = REF / "bloque_por_foto.csv"
 PROFILES = REF / "bloque_por_ficha.csv"
 CHAIR_CALLS = REF / "bloque_por_llamado.csv"
+DECLARED = REF / "bloque_por_declaracion.csv"
 LIVES = REF / "blocs_manual.csv"
 HISTORICO = REF / "senadores_historico.json"
 OUT = REF / "bloque_observado.csv"
@@ -357,13 +366,35 @@ def from_chair_calls():
     })
 
 
+def from_declarations():
+    """The caucus a senator stated on the floor, 1998-2000, read by hand.
+
+    Resolved to a person in extract_declared_caucus.py; the words, the
+    speaker and the passage's position in the sitting are in
+    bloque_por_declaracion.csv beside each row.
+    """
+    if not DECLARED.exists():
+        print(f"  {DECLARED.name} missing — no declared-caucus observations")
+        return pd.DataFrame()
+    c = pd.read_csv(DECLARED, dtype={"person_id": str})
+    return pd.DataFrame({
+        "fecha": c.fecha,
+        "person_id": c.person_id,
+        "person_name": c.person_name,
+        "bloque": c.bloque,
+        "fiabilidad": "declaracion",
+        "fuente": "declaracion en el recinto",
+        "procedencia": c.url,
+    })
+
+
 def main():
     people = load_people()
     lives, undated = load_lives()
     snaps = from_snapshots(people)
     spelled = {norm(b): b for b in snaps.bloque} if len(snaps) else {}
     parts = [from_rollcalls(people, lives, undated), snaps,
-             from_profiles(people, spelled), from_chair_calls()]
+             from_profiles(people, spelled), from_chair_calls(), from_declarations()]
     o = pd.concat([p for p in parts if len(p)], ignore_index=True)
     o["familia"] = o.bloque.map(family)
     o = o.sort_values(["fecha", "person_name"]).reset_index(drop=True)

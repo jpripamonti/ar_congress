@@ -110,8 +110,8 @@ people in different sittings, and sometimes within one sitting.
 | `elected_ticket` | **The list the senator STOOD ON, not the caucus they sat with.** One value per mandate, taken from the roster. See the two-affiliations note below before using it. |
 | `province` | The province the senator represents. |
 | `bloc` | **The caucus the senator SAT WITH.** Taken from the nearest day the chamber's composition was actually recorded — see below. |
-| `bloc_status` | How far that caucus can be trusted, **judged on the date of the sitting, not on the day the caucus was recorded**: `confirmed` (89.6% of senators' floor passages), `anachronistic` (7.0% — the record names a caucus that did not exist on the day of the sitting), `disputed` (0.8% — two records that could each describe the day name different caucuses, so which one held is not established), `undatable` (0.6% — the caucus has no established start, so nothing can be checked). Empty where there is no caucus at all (2.0%, spread thinly across the years). |
-| `bloc_basis` | Where the caucus came from: `roll call` (44.7% of senators' floor passages), `archived roster` (40.1%, May 2000 to 2004), `chair's call` (11.8%, 1998 to early 2000: the chair naming the caucus of the senator it gave the floor to, in the transcript itself) or `archived senator page` (1.4%, the senators' own pages captured on 2 February 1998). `bloque_observado.csv` gives, for every observation, the address of the exact capture or transcript it rests on; `bloque_por_llamado.csv` also quotes the chair's words. |
+| `bloc_status` | How far that caucus can be trusted, **judged on the date of the sitting, not on the day the caucus was recorded**: `confirmed` (89.8% of senators' floor passages), `anachronistic` (7.0% — the record names a caucus that did not exist on the day of the sitting), `disputed` (0.8% — two records that could each describe the day name different caucuses, so which one held is not established), `undatable` (0.6% — the caucus has no established start, so nothing can be checked). Empty where there is no caucus at all (1.8%, spread thinly across the years). |
+| `bloc_basis` | Where the caucus came from: `roll call` (44.7% of senators' floor passages), `archived roster` (40.1%, May 2000 to 2004), `chair's call` (10.4%, 1998 to early 2000: the chair naming the caucus of the senator it gave the floor to, in the transcript itself), `floor statement` (1.7%, 1998 to May 2000: a senator saying on the floor which caucus they speak for — "en nombre del bloque justicialista…" — read by hand, one passage at a time) or `archived senator page` (1.4%, the senators' own pages captured on 2 February 1998). `bloque_observado.csv` gives, for every observation, the address of the exact capture or transcript it rests on; `bloque_por_llamado.csv` and `bloque_por_declaracion.csv` also quote the words. |
 | `bloc_observed` | The date the caucus was actually recorded on. |
 | `bloc_gap_days` | How many days that is from the sitting. Median 0 — most sittings are themselves roll-call days. Rows further than 200 days from any observation get no caucus. |
 | `match_status` | How the label was resolved. This is the field to filter on, and its values are not interchangeable — see below. |
@@ -247,7 +247,9 @@ what the analysis in this repository does, and it says so.
   is never read as a caucus: the Alianza was a coalition, and its two caucuses
   sat apart. Where a call and an archived page fall within 200 days of each
   other they agree in all 66 cases, but a senator who is never called by
-  caucus has none: 1998 and 1999 hold 1,061 blocks without one. Nothing is
+  caucus has none unless they said it themselves: 32 floor statements, read
+  by hand and each agreeing with every other source near it, add 275 blocks,
+  and 1998 and 1999 still hold 786 without one. Nothing is
   carried across a gap by inference; `bloc_basis` says which source each
   caucus came from.
 - **Roughly a fifth of each document is dropped on purpose**: contents pages,

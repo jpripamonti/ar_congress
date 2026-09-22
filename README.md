@@ -517,8 +517,8 @@ as its own HTML export for most of 1998–2003; both are read here.
   reading that will not accept a courtesy title can drop them with one filter.
   On the 69 Sapag turns the chair introduces by name, its wording agrees with
   the title in all 69.
-- Caucus attached to **98.0% of senator speech blocks**; 3,083 have none, and
-  no year holds more than 621 of them. Before the roll calls begin in 2005 the
+- Caucus attached to **98.2% of senator speech blocks**; 2,808 have none, and
+  no year holds more than 580 of them. Before the roll calls begin in 2005 the
   chamber's composition survives in three places, each the chamber's own
   record: its bloc-roster page as the Internet Archive kept it from 25 May
   2000; 58 of its per-senator pages captured on 2 February 1998, each stating
@@ -527,7 +527,9 @@ as its own HTML export for most of 1998–2003; both are read here.
   "Tiene la palabra el señor senador por Mendoza del bloque de la Unión Cívica
   Radical." A call is used only where the province named is the speaker's own,
   and wherever a call and an archived page fall within 200 days of each other
-  they agree, 66 times out of 66. Nothing is carried across a gap by
+  they agree, 66 times out of 66. Senators also said it themselves — "en
+  nombre del bloque justicialista…" — and 32 such statements, read by hand
+  because the phrase is used loosely, add what the chair's calls miss. Nothing is carried across a gap by
   inference, and every caucus carries the page or transcript it came from.
 - **What every column holds and what not to assume about it**:
   [docs/DATA_DICTIONARY.md](docs/DATA_DICTIONARY.md) — written for someone who

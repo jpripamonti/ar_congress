@@ -1836,6 +1836,19 @@ and 21.5 million words of attributed speech become 25.7.
       caucus 89.7% -> 98.0%, 12,874 blocks gained, no caucus that existed
       changed and no disputed reading added. 1,061 blocks of 1998-1999 remain
       without one — senators the chair never introduced by caucus.
+- [x] (done, 22 September 2026) The senators' own floor statements of their
+      caucus, 1998 to May 2000. Two Codex (Terra) agents searched: one the
+      Internet Archive's every capture of the Senate's site 1997-2000 (846
+      addresses; nothing new — committee lists, a bloc page naming caucuses
+      but no members, officers with party initials), the other the
+      transcripts, which found 15 statements. A pattern search of my own over
+      every 1998-2000 speech by the 58 senators then without a caucus found
+      74 passages, and read one by one, 32 say plainly which caucus a named
+      senator sat with (scripts/extract_declared_caucus.py, which also says
+      what was refused: "el bloque de la mayoría", "mi bloque", "bloque de la
+      Alianza" — the coalition — and "bloque peronista", which does not say
+      which Peronist caucus). None disagrees with another source within 400
+      days. 275 blocks gained, none changed; 786 of 1998-1999 remain.
 - [x] (done, 22 September 2026) Three sittings of 2003 label the chair "Sr.
       Presidente (Maqueda)" after Maqueda left the Senate for the Supreme
       Court on 27 December 2002. It is 13 blocks, not 15, all routine agenda
