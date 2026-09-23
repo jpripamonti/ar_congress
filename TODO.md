@@ -1720,7 +1720,7 @@ label was therefore written nowhere at all.
       65 rows over 50 words outside the five known sittings are worth reading
       before deciding. Worth a look because these are senators speaking with no
       name on them, unlike everything else in that number.
-- [ ] **They were read, and it is one fault.** The entry above was written at
+- [x] (closed, 23 September 2026) **They were read, and it is one fault.** The entry above was written at
       0.4.37 against the 559-sitting PDF corpus; on the same PDF-only universe
       today the unattributed rows are 948, not 1,109, and the long rows
       outside the five known sittings are 45, not 65. All 45 were read against
@@ -1759,6 +1759,28 @@ label was therefore written nowhere at all.
       mid-sentence. The 152 rows of 2 to 50 words were not read and almost
       certainly hold more of the same: the entry above quotes "Pido la
       palabra." as an example, and that is three words.
+      Closed 23 September 2026 (parser 0.5.5). Montero and most of the 23 had
+      already been fixed by `repair_damaged_labels`; the two HTML cases too.
+      What was left, measured on the PDF sittings outside the five known
+      ones: 10 long rows (6 of them real speech) and 96 of 2 to 50 words, all
+      read. Five causes, each fixed where the page shows it:
+      (1) the lookup of how a person is called elsewhere in the sitting read
+      "Sra. Avelín" as "Sr" + "a. Avelín", so it never found a woman — the
+      repair then refused, for want of an honorific, every woman's label it
+      met; (2) office and holder in three runs, "Sr, Presidente" / "(Pampuro)"
+      / ". —", or welded behind a pointer, "Orden del Día Nº 357 Presidente" /
+      "(Guinle)" / ". —"; (3) a bold drop cap, "N" / "acional", and a bold
+      "Nº" before its number; (4) "Sr. Moliné O" / "'" / "Connor. —", the
+      apostrophe in another font; (5) "Sra. Presidenta (" / "Fernández de
+      Kirchner" / ").-", all three bold. A first draft of (3) joined a bold
+      "a" to "contramano" in a 2001 scan: a one-letter word (a, e, o, u, y) is
+      no longer read as a drop cap. Full re-parse against the previous output:
+      21 sittings change, `other` rows 818 → 740 on the PDF side, 1,355 words
+      gain a speaker, and no word moves from one speaker to another; the
+      speakers table gains one label (Pampuro, resolved) and changes no
+      attribution or caucus. Gold 310 of 310 unchanged. Left: "Sra Colombo.-"
+      welded into a chapter title with no full stop (2004-09-15, "Pido la
+      palabra."), and the two remaining rows of 2003-11-04 and 2016-11-23.
 - [ ] The parser's open items are the five ordinal marks Phase 27 found but a
       neighbouring size mismatch keeps out of reach, and the 91 printed labels
       that still leave no row of their own. The secretary reading a document

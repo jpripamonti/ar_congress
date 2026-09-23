@@ -32,8 +32,8 @@ as its own HTML export for most of 1998–2003; both are read here.
   that last group final would invent a fact about 134 sittings. Read it from
   the raw file: the parser drops the masthead as page apparatus, so parsed text
   puts every PDF at "not provisional" when 261 of 605 are.
-- Corpus parsed: 245,683 speaker-attributed speech blocks and 69,350 typed
-  stenographer events in 439,735 rows over 817 sittings, as per-session Parquet
+- Corpus parsed: 245,725 speaker-attributed speech blocks and 69,350 typed
+  stenographer events in 439,666 rows over 817 sittings, as per-session Parquet
   under `data/processed/senado/`. 25.7 million words of attributed speech, of
   which the HTML side contributes 5.9 million. The PDF side is parser 0.5.3 and
   the HTML side `scripts/parse_html.py` at 0.5.8-html; the two share the speaker
@@ -310,9 +310,9 @@ as its own HTML export for most of 1998–2003; both are read here.
   corpus no longer attributes to that sitting. **On all 817 sessions that parse, in both formats**
   (`scripts/audit_parse.py`): no turn carries a second speaker's label, no label
   is absorbed by the section title above it, no page apparatus leaks into speech
-  outside the three scans, no text is written out twice, every one of 156,739
-  probed blocks is found in the file it came from (0.070% not located once the
-  scans are set aside, and no sitting above 1%), 8 turns of 245,683 open
+  outside the three scans, no text is written out twice, every one of 154,244
+  probed blocks is found in the file it came from (0.072% not located once the
+  scans are set aside, and no sitting above 1%), 8 turns of 245,725 open
   mid-word and every one of them is printed that way, and a median 82.8% of each
   document's printed text is kept (the rest — contents pages, attendance rolls,
   appendices — is dropped by design). Three sittings are scans with OCR text and

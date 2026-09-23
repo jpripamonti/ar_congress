@@ -55,7 +55,7 @@ import pdfplumber
 
 from session_kind import convened_as_for, quorum_failed_for, session_kind_for
 
-PARSER_VERSION = "0.5.4"
+PARSER_VERSION = "0.5.5"
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
@@ -434,6 +434,7 @@ STATS_COLUMNS = [
     "split_words_rejoined",
     "labels_rejoined",
     "label_spillover_split",
+    "bold_fragments_rejoined",
     "damaged_labels_repaired",
     "welded_notes_split",
     "apparatus_text_cut",
@@ -2175,6 +2176,17 @@ OFFICE_NEXT_RE = re.compile(rf"^\s*(?P<holder>\([^()]{{1,60}}\))\s*\.?\s*{DL_DAS
 # ("Orden del Día Nº 189 Presidente. —")
 WELDED_OFFICE_RE = re.compile(
     rf"^(?P<head>.*\S)\s+(?P<label>(?:{DL_HON})?{DL_OFFICE}{DL_PAREN}\s*[.,]?\s*{DL_DASH})\s*$")
+# the same, with the terminator (and the holder) left to the runs that follow
+# ("Orden del Día Nº 357 Presidente" / "(Guinle)" / ". —")
+WELDED_OFFICE_OPEN_RE = re.compile(
+    rf"^(?P<head>.*\S)\s+(?P<label>(?:{DL_HON})?{DL_OFFICE})\s*$")
+# the holder alone in its run, the terminator in a bold shard after it
+HOLDER_ONLY_RE = re.compile(r"^\s*(?P<holder>\([^()]{1,60}\))\s*$")
+DASH_SHARD_RE = re.compile(rf"^\s*[.,]?\s*{DL_DASH}\s*$")
+# a label closed by its full stop, the dash left to the next run
+# ("r. Presidente." / "– Por implicar gastos…")
+STOPPED_LABEL_RE = re.compile(rf"^(?P<label>{DL_BODY})\s*\.$")
+NEXT_DASH_RE = re.compile(rf"^\s*{DL_DASH}\s")
 # the gender the page itself states, one way or another
 FEMININE_HON_RE = re.compile(r"(?:^|\s)(?:S\s*r\s*a|Sra|Srta|Secretaria|Prosecretaria"
                              r"|Presidenta|Vicepresidenta|Ministra)", re.UNICODE)
@@ -2198,7 +2210,9 @@ def _sitting_honorifics(blocks):
         if b.get("type") is not None or b.get("font_style") != "bold":
             continue
         t = LEAD_JUNK_RE.sub("", b["text"].strip())
-        m = re.match(r"^((?i:Sr|Sra|Srta|Sres))[.\-]?\s*(.+)$", t)
+        # longest first: with "Sr" tried first, "Sra. Avelín" was read as
+        # "Sr" + "a. Avelín", so no woman was ever found under her own name
+        m = re.match(r"^((?i:Srta|Sres|Sra|Sr))[.\-]?\s*(.+)$", t)
         if not m or not SPEAKER_RE.match(t):
             continue
         key = _label_key(re.split(rf"\.\s*{DL_DASH}", m.group(2))[0])
@@ -2280,6 +2294,12 @@ def repair_damaged_labels(blocks, body_size):
         head = None            # a document pointer to re-emit ahead of the label
         printed = name = None
         consume = 0            # characters of the next block the label takes
+        # "(Guinle)" alone in the next run and ". —" alone in the one after
+        nxt2 = blocks[idx + 2] if idx + 2 < len(blocks) else None
+        mh2 = HOLDER_ONLY_RE.match(nxt_text) if nxt_ok else None
+        holder_then_dash = bool(
+            mh2 and nxt2 is not None and nxt2.get("type") is None
+            and nxt2.get("font_style") == "bold" and DASH_SHARD_RE.match(nxt2["text"]))
 
         m = HON_ONLY_RE.match(t)
         if m and nxt_ok and (mn := HON_ONLY_NEXT_RE.match(nxt_text)):
@@ -2298,6 +2318,23 @@ def repair_damaged_labels(blocks, body_size):
             head = m.group("head")
             printed, name = _split_honorific(m.group("label"))
             name = re.sub(rf"\s*[.,]?\s*{DL_DASH}\s*$", "", name)
+        elif OFFICE_ONLY_RE.match(t) and holder_then_dash:
+            printed, office = _split_honorific(t.strip())
+            name = f"{office} {mh2.group('holder')}"
+            consume = len(nxt_text)
+        elif ((m := WELDED_OFFICE_OPEN_RE.match(t)) and len(m.group("head").split()) <= 10
+                and (holder_then_dash or (nxt_ok and (BARE_NEXT_TERM_RE.match(nxt_text)
+                                                      or OFFICE_NEXT_RE.match(nxt_text))))):
+            head = m.group("head")
+            printed, name = _split_honorific(m.group("label"))
+            if holder_then_dash:
+                name = f"{name} {mh2.group('holder')}"
+                consume = len(nxt_text)
+            elif mh := OFFICE_NEXT_RE.match(nxt_text):
+                name = f"{name} {mh.group('holder')}"
+                consume = mh.end("holder")
+        elif (m := STOPPED_LABEL_RE.match(t)) and nxt_ok and NEXT_DASH_RE.match(nxt_text):
+            printed, name = _split_honorific(m.group("label"))
         if not name:
             out.append(b)
             continue
@@ -2322,6 +2359,62 @@ def repair_damaged_labels(blocks, body_size):
         print(f"Etiquetas dañadas leídas como etiquetas y no como títulos: {repaired}"
               + (f"; sin honorífico que la página respalde: {unsettled}." if unsettled else "."))
     return out, repaired
+
+
+# one letter, but not one that is a word of its own: a bold "a" before
+# "contramano" is the word "a", and joining it made "acontramano"
+DROP_LETTER_RE = re.compile(r"^\s*(?![AEOUYaeouy]\s*$)[A-Za-zÁÉÍÓÚÑáéíóúñ]\s*$")
+NUMBER_SIGN_RE = re.compile(r"^\s*(?:N[º°]|Nro\.?)\s*$")
+APOSTROPHE_RE = re.compile(r"^\s*['’]\s*$")
+
+
+def rejoin_bold_fragments(blocks, body_size):
+    """Put back into the text a bold run that is part of a word, not a heading.
+
+    A bold body-size run that is not a label becomes a heading, and a heading
+    ends the turn, so the rest of the speech goes out with no speaker. Three
+    kinds of bold run are only part of the sentence around them:
+
+    - one letter set in bold as a drop cap, the word going on in the next run
+      ("N" / "acional se analizara…", "s" / "implemente una consulta");
+    - a bold "Nº" whose number follows ("Nº" / "1.158/16 está incluido");
+    - a label cut at an apostrophe the page sets in another font
+      ("Sr. Moliné O" / "'" / "Connor. —").
+
+    Each is joined back only where the next run says it continues: a lowercase
+    letter after the letter, a digit after the "Nº", a bold run after the
+    apostrophe.
+    """
+    out, joined, i = [], 0, 0
+    while i < len(blocks):
+        b = blocks[i]
+        nxt = blocks[i + 1] if i + 1 < len(blocks) else None
+        bold = (b.get("type") is None and b.get("font_style") == "bold"
+                and is_body(b["size"], body_size))
+        nxt_normal = (nxt is not None and nxt.get("type") is None
+                      and nxt.get("font_style") == "normal" and is_body(nxt["size"], body_size))
+        if bold and nxt_normal and (
+                (DROP_LETTER_RE.match(b["text"]) and LOWERCASE_CONTINUATION_RE.match(nxt["text"]))
+                or (NUMBER_SIGN_RE.match(b["text"]) and re.match(r"^\s*\d", nxt["text"]))):
+            nxt["text"] = b["text"].rstrip() + nxt["text"] if DROP_LETTER_RE.match(b["text"]) \
+                else b["text"].strip() + " " + nxt["text"].lstrip()
+            joined += 1
+            i += 1
+            continue
+        nxt2 = blocks[i + 2] if i + 2 < len(blocks) else None
+        if (bold and re.search(r"[A-ZÁÉÍÓÚÑ]$", b["text"]) and nxt is not None
+                and APOSTROPHE_RE.match(nxt["text"]) and nxt2 is not None
+                and nxt2.get("type") is None and nxt2.get("font_style") == "bold"
+                and re.match(r"^[A-ZÁÉÍÓÚÑ]", nxt2["text"])):
+            out.append({**b, "text": b["text"] + "'" + nxt2["text"]})
+            joined += 1
+            i += 3
+            continue
+        out.append(b)
+        i += 1
+    if joined:
+        print(f"Negritas que son parte de una palabra, devueltas al texto: {joined}.")
+    return out, joined
 
 
 def _split_honorific(label):
@@ -2410,7 +2503,10 @@ def identify_speakers(blocks, body_size):
                     # reversed shatter: bold "Sr. Presidente (" + normal
                     # "Pampuro). – speech…" — pull the name into the label
                     nxt = blocks[i]
-                    if (nxt.get("type") is None and nxt["font_style"] == "normal"
+                    # the name is normal in most years and bold in some
+                    # ("Sra. Presidenta (" / "Fernández de Kirchner" / ").-",
+                    # all three bold, 2022)
+                    if (nxt.get("type") is None and nxt["font_style"] in ("normal", "bold")
                             and is_body(nxt["size"], body_size)):
                         m = re.match(r"\s*([^()]{1,60}\))", nxt["text"])
                         if m:
@@ -2729,6 +2825,9 @@ def process_pdf(pdf_path):
 
     blocks, spillover = split_label_spillover(blocks, body_size)
     stats["label_spillover_split"] = spillover
+
+    blocks, fragments = rejoin_bold_fragments(blocks, body_size)
+    stats["bold_fragments_rejoined"] = fragments
 
     blocks, damaged = repair_damaged_labels(blocks, body_size)
     stats["damaged_labels_repaired"] = damaged

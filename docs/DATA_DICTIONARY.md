@@ -15,9 +15,9 @@ million are attributed speech.
 
 | File | One row is | Rows |
 | --- | --- | --- |
-| `data/processed/senado/blocks/<sitting>.parquet` | a passage of one sitting — a turn of speech, a stenographer's note, a heading, or page matter | 439,735 across 817 files (one sitting of the 818 attempted fails to parse) |
+| `data/processed/senado/blocks/<sitting>.parquet` | a passage of one sitting — a turn of speech, a stenographer's note, a heading, or page matter | 439,666 across 817 files (one sitting of the 818 attempted fails to parse) |
 | `data/processed/senado/speakers.parquet` | one printed speaker label in one sitting, resolved to a person and to the caucus they sat with | one per (sitting, label) pair |
-| `data/processed/senado/parse_stats.csv` | one sitting, with 42 counts of what the parser did to it | 818 |
+| `data/processed/senado/parse_stats.csv` | one sitting, with 43 counts of what the parser did to it | 818 |
 | `reference/senado/bloque_observado.csv` | one day the chamber's composition was actually recorded, for one senator | 25,024 over 403 dates, 1998–2026 |
 
 There is one file of passages per sitting rather than one big file, so that a
@@ -30,7 +30,7 @@ the normal way to work with it.
 
 | Column | Meaning |
 | --- | --- |
-| `type` | `speech` — words somebody said (245,683). `event` — the stenographer's note about something that happened (69,350). `heading` — a section title (33,608). `furniture` — printed page matter kept only for tracing; not speech (84,710), which from 0.5.4-html includes the HTML era's attendance roll. `inline_italic` — an italicised fragment that had no turn to belong to (1,095). `other` — text the parser could not attribute to anyone (5,289, 1.20%), most of it matter inserted into the record without being spoken: speeches handed in, and the bills read into it. |
+| `type` | `speech` — words somebody said (245,725). `event` — the stenographer's note about something that happened (69,350). `heading` — a section title (33,582). `furniture` — printed page matter kept only for tracing; not speech (84,703), which from 0.5.4-html includes the HTML era's attendance roll. `inline_italic` — an italicised fragment that had no turn to belong to (1,095). `other` — text the parser could not attribute to anyone (5,211, 1.19%), most of it matter inserted into the record without being spoken: speeches handed in, and the bills read into it. |
 | `text` | The words themselves, as printed. Spelling, punctuation and the edition's own mistakes are preserved: where a page misspells a senator's surname, so does this. |
 | `event_type` | Only for notes. `vote` (41,277), `unspecified` (13,846), `incident` (6,151, disorder in the chamber), `pause` (2,394), `timestamp` (2,196, the clock time the record prints), `stage` (1,820, someone entering, leaving or taking the chair), `applause` (1,484), `laughter` (182). From 0.5.0 a note printed on its own line is one row, so two notes in the same italic run no longer share one. From 0.5.1 a bracketed note set inside a speaker's paragraph — "…os lo demanden. (Aplausos.)" — is part of that speech and not a row of its own, which is why applause and laughter are far fewer than the notes the page prints: most of them are printed inside somebody's sentence. From 0.5.2 a "(Lee:)" printed right after a secretary's label is his turn and not a note, as the HTML half has always had it. |
 | `seq` | Position within the sitting. Sorting by it gives the order the words were printed in, which is the order they were spoken. |
@@ -331,7 +331,7 @@ different thing, and the strongest number rests on the smallest sample.
   wrong places. Both scores are the same on it.
   **Read the interval, not the point.** A perfect 310 still puts the 95%
   interval on the PDF recall at 0.988 to 1.000, those 505 turns are 0.21% of
-  the 245,683 in the corpus, and 44 of the 72 PDF pages, carrying 235 turns, are
+  the 245,725 in the corpus, and 44 of the 72 PDF pages, carrying 235 turns, are
   before 2016, which is where the printed conventions least resemble today's.
   Neither set checks the order the turns came out in.
   One PDF page is retired from the scoring and kept in full under
@@ -345,10 +345,10 @@ different thing, and the strongest number rests on the smallest sample.
 - **All 817 parsed sittings audited against their source files**: no page
   apparatus inside a turn and no turn carrying a second speaker's label outside
   the three scans, no sitting whose output is longer than the page it came from,
-  156,739 blocks probed for being findable in the file they came from with
-  0.070% not located once the scans are set aside and no sitting above 1%, and
+  154,244 blocks probed for being findable in the file they came from with
+  0.072% not located once the scans are set aside and no sitting above 1%, and
   every turn checked for beginning and ending the way speech does — 8 turns of
-  245,683 open mid-word and every one of them is printed that way.
+  245,725 open mid-word and every one of them is printed that way.
 - **6,819 turns read blind** across thirteen rounds on 691 sittings, by readers
   that were never shown the parser's answer. Twenty-four disagreed at the time
   of reading and each was then checked against the printed page: **two were
