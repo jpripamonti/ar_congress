@@ -1895,6 +1895,19 @@ and 21.5 million words of attributed speech become 25.7.
       those days. Searched without result: Wikipedia (no 1995-2001 senator
       list), Wikidata, Página/12 and Río Negro archives, Directorio
       Legislativo (unreachable), La Nación, Clarín (blocked to the tool).
+      Two more independent Sonnet searches the same day, one of official
+      documents (other HCDN files, Senate decrees, Boletín Oficial, Congress
+      guides, Directorio Legislativo via archive.org) and one of provincial
+      press and academic work, found no per-senator caucus and no named
+      whole-chamber list for 1996-2000. What they did find: two floor
+      statements of Oyarzún in our own transcripts that the hand search had
+      missed (now in extract_declared_caucus.py, +4 blocks, 196 left), and a
+      Perfil retrospective saying Cristina Fernández de Kirchner, expelled from
+      the Justicialista caucus in May 1997, "formó su propio bloque, 'PJ Santa
+      Cruz'" — the likely origin of the 1999 one-senator caucus, though
+      nothing found says who held it in 1999. Next step if anyone pursues
+      it: each provincial paper's own archive, searched through its own
+      interface, which general web search does not reach.
 - [x] (done, 22 September 2026) Three sittings of 2003 label the chair "Sr.
       Presidente (Maqueda)" after Maqueda left the Senate for the Supreme
       Court on 27 December 2002. It is 13 blocks, not 15, all routine agenda

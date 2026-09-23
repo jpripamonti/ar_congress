@@ -255,7 +255,7 @@ what the analysis in this repository does, and it says so.
   caucus, and each of the 158 was checked against the same senator's other
   readings within a year first: 153 agree, none disagrees, 5 have nothing
   near. A senator who is never called by caucus has none unless they said it
-  themselves: 32 floor statements, read by hand and each agreeing with every
+  themselves: 34 floor statements, read by hand and each agreeing with every
   other source near it. Where a senator is still unrecorded, 208 blocks are
   filled by inference and marked `bracketed`: the same senator is recorded in
   the same caucus before and after, within one mandate, 407 to 843 days
@@ -264,7 +264,7 @@ what the analysis in this repository does, and it says so.
   that far apart, 2 hide a different caucus in between. (Roll calls cannot
   measure it: the Senate re-labels them with a senator's later caucus, so
   they show a change inside 2 of 338 mandates against 17 of 176 on the
-  roster pages.) 200 blocks of 1998-1999 remain without a caucus. Carrying a
+  roster pages.) 196 blocks of 1998-1999 remain without a caucus. Carrying a
   caucus from one side only was measured too and refused: on the roster
   pages, 5 to 10% of such carries within a mandate land on a different
   caucus. So was bracketing across a re-election: only 21 pairs can test it,

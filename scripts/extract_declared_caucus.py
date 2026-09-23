@@ -19,7 +19,10 @@ justicialista", said by someone asking for their signatures, does not say the
 speaker is one of them. So every candidate was read in context: a pattern
 search over every 1998-2000 speech by the 58 senators who then had no caucus
 found 74 passages, and only the ones below say plainly which caucus a named
-senator sat with. Two are said of a colleague (`de otro`), the rest by the
+senator sat with. Two more, both Oyarzún's for the Movimiento Popular
+Fueguino ("el bloque del Movimiento Popular Fueguino, a través de mi
+persona"), were missed by that search and found in September 2026 by a web
+search that fetched the same transcript. Two are said of a colleague (`de otro`), the rest by the
 senator themselves (`propia`).
 
 Each entry is checked against the parsed transcript at run time, quote and
@@ -54,6 +57,8 @@ DECLARED = [
      "en nombre del bloque justicialista vengo a proponer como vicepresidente"),
     ("1998-04-15_r09", 365, "sen:90", PJ, "propia",
      "en nombre de mi bloque, que los señores senadores del justicialismo nos sentimos"),
+    ("1998-04-01_r06", 280, "sen:31", "MOVIMIENTO POPULAR FUEGUINO", "propia",
+     "el bloque del Movimiento Popular Fueguino, a través de mi persona"),
     ("1998-05-13_r15", 235, "sen:42", "MOVIMIENTO POPULAR NEUQUINO", "propia",
      "en nombre del bloque del Movimiento Popular Neuquino"),
     ("1998-05-20_r18", 947, "sen:244", UCR, "propia",
@@ -68,6 +73,8 @@ DECLARED = [
      "en nombre del bloque justicialista solicito la aprobación"),
     ("1998-10-21_r53", 397, "sen:232", PJ, "de otro",
      "la credibilidad de Reutemann, que participa del bloque justicialista"),
+    ("1998-10-21_r53", 135, "sen:31", "MOVIMIENTO POPULAR FUEGUINO", "propia",
+     "solicito se autorice al bloque del Movimiento Popular Fueguino a abstenerse"),
     ("1998-11-25_r64", 303, "sen:228", UCR, "propia",
      "A nosotros, en el bloque de la Unión Cívica Radical, se nos ha autorizado"),
     ("1998-12-09_r71", 375, "sen:88", PJ, "propia",

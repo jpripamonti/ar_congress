@@ -517,7 +517,7 @@ as its own HTML export for most of 1998–2003; both are read here.
   reading that will not accept a courtesy title can drop them with one filter.
   On the 69 Sapag turns the chair introduces by name, its wording agrees with
   the title in all 69.
-- Caucus attached to **98.6% of senator speech blocks**; 2,222 have none, and
+- Caucus attached to **98.6% of senator speech blocks**; 2,218 have none, and
   no year holds more than 580 of them. Before the roll calls begin in 2005 the
   chamber's composition survives in three places, each the chamber's own
   record: its bloc-roster page as the Internet Archive kept it from 25 May
@@ -531,7 +531,7 @@ as its own HTML export for most of 1998–2003; both are read here.
   Unión Cívica Radical", "del Partido Cruzada Renovadora") are read through a
   hand table of party names, and none of the 158 disagrees with another
   reading of the same senator within a year. Senators also said it themselves — "en
-  nombre del bloque justicialista…" — and 32 such statements, read by hand
+  nombre del bloque justicialista…" — and 34 such statements, read by hand
   because the phrase is used loosely, add what the chair's calls miss. Where a senator is still unrecorded but
   seen in the same caucus on both sides of a sitting, within one mandate, 208
   blocks of 1998-1999 take that caucus by inference, marked
