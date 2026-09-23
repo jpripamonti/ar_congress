@@ -1941,6 +1941,15 @@ and 21.5 million words of attributed speech become 25.7.
       list or a party, mostly from transcripts already in the corpus, with no
       quote naming a caucus; one was wrong (Reutemann put in "the Alianza").
       Not passed on to verification, since there was no quote to verify.
+      Three Sonnet agents then tried what general search misses (provincial
+      papers, archive.org, Google Books, academic repositories): nothing for
+      1998-1999. Two real notes of November 2000 name Varizat (Ámbito,
+      16 Nov 2000, "subloque 17 de octubre") and Carbonell (Revista Mercado,
+      15 Nov 2000) inside the Justicialista caucus — agreeing with the roster
+      pages the corpus already uses for those dates, and too far from the
+      missing blocks to fill them. Río Negro's 1998 site has only three
+      homepage captures on archive.org. What is left needs each provincial
+      paper's own archive search, by hand.
 - [x] (done, 22 September 2026) Three sittings of 2003 label the chair "Sr.
       Presidente (Maqueda)" after Maqueda left the Senate for the Supreme
       Court on 27 December 2002. It is 13 blocks, not 15, all routine agenda
