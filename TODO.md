@@ -1880,6 +1880,22 @@ and 21.5 million words of attributed speech become 25.7.
       re-election (Tell, Sager, Costanzo): 21 testable pairs, and in 2 the
       senator changed caucus exactly as the new mandate began. Rivas and
       Ludueña have no reading at all.
+- [x] (done, 23 September 2026) Checked the corpus against the official
+      counts per caucus (scripts/check_bloc_counts.py, counts copied by hand
+      from the HCDN document below). 2002: every caucus matches, once Mera,
+      sworn in on 5 March, is allowed for. 1999: the corpus never puts more
+      senators in a caucus than the chamber counted; the 11 senators it leaves
+      without a caucus fill exactly the shortfalls, with one exception below.
+      Two real disagreements, both left as they are:
+      - Santa Cruz. The document has a one-senator "PCIA STA CRUZ-PJ" on 1
+        March 1999 and 1 March 2000. The corpus puts both Santa Cruz
+        Peronists, Varizat and Arnold, in JUSTICIALISTA: the chair calls each
+        "del bloque justicialista" in June 1999, and the archived roster page
+        of 25 May 2000 lists both there. The dates differ by three months, so
+        the two need not contradict, but nothing says who sat apart.
+      - Morales, 2004. The document counts two in the Frente Cívico Jujeño on
+        1 March 2004; the archived roster page of 24 March lists Morales back
+        in the UCR. The corpus already marks his caucus there `disputed`.
 - [ ] A web search (Sonnet agent, 23 September 2026) found no per-senator
       caucus for the 200 blocks, but one whole-chamber source: the Chamber of
       Deputies' "Composición del H. Senado por bloque y género", counts per
