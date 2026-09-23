@@ -2404,13 +2404,16 @@ and 21.5 million words of attributed speech become 25.7.
       number at all (1998-07-23 p7, 2003-07-23 p74), which looks typeset from a
       different source. Worth knowing how many sittings are like that before
       trusting any rule that keys on the running header.
-- [ ] `check_gold_pages.py` and `check_gold_html.py` report 100% agreement
+- [x] `check_gold_pages.py` and `check_gold_html.py` report 100% agreement
       between two readings, but both readings are the same model working from
       the same brief. That is weaker evidence than two people, and the write-up
       should say so rather than quoting the number bare. It also probably
       explains the entry below.
+      CLOSED by 430f6d1: README and the data dictionary now say both readings
+      are one model on one brief, and that agreement between them checks the
+      brief, not the reading.
 
-- [ ] The HTML gold set's inter-annotator figure does not reproduce. a94c38a
+- [x] The HTML gold set's inter-annotator figure does not reproduce. a94c38a
       records 99.2% of turn starts and 22 of the 24 stretches identical;
       `check_gold_html.py` on the annotations committed in that same commit
       prints 195 of 195 and 24 of 24, and neither the annotations nor the
@@ -2420,6 +2423,16 @@ and 21.5 million words of attributed speech become 25.7.
       readings and the claim has to be weakened. The docs now quote only what
       the committed files reproduce. Settle which it was before the next
       release quotes either number.
+      SETTLED (23 September 2026): the readings were revised before
+      committing. The record of the session that built the set holds the
+      first run of check_gold_html.py, at 21:46 on 19 September: every stretch
+      identical except 1998-08-05_r31 (1 turn start shared of 1 and 2) and
+      2000-06-07_r22 (20 shared of 22 and 20) — the 99.2% and 22 of 24 the
+      commit quotes. The annotators who had read the re-set label the other
+      way were then told to re-emit, the brief's event rule was corrected, and
+      the same checker printed 195 of 195 right after the push. So the commit
+      message quotes the independent state and the files hold the reconciled
+      one. 430f6d1 already words the docs that way; no number changes.
 - [x] `¿` is stored as `)` where the export switched font: 147 of them, plus
       16 `¡` stored as `(`. Found by a reader who took it for encoding
       damage. Needs a full scan before any repair: the rule has to tell these
