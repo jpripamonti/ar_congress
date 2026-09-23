@@ -1907,7 +1907,7 @@ and 21.5 million words of attributed speech become 25.7.
       days of the count and inside the same mandate — so Tell's and
       Costanzo's 1998 blocks, in the mandate before, stay empty. 99 blocks
       gained, nothing else moved; 97 of 1998-1999 left.
-- [ ] A web search (Sonnet agent, 23 September 2026) found no per-senator
+- [x] (closed, 23 September 2026) A web search (Sonnet agent) found no per-senator
       caucus for the 200 blocks, but one whole-chamber source: the Chamber of
       Deputies' "Composición del H. Senado por bloque y género", counts per
       caucus on 1 March of each renewal year, 1984-2024 —
@@ -1950,6 +1950,7 @@ and 21.5 million words of attributed speech become 25.7.
       missing blocks to fill them. Río Negro's 1998 site has only three
       homepage captures on archive.org. What is left needs each provincial
       paper's own archive search, by hand.
+      Closed here: the 97 blocks stay without a caucus, as marked.
 - [x] (done, 22 September 2026) Three sittings of 2003 label the chair "Sr.
       Presidente (Maqueda)" after Maqueda left the Senate for the Supreme
       Court on 27 December 2002. It is 13 blocks, not 15, all routine agenda
