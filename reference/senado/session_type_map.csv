@@ -1,14 +1,14 @@
-session_type,session_kind,ambiguous,note
-ORDINARIA,ordinaria,false,Regular sitting held during the constitutional ordinary-sessions period.
-ORDINARIA CONTINUACIÓN,ordinaria,false,Same ordinary sitting resumed on a later calendar day; continuación is a procedural note about the sitting, not a different kind of session.
-EXTRAORDINARIA,extraordinaria,false,Sitting held outside the ordinary period on an agenda set by the Executive's convening decree.
-ESPECIAL,especial,false,Sitting called for a specific item of business at a senator's request, independent of the ordinary/extraordinary period it falls in.
-ESPECIAL EXTRAORDINARIA,extraordinaria,true,"Combines two dimensions: convened by the ESPECIAL petition procedure, during the EXTRAORDINARIA period. Grouped under extraordinaria because the period (not the calling procedure) sets what business the chamber may take up; the ESPECIAL half is procedural detail. Only 6 sittings."
-EN MINORÍA,en_minoria,false,Sitting held without the quorum needed for ordinary business; the chamber's own reduced-quorum status, not a convocation type.
-ESPECIAL EN MINORÍA,en_minoria,true,"Same reduced-quorum status as EN MINORÍA; ESPECIAL here again names the calling procedure, not a different kind of sitting. Grouped with EN MINORÍA per TODO.md's own example. Only 6 sittings."
-INFORMATIVA ESPECIAL,informativa,true,"Sitting whose defining purpose is a report to the chamber (e.g. the Jefe de Gabinete's constitutional briefing), called via the ESPECIAL procedure. Grouped under informativa because the informative purpose, not the calling procedure, is what distinguishes this sitting from an ordinary ESPECIAL."
-TRIBUNAL DE JUICIO POLITICO,tribunal_juicio_politico,false,Senate sitting as a tribunal to try an impeachment (juicio político).
-PREPARATORIA,preparatoria,false,Opening sitting of a new legislative period: credentials, oaths, chamber authorities.
-ASAMBLEA,asamblea,false,Formal joint sitting of both chambers as the Asamblea Legislativa (e.g. presidential oath, opening-of-sessions message).
-REUNIÓN CONJ.AMBAS CÁMARAS,reunion_conjunta,true,"A joint meeting of both chambers under a label distinct from ASAMBLEA. Kept separate rather than merged into asamblea: the chamber uses two different names for joint sittings and nothing in the transcripts confirms they are the same constitutional device. Only 5 sittings."
-FALTA DE QUORUM,sin_quorum,true,"Not a convocation type: the chamber's own label for a sitting that failed to reach quorum, so no business was conducted. Kept as its own kind rather than folded into whatever type had been intended, since the record does not say what that intended type was. Only 1 sitting."
+session_type,session_kind,convened_as,quorum_failed,ambiguous,note
+ORDINARIA,ordinaria,ordinaria,false,false,Regular sitting held during the constitutional ordinary-sessions period.
+ORDINARIA CONTINUACIÓN,ordinaria,ordinaria,false,false,"Same ordinary sitting resumed on a later calendar day; continuación is a procedural note about the sitting, not a different kind of session."
+EXTRAORDINARIA,extraordinaria,extraordinaria,false,false,Sitting held outside the ordinary period on an agenda set by the Executive's convening decree.
+ESPECIAL,especial,especial,false,false,"Sitting called for a specific item of business at a senator's request, independent of the ordinary/extraordinary period it falls in."
+ESPECIAL EXTRAORDINARIA,extraordinaria,extraordinaria,false,true,"Combines two dimensions: convened by the ESPECIAL petition procedure, during the EXTRAORDINARIA period. Grouped under extraordinaria because the period (not the calling procedure) sets what business the chamber may take up; the ESPECIAL half is procedural detail. Only 6 sittings."
+EN MINORÍA,en_minoria,,true,false,"Sitting held without the quorum needed for ordinary business; the chamber's own reduced-quorum status, not a convocation type."
+ESPECIAL EN MINORÍA,en_minoria,especial,true,true,"Same reduced-quorum status as EN MINORÍA; ESPECIAL here again names the calling procedure, not a different kind of sitting. Grouped with EN MINORÍA per TODO.md's own example. Only 6 sittings."
+INFORMATIVA ESPECIAL,informativa,informativa,false,true,"Sitting whose defining purpose is a report to the chamber (e.g. the Jefe de Gabinete's constitutional briefing), called via the ESPECIAL procedure. Grouped under informativa because the informative purpose, not the calling procedure, is what distinguishes this sitting from an ordinary ESPECIAL."
+TRIBUNAL DE JUICIO POLITICO,tribunal_juicio_politico,tribunal_juicio_politico,false,false,Senate sitting as a tribunal to try an impeachment (juicio político).
+PREPARATORIA,preparatoria,preparatoria,false,false,"Opening sitting of a new legislative period: credentials, oaths, chamber authorities."
+ASAMBLEA,asamblea,asamblea,false,false,"Formal joint sitting of both chambers as the Asamblea Legislativa (e.g. presidential oath, opening-of-sessions message)."
+REUNIÓN CONJ.AMBAS CÁMARAS,reunion_conjunta,reunion_conjunta,false,true,A joint meeting of both chambers under a label distinct from ASAMBLEA. Kept separate rather than merged into asamblea: the chamber uses two different names for joint sittings and nothing in the transcripts confirms they are the same constitutional device. Only 5 sittings.
+FALTA DE QUORUM,sin_quorum,,true,true,"Not a convocation type: the chamber's own label for a sitting that failed to reach quorum, so no business was conducted. Kept as its own kind rather than folded into whatever type had been intended, since the record does not say what that intended type was. Only 1 sitting."

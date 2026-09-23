@@ -53,9 +53,9 @@ from pathlib import Path
 import pandas as pd
 import pdfplumber
 
-from session_kind import session_kind_for
+from session_kind import convened_as_for, quorum_failed_for, session_kind_for
 
-PARSER_VERSION = "0.5.3"
+PARSER_VERSION = "0.5.4"
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
@@ -2765,6 +2765,8 @@ def blocks_to_frame(blocks, chapters, meta):
             "session_date": meta["session_date"],
             "session_type": meta["session_type"],
             "session_kind": session_kind_for(meta["session_type"]),
+            "convened_as": convened_as_for(meta["session_type"], meta["session_id"]),
+            "quorum_failed": quorum_failed_for(meta["session_type"]),
             "sesion": meta["sesion"],
             "reunion": meta["reunion"],
             "seq": seq,

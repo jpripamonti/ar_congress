@@ -1880,6 +1880,21 @@ and 21.5 million words of attributed speech become 25.7.
       re-election (Tell, Sager, Costanzo): 21 testable pairs, and in 2 the
       senator changed caucus exactly as the new mandate began. Rivas and
       Ludueña have no reading at all.
+- [ ] A web search (Sonnet agent, 23 September 2026) found no per-senator
+      caucus for the 200 blocks, but one whole-chamber source: the Chamber of
+      Deputies' "Composición del H. Senado por bloque y género", counts per
+      caucus on 1 March of each renewal year, 1984-2024 —
+      https://www2.hcdn.gob.ar/export/hcdn/secparl/dgral_info_parlamentaria/dip/archivos/SenadoresporBloqueGenero-_Cantidades.pdf
+      No names, but on 1 March 1999 it lists a one-senator caucus "PCIA STA
+      CRUZ-PJ" beside JUSTICIALISTA (33). Santa Cruz's Peronist senators then
+      were Varizat (the chair calls him "bloque Justicialista" on 16 June
+      1999) and Arnold, so one of them sat apart — which is why Varizat's
+      1998 blocks must not be filled with JUSTICIALISTA by default. Two uses
+      worth doing: identify who sat in that caucus, and check the counts of
+      1 March 1996, 1999 and 2000 against the caucuses the corpus assigns on
+      those days. Searched without result: Wikipedia (no 1995-2001 senator
+      list), Wikidata, Página/12 and Río Negro archives, Directorio
+      Legislativo (unreachable), La Nación, Clarín (blocked to the tool).
 - [x] (done, 22 September 2026) Three sittings of 2003 label the chair "Sr.
       Presidente (Maqueda)" after Maqueda left the Senate for the Supreme
       Court on 27 December 2002. It is 13 blocks, not 15, all routine agenda
@@ -2476,7 +2491,7 @@ and 21.5 million words of attributed speech become 25.7.
       judgment rather than identity. Verified over all 817 files: every row
       has the column and no label went unmapped. Parsers 0.4.41 and
       0.5.6-html.
-- [ ] `session_kind` holds two dimensions in one column, and something should
+- [x] `session_kind` holds two dimensions in one column, and something should
       eventually separate them. `ordinaria` / `extraordinaria` / `especial`
       say how a sitting was called and in what period; `en_minoria` and
       `sin_quorum` say whether it had a quorum. A sitting held in minority is
@@ -2488,6 +2503,15 @@ and 21.5 million words of attributed speech become 25.7.
       dictionary warns about it. Two columns would be the honest shape, but
       the chamber gives one label per sitting, so the second would have to be
       inferred, and that needs evidence rather than a default.
+      DONE (23 September 2026, parsers 0.5.4 and 0.5.9-html): two new
+      columns beside it, `convened_as` and `quorum_failed`; `session_kind`
+      unchanged. `quorum_failed` is the label alone (35 sittings — the 34
+      above was a miscount). `convened_as` for those 35 comes from the
+      sitting itself, quoted in reference/senado/session_convened_as.csv:
+      6 by label, 1 by cover, 3 by the words spoken; 25 stay empty. Covers
+      were read for all 35 and say only "Sesión en minoría". The running
+      header "sesión ordinaria" is a template and is contradicted by the
+      text on 8 December 1998, so it is not used.
 
 ## Phase 40 — four fixes, and the two they exposed (September 2026 — parsers 0.5.0 and 0.5.7-html)
 
