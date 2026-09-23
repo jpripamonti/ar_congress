@@ -35,6 +35,9 @@ checked against the caucus's own dated life in blocs_manual.csv, and one of:
                          records begin, so it has no entry in blocs_manual.csv
   llamado .............. named by the chair giving the floor, in the transcript
   declaracion .......... stated on the floor by the senator, or of a colleague
+  conteo ............... NOT an observation: deduced from the chamber's official
+                         count per caucus, where every other senator's caucus
+                         leaves room for one answer (deduce_bloc_from_counts.py)
 
 Nothing is deleted or corrected. A reading known to be misdated is more useful
 marked than removed, because removing it would hide how much of the Senate's
@@ -88,6 +91,7 @@ SNAPSHOTS = REF / "bloque_por_foto.csv"
 PROFILES = REF / "bloque_por_ficha.csv"
 CHAIR_CALLS = REF / "bloque_por_llamado.csv"
 DECLARED = REF / "bloque_por_declaracion.csv"
+COUNTED = REF / "bloque_por_conteo.csv"
 LIVES = REF / "blocs_manual.csv"
 HISTORICO = REF / "senadores_historico.json"
 OUT = REF / "bloque_observado.csv"
@@ -388,13 +392,32 @@ def from_declarations():
     })
 
 
+def from_counts():
+    """The caucus deduced from the official count per caucus. An inference,
+    kept in this table so it travels with its source; resolve_speakers.py
+    marks it `deduced` and uses it only where nothing else is near."""
+    if not COUNTED.exists():
+        return pd.DataFrame()
+    c = pd.read_csv(COUNTED, dtype={"person_id": str})
+    return pd.DataFrame({
+        "fecha": c.fecha,
+        "person_id": c.person_id,
+        "person_name": c.person_name,
+        "bloque": c.bloque,
+        "fiabilidad": "conteo",
+        "fuente": "conteo oficial por bloque",
+        "procedencia": c.url,
+    })
+
+
 def main():
     people = load_people()
     lives, undated = load_lives()
     snaps = from_snapshots(people)
     spelled = {norm(b): b for b in snaps.bloque} if len(snaps) else {}
     parts = [from_rollcalls(people, lives, undated), snaps,
-             from_profiles(people, spelled), from_chair_calls(), from_declarations()]
+             from_profiles(people, spelled), from_chair_calls(), from_declarations(),
+             from_counts()]
     o = pd.concat([p for p in parts if len(p)], ignore_index=True)
     o["familia"] = o.bloque.map(family)
     o = o.sort_values(["fecha", "person_name"]).reset_index(drop=True)

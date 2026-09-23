@@ -51,7 +51,7 @@ uv run scripts/parse.py --force
 ```
 
 ```bash
-uv run scripts/fetch_archived_blocs.py --offline && uv run scripts/build_bloc_observations.py && uv run scripts/resolve_speakers.py
+uv run scripts/fetch_archived_blocs.py --offline && uv run scripts/build_bloc_observations.py && uv run scripts/deduce_bloc_from_counts.py && uv run scripts/build_bloc_observations.py && uv run scripts/resolve_speakers.py && uv run scripts/check_bloc_counts.py
 ```
 
 ```bash

@@ -760,14 +760,17 @@ def load_bloc_observations():
               "acta_sin_control": "undatable", "foto": "confirmed",
               "foto_bloque_previo": "confirmed",
               # the chair naming a senator's caucus as it gives the floor
-              "llamado": "confirmed", "declaracion": "confirmed"}
+              "llamado": "confirmed", "declaracion": "confirmed",
+              # deduced from the official count per caucus, not observed
+              "conteo": "deduced"}
     basis = {"acta de votacion": "roll call",
              "foto de la pagina de bloques": "archived roster",
              # one senator's own page, captured 2 February 1998: dated the
              # same way as the roster page, by the day it was captured
              "ficha del senador": "archived senator page",
              "llamado de la presidencia": "chair's call",
-             "declaracion en el recinto": "floor statement"}
+             "declaracion en el recinto": "floor statement",
+             "conteo oficial por bloque": "official count"}
     obs = {}
     for r in df.itertuples(index=False):
         # keyed the same way the roster is, so the join is on the person
@@ -872,10 +875,26 @@ def bloc_on(person_id, when, obs, lives, terms=()):
     rows = obs.get(person_id) if person_id is not None else None
     if not rows:
         return {}
-    d, bloc, status, basis = min(rows, key=lambda x: abs((x[0] - when).days))
+    # A caucus deduced from the official count is not a reading, so it never
+    # competes with one: it is used only where no reading is within reach
+    # and no bracket holds, and only inside the mandate it was deduced in.
+    deduced = [r for r in rows if r[2] == "deduced"]
+    rows = [r for r in rows if r[2] != "deduced"]
+    near = min(rows, key=lambda x: abs((x[0] - when).days)) if rows else None
+    if near is None or abs((near[0] - when).days) > BLOC_MAX_GAP_DAYS:
+        found = bracketed(rows, when, lives, terms) if rows else None
+        if found:
+            return found
+        for d, bloc, status, basis in sorted(deduced, key=lambda x: abs((x[0] - when).days)):
+            gap = abs((d - when).days)
+            if gap <= BLOC_MAX_GAP_DAYS and any(
+                    t0 <= min(d, when) and (t1 is None or max(d, when) <= t1)
+                    for t0, t1 in terms):
+                return {"bloc": bloc, "bloc_status": status, "bloc_basis": basis,
+                        "bloc_observed": d.isoformat(), "bloc_gap_days": gap}
+        return {}
+    d, bloc, status, basis = near
     gap = abs((d - when).days)
-    if gap > BLOC_MAX_GAP_DAYS:
-        return bracketed(rows, when, lives, terms) or {}
     if (status == "confirmed" and basis == "roll call"
             and not bloc_alive_on(bloc, when, lives)):
         status = "anachronistic"

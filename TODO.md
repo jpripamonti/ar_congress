@@ -1896,6 +1896,17 @@ and 21.5 million words of attributed speech become 25.7.
       - Morales, 2004. The document counts two in the Frente Cívico Jujeño on
         1 March 2004; the archived roster page of 24 March lists Morales back
         in the UCR. The corpus already marks his caucus there `disputed`.
+- [x] (done, 23 September 2026) Deduce a caucus from the official count
+      where it leaves one answer (scripts/deduce_bloc_from_counts.py). On 1
+      March 1999 the 11 senators without a caucus fill the 11 places the
+      count leaves: Almirón the Fuerza Republicana seat, Romero the Fueguino,
+      Silvia Sapag the Neuquino, Gagliardi and Massaccesi the two Radical,
+      six Peronists the six Peronist (JUSTICIALISTA and the Santa Cruz one
+      counted together; none of the six is from Santa Cruz). Marked
+      `deduced`, used only where no reading is within 200 days, within 200
+      days of the count and inside the same mandate — so Tell's and
+      Costanzo's 1998 blocks, in the mandate before, stay empty. 99 blocks
+      gained, nothing else moved; 97 of 1998-1999 left.
 - [ ] A web search (Sonnet agent, 23 September 2026) found no per-senator
       caucus for the 200 blocks, but one whole-chamber source: the Chamber of
       Deputies' "Composición del H. Senado por bloque y género", counts per

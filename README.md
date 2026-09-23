@@ -517,7 +517,7 @@ as its own HTML export for most of 1998–2003; both are read here.
   reading that will not accept a courtesy title can drop them with one filter.
   On the 69 Sapag turns the chair introduces by name, its wording agrees with
   the title in all 69.
-- Caucus attached to **98.6% of senator speech blocks**; 2,218 have none, and
+- Caucus attached to **98.6% of senator speech blocks**; 2,119 have none, and
   no year holds more than 580 of them. Before the roll calls begin in 2005 the
   chamber's composition survives in three places, each the chamber's own
   record: its bloc-roster page as the Internet Archive kept it from 25 May
@@ -536,6 +536,9 @@ as its own HTML export for most of 1998–2003; both are read here.
   seen in the same caucus on both sides of a sitting, within one mandate, 208
   blocks of 1998-1999 take that caucus by inference, marked
   `bloc_status = "bracketed"` with the days between the two observations;
+  99 more are deduced from the chamber's official count per caucus on 1 March
+  1999, where every other senator's caucus leaves one place for them, and
+  marked `deduced`;
   everything else carries the page or transcript it came from.
 - **What every column holds and what not to assume about it**:
   [docs/DATA_DICTIONARY.md](docs/DATA_DICTIONARY.md) — written for someone who
