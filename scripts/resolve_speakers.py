@@ -822,11 +822,13 @@ def bracketed(rows, when, lives, terms):
     marked so (`bloc_status = "bracketed"`), with how far apart the two
     observations are (`bloc_span_days`), so a reader can set their own limit.
 
-    It is allowed only where it is safe, and how safe was measured: across
-    every pair of roll calls 400 to 2,200 days apart that show a senator in
-    the same caucus — over half a million pairs — none has a different caucus
-    in between, and across the archived roster pages of 2000-2004, 2 of 1,591
-    do. The two observations must be the nearest on each side, both readings
+    It is allowed only where it is safe, and how safe was measured on the
+    archived roster pages of 2000-2004, written on the day they describe: of
+    1,591 pairs showing a senator in the same caucus 400 to 2,200 days apart,
+    2 have a different caucus in between. The roll calls cannot answer this.
+    The Senate re-labels old roll calls with a senator's later caucus, so they
+    show a change inside only 2 of 338 mandates where the roster pages show
+    one inside 17 of 176, and their "none in half a million" says nothing. The two observations must be the nearest on each side, both readings
     that could describe their own day, and all three dates inside one
     mandate: a new mandate is exactly when a senator changes caucus.
     """

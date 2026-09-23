@@ -20,6 +20,20 @@ of Formosa speaks; La Pampa and Pardo of Corrientes; Corrientes and Meneghini,
 whom the roster seats for Santiago del Estero; La Rioja and Vaquir) and are
 reported, never used.
 
+THE CHAIR DOES NOT ALWAYS SAY "BLOQUE". It says "del bloque de la Unión
+Cívica Radical" and, of the same senator a week later, "de la Unión Cívica
+Radical" or "del Partido Cruzada Renovadora"; it puts a comma before the
+caucus or not; once it says "ha pedido la palabra" instead of "tiene". The
+first version of this script read only "del bloque ..." with no comma, and
+kept 153 calls. Reading the other forms adds 158, and before they were
+trusted each was checked against every other reading of the same senator
+within a year (archived pages, floor statements, the calls already kept):
+153 agree, none disagrees, 5 have nothing to compare with. A party name is
+read as its caucus only through the table below, which is what makes this
+safe: Villarroel belonged to the Radical party and sat in the Frente Cívico
+y Social caucus (he says so, 3 November 1999), and no call ever names him by
+the party.
+
 WHAT A CALL NAMES IS NOT ALWAYS A CAUCUS. The chair speaks loosely: "bloque
 radical" and "bloque de la Unión Cívica Radical" are one caucus, and each
 spelling is mapped below, by hand, to the name the rest of the caucus data
@@ -59,11 +73,18 @@ OUT = REPO_ROOT / "reference" / "senado" / "bloque_por_llamado.csv"
 UNTIL = "2000-05-25"
 
 TAG = re.compile(r"<[^>]+>")
+# The provinces spelt out, so "Santiago del Estero" is never read as the
+# province "Santiago" and the caucus "Estero".
+PROVINCE = (r"(?:la provincia del? |el |la )?(?:Buenos Aires|la Capital(?: Federal)?|"
+            r"Capital(?: Federal)?|(?i:la ciudad(?: autónoma)? de buenos aires)|Catamarca|"
+            r"C[óo]rdoba|Corrientes|Chaco|Chubut|Entre R[íi]os|Formosa|Jujuy|La Pampa|"
+            r"La Rioja|Mendoza|Misiones|Neuqu[ée]n|R[íi]o Negro|Salta|San Juan|San Luis|"
+            r"Santa Cruz|Santa Fe|Santiago del Estero|Tierra del Fuego|Tucum[áa]n)")
 CALL = re.compile(
-    r"(?P<call>Tiene la palabra (?:el|la) se[ñn]ora? senador(?:a)? por "
-    r"(?P<prov>[A-ZÁÉÍÓÚÑa-zéíóúñ][^,.;]{2,45}?)"
+    r"(?P<call>(?:Tiene|ha pedido) la palabra (?:el|la) se[ñn]ora? senador(?:a)? por "
+    r"(?P<prov>" + PROVINCE + r")"
     r"(?:,?\s+(?:y\s+)?(?P<pres>president[ea]))?"
-    r"\s+del? (?P<bloc>bloque[^.]{1,90}?)\.)"
+    r",?\s+(?:del?|perteneciente al?) (?P<bloc>[^.]{1,90}?)\.)"
     r"\s*(?P<label>Sra?\.?\s*[A-ZÁÉÍÓÚÑ][A-ZÁÉÍÓÚÑ' ]{1,40}?)\s*\.?\s*[-–—]")
 
 # What the chair calls a province, against the roster's name for it.
@@ -89,8 +110,12 @@ CAUCUS = {
     "liberal": ("Liberal", {"corrientes"}),
     "partido liberal": ("Liberal", {"corrientes"}),
     "cruzada renovadora": ("Cruzada Renovadora De San Juan", {"san juan"}),
+    "partido cruzada renovadora": ("Cruzada Renovadora De San Juan", {"san juan"}),
+    "bloquista": ("Bloquista De La Provincia De San Juan", {"san juan"}),
+    "partido bloquista": ("Bloquista De La Provincia De San Juan", {"san juan"}),
     "partido renovador": ("PARTIDO RENOVADOR DE SALTA", {"salta"}),
     "frente civico": ("FRENTE CÍVICO Y SOCIAL DE CATAMARCA", {"catamarca"}),
+    "frente civico y social": ("FRENTE CÍVICO Y SOCIAL DE CATAMARCA", {"catamarca"}),
     # Frepaso sat as a caucus of its own, apart from the Radicals it was in
     # coalition with; both archived pages list it, spelt "Fre.Pa.So"
     "frepaso": ("Fre.Pa.So", None),
@@ -107,8 +132,8 @@ def fold(s):
 def bloc_key(printed):
     """'bloque de la Unión Cívica Radical, quien también dispone…' -> 'union civica radical'."""
     k = fold(printed.split(",")[0])
-    k = re.sub(r"^bloque\s+", "", k)
-    k = re.sub(r"^(?:de la|del|de los|de)\s+", "", k)
+    k = re.sub(r"^(?:la\s+)?(?:bloque|bancada)\s+", "", k)
+    k = re.sub(r"^(?:de la|del|de los|de|la)\s+", "", k)
     return k.strip()
 
 

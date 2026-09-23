@@ -110,8 +110,8 @@ people in different sittings, and sometimes within one sitting.
 | `elected_ticket` | **The list the senator STOOD ON, not the caucus they sat with.** One value per mandate, taken from the roster. See the two-affiliations note below before using it. |
 | `province` | The province the senator represents. |
 | `bloc` | **The caucus the senator SAT WITH.** Taken from the nearest day the chamber's composition was actually recorded — see below. |
-| `bloc_status` | How far that caucus can be trusted, **judged on the date of the sitting, not on the day the caucus was recorded**: `confirmed` (89.8% of senators' floor passages), `anachronistic` (7.0% — the record names a caucus that did not exist on the day of the sitting), `disputed` (0.8% — two records that could each describe the day name different caucuses, so which one held is not established), `undatable` (0.6% — the caucus has no established start, so nothing can be checked), `bracketed` (0.3%, 1998-1999 only — **an inference, not an observation**: no record lies within 200 days of the sitting, but the same senator is recorded in the same caucus on both sides of it, inside one mandate; see `bloc_span_days`). Empty where there is no caucus at all (1.6%, spread thinly across the years). |
-| `bloc_basis` | Where the caucus came from: `roll call` (44.7% of senators' floor passages), `archived roster` (40.2%, May 2000 to 2004), `chair's call` (10.5%, 1998 to early 2000: the chair naming the caucus of the senator it gave the floor to, in the transcript itself), `floor statement` (1.7%, 1998 to May 2000: a senator saying on the floor which caucus they speak for — "en nombre del bloque justicialista…" — read by hand, one passage at a time) or `archived senator page` (1.5%, the senators' own pages captured on 2 February 1998). `bloque_observado.csv` gives, for every observation, the address of the exact capture or transcript it rests on; `bloque_por_llamado.csv` and `bloque_por_declaracion.csv` also quote the words. |
+| `bloc_status` | How far that caucus can be trusted, **judged on the date of the sitting, not on the day the caucus was recorded**: `confirmed` (90.0% of senators' floor passages), `anachronistic` (7.0% — the record names a caucus that did not exist on the day of the sitting), `disputed` (0.8% — two records that could each describe the day name different caucuses, so which one held is not established), `undatable` (0.6% — the caucus has no established start, so nothing can be checked), `bracketed` (0.1%, 1998-1999 only — **an inference, not an observation**: no record lies within 200 days of the sitting, but the same senator is recorded in the same caucus on both sides of it, inside one mandate; see `bloc_span_days`). Empty where there is no caucus at all (1.4%, spread thinly across the years). |
+| `bloc_basis` | Where the caucus came from: `roll call` (44.7% of senators' floor passages), `archived roster` (39.5%, May 2000 to 2004), `chair's call` (12.3%, 1998 to early 2000: the chair naming the caucus of the senator it gave the floor to, in the transcript itself), `floor statement` (0.9%, 1998 to May 2000: a senator saying on the floor which caucus they speak for — "en nombre del bloque justicialista…" — read by hand, one passage at a time) or `archived senator page` (1.2%, the senators' own pages captured on 2 February 1998). `bloque_observado.csv` gives, for every observation, the address of the exact capture or transcript it rests on; `bloque_por_llamado.csv` and `bloque_por_declaracion.csv` also quote the words. |
 | `bloc_observed` | The date the caucus was actually recorded on. |
 | `bloc_gap_days` | How many days that is from the sitting. Median 0 — most sittings are themselves roll-call days. Rows further than 200 days from any observation get no caucus, unless they are `bracketed`. |
 | `bloc_span_days` | Only on `bracketed` rows: how many days apart the two observations on either side of the sitting are (407 to 843). The shorter it is, the less room for an unrecorded switch; filter on it to set your own limit. |
@@ -247,17 +247,26 @@ what the analysis in this repository does, and it says so.
   another spoke, and four calls are refused for that. "Bloque de la Alianza"
   is never read as a caucus: the Alianza was a coalition, and its two caucuses
   sat apart. Where a call and an archived page fall within 200 days of each
-  other they agree in all 66 cases, but a senator who is never called by
-  caucus has none unless they said it themselves: 32 floor statements, read
-  by hand and each agreeing with every other source near it, add 275 blocks,
-  and 1998 and 1999 hold 786 without one. Of those, 392 are filled by
-  inference and marked `bracketed`: the same senator is recorded in the same
-  caucus before and after, within one mandate, 407 to 843 days apart. That
-  was measured before it was allowed: across every pair of roll calls 400 to
-  2,200 days apart showing a senator in the same caucus, over half a million,
-  none hides a different caucus in between; across the archived roster pages
-  of 2000-2004, 2 of 1,591 do. 394 blocks of 1998-1999 remain without a
-  caucus. `bloc_basis` says which source each caucus came from.
+  other they agree in all 153 cases. The chair does not always say "bloque"
+  ("de la Unión Cívica Radical", "del Partido Cruzada Renovadora"); those
+  calls are read too, only through a hand table of which party names a
+  caucus, and each of the 158 was checked against the same senator's other
+  readings within a year first: 153 agree, none disagrees, 5 have nothing
+  near. A senator who is never called by caucus has none unless they said it
+  themselves: 32 floor statements, read by hand and each agreeing with every
+  other source near it. Where a senator is still unrecorded, 208 blocks are
+  filled by inference and marked `bracketed`: the same senator is recorded in
+  the same caucus before and after, within one mandate, 407 to 843 days
+  apart. That was measured before it was allowed, on the archived roster
+  pages of 2000-2004: of 1,591 pairs showing a senator in the same caucus
+  that far apart, 2 hide a different caucus in between. (Roll calls cannot
+  measure it: the Senate re-labels them with a senator's later caucus, so
+  they show a change inside 2 of 338 mandates against 17 of 176 on the
+  roster pages.) 200 blocks of 1998-1999 remain without a caucus. Carrying a
+  caucus from one side only was measured too and refused: on the roster
+  pages, 5 to 10% of such carries within a mandate land on a different
+  caucus. So was bracketing across a re-election: only 21 pairs can test it,
+  and in 2 the senator changed caucus exactly as the new mandate began. `bloc_basis` says which source each caucus came from.
 - **Roughly a fifth of each document is dropped on purpose**: contents pages,
   attendance rolls, appendices and inserted documents that were never spoken.
   The median sitting keeps 82.8% of its printed text, and the two formats

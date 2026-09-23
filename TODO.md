@@ -1858,6 +1858,28 @@ and 21.5 million words of attributed speech become 25.7.
       `bloc_status = "bracketed"` with a new `bloc_span_days` column; none
       changed an existing caucus. 394 blocks of 1998-1999 remain, mostly
       senators with an observation on one side only (Avelín, 131).
+      CORRECTED the same day: the roll-call half of that measurement says
+      nothing. The Senate re-labels old roll calls with a senator's later
+      caucus, so they show a change inside 2 of 338 mandates where the
+      roster pages show one inside 17 of 176. The rule rests on the roster
+      pages' 2 of 1,591 alone, and the docs now say so.
+- [x] (done, 23 September 2026) The chair's calls without the word
+      "bloque". The first reading kept only "del bloque …" with no comma
+      before it and missed "por San Juan, del bloque …", "de la Unión Cívica
+      Radical", "del Partido Cruzada Renovadora", "ha pedido la palabra".
+      153 calls become 311, none lost; each of the 158 new ones checked
+      against the same senator's other readings within a year first: 153
+      agree, none disagrees, 5 have nothing near. 194 blocks gained (Avelín
+      131, Molinari Romero 32, Bauzá 15, Villarroel 9, Raijer 4, Ortega 3),
+      190 bracketed blocks now rest on a call instead, nothing changed.
+      Coverage 98.6%; 200 blocks of 1998-1999 remain.
+- [x] (refused, 23 September 2026) Two ways to fill those 200, measured and
+      not taken. Carrying a caucus from one side only, within a mandate: on
+      the 2000-2004 roster pages 5% of such carries 200+ days long land on a
+      different caucus, 7-10% beyond 600 days. Bracketing across a
+      re-election (Tell, Sager, Costanzo): 21 testable pairs, and in 2 the
+      senator changed caucus exactly as the new mandate began. Rivas and
+      Ludueña have no reading at all.
 - [x] (done, 22 September 2026) Three sittings of 2003 label the chair "Sr.
       Presidente (Maqueda)" after Maqueda left the Senate for the Supreme
       Court on 27 December 2002. It is 13 blocks, not 15, all routine agenda
