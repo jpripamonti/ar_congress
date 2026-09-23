@@ -42,7 +42,8 @@ Inputs:  data/processed/senado/blocks/*.parquet,
 Output:  data/processed/senado/speakers.parquet — one row per
          (session_id, speaker_raw) with person_id, name, elected_ticket,
          province, bloc, bloc_status, bloc_basis, bloc_observed,
-         bloc_gap_days, role, match_status — plus a printed summary.
+         bloc_gap_days, bloc_span_days, role, match_status — plus a
+         printed summary.
 """
 
 import csv
@@ -810,7 +811,45 @@ def bloc_alive_on(bloc, when, lives):
                for s, e in spans)
 
 
-def bloc_on(person_id, when, obs, lives):
+def bracketed(rows, when, lives, terms):
+    """The caucus a senator was seen in on BOTH sides of a sitting too far
+    from either to take it from one, or None.
+
+    Nothing is recorded of 1998 and 1999 for the senators the chair never
+    introduced by caucus and who never said theirs, except that the same
+    senator is observed in the same caucus before and after. Reading the
+    sitting as that caucus is an inference, not an observation, and it is
+    marked so (`bloc_status = "bracketed"`), with how far apart the two
+    observations are (`bloc_span_days`), so a reader can set their own limit.
+
+    It is allowed only where it is safe, and how safe was measured: across
+    every pair of roll calls 400 to 2,200 days apart that show a senator in
+    the same caucus — over half a million pairs — none has a different caucus
+    in between, and across the archived roster pages of 2000-2004, 2 of 1,591
+    do. The two observations must be the nearest on each side, both readings
+    that could describe their own day, and all three dates inside one
+    mandate: a new mandate is exactly when a senator changes caucus.
+    """
+    ok = [r for r in rows if r[2] == "confirmed"
+          and (r[3] != "roll call" or bloc_alive_on(r[1], when, lives))]
+    before = [r for r in ok if r[0] <= when]
+    after = [r for r in ok if r[0] >= when]
+    if not before or not after:
+        return None
+    b = max(before, key=lambda r: r[0])
+    a = min(after, key=lambda r: r[0])
+    if norm(b[1]) != norm(a[1]):
+        return None
+    if not any(t0 <= b[0] and (t1 is None or a[0] <= t1) for t0, t1 in terms):
+        return None
+    near = min((b, a), key=lambda r: abs((r[0] - when).days))
+    return {"bloc": near[1], "bloc_status": "bracketed", "bloc_basis": near[3],
+            "bloc_observed": near[0].isoformat(),
+            "bloc_gap_days": abs((near[0] - when).days),
+            "bloc_span_days": (a[0] - b[0]).days}
+
+
+def bloc_on(person_id, when, obs, lives, terms=()):
     """The caucus recorded nearest to `when`, or empty fields if none is close.
 
     The reading was checked against the caucus's dated life on the day it was
@@ -834,7 +873,7 @@ def bloc_on(person_id, when, obs, lives):
     d, bloc, status, basis = min(rows, key=lambda x: abs((x[0] - when).days))
     gap = abs((d - when).days)
     if gap > BLOC_MAX_GAP_DAYS:
-        return {}
+        return bracketed(rows, when, lives, terms) or {}
     if (status == "confirmed" and basis == "roll call"
             and not bloc_alive_on(bloc, when, lives)):
         status = "anachronistic"
@@ -878,6 +917,9 @@ def main():
     print(f"{len(mandates)} mandate rows, {len(auth)} authority rows")
     bloc_obs = load_bloc_observations()
     bloc_lives = load_bloc_lives()
+    terms = {}
+    for m in mandates:
+        terms.setdefault(m["person_id"], []).append((m["start"], m["end"]))
     presiding = load_presiding_by_file()
     print(f"{sum(len(v) for v in presiding.values())} presiding names "
           f"from the mastheads of {len(presiding)} sittings")
@@ -937,11 +979,13 @@ def main():
             "province": res.get("province"),
             "match_status": res["match_status"],
             "tiebreak": res.get("tiebreak"),
-            **bloc_on(res.get("person_id"), d, bloc_obs, bloc_lives),
+            **bloc_on(res.get("person_id"), d, bloc_obs, bloc_lives,
+                      terms.get(res.get("person_id"), ())),
         })
 
     df = pd.DataFrame(out)
-    for c in ("bloc", "bloc_status", "bloc_basis", "bloc_observed", "bloc_gap_days"):
+    for c in ("bloc", "bloc_status", "bloc_basis", "bloc_observed", "bloc_gap_days",
+              "bloc_span_days"):
         if c not in df:
             df[c] = None
     df.to_parquet(OUT_PATH, index=False)

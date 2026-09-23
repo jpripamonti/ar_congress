@@ -517,7 +517,7 @@ as its own HTML export for most of 1998–2003; both are read here.
   reading that will not accept a courtesy title can drop them with one filter.
   On the 69 Sapag turns the chair introduces by name, its wording agrees with
   the title in all 69.
-- Caucus attached to **98.2% of senator speech blocks**; 2,808 have none, and
+- Caucus attached to **98.4% of senator speech blocks**; 2,416 have none, and
   no year holds more than 580 of them. Before the roll calls begin in 2005 the
   chamber's composition survives in three places, each the chamber's own
   record: its bloc-roster page as the Internet Archive kept it from 25 May
@@ -529,8 +529,11 @@ as its own HTML export for most of 1998–2003; both are read here.
   and wherever a call and an archived page fall within 200 days of each other
   they agree, 66 times out of 66. Senators also said it themselves — "en
   nombre del bloque justicialista…" — and 32 such statements, read by hand
-  because the phrase is used loosely, add what the chair's calls miss. Nothing is carried across a gap by
-  inference, and every caucus carries the page or transcript it came from.
+  because the phrase is used loosely, add what the chair's calls miss. Where a senator is still unrecorded but
+  seen in the same caucus on both sides of a sitting, within one mandate, 392
+  blocks of 1998-1999 take that caucus by inference, marked
+  `bloc_status = "bracketed"` with the days between the two observations;
+  everything else carries the page or transcript it came from.
 - **What every column holds and what not to assume about it**:
   [docs/DATA_DICTIONARY.md](docs/DATA_DICTIONARY.md) — written for someone who
   has never seen this project. How a version is cut, checked and cited:

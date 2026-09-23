@@ -1849,6 +1849,15 @@ and 21.5 million words of attributed speech become 25.7.
       Alianza" — the coalition — and "bloque peronista", which does not say
       which Peronist caucus). None disagrees with another source within 400
       days. 275 blocks gained, none changed; 786 of 1998-1999 remain.
+- [x] (done, 23 September 2026) Carry a caucus across a gap where the same
+      senator is recorded in it on both sides, inside one mandate. Measured
+      first: of 550,000+ roll-call pairs 400-2,200 days apart showing a
+      senator in the same caucus, none has another caucus in between; of the
+      archived roster pages' 1,591 such pairs, 2 do. 392 blocks of 23
+      senators, all 1998-1999, spans 407-843 days (median 659), marked
+      `bloc_status = "bracketed"` with a new `bloc_span_days` column; none
+      changed an existing caucus. 394 blocks of 1998-1999 remain, mostly
+      senators with an observation on one side only (Avelín, 131).
 - [x] (done, 22 September 2026) Three sittings of 2003 label the chair "Sr.
       Presidente (Maqueda)" after Maqueda left the Senate for the Supreme
       Court on 27 December 2002. It is 13 blocks, not 15, all routine agenda
