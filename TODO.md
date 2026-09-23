@@ -1935,6 +1935,12 @@ and 21.5 million words of attributed speech become 25.7.
       nothing found says who held it in 1999. Next step if anyone pursues
       it: each provincial paper's own archive, searched through its own
       interface, which general web search does not reach.
+      A last round the same day, three Haiku agents searching each of the 17
+      senators still missing (97 blocks) by exact full name, found nothing
+      usable: every "finding" was a caucus guessed from a vote, an attendance
+      list or a party, mostly from transcripts already in the corpus, with no
+      quote naming a caucus; one was wrong (Reutemann put in "the Alianza").
+      Not passed on to verification, since there was no quote to verify.
 - [x] (done, 22 September 2026) Three sittings of 2003 label the chair "Sr.
       Presidente (Maqueda)" after Maqueda left the Senate for the Supreme
       Court on 27 December 2002. It is 13 blocks, not 15, all routine agenda
