@@ -128,8 +128,15 @@ def clean_label(label):
     s = re.sub(r"^(?i:(sres|srta|sra|sr))(?:(?:[.\-]\s*)+|\s+)(?=[^\W\d_])",
                lambda m: f"{m.group(1).capitalize()}. ", s)
     s = re.sub(r"\(\s*", "(", s)
+    s = re.sub(r"\(+", "(", s)                              # "Sr. PRESIDENTE ((Ulloa)"
+    s = re.sub(r"(\([^()]+\))(?:\s*\1)+$", r"\1", s)       # "(Menem) (Menem)" -> printed once
     if ")" in s and "(" not in s:
-        s = s.replace(")", "")                              # "Sr. Presidente)" -> stray close paren
+        # "Sr. PRESIDENTE Menem)" lost its opening parenthesis, not its holder:
+        # a name after the office goes back inside it. With no name, the
+        # parenthesis is stray ("Sr. Presidente)").
+        s = re.sub(r"^((?:Sr|Sra|Srta|Sres)\.\s+\S+)\s+([^()]+?)\s*\)$", r"\1 (\2)", s)
+        if "(" not in s:
+            s = s.replace(")", "")
     if "(" in s and ")" not in s:
         s += ")"                                            # "…(Abdala" -> closed
     return fix_role_typos(re.sub(r"\s+", " ", s))

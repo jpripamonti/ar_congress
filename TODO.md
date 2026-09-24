@@ -2839,6 +2839,70 @@ and 21.5 million words of attributed speech become 25.7.
 - [x] **The review sheet quotes what is printed just before the passage**, so
       a three-word turn is found by reading, not by counting occurrences.
 
+## Phase 42 — cutting 0.5.6 (24 September 2026)
+
+- [x] **The whole checklist re-run on the build that ships**: `parse.py
+      --force` (605 PDFs, the 1997 tribunal the one failure),
+      `parse_html.py --force` (213, none), the caucus chain, gold 310/310 and
+      82/82, HTML gold 195/195 on both readings, 108/108 annotations against
+      their pages, blind reads 6,529 hold and 0 changed, the notebook
+      re-executed and its four figures regenerated.
+- [x] **The two blind-read records that still failed were the check, not the
+      corpus.** Both were read on pages of the committee meeting appended to
+      2014-09-03_r13, which the parser now files as furniture. The check found
+      no speech with the words on their page and went on to search the whole
+      sitting, where a single 24-character window of one of them sits in
+      another senator's speech — and reported a reattribution. It now asks
+      first whether something else on the SAME page holds the whole quote, and
+      calls that "moved out of speech". Measured against the previous run over
+      all 6,819 records: those two change and nothing else. It cannot hide a
+      real reattribution, because a reattributed passage is still speech and is
+      found on its page before this branch is reached.
+- [x] **A label that lost its opening parenthesis was credited to the wrong
+      man.** "Sr. PRESIDENTE Menem)" (20 May 1998) was cleaned to "Sr.
+      PRESIDENTE Menem", read as the office, and given to Ruckauf, who held it;
+      Menem held the chair. `clean_label` now puts a name after the office
+      back inside the parenthesis it lost, collapses "((" and a holder printed
+      twice ("(Menem) (Menem)"), and strips a closing parenthesis only when
+      nothing precedes it but the office. Over all 23,961 labels it changes
+      exactly four: that one, now Menem; "(Menem) (Menem)" of 23 September
+      1998 and "Presidente  Menem)" of the November 2001 scan, both unmatched
+      and now Menem; and "((Ulloa)", already right. Found by reading the four
+      odd labels the audit lists before writing that they resolve correctly.
+- [x] **The bundle carries what the pipeline has grown**: `parse_html.py`,
+      the caucus scripts, the HTML gold set and the archived senators' pages.
+      `docs/DEPOSIT_README.md` rewritten for 0.5.6 — it describes a release,
+      so it changes when one is cut. `docs/RELEASE.md`'s table of what ships
+      had described the 0.4.37 bundle before it was cut down to the dataset;
+      it now matches `make_release.py`.
+- [x] **The ticket-versus-caucus split in the data dictionary was the PDF
+      era's.** Recomputed over the whole corpus with the same definition
+      (the 0.4.37 figure reproduces on the PDF years alone, 14.85 million
+      words, 0.31%): 20.5 million words, 19.6% written the same, 63.4% the
+      same camp, 17.0% different camps, 0.38% floor-crossing.
+
+- [x] **The audit's split-label check failed on a typo the parser had
+      repaired.** "Sr. Presidented (Maqueda)" (1 August 2002) is attributed
+      to Maqueda, but the check compared the printed label with the parsed one
+      letter for letter. It now reads a misspelt office word on both sides the
+      way speaker resolution does (`fix_role_typos`) — both, because the
+      parser repairs some ("Presidented") and keeps others as printed
+      ("Secreetario", "Preisdente"), and a first version that repaired only the
+      printed side broke those two. 14,443 of 14,443 attributed; the audit
+      goes from 15 things to look at to 14, every one printed that way. The
+      repair only accepts a word of eight letters or more very close to an
+      office name, so it cannot turn one office into another or touch a name.
+- [x] **Two annotation briefs carried a personal path** ("Repo:
+      /Users/…"), and both ship. Now "relative to the repository root".
+- [x] **Bundle built and verified**: 1,469 files, 129 MB, 96 MB packed,
+      sha256 25909a27…; clean extraction, every checksum passes, no personal
+      path, every script imports, the README's loading example gives 439,692
+      rows and 245,725 speech passages over 817 sittings.
+- [ ] **For the owner**: reserve the version DOI on Zenodo (New version on
+      the published record), then put it in `CITATION.cff`,
+      `docs/DEPOSIT_README.md`, `README.md`, `docs/RELEASE.md` and the notes,
+      rebuild, tag `v0.5.6`, upload and publish.
+
 ## Explicitly not building
 
 Packaging/PyPI, docs site, utils wrappers, test-file mirror, separate

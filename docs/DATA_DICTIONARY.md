@@ -126,20 +126,20 @@ people in different sittings, and sometimes within one sitting.
 with once in the chamber. They disagree across most of the corpus, and the
 disagreement is not noise:
 
-Measured over the 14.7 million words of floor speech by identified senators
-where both affiliations are recorded, and grouping labels into the four party
-families the notebook uses:
+Measured over the 20.5 million words of floor speech by identified senators
+(`match_status == "matched_senator"`) where both affiliations are recorded,
+and grouping labels into the four party families the notebook uses:
 
-- The two are written the same way in **9.2%**.
-- They are written differently but mean the same political camp in **72.0%** —
+- The two are written the same way in **19.6%**.
+- They are written differently but mean the same political camp in **63.4%** —
   the peronist bloc renaming itself, mostly.
-- They fall in different camps in **18.9%**, and this is the part that matters:
-  three quarters of it is a senator elected on a **provincial alliance** who sits
+- They fall in different camps in **17.0%**, and this is the part that matters:
+  two thirds of it is a senator elected on a **provincial alliance** who sits
   with a **national caucus**. Someone elected for the Frente Jujeño sits with
   the radicals; someone elected for Chubut Somos Todos sits with the Frente de
   Todos. The ticket does not say which side of the chamber they are on. The
   caucus does.
-- Genuine floor-crossing between two *named* national camps is **0.31%**.
+- Genuine floor-crossing between two *named* national camps is **0.38%**.
 
 So: for "which party won this seat", use the ticket. For anything about how the
 chamber divided, use the caucus.

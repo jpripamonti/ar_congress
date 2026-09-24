@@ -4,22 +4,22 @@ message: >-
   Argentine Senate's and are cited separately, by sitting date and the
   per-sitting URL in raw_data_manifest.csv; see docs/RELEASE.md.
 title: >-
-  Argentine Senate stenographic transcripts, 2000-2024: a speaker-attributed
+  Argentine Senate stenographic transcripts, 1998-2026: a speaker-attributed
   corpus
 abstract: >-
   Every stenographic record (version taquigrafica) the Argentine Senate serves
-  for its sittings from February 2000 to December 2024, parsed from the
-  chamber's own PDFs into speaker-attributed passages: 559 sittings, 233,408
-  rows, 151,761 passages of speech and 31,955 typed stenographer's notes,
-  21.46 million words. Each passage carries the printed speaker label, the
-  senator it resolves to and the caucus that senator sat with on the day. The
-  source PDFs are not redistributed: a manifest identifies each one by SHA-256
-  and source URL, and the downloader in the repository fetches them again. The
-  derived tables and reference data are CC BY 4.0; the code that produces them
-  is MIT.
+  for its sittings from February 1998 to September 2026, parsed from the
+  chamber's own PDFs and, for 1998-2003, its HTML export into
+  speaker-attributed passages: 817 sittings, 439,692 rows, 245,725 passages of
+  speech and 69,376 typed stenographer's notes, 25.72 million words of speech.
+  Each passage carries the printed speaker label, the senator it resolves to
+  and the caucus that senator sat with on the day. The source files are not
+  redistributed: a manifest identifies each one by SHA-256 and source URL, and
+  the downloader in the repository fetches them again. The derived tables and
+  reference data are CC BY 4.0; the code that produces them is MIT.
 type: dataset
-version: 0.4.37
-date-released: '2026-09-08'
+version: 0.5.6
+date-released: '2026-09-24'
 license: CC-BY-4.0
 authors:
   - family-names: Ripamonti
@@ -41,6 +41,3 @@ identifiers:
     description: >-
       The concept DOI, which always resolves to the latest version. Cite this
       one unless the exact bytes matter.
-  - type: doi
-    value: 10.5281/zenodo.22661020
-    description: The DOI of version 0.4.37.

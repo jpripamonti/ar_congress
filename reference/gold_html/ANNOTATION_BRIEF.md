@@ -3,7 +3,7 @@ build a GOLD SET — the reference other work is scored against. Your output
 becomes ground truth, so an error here mismeasures the corpus permanently.
 Accuracy matters far more than speed.
 
-Repo: /Users/neo/PARA/01-projects/active/other/ar_congress
+Paths below are relative to the repository root.
 Stretches: reference/gold_html/stretches/<stretch_id>.html
 
 Each file is a fragment of the chamber's own Corel WordPerfect HTML export.

@@ -35,8 +35,8 @@ as its own HTML export for most of 1998–2003; both are read here.
 - Corpus parsed: 245,725 speaker-attributed speech blocks and 69,376 typed
   stenographer events in 439,692 rows over 817 sittings, as per-session Parquet
   under `data/processed/senado/`. 25.7 million words of attributed speech, of
-  which the HTML side contributes 5.9 million. The PDF side is parser 0.5.3 and
-  the HTML side `scripts/parse_html.py` at 0.5.8-html; the two share the speaker
+  which the HTML side contributes 5.9 million. The PDF side is parser 0.5.6 and
+  the HTML side `scripts/parse_html.py` at 0.5.9-html; the two share the speaker
   pattern and the event subtypes, so a passage means the same thing in either.
   One sitting fails to parse: the 1997 impeachment tribunal, a photocopy saved
   as page images with no text layer at all, so there is nothing to read. It used to be two — the no-quorum sitting of 29

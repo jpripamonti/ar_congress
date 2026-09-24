@@ -230,6 +230,18 @@ def judge(record, blocks):
             if len(hits) > 1:
                 where += f" ({len(hits)} turns print it)"
             return verdict_for(record, {r.speaker_raw for r in hits}, where)
+        # Before looking for the words across the whole sitting: if no speech
+        # on the page holds them but something else on that page holds all of
+        # them, the passage is still printed where the round saw it and a
+        # repair has taken it out of speech — the committee meeting appended
+        # to 2014-09-03_r13, now kept as furniture, is the case. Searching the
+        # sitting instead found a single window of it in another senator's
+        # speech and reported a reattribution that never happened.
+        if where == "page" and page is not None:
+            whole = [b for b in blocks if b.type != "speech"
+                     and page in b.page_set and key in b.flat_text]
+            if whole:
+                return "moved out of speech", whole[0].type, "page"
 
     # not speech any more: a repair moved it to the stenographer's notes
     elsewhere = matches([b for b in blocks if b.type != "speech"])

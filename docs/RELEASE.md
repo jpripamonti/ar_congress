@@ -7,47 +7,47 @@ so a release is a separate, frozen bundle.
 
 ## What goes out
 
+The dataset, the code that produces it, and what a stranger needs to use, check
+and cite it — nothing else. `scripts/make_release.py` is the list in code, and
+it names the pipeline script by script, so adding a script to the repository
+is a decision about the release rather than an accident of a glob.
+
 | Part | Where it comes from | Why it is in the release |
 | --- | --- | --- |
 | The passages, one file per sitting | `data/processed/senado/blocks/*.parquet` | The corpus itself. |
 | The resolved speakers | `data/processed/senado/speakers.parquet` | Turns a printed label into a person, and into the caucus they sat with. |
-| The caucus observations | `reference/senado/bloque_observado.csv` | Every day one senator's caucus was actually recorded, with the record it came from and how far it can be trusted. |
-| The archived bloc-roster pages | `data/raw/senado/bloques_archivados/` | HTML, 17 captures, of which 16 carry names — the seventeenth (14 June 2002) is a truncated Wayback snapshot with no roster in it, kept because it is evidence of the gap. The only copies of a Senate page that no longer exists; the pre-2005 caucus cannot be rebuilt without them. |
-| The parse record | `data/processed/senado/parse_stats.csv` | 40 counts per sitting of what the parser did to it, so every repair can be recomputed rather than trusted. |
-| The per-sitting logs | `data/processed/senado/logs/` | 605 logs, one per PDF sitting, of what the parser did line by line. The HTML sittings have none. The parse record counts it; these say it. |
-| What the checks printed | `gold_eval.csv`, `blind_read_check.csv`, `audit_source.csv`, `review_sheet.csv` | The output of the verification scripts on the build being released, beside the records they were run against. |
-| The listing snapshots | `data/raw/senado/listings/` | What the portal offered on the day the PDFs were fetched, which is the only evidence of what it lists and does not serve. |
-| The pipeline | `scripts/`, `pyproject.toml`, `uv.lock` | The bundle's whole arrangement is that the sources are not redistributed and can be fetched again — which takes the code, and the pinned versions it was calibrated against, since pdfplumber's character extraction changes between releases. |
-| The provenance manifest | `raw_data_manifest.csv` | Checksum, source URL and download time of every source file. |
-| The reference tables | `reference/senado/` | Roster snapshots, hand-dated caucuses, observed authorities. |
-| The verification records | `reference/verification/`, `reference/gold/` | The nine blind reads and the hand-annotated pages, so the accuracy claims can be re-checked and not merely believed. |
-| The documentation | `docs/DATA_DICTIONARY.md`, `docs/RELEASE.md`, the release notes, `SOURCES.md`, `README.md`, `TODO.md` | What the columns mean, where it came from, what its limits are. `TODO.md` is in because the README and the release notes cite its phases as the record of what was repaired and on what evidence. |
-| The analysis and its figures | `notebooks/analysis.ipynb`, `figures/` | The notebook reads the shipped tables and writes those four figures, so it runs where the bundle is unpacked, and the README's images are there. |
-| The citation metadata | `CITATION.cff` | Author, title, version and licence in the form a reference manager can read. |
-| The licence | `LICENSE-DATA` | What the data may be used for. The code's MIT licence does not cover it. |
+| The parse record | `data/processed/senado/parse_stats.csv` | What the parser did to each sitting, counted, so every repair can be recomputed rather than trusted. |
+| The archived Senate pages | `data/raw/senado/bloques_archivados/`, `data/raw/senado/fichas_archivadas/` | Internet Archive captures of the bloc roster (2000–2004) and of senators' own pages (1997–1998). The Senate pages no longer exist, and the caucus before 2005 cannot be rebuilt without them. |
+| The reference tables | `reference/senado/` | Roster snapshots, caucus observations with their sources, hand-dated caucuses, observed authorities. |
+| The accuracy sets | `reference/gold/`, `reference/gold_html/` | The hand-annotated PDF pages and HTML stretches the accuracy figures are measured on. |
+| The provenance manifest | `raw_data_manifest.csv` | Checksum, source URL, format and download time of every source file. |
+| The pipeline | the scripts named in `make_release.py`, `pyproject.toml`, `uv.lock` | The sources are not redistributed and can be fetched again, which takes the code and the pinned versions it was calibrated against, since pdfplumber's character extraction changes between releases. |
+| The documentation | `docs/DEPOSIT_README.md` (shipped as `README.md`), `docs/DATA_DICTIONARY.md` | What it is, how to load and rebuild it, how far it was checked, what it gets wrong; what every column means. |
+| The citation and the terms | `CITATION.cff`, `LICENSE`, `LICENSE-DATA` | The citation in machine-readable form; MIT for the code, CC BY 4.0 for the data. |
 
-Everything sits at the path the repository gives it — `data/processed/senado/`,
-`scripts/`, `reference/` — so every path the documentation names is the path in
-the bundle, and the notebook and the scripts run where it is unpacked.
+What stays in the repository: the working log (`TODO.md`), this document, the
+release notes, the parse logs, the blind-read records, the output of the
+checks, the notebook and its figures, the listing snapshots. They are how the
+corpus was made and checked, not part of what is published; the bundle's
+README states what the checks printed on the released build.
 
-The source PDFs are **not** redistributed. They are the Senate's to publish, the
-manifest identifies each one by checksum and URL, and `scripts/download.py`
+Everything sits at the path the repository gives it, so every path the
+documentation names is the path in the bundle, and the scripts run where it is
+unpacked.
+
+The source files are **not** redistributed. They are the Senate's to publish,
+the manifest identifies each one by checksum and URL, and `scripts/download.py`
 fetches them again. This is the same arrangement other parliamentary corpora
 use where the source cannot be passed on: release the pipeline and a
 record-level manifest, so anyone with access to the sources rebuilds the exact
 corpus.
-
-The archived bloc-roster pages under `data/raw/senado/bloques_archivados/` are
-kept, because unlike the PDFs they are copies of pages that no longer exist
-anywhere else and the analysis cannot be re-run without them. Each row derived
-from them carries the archive URL it came from.
 
 ## Before a release goes out
 
 Each of these must pass, and the numbers they print belong in the release notes.
 
 ```bash
-uv run scripts/parse.py --force
+uv run scripts/parse.py --force && uv run scripts/parse_html.py --force
 ```
 
 ```bash
@@ -55,7 +55,7 @@ uv run scripts/fetch_archived_blocs.py --offline && uv run scripts/build_bloc_ob
 ```
 
 ```bash
-uv run scripts/eval_gold.py && uv run scripts/check_gold.py
+uv run scripts/eval_gold.py && uv run scripts/check_gold.py && uv run scripts/eval_gold_html.py && uv run scripts/check_gold_html.py
 ```
 
 ```bash
@@ -66,12 +66,16 @@ uv run scripts/audit_parse.py
 uv run scripts/check_blind_reads.py
 ```
 
-- The parse finishes with one known failure — a November 2001 sitting that never
-  reached quorum, so it has no opening to find.
-- Boundary and attribution against the hand-annotated pages: F1 = 0.996 (124
-  of 125 turns), on the label alone and on the label with the turn's opening
-  words alike. Events: precision 1.00, recall 0.935 (29 of 31).
-- The annotations themselves still check out against the source files: 36 of 36.
+- The PDF parse finishes with one known failure — the 1997 impeachment
+  tribunal, a photocopy saved as page images with no text in it. The HTML
+  parse finishes with none.
+- Boundary and attribution against the 72 hand-annotated PDF pages: F1 = 1.000
+  (310 of 310 turns), on the label alone and on the label with the turn's
+  opening words alike. Events: precision and recall 1.000 (82 of 82). Against
+  the 24 HTML stretches, on either reading: 195 of 195, events included, and
+  the two readings agree on every turn start.
+- The annotations themselves still check out against the source files: 108 of
+  108 (72 pages, 36 of them read twice).
   What that check asks is that each annotated turn's opening words are printed
   on the page immediately after that speaker's own label. It used to look the
   label and the words up separately, so the words only had to appear somewhere
@@ -80,7 +84,7 @@ uv run scripts/check_blind_reads.py
   onto another speaker's label on each of the 23 usable pages, the old check
   caught none of them and this one catches all 23.
 - The audit's invariants hold: no page apparatus inside a speech turn outside
-  the two scanned sittings, no turn carrying a second speaker's label, no text
+  the scanned sittings, no turn carrying a second speaker's label, no text
   written out twice, and the turns that open mid-word are printed that way.
   The apparatus check counts toward the exit status; it used to be printed and
   not counted, and a leaked footer sat in the corpus for weeks while the audit
@@ -128,13 +132,22 @@ uv run scripts/check_blind_reads.py
   "Sra. González MT" — two senators the record disambiguates by initials — as
   one person.
 
-  43 records cannot be re-asked because the page prints their words under two
-  different names, and the record says which page and which words but never
-  which of two identical turns the reader was looking at. Those are reported
-  as unaskable, not as holding.
+  264 records cannot be re-asked because the page prints their words under
+  two different names, and the record says which page and which words but
+  never which of two identical turns the reader was looking at. Those are
+  reported as unaskable, not as holding. So are the passages a repair has
+  since taken out of speech, and a passage no speech on its page carries but
+  something else on that page carries whole is one of them — it is looked for
+  there before across the sitting, because across the sitting a single window
+  of it turns up in another senator's speech and reads as a reattribution.
+  That is what the committee meeting appended to 2014-09-03_r13 did to the two
+  records read on its pages once the parser stopped attributing it to the
+  sitting; the rule changes those two records and no other of the 6,819.
 - The notebook re-executes with no errors and its figures are regenerated.
-- `README.md`, `SOURCES.md` and `docs/DATA_DICTIONARY.md` carry the new parser
-  version and the new row counts.
+- `README.md`, `docs/DEPOSIT_README.md` and `docs/DATA_DICTIONARY.md` carry the
+  new parser version and the new row counts. `DEPOSIT_README.md` is the one
+  that ships, and it describes the release: its numbers change only when a
+  release is cut, never to follow the working corpus in between.
 - `speakers.parquet` was rebuilt from the same parse as the blocks. It is
   derived from them and goes stale silently: `n_blocks` once disagreed with
   the passages in 35 (sitting, label) pairs because a parser repair had landed
@@ -142,7 +155,10 @@ uv run scripts/check_blind_reads.py
 
 ## Versioning
 
-The release version is the parser version that produced it. A release is worth
+The release version is the parser version that produced it — the PDF parser's,
+`PARSER_VERSION` in `scripts/parse.py`, which is what `make_release.py` reads.
+The HTML parser carries its own version with an `-html` suffix, and the release
+notes name both. A release is worth
 cutting when the corpus content changes — a repair that moves text or changes
 who is credited with it — not when only the documentation moves. The parse
 record and the per-sitting logs say exactly what changed, and the release notes
@@ -185,9 +201,10 @@ latest, accepts files of this size, and is what social-science and digital-
 humanities datasets are normally cited from. Publishing there is a decision for
 the author, not something the pipeline should do on its own.
 
-The bundle is roughly 100 MB of Parquet plus a few MB of reference tables,
-records and documentation — small enough that it needs no special handling.
-0.4.37 came out at 96 MB across 1,257 files, 68 MB packed.
+The bundle is a few hundred files of Parquet plus the reference tables, the
+archived pages and the documentation — small enough that it needs no special
+handling. 0.4.37 came out at 662 files and 68 MB packed; 0.5.6 at 1,469 files, 129 MB
+unpacked and 96 MB packed.
 
 Build it from the repository root, after the checks above have passed:
 
@@ -196,23 +213,22 @@ uv run scripts/make_release.py --force
 ```
 
 The script is the table above in code. It keeps every file at the path the
-repository gives it — the release notes stay under `docs/releases/` — because
-the shipped Markdown links by relative path and flattening the tree breaks
-them. The one link that cannot travel, the README's pointer to `DATA.md`, is
-rewritten to name the repository instead, and the build stops if that link is
-not found rather than passing silently. It then walks every Markdown file in
-the bundle and refuses to write the archive if any relative link points at a
-file the bundle does not carry: the first 0.4.37 bundle went out with eight
-such links, to the notebook, the figures, the roadmap and, from the release
-notes, to the licence.
+repository gives it, because the shipped Markdown links by relative path and
+flattening the tree breaks them, and it ships `docs/DEPOSIT_README.md` as the
+bundle's `README.md`. It then walks every Markdown file in the bundle and
+refuses to write the archive if any relative link points at a file the bundle
+does not carry: the first 0.4.37 bundle went out with eight such links, to the
+notebook, the figures, the roadmap and, from the release notes, to the licence.
 
 `CHECKSUMS.sha256` goes in the bundle so a downloader can verify every file,
 and the release notes carry the checksum of the archive itself. The bundle
 lives outside the repository, beside the data it is cut from, because `data/`
 is not in Git.
 
-Release notes go in `docs/releases/<version>.md` and travel inside the bundle.
-The version is tagged in Git as `v<version>` once the notes are committed.
+Release notes go in `docs/releases/<version>.md`.
+They stay in the repository, and the bundle's README carries what a user needs
+from them. The version is tagged in Git as `v<version>` once the notes are
+committed.
 
 ## Depositing it on Zenodo
 
@@ -223,15 +239,18 @@ record of what to type into the form.
 
 **Reserve the DOI before publishing, not after.** The upload form has a Reserve
 DOI button, which hands out the version's DOI while the deposit is still a
-draft. Take it before uploading the archive, because four documents in the
-bundle carry the citation and they should carry the DOI with it:
+draft; for a later version it is the New version button on the published
+record, so the concept DOI carries over. Take it before uploading the archive,
+because five documents carry the citation and they should carry the DOI with
+it — the first two travel in the bundle:
 
-- `CITATION.cff` — the commented `identifiers` block at the end
-- `README.md` — the citation in the Source section
+- `CITATION.cff` — the `identifiers` block at the end
+- `docs/DEPOSIT_README.md` — the citation at the end
+- `README.md` — the citation under Licence and citation
 - `docs/RELEASE.md` — the citation above
 - `docs/releases/<version>.md` — the citation at the end of the notes
 
-Put it in all four, rebuild the bundle so the shipped copies carry it, then
+Put it in all five, rebuild the bundle so the shipped copies carry it, then
 upload. Zenodo mints two DOIs: the one reserved here belongs to this version,
 and a second, the concept DOI, always resolves to the latest version. Cite the
 concept DOI in prose and the version DOI when the exact bytes matter.

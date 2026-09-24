@@ -89,6 +89,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 # Decoding only: a document's own declared charset is not a reading of it, and
 # the audit must not guess an encoding the parser was told.
 from provenance import decode_html  # noqa: E402
+from resolve_speakers import fix_role_typos  # noqa: E402
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 BLOCKS_DIR = REPO_ROOT / "data" / "processed" / "senado" / "blocks"
@@ -927,8 +928,16 @@ def find_split_bold_labels(raw_html):
 
 
 def _label_core(label):
-    """The name or office in a label, honorific and parenthetical aside."""
-    core = re.sub(r"^(?:Sr|Sra|Srta)\.?\s*", "", label, flags=re.I)
+    """The name or office in a label, honorific and parenthetical aside.
+
+    A misspelt office word is read the way speaker resolution reads it
+    ("Sr. Presidented (Maqueda)", 1 August 2002): the page's typo is not a
+    different speaker. Applied to the parsed label as well, since the parser
+    repairs some of these and keeps others as printed ("Sr. Secreetario").
+    Without it the check failed on the one label of 14,443 whose parse had
+    repaired the typo.
+    """
+    core = re.sub(r"^(?:Sr|Sra|Srta)\.?\s*", "", fix_role_typos(label), flags=re.I)
     core = re.sub(r"\([^)]*\)", "", core)
     return flatten(core)
 
@@ -971,7 +980,7 @@ def check_html_split_bold_labels(corpus, scanned):
             ok = False
             if rows is not None and opening:
                 for _, row in rows.iterrows():
-                    if not core or core in flatten(row.speaker_raw or ""):
+                    if not core or core in flatten(fix_role_typos(row.speaker_raw or "")):
                         out = flatten(row.text)
                         # A very short opening ("(Lee:)", "Sí.") is only safe
                         # to match at the very start of the row: found

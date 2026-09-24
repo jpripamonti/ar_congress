@@ -5,7 +5,7 @@ build a GOLD SET — the reference the parser is scored against. Your output
 becomes ground truth, so an error here mismeasures the corpus permanently.
 Accuracy matters far more than speed.
 
-Repo: `/Users/neo/PARA/01-projects/active/other/ar_congress`
+Paths below are relative to the repository root.
 Pages: `reference/gold/pages/<page_id>.png`
 Index: `reference/gold/pages.csv`
 

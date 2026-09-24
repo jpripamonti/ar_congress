@@ -40,12 +40,16 @@ PARTS = [
     (PROCESSED / "blocks", "data/processed/senado"),
     (PROCESSED / "speakers.parquet", "data/processed/senado"),
     (PROCESSED / "parse_stats.csv", "data/processed/senado"),
-    # The one input that cannot be fetched again: captures of a dead page.
+    # The inputs that cannot be fetched from the Senate again: captures of its
+    # dead bloc-roster page, and of the senators' own pages the 1998 caucuses
+    # come from.
     (RAW / "bloques_archivados", "data/raw/senado"),
-    # What the pipeline resolves against, and what the accuracy figure is
-    # measured on.
+    (RAW / "fichas_archivadas", "data/raw/senado"),
+    # What the pipeline resolves against, and what the accuracy figures are
+    # measured on: one hand-annotated set per format.
     (REPO_ROOT / "reference" / "senado", "reference"),
     (REPO_ROOT / "reference" / "gold", "reference"),
+    (REPO_ROOT / "reference" / "gold_html", "reference"),
     (REPO_ROOT / "raw_data_manifest.csv", ""),
     # The pipeline, and the environment it was calibrated in.
     (REPO_ROOT / "pyproject.toml", ""),
@@ -64,11 +68,15 @@ PARTS = [
 # (an analysis helper), check_blind_reads.py (its records stay in the
 # repository, so the script would have nothing to read here).
 SCRIPTS = [
-    "download.py", "parse.py", "make_manifest.py",
+    "download.py", "parse.py", "parse_html.py", "session_kind.py",
+    "provenance.py", "make_manifest.py",
     "fetch_roster.py", "fetch_blocs.py", "fetch_archived_blocs.py",
-    "build_bloc_observations.py", "map_blocs.py", "extract_authorities.py",
-    "resolve_speakers.py",
-    "eval_gold.py", "check_gold.py", "audit_parse.py",
+    "fetch_archived_profiles.py", "extract_chair_caucus.py",
+    "extract_declared_caucus.py", "build_bloc_observations.py", "map_blocs.py",
+    "deduce_bloc_from_counts.py", "check_bloc_counts.py",
+    "extract_authorities.py", "resolve_speakers.py",
+    "eval_gold.py", "check_gold.py", "eval_gold_html.py", "check_gold_html.py",
+    "audit_parse.py",
 ]
 
 LINK_RE = re.compile(r"!?\[[^\]]*\]\(([^)]+)\)")
