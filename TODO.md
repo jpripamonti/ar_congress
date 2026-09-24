@@ -263,6 +263,15 @@ none of the samples overlapping — 1,848 in all, spread across every year.
       reading, independent of the parser's code path but not of machine
       reading itself. `--sample N` regenerates the review sheet
       (`data/processed/senado/review_sheet.csv`) for a human pass.
+      23 September 2026, asked to do it in the owner's place: 29 turns drawn
+      fresh (`--sample 50 --sample-seed human20260923`, one a year, 1998-2026),
+      the parser's answer hidden, and each PDF page read as a rendered IMAGE,
+      not as extracted text — the HTML ones in the file itself. 29 of 29 agree,
+      including "Afirmativo." 6th of 182 on its page and "Pido la palabra." 1st
+      of 14, found by the words printed before them. Evidence in
+      `reference/verification/page_image_read_29_20260923.csv`. Left open: it
+      was still a model reading, the same kind of evidence as the blind
+      rounds, not the human pass this item asks for.
 
 ## Phase 8 — the caucus, not the ticket (done, August 2026)
 
@@ -2018,7 +2027,7 @@ and 21.5 million words of attributed speech become 25.7.
       cover read, each for its own reason — the image-only 1997 tribunal, the
       two joint sittings of both chambers, the November 2001 scan and two
       tribunal sittings of November 2003.
-- [ ] One sitting does not parse: the 1997 impeachment tribunal
+- [x] (decided 23 September 2026: left out, by the project owner's call) One sitting does not parse: the 1997 impeachment tribunal
       (1997-12-18_r117, 117th reunión, 21st sitting as tribunal, the trial of
       judge Francisco Miguel Ángel Trovato). The reason recorded here before —
       that it does not open like an ordinary sitting — was wrong. Looked at
