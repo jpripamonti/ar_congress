@@ -259,7 +259,7 @@ none of the samples overlapping — 1,848 in all, spread across every year.
       `blind_read_500.csv`, `blind_read_300.csv` and `blind_read_50.csv`.
 - [x] The audit now also checks for the appendix-pointer footnote, so this class
       stays measured instead of being fixed and forgotten.
-- [ ] Still worth doing by hand: a blind machine read is a second machine
+- [x] Still worth doing by hand: a blind machine read is a second machine
       reading, independent of the parser's code path but not of machine
       reading itself. `--sample N` regenerates the review sheet
       (`data/processed/senado/review_sheet.csv`) for a human pass.
@@ -272,6 +272,11 @@ none of the samples overlapping — 1,848 in all, spread across every year.
       `reference/verification/page_image_read_29_20260923.csv`. Left open: it
       was still a model reading, the same kind of evidence as the blind
       rounds, not the human pass this item asks for.
+      24 September 2026, the human pass: the owner checked the same 29 against
+      the page images (each PDF page rendered with the parser's phrase
+      highlighted, the HTML ones as excerpts of the file) and marked all 29 as
+      agreeing. Verdicts and timestamps are in the same CSV
+      (`correct? (y/n)`, `human_checked_at`).
 
 ## Phase 8 — the caucus, not the ticket (done, August 2026)
 
