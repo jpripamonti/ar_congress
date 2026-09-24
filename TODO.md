@@ -484,7 +484,7 @@ short of the thousand.
       with a comma, which is what the page shows; and an October 2022 page
       misspells a surname as "Sr. Rodíguez Saá", which the parser copies as
       printed and the resolver still matches to the right person.
-- [ ] **The year 2000 is exhausted.** Its 96 locatable turns have all been read
+- [x] (noted, closed 23 September 2026: a fact about the sample, not work) **The year 2000 is exhausted.** Its 96 locatable turns have all been read
       across the seven rounds, so this round covered 24 years, not 25, and its
       share of forty went to the years with turns to spare. Any further round has
       the same floor: three sittings is all that is held for that year.
@@ -514,7 +514,7 @@ short of the thousand.
       79.2%, no text written out twice, one footer leak), and all **5,348 answers
       recorded across the eight blind reads still stand — no speaker changed
       anywhere and no turn went missing**.
-- [ ] **2002 is nearly exhausted too.** It yielded 12 turns of the forty asked
+- [x] (noted, closed 23 September 2026: a fact about the sample, not work) **2002 is nearly exhausted too.** It yielded 12 turns of the forty asked
       for, on top of the year 2000 yielding none. Four sittings is all that is
       held for 2002, so future rounds keep drawing more heavily on the years
       after 2004.
@@ -550,7 +550,8 @@ short of the thousand.
       report anything on the page that looked broken as well as who was speaking.
       That is what surfaced the spacing defect: the reader was not comparing a
       label, they were reading a sentence.
-- [ ] **The blind read cannot see this class of fault.** That same case 850 was
+- [x] (closed 23 September 2026: `audit_parse.py` check 6c now reads every label for
+      a stray parenthesis, text after it, or a terminator left on) **The blind read cannot see this class of fault.** That same case 850 was
       scored as agreement, because the comparison ignores a stray character in a
       label. Reading pages blind answers who is speaking; the shape of what is
       recorded needs its own check.
@@ -1017,7 +1018,7 @@ the phase's main excuse.
       ordinary words, every one of them a half that now forms a single word.
       Gold F1 1.00 (124/125), annotations 36/36, no turn carrying another
       speaker's label, unattributed text 1,204 → 1,121 rows.
-- [ ] **What is left, measured.** Four cut titles in three sittings, each with
+- [x] (closed 23 September 2026, left as measured) **What is left, measured.** Four cut titles in three sittings, each with
       its own cause and none of them a glyph: a title running across a page
       break (13 Apr 2011), a double space inside a heading (2 Nov 2011), and an
       "N" in bold whose "º" is not (3 Sep 2020, twice). Seven wrong letters in
@@ -1025,6 +1026,12 @@ the phase's main excuse.
       text. And 47 places where a bullet or tick stands against the next word
       with no space, 43 of them in the two sittings that are scans, where the
       mark is OCR noise rather than a bullet.
+      Closed without a change. The seven letters are refused by design (the
+      font also sets body text) and the 43 marks are the scans'. Of the cut
+      titles, 3 September 2020 now reads whole; the other two, "…N° 068/11,
+      N°" across a page break and "S.-1.911/11 y otros", are chapter titles,
+      not speech, and a rule for each would buy a cosmetic fix at the price of
+      a new way to glue two headings together.
 
 ## Phase 25 — five readers sent to check Phases 19-22 (August 2026)
 
@@ -1781,7 +1788,7 @@ label was therefore written nowhere at all.
       attribution or caucus. Gold 310 of 310 unchanged. Left: "Sra Colombo.-"
       welded into a chapter title with no full stop (2004-09-15, "Pido la
       palabra."), and the two remaining rows of 2003-11-04 and 2016-11-23.
-- [ ] The parser's open items are the five ordinal marks Phase 27 found but a
+- [x] (re-measured and closed 23 September 2026, parser 0.5.6 — see Phase 41) The parser's open items are the five ordinal marks Phase 27 found but a
       neighbouring size mismatch keeps out of reach, and the 91 printed labels
       that still leave no row of their own. The secretary reading a document
       into the record was the bulk of that second number and 0.4.37 settled it
@@ -2110,7 +2117,8 @@ and 21.5 million words of attributed speech become 25.7.
       sheet said 76, 25 "En consecuencia, pasa al Archivo." where it said 20.
       Only for HTML: a PDF row carries the page number, which is how a reader
       finds the passage there.
-- [ ] The label a reader is shown is sometimes too short to be an answerable
+- [x] (closed 23 September 2026: the sheet now carries `printed_just_before`, the
+      last 15 words printed ahead of the passage) The label a reader is shown is sometimes too short to be an answerable
       question — "(Lee:)", "Pido la palabra." Now that the occurrence count is
       right the reader can still be sent to the right passage, but a sheet
       that quoted more would not depend on the count at all.
@@ -2229,7 +2237,7 @@ and 21.5 million words of attributed speech become 25.7.
       page 13 of 74 — "queda levantada la sesión", 23:37, the stenographers'
       sign-off — with the Orden del Día 1755 appended behind it. 27 November
       2003 closes at row 66 of 693 with 88,861 words of appendix after it.
-- [ ] The residue is 64,592 words, of which 36,851 are in two of the three OCR
+- [x] (closed 23 September 2026 — see Phase 41) The residue is 64,592 words, of which 36,851 are in two of the three OCR
       scans, where the fault is the scan. That leaves ~27,700 words across 50
       sittings, and the rule that explained the rest is a keyword heuristic,
       so that figure is a ceiling rather than a measurement. Worth one pass.
@@ -2293,7 +2301,9 @@ and 21.5 million words of attributed speech become 25.7.
       did not see instead of redrawing the ones already answered.
 - [x] `scripts/show_passage.py` — opens an HTML transcript at a passage for a
       reader, marking the bold runs, since these files have no page numbers.
-- [ ] Nineteen of twenty readers reported the same thing unprompted: the bold
+- [x] (closed 23 September 2026: the check exists — `audit_parse.py`'s "HTML split
+      labels" section finds 14,443 labels of this shape and verifies each one's
+      attribution) Nineteen of twenty readers reported the same thing unprompted: the bold
       run that should wrap a speaker's label instead opens at the section
       heading above it and closes partway through the name, so the label is
       not a bold run of its own. The parser reads these correctly — that is
@@ -2515,7 +2525,7 @@ and 21.5 million words of attributed speech become 25.7.
       cover. The real multi-page shape is 26 sittings, and the mid-document
       stretches in 2005-2009 are appended annexes, correctly tagged furniture.
       Scan at `scratchpad/furniture_scan.csv`.
-- [ ] (superseded) Two sittings are set in a sans-serif face with no header, footer or page
+- [x] (superseded) Two sittings are set in a sans-serif face with no header, footer or page
       number at all (1998-07-23 p7, 2003-07-23 p74), which looks typeset from a
       different source. Worth knowing how many sittings are like that before
       trusting any rule that keys on the running header.
@@ -2756,6 +2766,64 @@ and 21.5 million words of attributed speech become 25.7.
       and the gap against the PDF half — 791 applause notes on their own row —
       is how the two eras were printed: the 1998-2003 WordPerfect exports
       almost never set applause as a paragraph of its own. Nothing to change.
+
+## Phase 41 — the labels that led nowhere, and the rest of the list (23 September 2026 — parser 0.5.6)
+
+- [x] **Printed labels that open a turn with no row: 43 → 19** (the "91" of
+      0.4.37, re-measured on today's corpus as turn numbers that leave no row).
+      Read one by one. 6 are the November 2001 scan. Most of the rest are the
+      secretary's label followed by the document he reads, which the page
+      sets as a heading or an inserted text — whether that document is his
+      turn is the definitional question left open above, not a defect.
+- [x] **A quoted hearing put one man's questions in another's mouth.** On 27
+      November 2003 a senator quotes, in italics, Badeni questioning
+      Magariños: "Sr. Magariños. — No." / "Sr. Badeni. — ¿Se le permitió…?".
+      The question after each label was typed as an italic fragment with no
+      turn, and glued onto the answer above it — 154 words of Badeni's under
+      Magariños, 18 of the chair's, 11 of Falú's. Italics printed straight
+      after a label now belong to that label: they open its speech when the
+      speech goes on, and otherwise stand as its note, as every other line of
+      that exchange does. Corpus-wide the same rule moves "(Lee:)" from the
+      chair who asked for the reading to the secretary whose label it is
+      printed under, and an italic "Okay" back to the presiding
+      officer who said it. A first draft carried the label's own italic ". —"
+      into the speech (". — Senadora Latorre: sírvase…"); it is punctuation
+      and is now dropped, which also takes ". —" off the end of 17 notes and
+      votes it used to be glued to.
+- [x] **A note welded below a label's note no longer inherits the label.**
+      "Sr. Secretario (Estrada). — (Lee:)" / "— El texto es el siguiente:"
+      split into two rows, and both carried the secretary. Only the first is
+      his. 
+- [x] **The chair's closing parenthesis was left in the speech** — "Sra.
+      Presidente (Villarruel" / ").- Sí, senador Mayans." — in 23 labels of
+      2014-2025, and five labels kept a comma for their full stop ("Sr.
+      Menem,"). Both repaired: 28 labels become the clean label of the same
+      person, and the five comma labels, which resolved to nobody, now
+      resolve (unmatched 114 → 109). An italic "(Estrada)" after "Sr.
+      Secretario" is read into the label — only after an office, since after
+      a senator an italic parenthesis is a stage note ("(de pie)"), which a
+      first draft wrongly read as part of the name.
+- [x] **Measured against 0.5.5**, by speaker, over every row that carries one:
+      57 PDF sittings change; the only words that move between named people
+      are the ones above, each read in the row diff; `speakers.parquet`
+      changes no attribution and no caucus. Gold 310/310 and events 82/82;
+      blind reads unchanged (6,529 hold, the same 2 CHANGED in the 2014
+      sitting that held the wrong document); audit unchanged on every
+      invariant, turns ending on a dash or comma 65 → 55.
+- [x] **New audit check 6c: labels carrying a character no label should.** The
+      blind read forgives a stray character in a label, so this reads them.
+      4 remain, all printed that way: three HTML typos of 1998-1999 ("Sr.
+      PRESIDENTE ((Ulloa)", "Sr. PRESIDENTE (Menem) (Menem)", "Sr. PRESIDENTE
+      Menem)") and one PDF "Sr. Presidente)" of 2005.
+- [x] **The dropped-text residue has no lost debate in it.** Every page of the
+      90 low-coverage PDF sittings was checked against the output: each page
+      before the sitting's close that is missing is a cover, an attendance
+      roll or a contents page, and every body page that looks partly kept was
+      read line by line — what is "missing" is the lines that open with a
+      speaker's label, which the corpus keeps in `speaker_raw` and not in the
+      text, and the running headers.
+- [x] **The review sheet quotes what is printed just before the passage**, so
+      a three-word turn is found by reading, not by counting occurrences.
 
 ## Explicitly not building
 

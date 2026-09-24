@@ -55,7 +55,7 @@ import pdfplumber
 
 from session_kind import convened_as_for, quorum_failed_for, session_kind_for
 
-PARSER_VERSION = "0.5.5"
+PARSER_VERSION = "0.5.6"
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
@@ -1571,8 +1571,16 @@ def split_welded_notes(blocks):
         if len(pieces) < 2:
             out.append(b)
             continue
-        for piece in pieces:
-            out.append(dict(b, text=piece, event_type=classify_event(piece)))
+        for k, piece in enumerate(pieces):
+            row = dict(b, text=piece, event_type=classify_event(piece))
+            if k and row.get("speaker"):
+                # a label names only the note printed straight after it: the
+                # next note on the line below is about the chamber, not about
+                # whoever the label named ("Sr. Secretario (Estrada). — (Lee:)"
+                # / "— El texto es el siguiente:")
+                row["speaker"] = None
+                row["turn_id"] = None
+            out.append(row)
         split += len(pieces) - 1
     if split:
         print(f"Notas soldadas en una misma fila separadas: {split} filas nuevas.")
@@ -2448,6 +2456,11 @@ def identify_speakers(blocks, body_size):
         just_labelled = False
         t = b["text"].strip()
         if b.get("type") in ("furniture", "event", "inline"):
+            if b["type"] == "inline" and opened and current:
+                # italics straight after a printed label are that speaker's
+                # words; consolidate_speaker_blocks decides where they go
+                b["label_speaker"] = current
+                b["label_turn"] = turn_id
             # "Sr. Secretario (Estrada). — (Lee:)" is one printed line: the
             # secretary took the floor and the stenographer wrote down that he
             # read. The note is not speech and stays an event, but the label
@@ -2490,7 +2503,12 @@ def identify_speakers(blocks, body_size):
                 # it into the label it belongs to
                 if not LABEL_CLOSED_RE.search(t) and i < len(blocks):
                     nxt = blocks[i]
-                    if (nxt.get("type") is None and nxt["font_style"] == "normal"
+                    # normal in most years, italic now and then ("Sr.
+                    # Secretario" / "(Estrada)" in italics, 2007)
+                    # — but only after an office: after a senator's name an
+                    # italic parenthesis is a stage note, "(de pie)", not a name
+                    if (((nxt.get("type") is None and nxt["font_style"] == "normal")
+                            or (nxt.get("type") == "inline" and re.search(DL_OFFICE, t)))
                             and is_body(nxt["size"], body_size)
                             and (m := PAREN_HEAD_RE.match(nxt["text"]))):
                         label = f"{t} {m.group(1)}"
@@ -2527,6 +2545,15 @@ def identify_speakers(blocks, body_size):
                             # word of the speech and the chair goes unnamed.
                             label = t + nxt["text"].strip() + ")"
                             i += 1
+                if label.count("(") > label.count(")") and i < len(blocks):
+                    # the closing parenthesis set in the body face and left
+                    # to the speech: "Sra. Presidente (Villarruel" /
+                    # ").- Gracias, senador." — it is the label's
+                    nxt = blocks[i]
+                    if (nxt.get("type") is None and nxt["font_style"] == "normal"
+                            and re.match(r"^\s*\)", nxt["text"])):
+                        label += ")"
+                        nxt["text"] = re.sub(r"^\s*\)", "", nxt["text"], count=1)
                 current = label      # consumed: label blocks are not emitted
                 turn_id += 1         # a printed label opens a NEW turn; speech
                                      # resuming after an event without a label
@@ -2577,18 +2604,20 @@ def identify_speakers(blocks, body_size):
 def clean_speaker_names(blocks):
     """Drop the terminator printed after a speaker label.
 
-    The formats spell it differently by year (".-", ". —", ".–", " . —"),
+    The formats spell it differently by year (".-", ". —", ".–", " . —",
+    and now and then a comma for the full stop: "Sr. Menem,-"),
     and it separates the name from the words rather than belonging to the
     name — carrying it into the label would make "Sr. Pichetto. —" and
     "Sr. Pichetto" two different people downstream.
     """
     cleaned = 0
     for b in blocks:
-        if b.get("speaker"):
-            new = re.sub(rf"[\s.\-–—−─{PUA}:]+$", "", b["speaker"]).strip()
-            if new != b["speaker"]:
-                b["speaker"] = new
-                cleaned += 1
+        for key in ("speaker", "label_speaker"):
+            if b.get(key):
+                new = re.sub(rf"[\s.,\-–—−─{PUA}:]+$", "", b[key]).strip()
+                if new != b[key]:
+                    b[key] = new
+                    cleaned += 1
     print(f"Limpieza completa. Se limpiaron {cleaned} nombres de speakers.")
     return blocks
 
@@ -2633,10 +2662,40 @@ def consolidate_speaker_blocks(blocks):
     cur = None
     inline_merged = 0
     handed_forward = 0
+    labelled_italics = 0
     for i, b in enumerate(blocks):
+        if b.get("type") == "inline" and b.get("label_speaker"):
+            # Italics printed straight after a label are the labelled
+            # speaker's, never the turn above. A senator quoting a hearing
+            # sets the whole exchange in italics — "Sr. Magariños. — No." /
+            # "Sr. Badeni. — ¿Se le permitió…?" — and the question was being
+            # glued onto the answer before it, putting Badeni's words under
+            # Magariños. They open the labelled turn's speech when it goes
+            # on; otherwise they are all the turn holds and stand as its note,
+            # as every other italic line of that exchange does.
+            nxt = blocks[i + 1] if i + 1 < len(blocks) else None
+            label, turn = b.pop("label_speaker"), b.pop("label_turn")
+            # the label's own ". —" set in italics is punctuation, not words
+            b["text"] = TURN_LEAD_RE.sub("", b["text"], count=1)
+            if not WORD_CHAR_RE.search(b["text"]):
+                continue
+            if (nxt is not None and nxt.get("type") == "speech"
+                    and nxt.get("speaker") == label and nxt.get("turn_id") == turn):
+                nxt["text"] = b["text"].strip() + (
+                    "" if nxt["text"][:1] in NEVER_SPACED_BEFORE else " ") + nxt["text"].lstrip()
+                nxt["pages"] = sorted(set(nxt["pages"]) | set(b["pages"]))
+                handed_forward += 1
+            else:
+                if cur is not None:
+                    out.append(cur)
+                    cur = None
+                out.append({**b, "type": "event", "speaker": label, "turn_id": turn,
+                            "event_type": classify_event(b["text"])})
+                labelled_italics += 1
+            continue
         if b.get("type") == "inline":
             nxt = blocks[i + 1] if i + 1 < len(blocks) else None
-            opens_next = (nxt is not None and nxt.get("speaker")
+            opens_next =(nxt is not None and nxt.get("speaker")
                           and (cur is None or nxt["speaker"] != cur.get("speaker"))
                           and nxt["text"].lstrip()[:1].islower())
             if opens_next:
@@ -2684,6 +2743,9 @@ def consolidate_speaker_blocks(blocks):
     if handed_forward:
         print(f"Bastardillas que abren un turno, devueltas a quien las dijo: "
               f"{handed_forward}.")
+    if labelled_italics:
+        print(f"Bastardillas que son todo el turno de una etiqueta, a su nombre: "
+              f"{labelled_italics}.")
     return out, inline_merged, handed_forward
 
 

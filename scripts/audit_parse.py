@@ -42,7 +42,9 @@ checked everywhere, by looking for things that must never happen:
    opening "t. – Gracias."), a note that kept the first letters of the sentence
    it interrupted, a scrap of an editorial note left as a two-character turn.
    The conservation check looks inside blocks and never at their first and last
-   characters, so nothing else asks this.
+   characters, so nothing else asks this. 6c asks the same of the LABELS: a
+   closing parenthesis left in the speech, or a terminator left on, makes a
+   different label of the same person, and the blind read cannot see it.
 7. RUNNING HEADERS — every PDF page's own top strip, read by position and
    checked for repetition across the document, rather than by matching the
    word "Pág.". This is what LEAKAGE's dateline entry used to do by text
@@ -500,6 +502,38 @@ def check_turn_shape(corpus, scanned):
         for sid, sp, s in group[:4]:
             print(f"          [{sid}] {sp!r}: {s!r}")
     return len(mid_word)
+
+
+LABEL_FAULTS = (
+    ("an unbalanced parenthesis",
+     lambda s: s.count("(") != s.count(")")),
+    ("text after the closing parenthesis",
+     lambda s: re.search(r"\)\s*\S", s) is not None),
+    ("a terminator or comma left on the end",
+     lambda s: re.search(r"[.,:;\-–—−]$", s) is not None),
+)
+
+
+def check_label_shape(corpus, scanned):
+    """Speaker labels carrying a character no label should.
+
+    The blind read asks who is speaking and forgives a stray character in the
+    label — the seventh round scored "Sr. Presidente (Pinedo).- C" as
+    agreement — so it cannot see this. A label with its closing parenthesis
+    left in the speech, or its terminator still on, is a different label
+    downstream from the same person printed cleanly, and may resolve to nobody.
+    """
+    print("\n6c. Speaker labels carrying a character no label should:")
+    labels = (corpus[corpus.speaker_raw.notna() & ~corpus.session_id.isin(scanned)]
+              .groupby(["session_id", "speaker_raw"]).size().reset_index())
+    bad = 0
+    for name, test in LABEL_FAULTS:
+        hit = labels[labels.speaker_raw.map(test)]
+        bad += len(hit)
+        print(f"   {len(hit):6}  {name}")
+        for _, r in hit.head(4).iterrows():
+            print(f"          [{r.session_id}] {r.speaker_raw!r}")
+    return bad
 
 
 def check_attribution_windows(corpus):
@@ -991,6 +1025,7 @@ def main():
     scanned = report_scanned(corpus)
     problems = check_output_only(corpus, scanned)
     problems += check_turn_shape(corpus, scanned)
+    problems += check_label_shape(corpus, scanned)
     problems += check_attribution_windows(corpus)
     problems += check_opening_date(corpus)
 
@@ -1147,6 +1182,13 @@ def write_review_sheet(corpus, n, scanned=frozenset(), only_format=None,
         # sheet says which one to count to.
         opening = " ".join(str(r.text).split()[:30])
         nth = occurrence(r, opening, corpus)
+        # A turn that is three words long stays three words however many are
+        # quoted, and "Pido la palabra." or "(Lee:)" then depends on the
+        # count above being right. The words printed just before it do not:
+        # with them the reader finds the passage by reading, not by counting.
+        before = ""
+        if i - 1 in corpus.index and corpus.at[i - 1, "session_id"] == r.session_id:
+            before = " ".join(str(corpus.at[i - 1, "text"]).split()[-15:])
         rows.append({
             "session": r.session_id,
             "source_file": r.source_file,
@@ -1156,6 +1198,7 @@ def write_review_sheet(corpus, n, scanned=frozenset(), only_format=None,
             "which_occurrence": nth,
             "parser_says_speaker": r.speaker_raw,
             "opening_words": opening,
+            "printed_just_before": before,
             "correct? (y/n)": "",
             "if_wrong_who_spoke": "",
         })
