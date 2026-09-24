@@ -32,11 +32,11 @@ as its own HTML export for most of 1998–2003; both are read here.
   that last group final would invent a fact about 134 sittings. Read it from
   the raw file: the parser drops the masthead as page apparatus, so parsed text
   puts every PDF at "not provisional" when 261 of 605 are.
-- Corpus parsed: 245,725 speaker-attributed speech blocks and 69,376 typed
-  stenographer events in 439,692 rows over 817 sittings, as per-session Parquet
+- Corpus parsed: 245,722 speaker-attributed speech blocks and 69,376 typed
+  stenographer events in 439,686 rows over 817 sittings, as per-session Parquet
   under `data/processed/senado/`. 25.7 million words of attributed speech, of
-  which the HTML side contributes 5.9 million. The PDF side is parser 0.5.6 and
-  the HTML side `scripts/parse_html.py` at 0.5.9-html; the two share the speaker
+  which the HTML side contributes 5.9 million. The PDF side is parser 0.5.7 and
+  the HTML side `scripts/parse_html.py` at 0.5.10-html; the two share the speaker
   pattern and the event subtypes, so a passage means the same thing in either.
   One sitting fails to parse: the 1997 impeachment tribunal, a photocopy saved
   as page images with no text layer at all, so there is nothing to read. It used to be two — the no-quorum sitting of 29
@@ -312,7 +312,7 @@ as its own HTML export for most of 1998–2003; both are read here.
   is absorbed by the section title above it, no page apparatus leaks into speech
   outside the three scans, no text is written out twice, every one of 154,247
   probed blocks is found in the file it came from (0.072% not located once the
-  scans are set aside, and no sitting above 1%), 8 turns of 245,725 open
+  scans are set aside, and no sitting above 1%), 8 turns of 245,722 open
   mid-word and every one of them is printed that way, and a median 82.8% of each
   document's printed text is kept (the rest — contents pages, attendance rolls,
   appendices — is dropped by design). Three sittings are scans with OCR text and
@@ -460,11 +460,11 @@ as its own HTML export for most of 1998–2003; both are read here.
   [105 of 115](reference/verification/blind_read_115_0418.csv) on nine
   samples that do not overlap, spread across every year of the span. Re-asking
   all thirteen rounds is what makes them a check rather than a record: of the
-  6,819 records, 6,549 still resolve to the person the round named and 270
+  6,819 records, 6,529 still resolve to the person the round named and 290
   cannot be re-asked — 264 quote words the page prints under more than one
-  name, so the record cannot say which turn the reader meant; three are notes a
-  repair has since moved out of speech; two are all an unmapped font left of a
-  passage; one has no words recorded — and none resolves to anybody else.
+  name, so the record cannot say which turn the reader meant; 20 are passages
+  a repair has since moved out of speech; five quote too little of a passage to
+  find it; one has no words recorded — and none resolves to anybody else.
   **Twenty-four of the 6,819 disagreed at the time of reading, and exactly two
   of those were defects of the parser** — both found in the HTML era, both
   fixed. Every case left over from the

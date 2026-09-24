@@ -18,6 +18,11 @@ Hardened rewrite of the Jan 2025 downloader:
   portal no longer holds answers 404 and is reported, not stored.
 - Sidecars now record sha256, size, download timestamp, and the archived
   listing they came from.
+- --from-manifest rebuilds a release exactly: it fetches every file
+  raw_data_manifest.csv names, from the URL it records, under the name it
+  records, and keeps a file only if its SHA-256 is the one recorded. The
+  listing mode is for extending the holdings; it fetches what the portal lists
+  today, names new files by the current scheme, and defaults to 2020-2024.
 """
 
 import argparse
@@ -217,6 +222,55 @@ def download_session(session, listing_name):
     return False
 
 
+def download_from_manifest(delay):
+    """Fetch exactly the files the manifest names, and verify each one.
+
+    A release is parsed from these bytes and no others: the parser reads a
+    sitting's identity from the manifest row matching the file NAME, and the
+    PDF gold set names its pages by file, so a file saved under any other name,
+    or with other bytes, would not rebuild the release. A file whose bytes no
+    longer match is kept beside the others as <name>.served for inspection,
+    never under the manifest's name.
+    """
+    import csv
+    manifest = REPO_ROOT / "raw_data_manifest.csv"
+    rows = list(csv.DictReader(manifest.open(encoding="utf-8")))
+    held = fetched = changed = failed = 0
+    for row in rows:
+        target = RAW_DIR / row["filename"]
+        want = row["file_sha256"]
+        if target.exists() and hashlib.sha256(target.read_bytes()).hexdigest() == want:
+            held += 1
+            continue
+        part = RAW_DIR / f"{row['filename']}.part"
+        try:
+            with requests.get(row["source_url"], stream=True, timeout=FILE_TIMEOUT) as r:
+                r.raise_for_status()
+                with part.open("wb") as f:
+                    for chunk in r.iter_content(chunk_size=8192):
+                        f.write(chunk)
+        except requests.RequestException as e:
+            part.unlink(missing_ok=True)
+            failed += 1
+            print(f"  failed: {row['filename']}: {e}")
+            time.sleep(delay)
+            continue
+        got = hashlib.sha256(part.read_bytes()).hexdigest()
+        if got == want:
+            part.rename(target)
+            fetched += 1
+            print(f"Downloaded: {target.name}")
+        else:
+            part.rename(RAW_DIR / f"{row['filename']}.served")
+            changed += 1
+            print(f"  CHANGED: {row['filename']} — the portal now serves other bytes "
+                  f"(kept as {row['filename']}.served)")
+        time.sleep(delay)
+    print(f"{len(rows)} files in the manifest: {held} already held, {fetched} downloaded, "
+          f"{changed} served with different bytes, {failed} not fetched.")
+    return 1 if (changed or failed) else 0
+
+
 def main():
     ap = argparse.ArgumentParser(description="Download Senate transcripts (PDF or HTML) from the open-data portal.")
     ap.add_argument("--years", type=int, nargs="+", default=DEFAULT_YEARS,
@@ -226,12 +280,25 @@ def main():
     ap.add_argument("--types", nargs="+", help="session types to include (default: all)")
     ap.add_argument("--dry-run", action="store_true",
                     help="archive the listing and report missing sessions without downloading")
+    ap.add_argument("--from-manifest", action="store_true",
+                    help="fetch exactly the files raw_data_manifest.csv names, and verify "
+                         "each against its recorded SHA-256 (rebuilds a release)")
     ap.add_argument("--delay", type=int, default=DOWNLOAD_DELAY,
                     help=f"seconds between downloads (default: {DOWNLOAD_DELAY})")
     args = ap.parse_args()
 
-    if not RAW_DIR.is_dir():
-        sys.exit(f"Raw data dir not found: {RAW_DIR} — is the data/ symlink in place? (see DATA.md)")
+    # data/ must already exist: in a working copy of the repository it is a
+    # symlink to the data store (DATA.md there), and writing into a missing
+    # symlink target would scatter downloads into the wrong place. In a
+    # release bundle it ships with the corpus, and only the directory for the
+    # source files is missing — which is what this script fills.
+    if not (REPO_ROOT / "data").is_dir():
+        sys.exit(f"data/ not found under {REPO_ROOT} — in a working copy "
+                 f"of the repository it is a symlink to the data store (see DATA.md there)")
+    RAW_DIR.mkdir(parents=True, exist_ok=True)
+
+    if args.from_manifest:
+        sys.exit(download_from_manifest(args.delay))
 
     rows, raw_text = fetch_listing()
     if rows is None:

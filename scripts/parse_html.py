@@ -34,7 +34,7 @@ from parse import SPEAKER_RE, classify_event  # noqa: E402
 from provenance import decode_html  # noqa: E402
 from session_kind import convened_as_for, quorum_failed_for, session_kind_for  # noqa: E402
 
-PARSER_VERSION = "0.5.9-html"
+PARSER_VERSION = "0.5.10-html"
 
 # A paragraph break: WordPerfect writes <p> with no closing tag and uses <br>
 # for the lines of a masthead or the two lines of a heading.
@@ -593,6 +593,12 @@ def blocks_to_frame(blocks, chapters, meta):
     """
     import pandas as pd
 
+    # A block with no visible text is nothing a reader could cite: whitespace
+    # left by a spacer line, or, in the HTML era, a label printed with nothing
+    # after it before the document it introduces ("Sr. SECRETARIO (Oyarzún).-"
+    # over an Orden del Día, 16 June 1999). The PDF side already drops a
+    # wordless turn; six such rows, in both formats, were reaching the corpus.
+    blocks = [b for b in blocks if (b.get("text") or "").strip()]
     rows = []
     for seq, block in enumerate(blocks):
         speaker = block.get("speaker")

@@ -55,7 +55,7 @@ import pdfplumber
 
 from session_kind import convened_as_for, quorum_failed_for, session_kind_for
 
-PARSER_VERSION = "0.5.6"
+PARSER_VERSION = "0.5.7"
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
@@ -63,7 +63,11 @@ OUT_DIR = REPO_ROOT / "data" / "processed" / "senado"
 MANIFEST_PATH = REPO_ROOT / "raw_data_manifest.csv"
 
 SUBSET_RE = re.compile(r"^[A-Z]{6}\+")          # PDF font-subset prefixes: ABCDEF+ArialMT
-PAG_LINE_RE = re.compile(r"Pág\.\s*\d+")         # page-header dateline invariant
+# page-header dateline invariant. The stop may come twice: 11 April 2002 prints
+# "Pág." and then the symbol font's own stop before the number, read "Pág.. 3",
+# and with one stop required the dateline was never found and 38 speech rows of
+# that sitting carried their page number in the middle of a sentence.
+PAG_LINE_RE = re.compile(r"Pág\.+\s*\d+")
 # The honorific as the chamber prints it, and as its typists mistype it. The
 # separator is where the variants live: "Sr. Mayans" is the rule, but the
 # HTML era also has "Sr.Presidente" with no space, "Sr Sager" with no stop,
@@ -2917,6 +2921,12 @@ def process_pdf(pdf_path):
 
 def blocks_to_frame(blocks, chapters, meta):
     """Map pipeline blocks to the schema rows of the session table."""
+    # A block with no visible text is nothing a reader could cite: whitespace
+    # left by a spacer line, or, in the HTML era, a label printed with nothing
+    # after it before the document it introduces ("Sr. SECRETARIO (Oyarzún).-"
+    # over an Orden del Día, 16 June 1999). The PDF side already drops a
+    # wordless turn; six such rows, in both formats, were reaching the corpus.
+    blocks = [b for b in blocks if (b.get("text") or "").strip()]
     rows = []
     for seq, b in enumerate(blocks):
         speaker = b.get("speaker")
@@ -3058,7 +3068,7 @@ def main():
     args = ap.parse_args()
 
     if not RAW_DIR.is_dir():
-        sys.exit(f"Raw data dir not found: {RAW_DIR} — is the data/ symlink in place? (see DATA.md)")
+        sys.exit(f"No source files under {RAW_DIR} — fetch them first with scripts/download.py")
     (OUT_DIR / "blocks").mkdir(parents=True, exist_ok=True)
     (OUT_DIR / "logs").mkdir(parents=True, exist_ok=True)
 

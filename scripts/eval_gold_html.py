@@ -116,6 +116,15 @@ def gold_pairs(doc):
 def score(reading, rows_out=None):
     """Score every stretch against one reader's annotation."""
     stretches = list(csv.DictReader((GOLD_DIR / "stretches.csv").open(encoding="utf-8")))
+    missing = sorted({s["source_file"] for s in stretches
+                      if not (RAW_DIR / s["source_file"]).exists()})
+    if missing:
+        # The stretches are cut from the source by character offset, so they
+        # cannot be scored without it (check_gold_html.py, which compares the
+        # two readings, needs no source at all).
+        raise SystemExit(f"{len(missing)} source files the stretches are cut from are not "
+                         f"under {RAW_DIR}, e.g. {missing[0]}: fetch them with "
+                         f"scripts/download.py.")
     totals = {"gold": 0, "parser": 0, "label_hit": 0, "both_hit": 0,
               "ev_gold": 0, "ev_parser": 0, "ev_hit": 0, "lost": 0}
     rows = []

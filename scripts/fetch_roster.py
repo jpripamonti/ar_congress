@@ -104,7 +104,7 @@ def main():
     args = ap.parse_args()
 
     if not (REPO_ROOT / "data").is_dir():
-        sys.exit(f"data/ not found under {REPO_ROOT} — is the symlink in place? (see DATA.md)")
+        sys.exit(f"data/ not found under {REPO_ROOT} — is the symlink in place? (see DATA.md in the repository)")
     REF_DIR.mkdir(parents=True, exist_ok=True)
 
     manifest_path = REF_DIR / "manifest.json"

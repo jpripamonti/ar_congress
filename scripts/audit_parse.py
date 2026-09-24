@@ -115,6 +115,11 @@ FURNITURE = {
     # formats do not have: 9,790 stand in the holdings and none has ever
     # reached a speech turn, so this is a tripwire rather than a finding.
     "contents link [Volver al sumario]": re.compile(r"\[\s*Volver al [Ss]umario\s*\]"),
+    # The running header is found by position (check_running_headers), but
+    # that check only sees lines that repeat, and a dateline whose stop is
+    # doubled by a symbol font ("Pág.. 3", 11 April 2002) got past both it and
+    # the parser. Kept here as a tripwire on the words themselves.
+    "page-number dateline": re.compile(r"\bPág\.+\s*\d{1,4}\b"),
 }
 # A complete printed label — title, name, ". —" terminator — inside a turn.
 GLUED_LABEL = re.compile(r"(?<![A-Za-zÁÉÍÓÚÑ])(?:Sr|Sra|Srta)\.\s+[A-ZÁÉÍÓÚÑ][^.]{1,45}?\.\s*[–—−─]\s")
@@ -1043,6 +1048,10 @@ def main():
         speech = corpus[corpus.type.isin(["speech", "event", "heading"])]
         jobs = [(sid, g.source_file.iloc[0], g.text.tolist())
                 for sid, g in speech.groupby("session_id")]
+        if not any((RAW_DIR / name).exists() for _, name, _ in jobs):
+            sys.exit(f"No source files under {RAW_DIR}: fetch them with "
+                     f"scripts/download.py, or pass --skip-source to run only the "
+                     f"checks on the output.")
         rows = []
         with ProcessPoolExecutor(max_workers=args.workers) as pool:
             futures = [pool.submit(audit_source, j) for j in jobs]

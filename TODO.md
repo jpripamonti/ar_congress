@@ -2839,7 +2839,7 @@ and 21.5 million words of attributed speech become 25.7.
 - [x] **The review sheet quotes what is printed just before the passage**, so
       a three-word turn is found by reading, not by counting occurrences.
 
-## Phase 42 — cutting 0.5.6 (24 September 2026)
+## Phase 42 — cutting 0.5.7 (24 September 2026; first cut as 0.5.6, never published)
 
 - [x] **The whole checklist re-run on the build that ships**: `parse.py
       --force` (605 PDFs, the 1997 tribunal the one failure),
@@ -2898,10 +2898,33 @@ and 21.5 million words of attributed speech become 25.7.
       sha256 25909a27…; clean extraction, every checksum passes, no personal
       path, every script imports, the README's loading example gives 439,692
       rows and 245,725 speech passages over 817 sittings.
+      Rebuilt as 0.5.7 after the review round: same size, sha256 345297c8…;
+      the same checks on a clean extraction give 439,686 rows and 245,722
+      speech passages over 817 sittings. The full audit is unchanged: 14
+      things to look at, all printed that way, no page dateline in speech.
+- [x] **A review round by five independent agents found four more things,
+      each checked against the page**, so the cut became 0.5.7 (PDF parser
+      0.5.7, HTML 0.5.10-html). 38 speech rows of 2002-04-11_r05 carried
+      "Pág.. N", a dateline printed with two stops; the pattern now takes one
+      or more, and the audit looks for it. Six rows with no visible text are
+      dropped: three HTML speech rows of 1999-06-16_r25 and three PDF
+      whitespace rows. `download.py --from-manifest` fetches each source
+      the manifest lists and checks its hash, tested on two real files.
+      `LICENSE-DATA`, the data dictionary and the rebuild section of the
+      deposit README corrected where the reviewers found them wrong or thin.
+      Two claims discarded after checking: a "Presidenta stored as
+      Presidente" (the page prints "Sra. Presidente") and "pages off by two",
+      which was the dictionary's definition of `pages`, not the data.
+      The full re-parse against the previous build: those 44 rows changed and
+      nothing else; 65 rows still hold "Pág. N", all bibliographic citations
+      or contents entries, none in speech. Gold, HTML gold, annotations
+      and blind reads re-run: unchanged.
+- [ ] **Review again on the latest Opus.** Review agents run on the latest
+      Opus by default, not Sonnet; the Sonnet round's findings stand.
 - [ ] **For the owner**: reserve the version DOI on Zenodo (New version on
       the published record), then put it in `CITATION.cff`,
       `docs/DEPOSIT_README.md`, `README.md`, `docs/RELEASE.md` and the notes,
-      rebuild, tag `v0.5.6`, upload and publish.
+      rebuild, tag `v0.5.7`, upload and publish.
 
 ## Explicitly not building
 

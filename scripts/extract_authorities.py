@@ -301,7 +301,7 @@ def extract_one(path):
 def main():
     files = sorted(glob.glob(str(RAW_DIR / "*.pdf")) + glob.glob(str(RAW_DIR / "*.html")))
     if not files:
-        sys.exit(f"No transcripts under {RAW_DIR} — is the data/ symlink in place? (see DATA.md)")
+        sys.exit(f"No transcripts under {RAW_DIR} — fetch them first with scripts/download.py")
     out = []
     with ProcessPoolExecutor(max_workers=8) as pool:
         futures = [pool.submit(extract_one, f) for f in files]

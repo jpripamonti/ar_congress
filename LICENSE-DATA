@@ -5,8 +5,8 @@ terms.
 
 ## The code — MIT
 
-Everything under `scripts/` and `notebooks/`, and the repository's prose, is
-MIT-licensed. See [LICENSE](LICENSE).
+Everything under `scripts/` (and, in the repository, `notebooks/`), and the
+prose of the documentation, is MIT-licensed. See [LICENSE](LICENSE).
 
 ## The derived data — CC BY 4.0
 
@@ -20,24 +20,30 @@ That covers:
   speakers, the parse record
 - `reference/senado/` — the roster snapshots, the caucus observations, the
   hand-dated caucus lives, the observed authorities
-- `reference/gold/`, `reference/verification/` — the annotated pages and the
-  blind-read records
+- `reference/gold/`, `reference/gold_html/` — the hand-annotated PDF pages
+  and HTML stretches the accuracy figures are measured on
+- `reference/verification/` — in the repository only: the blind-read records,
+  which are not part of a release
 - `raw_data_manifest.csv` — the provenance manifest
 
 You may copy, redistribute and build on this material, including commercially,
 provided you give attribution. The citation to use is in
-[docs/RELEASE.md](docs/RELEASE.md).
+[README.md](README.md), and in machine-readable form in `CITATION.cff`.
 
 ## What is not covered
 
 The source transcripts are the Argentine Senate's, not this project's, and are
 not relicensed here. They are not redistributed either: the manifest identifies
-each PDF by checksum and URL, and `scripts/download.py` fetches them again. The
-Senate's portal publishes no licence page; the governing framework is
-Argentina's access-to-information law (Ley 27.275), and the reasoning is set
-out in [SOURCES.md](SOURCES.md).
+each source file by checksum and URL, and `scripts/download.py` fetches them
+again. The Senate's portal publishes no licence page; the governing framework
+is Argentina's access-to-information law (Ley 27.275), which obliges the state
+to publish in formats that permit reuse and redistribution. That is a reading
+of the law, not a grant from the chamber.
 
-The archived bloc-roster pages under `data/raw/senado/bloques_archivados/` are
-Internet Archive captures of a Senate page that no longer exists. They are kept
-because the pre-2005 caucus cannot be rebuilt without them; each row derived
-from them carries the archive URL it came from.
+The archived pages under `data/raw/senado/bloques_archivados/` and
+`data/raw/senado/fichas_archivadas/` are Internet Archive captures of Senate
+pages that no longer exist — the chamber's bloc roster and senators' own
+pages. They are the Senate's pages as the Internet Archive recorded them, not
+this project's work, and are not relicensed here. They are kept because the
+caucus before 2005 cannot be rebuilt without them; each row derived from them
+carries the archive URL it came from.

@@ -112,7 +112,10 @@ def copy_part(source, dest_dir, name=None):
 
 def broken_links(out_dir):
     broken = []
-    for path in sorted(out_dir.rglob("*.md")):
+    # LICENSE-DATA is Markdown without the extension, and it is the one file
+    # every release must carry: 0.5.6 was nearly cut with it linking to two
+    # documents that stay in the repository.
+    for path in sorted(out_dir.rglob("*.md")) + [out_dir / "LICENSE-DATA"]:
         for target in LINK_RE.findall(path.read_text(encoding="utf-8")):
             target = target.split("#")[0].split(" ")[0].strip()
             if not target or target.startswith(("http://", "https://", "mailto:")):

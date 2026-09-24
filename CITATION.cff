@@ -2,7 +2,7 @@ cff-version: 1.2.0
 message: >-
   If you use this corpus, cite it as below. The transcripts themselves are the
   Argentine Senate's and are cited separately, by sitting date and the
-  per-sitting URL in raw_data_manifest.csv; see docs/RELEASE.md.
+  per-sitting URL in raw_data_manifest.csv; see README.md.
 title: >-
   Argentine Senate stenographic transcripts, 1998-2026: a speaker-attributed
   corpus
@@ -10,7 +10,7 @@ abstract: >-
   Every stenographic record (version taquigrafica) the Argentine Senate serves
   for its sittings from February 1998 to September 2026, parsed from the
   chamber's own PDFs and, for 1998-2003, its HTML export into
-  speaker-attributed passages: 817 sittings, 439,692 rows, 245,725 passages of
+  speaker-attributed passages: 817 sittings, 439,686 rows, 245,722 passages of
   speech and 69,376 typed stenographer's notes, 25.72 million words of speech.
   Each passage carries the printed speaker label, the senator it resolves to
   and the caucus that senator sat with on the day. The source files are not
@@ -18,7 +18,7 @@ abstract: >-
   the downloader in the repository fetches them again. The derived tables and
   reference data are CC BY 4.0; the code that produces them is MIT.
 type: dataset
-version: 0.5.6
+version: 0.5.7
 date-released: '2026-09-24'
 license: CC-BY-4.0
 authors:
@@ -32,6 +32,7 @@ keywords:
   - legislative speech
   - stenographic transcripts
   - text as data
+  - corpus
   - Spanish
   - political science
   - digital humanities

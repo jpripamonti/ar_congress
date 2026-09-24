@@ -7,18 +7,18 @@ from the Senate's own files into passages, each with the speaker label the page
 printed, the person that label resolves to, and the caucus that person sat with
 on the day.
 
-Version 0.5.6 — the version number is the PDF parser's, because the parser is
+Version 0.5.7 — the version number is the PDF parser's, because the parser is
 what determines the content. The sittings of 1998–2003 come from the chamber's
-HTML export and are read by `scripts/parse_html.py`, at 0.5.9-html.
+HTML export and are read by `scripts/parse_html.py`, at 0.5.10-html.
 
 | | |
 | --- | --- |
 | Sittings | 818 held, 817 parsed |
-| Passages | 439,692 rows |
-| Speech | 245,725 passages, 25.72 million words |
+| Passages | 439,686 rows |
+| Speech | 245,722 passages, 25.72 million words |
 | Stenographer's notes, typed | 69,376 |
 | All rows together | 29.63 million words, the rest being headings and page matter kept only for tracing (`type == "furniture"`) |
-| Passages the parser could not attribute | 5,211 (1.19%), most of them matter inserted into the record without being spoken |
+| Passages the parser could not attribute | 5,210 (1.19%), most of them matter inserted into the record without being spoken |
 | Resolved (sitting, label) pairs | 23,961 |
 
 Coverage is complete from 2002 onward: every sitting the portal lists for those
@@ -98,7 +98,7 @@ will quietly mislead you otherwise:
 
 ```sh
 uv sync
-uv run scripts/download.py          # fetch the files the manifest names
+uv run scripts/download.py --from-manifest  # every file the manifest names, checked by SHA-256
 uv run scripts/parse.py             # PDFs -> per-sitting Parquet + parse_stats.csv
 uv run scripts/parse_html.py        # the 1998-2003 HTML exports, into the same tables
 uv run scripts/extract_authorities.py
@@ -110,15 +110,43 @@ uv run scripts/check_bloc_counts.py # the caucuses against the chamber's officia
 uv run scripts/eval_gold.py         # score against the 72 annotated PDF pages
 uv run scripts/check_gold.py        # check those annotations against the PDFs
 uv run scripts/eval_gold_html.py    # score against the 24 annotated HTML stretches
+uv run scripts/check_gold_html.py   # how far the two readings of each stretch agree
 uv run scripts/audit_parse.py       # every sitting against its own source file
 ```
 
+`--from-manifest` fetches each file from the URL the manifest records, saves
+it under the name the manifest records, and keeps it only if its SHA-256
+matches; a file the portal now serves with different bytes is set aside and
+reported. That is what makes the rebuild exact: the parser reads each
+sitting's identity from the manifest row of the same file name, and the
+annotated pages name their files. Without the flag, `download.py` does
+something else — it fetches whatever the portal lists today, for 2020–2024
+unless told otherwise, under the current naming scheme — which extends a
+collection rather than rebuilding this one.
+
 `build_bloc_observations.py` runs twice on purpose: the caucuses deduced from
 the official counts are one of its inputs, and the deduction needs the first
-pass. The dependency versions are pinned on purpose too. pdfplumber's
-character-level extraction changes between releases, and the parser's repairs
-are calibrated against the output of the version in `uv.lock`; a different one
-will not reproduce these numbers.
+pass. Without the source files, the caucus chain (`build_bloc_observations.py`
+to `check_bloc_counts.py`), `eval_gold.py`, `check_gold_html.py` and
+`audit_parse.py --skip-source` still run on the shipped tables, so the
+published figures for those can be checked before downloading anything. The
+parsers, `extract_authorities.py`, `check_gold.py`, `eval_gold_html.py` and
+the source checks of `audit_parse.py` need the sources.
+
+The other scripts in `scripts/` built the reference tables that ship in
+`reference/senado/` — `fetch_roster.py`, `fetch_blocs.py`,
+`fetch_archived_blocs.py`, `fetch_archived_profiles.py`,
+`extract_chair_caucus.py`, `extract_declared_caucus.py` — or the manifest
+(`make_manifest.py`), or are modules the others import (`map_blocs.py`,
+`provenance.py`, `session_kind.py`). They are shipped so every table can be
+traced to the code that made it; re-running the fetchers reaches the Senate's
+site and the Internet Archive today, and is not needed to rebuild this
+release.
+
+The dependency versions are pinned on purpose. pdfplumber's character-level
+extraction changes between releases, and the parser's repairs are calibrated
+against the output of the version in `uv.lock`; a different one will not
+reproduce these numbers.
 
 ## How far it has been checked
 
@@ -139,7 +167,7 @@ will not reproduce these numbers.
   14,443 labels of the HTML era's commonest shape — a bold run that begins at
   the heading above — attributed to its own speaker. 154,247 passages were
   probed against the source and 0.072% could not be located, no sitting above
-  1% once the scans are set aside. 8 turns of 245,725 open mid-word, and every
+  1% once the scans are set aside. 8 turns of 245,722 open mid-word, and every
   one is printed that way.
 - **6,819 turns read blind** across thirteen rounds by readers never shown the
   parser's answer, and re-asked of this build: 6,529 still resolve to the
@@ -165,7 +193,7 @@ will not reproduce these numbers.
   `2001-11-21_r72`, `2001-11-29_r74`, and the 1997 tribunal, which yields
   nothing at all. Their text is unreliable; `parse_stats.csv` flags them
   (`scanned_page_share`), and they should be excluded from text analysis.
-- **5,211 passages carry no speaker, and most of them were never spoken.** In
+- **5,210 passages carry no speaker, and most of them were never spoken.** In
   the HTML era 83% of those words stand inside a run of inserted matter —
   speeches handed in for the record and never delivered, and the bills read
   into it.
@@ -199,10 +227,13 @@ itself; the archive's own SHA-256 is published beside the archive.
 
 Two different things are in here and they are not under the same terms.
 
-- **The corpus and the reference tables** — everything under
-  `data/`, `reference/`, and `raw_data_manifest.csv` — are licensed
+- **The corpus and the reference tables** — `data/processed/senado/`,
+  `reference/` and `raw_data_manifest.csv` — are licensed
   [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/): reusable,
   including commercially, on condition of attribution.
+- **The archived pages** under `data/raw/senado/` are the Senate's pages as
+  the Internet Archive captured them. They are not this project's work and
+  are not relicensed here.
 - **The code** in `scripts/` is MIT ([LICENSE](LICENSE)).
 - **The transcripts themselves** are the Argentine Senate's. They are not
   relicensed here and not redistributed. Cite the chamber as publisher, with
@@ -219,7 +250,7 @@ covers.
 ## Citing it
 
 > Ripamonti, J. P. (2026). *Argentine Senate stenographic transcripts,
-> 1998–2026: a speaker-attributed corpus* (version 0.5.6) [Data set]. Zenodo.
+> 1998–2026: a speaker-attributed corpus* (version 0.5.7) [Data set]. Zenodo.
 > <https://doi.org/10.5281/zenodo.22661019>
 
 That is the concept DOI, which always resolves to the latest version. Cite it
