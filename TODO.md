@@ -2926,6 +2926,85 @@ and 21.5 million words of attributed speech become 25.7.
       `docs/DEPOSIT_README.md`, `README.md`, `docs/RELEASE.md` and the notes,
       rebuild, tag `v0.5.7`, upload and publish.
 
+## Phase 43 — what the Opus review of 0.5.7 found (24 September 2026)
+
+Three reviewers on the latest Opus read the built 0.5.7 bundle: who said
+what against the pages, every figure in the shipped documents, and the bundle
+as a stranger gets it. Working files in `.agent/scratch/review_opus_*`.
+Upload held until these are closed. Each is to be checked on the page and
+scoped by a full-corpus scan before it is changed.
+
+Attribution (checked so far: the first, on the page):
+- [ ] **Printed labels filed as furniture in 13 PDF sittings, 2006–2014.**
+      Short label lines in a smaller type are dropped as page matter and the
+      words after them go to the previous speaker or out of speech: 83 labels,
+      ~5,550 words out of speech, ~450 words to the wrong person.
+      2011-03-30_r03 p. 9 confirmed: "Sr. Presidente. – Aprobado." as
+      furniture, the chair's "En consideración en general…" under Pichetto.
+- [ ] **HTML labels missed where the bold is broken or a stray character
+      precedes it**: 11 rows in 10 sittings, e.g. Genoud's 1,415 words under
+      the chair (1999-08-11_r39 seq 149), "{B}Sr. Vaqui{/B}r. --"
+      (2001-04-18_r18). Also 17 HTML chair turns filed as heading, furniture
+      or other; labels behind leading dots; a roman-type label in 2016.
+- [ ] **Foreign heads of state resolved to the Argentine chair**: Lula
+      (2003-10-16_r00) to Scioli, Mattarella (2017-05-09_r00) to Michetti,
+      and a speech's salutation (2006-12-06_r30 seq 647) to Scioli.
+- [ ] **Speeches handed in for the record read as the chair** from their
+      opening "Sr. Presidente:": 23 rows, ~13,350 words, six sittings of
+      2006–2007.
+- [ ] **Documents after "— El texto es el siguiente:" filed as the chair's
+      speech**: 388 rows, ~19,900 words, 55 sittings 2001–2008 (Orden del
+      Día captions, placeholders such as "(INCORPORAR DECRETO)", the work
+      plan, a decree); three "(Lee:) AQUI INCLUIR…" placeholders as the
+      secretary's.
+- [ ] **Senators chairing since 2020 resolve to an office id** ("auth:")
+      with no caucus, ~9,260 passages; earlier ones keep their senator id.
+
+Bundle and scripts:
+- [ ] The README says the gold sets were annotated "by hand" by readers who
+      never saw each other's work; they were the same model from the same
+      brief (the dictionary says so). `eval_gold.py` still says "pending
+      owner verification".
+- [ ] `--help` runs 12 scripts that take no arguments; three rewrote shipped
+      files (one emptied `bloque_por_llamado.csv`) and one called the
+      Internet Archive.
+- [ ] `--from-manifest` does not write the per-file `.json` metadata the two
+      caucus extractors read the sitting URL from; rebuilt tables lose it.
+- [ ] The rebuild instructions omit `--force`, so re-parsing inside the
+      bundle skips everything.
+- [ ] Nothing downstream refuses an incomplete set of sources
+      (`extract_authorities.py` on 3 files wrote a 17-row table).
+- [ ] The full download's size and time are not stated.
+- [ ] Licence: `LICENSE-DATA` puts the `text` column, the gold page images,
+      the HTML stretches and `senadores_actuales.json` under CC BY 4.0,
+      though they are the Senate's. Owner's decision.
+- [ ] Documents point to a repository readers cannot reach (it is private)
+      and a commit in it. Owner's decision whether it goes public.
+- [ ] Small: CITATION.cff licence and title dash, pyproject version and
+      notebook dependencies, tar owner names, undocumented manifest,
+      `parse_stats.csv` and `bloque_observado.csv` columns.
+
+Figures in the documents (bundle README, dictionary, notes, repo README):
+- [ ] Passages with no caucus are not mostly 1998–1999 (97 of 2,120).
+- [ ] Dictionary: anachronistic 13.1% is 0.4.37's (now 7.0%); "twenty-two
+      passages" before the first roster capture are 2,001; `session_type`
+      counts six rows stale; four ambiguous labels are five; "one row per
+      PDF"; "three tables" over four.
+- [ ] Ticket-versus-caucus counts 379 passages with an empty ticket as
+      "both recorded"; without them 16.5%, not 17.0%. Empty tickets
+      undocumented.
+- [ ] 1.19% is 1.18%; 29.5 million words is 29.6; 522 of 803 counts files.
+- [ ] "0.072% not located" is an unweighted mean including the scans;
+      pooled 0.052%, without scans 0.008%.
+- [ ] 55 documents is 60 (41 with turns); HTML notes 62 are 61.
+- [ ] Release notes: 559 + 211 + 29 is not 819 (260 files are new);
+      four stray-parenthesis labels are five.
+- [ ] Repo README: provisional 338/172 are 340/170; 1.25%; 331 blocks
+      (214); the HTML-vs-PDF unresolved shares; 173 and 2,119.
+- [ ] Wording: "8 turns of 245,722" are passages; they open lower-case, not
+      mid-word; blind-read "6 quote too little" is 5 + 1; PDF coverage 79.3
+      vs 79.5; 158 calls "without bloque" are 158 added; 153 call–page pairs.
+
 ## Explicitly not building
 
 Packaging/PyPI, docs site, utils wrappers, test-file mirror, separate
