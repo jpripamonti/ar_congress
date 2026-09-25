@@ -1526,8 +1526,24 @@ def restore_small_set_debate(blocks, body_size):
         j = i
         while j < len(blocks) and small(blocks[j]):
             j += 1
-        if any(b["font_style"] == "bold" and len(b["text"].strip()) <= 60
-               and SPEAKER_RE.match(b["text"].strip()) for b in blocks[i:j]):
+        # the label inside the run, or printed at body size right above it
+        # with only its words set off the body: "Sra. Negre de Alonso." then
+        # "- Sí." at 13 pt (21 December 2016), or the chair's label fused to a
+        # section title and her words at 11 pt (4 September 2013)
+        # A run with no word in it is the label's own punctuation or a drop
+        # capital printed in another size — ")" after "(Cobos", the dash, the
+        # "E" of "En" — and belongs where the rest of the pipeline puts it.
+        before = blocks[i - 1] if i else None
+        worded = any(re.search(r"[^\W\d_]{2,}", b["text"]) for b in blocks[i:j])
+        led = (worded and before is not None and before["font_style"] == "bold"
+               and is_body(before.get("size"), body_size)
+               and (SPEAKER_RE.match(before["text"].strip())
+                    and len(before["text"].strip()) <= 60
+                    or any(SPEAKER_RE.match(before["text"][m.end():].strip())
+                           and len(before["text"][m.end():].strip()) <= MAX_LABEL_TAIL
+                           for m in LABEL_SPLIT_RE.finditer(before["text"]))))
+        if led or any(b["font_style"] == "bold" and len(b["text"].strip()) <= 60
+                      and SPEAKER_RE.match(b["text"].strip()) for b in blocks[i:j]):
             for b in blocks[i:j]:
                 b["size_printed"] = b["size"]
                 b["size"] = body_size
@@ -2976,14 +2992,14 @@ def process_pdf(pdf_path):
     blocks, empty_removed = remove_empty_blocks(blocks)
     stats["empty_blocks_removed"] = empty_removed
 
+    blocks, split_words = rejoin_split_word(blocks, body_size)
+    stats["split_words_rejoined"] = split_words
+
     # not in the scans: their type sizes are OCR's guess, not the printer's
     small_set = 0
     if stats.get("scanned_page_share", 0) < 0.5:
         blocks, small_set = restore_small_set_debate(blocks, body_size)
     stats["small_set_debate_restored"] = small_set
-
-    blocks, split_words = rejoin_split_word(blocks, body_size)
-    stats["split_words_rejoined"] = split_words
 
     blocks, events = classify_blocks(blocks, body_size)
     stats["events_tagged"] = events

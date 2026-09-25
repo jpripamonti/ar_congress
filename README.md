@@ -27,23 +27,24 @@ as its own HTML export for most of 1998–2003; both are read here.
 - **What the record declares about itself.** A sitting's masthead may read
   "VERSIÓN TAQUIGRÁFICA (PROVISIONAL)" — the uncorrected record — and the
   manifest carries that as `provisional`, with three values rather than two:
-  309 sittings say they are provisional, 338 say they are not, and 172 make no
-  claim, because from 2018 the words leave the masthead altogether. Calling
-  that last group final would invent a fact about 134 sittings. Read it from
+  of its 819 files, 309 say they are provisional, 340 say they are not, and
+  170 make no claim, 153 of those because from 2018 the words leave the
+  masthead altogether. Calling that last group final would invent a fact about
+  170 sittings. Read it from
   the raw file: the parser drops the masthead as page apparatus, so parsed text
   puts every PDF at "not provisional" when 261 of 605 are.
-- Corpus parsed: 245,722 speaker-attributed speech blocks and 69,376 typed
-  stenographer events in 439,686 rows over 817 sittings, as per-session Parquet
-  under `data/processed/senado/`. 25.7 million words of attributed speech, of
-  which the HTML side contributes 5.9 million. The PDF side is parser 0.5.7 and
-  the HTML side `scripts/parse_html.py` at 0.5.10-html; the two share the speaker
+- Corpus parsed: 244,805 speaker-attributed speech blocks and 69,290 typed
+  stenographer events in 440,447 rows over 817 sittings, as per-session Parquet
+  under `data/processed/senado/`. 25.4 million words of attributed speech, of
+  which the HTML side contributes 5.9 million. The PDF side is parser 0.5.8 and
+  the HTML side `scripts/parse_html.py` at 0.5.11-html; the two share the speaker
   pattern and the event subtypes, so a passage means the same thing in either.
   One sitting fails to parse: the 1997 impeachment tribunal, a photocopy saved
   as page images with no text layer at all, so there is nothing to read. It used to be two — the no-quorum sitting of 29
   November 2001 joined the corpus in 0.4.38, when the front-matter cut learned
   to recognise an opening whose dash the file had set in roman with the page
   number before it. Text that
-  cannot be attributed to a speaker is 1.25% of the corpus, and in the HTML era
+  cannot be attributed to a speaker is 1.45% of the corpus's rows, and in the HTML era
   83% of those words stand inside a run of inserted matter — speeches handed in
   for the record and never delivered, and the bills read into it.
 - **The portal serves one sitting twice, and the document says which one it
@@ -283,7 +284,8 @@ as its own HTML export for most of 1998–2003; both are read here.
   cut, three of them OCR noise — were typed as section titles, rows saying a
   section began that cannot say which. 0.4.35 and 0.4.36 (`TODO.md`, Phase 29).
 - Two layers of verification, because they answer different questions.
-  **On a hand-annotated sample** — 72 stratified pages spanning 1998–2024 —
+  **On an annotated sample** — 72 stratified pages spanning 1998–2024, annotated
+  from the page images by a language model, not by a person —
   utterance boundary+attribution F1 = 1.000 (310 of 310 turns), event recall
   and precision 1.000 (82 of 82), no speech leaking onto contents pages.
   Scored a second time with each turn's own opening words carried alongside
@@ -293,8 +295,8 @@ as its own HTML export for most of 1998–2003; both are read here.
   what is there, not where — so a page whose turns came out shuffled would
   still score full marks; that is a gap in the measure, not a claim about the
   corpus. **Read the interval, not the point**: a perfect 310 still puts the
-  95% interval on recall at 0.988 to 1.000, and the turns come from 55
-  documents, so errors could arrive in clusters the interval does not allow
+  95% interval on recall at 0.988 to 1.000, and the 72 pages come from 60
+  documents and the turns from 41 of them, so errors could arrive in clusters the interval does not allow
   for. A perfect score on a sample says the sample found nothing, not that
   there is nothing. Eleven events were removed from five older pages after
   blind re-readings showed them to break the brief — ten notes printed inside
@@ -310,10 +312,12 @@ as its own HTML export for most of 1998–2003; both are read here.
   corpus no longer attributes to that sitting. **On all 817 sessions that parse, in both formats**
   (`scripts/audit_parse.py`): no turn carries a second speaker's label, no label
   is absorbed by the section title above it, no page apparatus leaks into speech
-  outside the three scans, no text is written out twice, every one of 154,247
-  probed blocks is found in the file it came from (0.072% not located once the
-  scans are set aside, and no sitting above 1%), 8 turns of 245,722 open
-  mid-word and every one of them is printed that way, and a median 82.8% of each
+  outside the three scans, no text is written out twice, 153,631 blocks are
+  probed for being in the file they came from and 80 are not located (0.052%),
+  68 of them in the two scans — 12 of 153,377 (0.008%) once the scans are set
+  aside, and no sitting above 1% — 7 passages of 244,805 open in lower case
+  under a new speaker, each on a whole word, and every one of them is printed
+  that way, and a median 82.6% of each
   document's printed text is kept (the rest — contents pages, attendance rolls,
   appendices — is dropped by design). Three sittings are scans with OCR text and
   should be excluded from any text analysis; the parser flags them.
@@ -324,7 +328,7 @@ as its own HTML export for most of 1998–2003; both are read here.
   recall measured at all. The unit there is a stretch instead: a window of
   about 7,000 characters, cut on the SOURCE by character offset and never at a
   heading the parser found, because cutting at the parser's own segmentation
-  would hand the annotators only the passages it already reads well.
+  would hand the annotator only the passages it already reads well.
   `scripts/draw_gold_html.py` draws them, four per year across 1998–2003.
   **All 24 were read twice**, and `check_gold_html.py` reports how far the
   two readings agree before either is believed: on the committed annotations,
@@ -349,14 +353,15 @@ as its own HTML export for most of 1998–2003; both are read here.
   list.
   Against that set (`scripts/eval_gold_html.py`): boundary and
   attribution **P=1.000 R=1.000 F1=1.000 on all 195 annotated turns**, events
-  P=1.000 R=1.000 on 62, under either reading.
+  P=1.000 R=1.000 on 61, under either reading.
   It did not start there. The set found one turn the parser was losing and one
   rule of its own that was wrong, and both are described under "what reading
   it twice was for" below.
 - **The HTML era passes the same audit, and on the conservation check it passes
   perfectly**: every one of its probed blocks is found in the file it came from,
-  none missing, against 0.008% for the PDF side. It also keeps more of what it
-  prints — a median 91.2% against 79.3% — because an HTML export has no repeated
+  none missing, against 0.012% for the PDF side once the scans are set aside
+  (12 of 98,502). It also keeps more of what it
+  prints — a median 91.2% against 78.9% — because an HTML export has no repeated
   page headers or footers to drop. Until September 2026 the audit had never read
   one of these files: it opened every source with pdfplumber, so the 214 HTML
   sittings sat outside the conservation and coverage checks entirely.
@@ -460,9 +465,9 @@ as its own HTML export for most of 1998–2003; both are read here.
   [105 of 115](reference/verification/blind_read_115_0418.csv) on nine
   samples that do not overlap, spread across every year of the span. Re-asking
   all thirteen rounds is what makes them a check rather than a record: of the
-  6,819 records, 6,529 still resolve to the person the round named and 290
+  6,819 records, 6,518 still resolve to the person the round named and 301
   cannot be re-asked — 264 quote words the page prints under more than one
-  name, so the record cannot say which turn the reader meant; 20 are passages
+  name, so the record cannot say which turn the reader meant; 31 are passages
   a repair has since moved out of speech; five quote too little of a passage to
   find it; one has no words recorded — and none resolves to anybody else.
   **Twenty-four of the 6,819 disagreed at the time of reading, and exactly two
@@ -489,18 +494,20 @@ as its own HTML export for most of 1998–2003; both are read here.
   about 2016. **These are deliberately left without a person.** The chair
   changes hands during a sitting and the page does not say who holds it, so
   any name would be a guess; the sitting's own cover page names two or more
-  presiding officers in 522 of the 803 sittings whose cover page says who
+  presiding officers in 522 of the 802 sittings whose cover page says who
   presided at all (`scripts/count_presiding.py`). They are marked as
   office-known-person-unstated. Another 0.9% is correctly out of scope —
   parties and witnesses at the impeachment trials, deputies, ministers of
   the national executive, foreign heads of state. **Genuine lookup failures
-  are 0.1%** (331 blocks): invited outside speakers at public hearings named
-  by surname alone, four senators named Martínez and three named González
+  are 0.1%** (156 blocks, unmatched or ambiguous): names misspelt or damaged by OCR,
+  senators-elect, deputies at joint assemblies, outside speakers named by
+  surname alone, four senators named Martínez and three named González
   whom nothing on the page separates, and the preparatory sittings where an
   office's outgoing and incoming holder are both in window.
-- The era that was missing now resolves best: **0.07% of the HTML era's speech
-  is unresolved against 0.18% of the PDF era's**, where it stood at 3.4% when
-  the resolution first ran over it. Getting there took the sittings' own cover
+- The era that was missing now resolves as well as the rest: **0.062% of the
+  HTML era's speech blocks are unresolved — unmatched or ambiguous — against
+  0.065% of the PDF era's** (53 of 85,729 and 103 of 159,074), where it stood
+  at 3.4% when the resolution first ran over it. Getting there took the sittings' own cover
   pages, which had never been read for 1998–2003 — they name the chamber's
   secretaries, whom the labels cite by surname alone, and they name which
   senator held the gavel.
@@ -513,12 +520,12 @@ as its own HTML export for most of 1998–2003; both are read here.
   something it states, and about 1% of courtesy titles in the corpus disagree
   with the senator the label resolves to. Which given names the chamber writes
   as "señora" is read off the corpus rather than guessed from the spelling,
-  and the 173 passages decided that way carry `tiebreak = "honorific"`, so a
+  and the 175 passages decided that way carry `tiebreak = "honorific"`, so a
   reading that will not accept a courtesy title can drop them with one filter.
   On the 69 Sapag turns the chair introduces by name, its wording agrees with
   the title in all 69.
-- Caucus attached to **98.6% of senator speech blocks**; 2,119 have none, and
-  no year holds more than 580 of them. Before the roll calls begin in 2005 the
+- Caucus attached to **98.7% of senator speech blocks**, in the chair or on
+  the floor; 2,100 have none, and no year holds more than 578 of them. Before the roll calls begin in 2005 the
   chamber's composition survives in three places, each the chamber's own
   record: its bloc-roster page as the Internet Archive kept it from 25 May
   2000; 58 of its per-senator pages captured on 2 February 1998, each stating
@@ -527,10 +534,11 @@ as its own HTML export for most of 1998–2003; both are read here.
   "Tiene la palabra el señor senador por Mendoza del bloque de la Unión Cívica
   Radical." A call is used only where the province named is the speaker's own,
   and wherever a call and an archived page fall within 200 days of each other
-  they agree, 153 times out of 153. Calls without the word "bloque" ("de la
-  Unión Cívica Radical", "del Partido Cruzada Renovadora") are read through a
-  hand table of party names, and none of the 158 disagrees with another
-  reading of the same senator within a year. Senators also said it themselves — "en
+  they agree, 130 times out of 130. Calls without the word "bloque" ("de la
+  Unión Cívica Radical", "del Partido Cruzada Renovadora"), 145 of the 311,
+  are read through a hand table of party names, and none of the 158 calls
+  that reading added disagrees with another reading of the same senator
+  within a year. Senators also said it themselves — "en
   nombre del bloque justicialista…" — and 34 such statements, read by hand
   because the phrase is used loosely, add what the chair's calls miss. Where a senator is still unrecorded but
   seen in the same caucus on both sides of a sitting, within one mandate, 208

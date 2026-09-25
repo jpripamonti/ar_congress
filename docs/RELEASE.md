@@ -19,7 +19,7 @@ is a decision about the release rather than an accident of a glob.
 | The parse record | `data/processed/senado/parse_stats.csv` | What the parser did to each sitting, counted, so every repair can be recomputed rather than trusted. |
 | The archived Senate pages | `data/raw/senado/bloques_archivados/`, `data/raw/senado/fichas_archivadas/` | Internet Archive captures of the bloc roster (2000–2004) and of senators' own pages (1997–1998). The Senate pages no longer exist, and the caucus before 2005 cannot be rebuilt without them. |
 | The reference tables | `reference/senado/` | Roster snapshots, caucus observations with their sources, hand-dated caucuses, observed authorities. |
-| The accuracy sets | `reference/gold/`, `reference/gold_html/` | The hand-annotated PDF pages and HTML stretches the accuracy figures are measured on. |
+| The accuracy sets | `reference/gold/`, `reference/gold_html/` | The annotated PDF pages and HTML stretches the accuracy figures are measured on. |
 | The provenance manifest | `raw_data_manifest.csv` | Checksum, source URL, format and download time of every source file. |
 | The pipeline | the scripts named in `make_release.py`, `pyproject.toml`, `uv.lock` | The sources are not redistributed and can be fetched again, which takes the code and the pinned versions it was calibrated against, since pdfplumber's character extraction changes between releases. |
 | The documentation | `docs/DEPOSIT_README.md` (shipped as `README.md`), `docs/DATA_DICTIONARY.md` | What it is, how to load and rebuild it, how far it was checked, what it gets wrong; what every column means. |
@@ -69,7 +69,7 @@ uv run scripts/check_blind_reads.py
 - The PDF parse finishes with one known failure — the 1997 impeachment
   tribunal, a photocopy saved as page images with no text in it. The HTML
   parse finishes with none.
-- Boundary and attribution against the 72 hand-annotated PDF pages: F1 = 1.000
+- Boundary and attribution against the 72 annotated PDF pages: F1 = 1.000
   (310 of 310 turns), on the label alone and on the label with the turn's
   opening words alike. Events: precision and recall 1.000 (82 of 82). Against
   the 24 HTML stretches, on either reading: 195 of 195, events included, and
@@ -203,7 +203,7 @@ the author, not something the pipeline should do on its own.
 
 The bundle is a few hundred files of Parquet plus the reference tables, the
 archived pages and the documentation — small enough that it needs no special
-handling. 0.4.37 came out at 662 files and 68 MB packed; 0.5.7 at 1,469 files, 129 MB
+handling. 0.4.37 came out at 662 files and 68 MB packed; 0.5.8 at 1,468 files, 129 MB
 unpacked and 96 MB packed.
 
 Build it from the repository root, after the checks above have passed:

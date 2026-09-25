@@ -4,23 +4,28 @@ message: >-
   Argentine Senate's and are cited separately, by sitting date and the
   per-sitting URL in raw_data_manifest.csv; see README.md.
 title: >-
-  Argentine Senate stenographic transcripts, 1998-2026: a speaker-attributed
+  Argentine Senate stenographic transcripts, 1998–2026: a speaker-attributed
   corpus
 abstract: >-
   Every stenographic record (version taquigrafica) the Argentine Senate serves
   for its sittings from February 1998 to September 2026, parsed from the
   chamber's own PDFs and, for 1998-2003, its HTML export into
-  speaker-attributed passages: 817 sittings, 439,686 rows, 245,722 passages of
-  speech and 69,376 typed stenographer's notes, 25.72 million words of speech.
+  speaker-attributed passages: 817 sittings, 440,447 rows, 244,805 passages of
+  speech and 69,290 typed stenographer's notes, 25.36 million words of speech.
   Each passage carries the printed speaker label, the senator it resolves to
   and the caucus that senator sat with on the day. The source files are not
   redistributed: a manifest identifies each one by SHA-256 and source URL, and
-  the downloader in the repository fetches them again. The derived tables and
-  reference data are CC BY 4.0; the code that produces them is MIT.
+  the bundled downloader fetches them again. What the project adds (the
+  structure, speakers, caucuses, annotations and reference tables) is CC BY
+  4.0 and the code is MIT; the text of the record is the Senate's and is not
+  relicensed.
 type: dataset
-version: 0.5.7
-date-released: '2026-09-24'
-license: CC-BY-4.0
+repository-code: https://github.com/jpripamonti/ar_congress
+version: 0.5.8
+date-released: '2026-09-25'
+license:
+  - CC-BY-4.0
+  - MIT
 authors:
   - family-names: Ripamonti
     given-names: Juan Pablo

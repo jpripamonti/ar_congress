@@ -7,19 +7,19 @@ from the Senate's own files into passages, each with the speaker label the page
 printed, the person that label resolves to, and the caucus that person sat with
 on the day.
 
-Version 0.5.7 — the version number is the PDF parser's, because the parser is
+Version 0.5.8 — the version number is the PDF parser's, because the parser is
 what determines the content. The sittings of 1998–2003 come from the chamber's
-HTML export and are read by `scripts/parse_html.py`, at 0.5.10-html.
+HTML export and are read by `scripts/parse_html.py`, at 0.5.11-html.
 
 | | |
 | --- | --- |
 | Sittings | 818 held, 817 parsed |
-| Passages | 439,686 rows |
-| Speech | 245,722 passages, 25.72 million words |
-| Stenographer's notes, typed | 69,376 |
+| Passages | 440,447 rows |
+| Speech | 244,805 passages, 25.36 million words |
+| Stenographer's notes, typed | 69,290 |
 | All rows together | 29.63 million words, the rest being headings and page matter kept only for tracing (`type == "furniture"`) |
-| Passages the parser could not attribute | 5,210 (1.19%), most of them matter inserted into the record without being spoken |
-| Resolved (sitting, label) pairs | 23,961 |
+| Passages the parser could not attribute | 6,399 (1.45%), most of them matter inserted into the record without being spoken |
+| Resolved (sitting, label) pairs | 23,911 |
 
 Coverage is complete from 2002 onward: every sitting the portal lists for those
 years is here. Before that it is partial, because the portal lists the sittings
@@ -28,6 +28,12 @@ but no longer serves every file — 51 of 73 for 1998, 47 of 74 for 1999, 46 of
 1998, exactly one is still served: an impeachment tribunal of 18 December 1997,
 a photocopy saved as page images with no text in it, which is why it is the one
 sitting that does not parse.
+
+The code is developed in the open at
+<https://github.com/jpripamonti/ar_congress>, whose working log, `TODO.md`,
+records every change to the parser with the evidence for it. Where this
+README or the data dictionary cites that log or a commit, that is where to
+find it.
 
 The portal serves the same URL as a PDF from 2004 on and as the chamber's own
 HTML export for most of 1998–2003. Both are read, and every row carries the
@@ -44,8 +50,8 @@ data/processed/senado/parse_stats.csv    what the parser did to each sitting, co
 data/raw/senado/bloques_archivados/      Internet Archive captures of the Senate's bloc roster, 2000–2004
 data/raw/senado/fichas_archivadas/       Internet Archive captures of senators' own pages, 1997–1998
 reference/senado/                        rosters, roll-call caucus readings, hand-dated caucuses
-reference/gold/                          72 PDF pages annotated by hand
-reference/gold_html/                     24 HTML stretches annotated by hand, each read twice
+reference/gold/                          72 PDF pages annotated for scoring
+reference/gold_html/                     24 HTML stretches annotated for scoring, each read twice
 raw_data_manifest.csv                    every source file: sha256, source URL, format, size, download time
 scripts/                                 the pipeline that produced all of it
 pyproject.toml, uv.lock                  the exact environment it was produced in
@@ -88,7 +94,7 @@ will quietly mislead you otherwise:
   name there would be a guess. Dropping those rows as missing data loses a
   fifth of the corpus, most of it the chair conducting business.
 - **`elected_ticket` is the list a senator stood on; `bloc` is the caucus they
-  sat with.** They fall in different political camps for 17.0% of floor speech,
+  sat with.** They fall in different political camps for 16.5% of floor speech,
   mostly provincial alliances whose senators sit with a national caucus. For
   anything about how the chamber divided, use the caucus.
 - **Count turns by `turn_id`, not by rows.** A turn interrupted by applause, or
@@ -99,8 +105,8 @@ will quietly mislead you otherwise:
 ```sh
 uv sync
 uv run scripts/download.py --from-manifest  # every file the manifest names, checked by SHA-256
-uv run scripts/parse.py             # PDFs -> per-sitting Parquet + parse_stats.csv
-uv run scripts/parse_html.py        # the 1998-2003 HTML exports, into the same tables
+uv run scripts/parse.py --force     # PDFs -> per-sitting Parquet + parse_stats.csv
+uv run scripts/parse_html.py --force # the 1998-2003 HTML exports, into the same tables
 uv run scripts/extract_authorities.py
 uv run scripts/build_bloc_observations.py
 uv run scripts/deduce_bloc_from_counts.py
@@ -113,6 +119,15 @@ uv run scripts/eval_gold_html.py    # score against the 24 annotated HTML stretc
 uv run scripts/check_gold_html.py   # how far the two readings of each stretch agree
 uv run scripts/audit_parse.py       # every sitting against its own source file
 ```
+
+The download is 819 files, 1.1 GB, fetched one at a time with a pause
+between requests so as not to load the Senate's site: allow a little over an
+hour. `--force` is needed because the bundle already holds the parsed
+tables, and without it the parsers skip every sitting whose table exists.
+The steps that build one table out of all the sources —
+`extract_authorities.py`, `extract_chair_caucus.py`, `make_manifest.py` and
+the source checks of `audit_parse.py` — stop and name what is missing if any
+file the manifest lists is not there, rather than write a partial table.
 
 `--from-manifest` fetches each file from the URL the manifest records, saves
 it under the name the manifest records, and keeps it only if its SHA-256
@@ -150,36 +165,45 @@ reproduce these numbers.
 
 ## How far it has been checked
 
-- **72 PDF pages annotated by hand**, spanning 1998–2024 — 36 of them read
-  twice by annotators who never saw each other's reading, and the two readings
-  agree on every turn start — shipped in `reference/gold/`: boundary and attribution F1 = 1.000, 310 of 310 turns,
+- **72 PDF pages annotated from the page images**, spanning 1998–2024, and
+  shipped in `reference/gold/`. The annotator was a language model (Claude)
+  reading each rendered page against a written brief, never shown the
+  parser's answer; no person has checked these annotations. 36 of the pages
+  were read twice, in two separate runs of the same model and brief, and the
+  two readings agree on every turn start, which shows the brief was read the
+  same way twice, not that the reading is right. Scored against them: boundary and attribution F1 = 1.000, 310 of 310 turns,
   the same on the printed label alone and on the label carried with the turn's
   opening words. Stenographer's notes: precision and recall 1.000, 82 of 82.
   Read the interval, not the point: a perfect 310 still puts the 95% interval
-  on recall at 0.988 to 1.000, and the turns come from 55 documents.
-- **24 stretches of the HTML era annotated by hand**, about 7,000 characters
-  each, cut on the source file by offset and never at a boundary the parser
-  found; two readers, who agree on all 195 turn starts. Both readings score
-  195 of 195, notes included.
+  on recall at 0.988 to 1.000, and the 72 pages come from 60 documents, the
+  turns from 41 of them.
+- **24 stretches of the HTML era**, about 7,000 characters each, cut on the
+  source file by offset and never at a boundary the parser found, annotated
+  the same way: the same model, twice, from the same brief. The two readings
+  agree on all 195 turn starts, and both score 195 of 195, notes included.
 - **Every parsed sitting audited against its own source file**: no page apparatus inside a speech
   turn outside the three scans, no turn carrying a second speaker's label, no
   document yielding more text than it prints (0 of 817), and every one of
   14,443 labels of the HTML era's commonest shape — a bold run that begins at
-  the heading above — attributed to its own speaker. 154,247 passages were
-  probed against the source and 0.072% could not be located, no sitting above
-  1% once the scans are set aside. 8 turns of 245,722 open mid-word, and every
-  one is printed that way.
-- **6,819 turns read blind** across thirteen rounds by readers never shown the
-  parser's answer, and re-asked of this build: 6,529 still resolve to the
-  person the round recorded and none resolves to anybody else. 290 cannot be
-  re-asked — 264 quote words the page prints under two different names, 20 are
-  passages a repair has since taken out of speech, 6 quote too little to find.
+  the heading above — attributed to its own speaker. 153,631 passages were
+  probed against the source and 80 could not be located (0.052%), 68 of them
+  in the two scans; with the scans set aside it is 12 of 153,377 (0.008%), no
+  sitting above 1%. 7 passages of 244,805 open in lower case under a new
+  speaker, each on a whole word, and every one is printed that way.
+- **6,819 turns read blind** across thirteen rounds, each by a language model
+  reading the rendered page and never shown the parser's answer, and
+  re-asked of this build: 6,518 still resolve to the
+  person the round recorded and none resolves to anybody else. 301 cannot be
+  re-asked — 264 quote words the page prints under two different names, 31 are
+  passages a repair has since taken out of speech, 5 quote too little to find,
+  and 1 has no words recorded.
   Those records are not in this deposit; the count is what they produced.
 - **29 turns checked by a person against the page images**, one a year from
   1998 to 2026: all 29 agree with the parser.
-- **Caucus**: 98.6% of senators' floor passages carry one — 90.0% confirmed,
-  7.0% marked anachronistic because the Senate's own record names a caucus
-  that did not exist on the day of the sitting, 0.8% disputed, 0.6%
+- **Caucus**: 98.7% of senators' passages, in the chair or on the floor,
+  carry one — 87.8% confirmed,
+  9.4% marked anachronistic because the Senate's own record names a caucus
+  that did not exist on the day of the sitting, 0.7% disputed, 0.6%
   undatable, and 0.2% inferred across a gap or deduced from the chamber's
   official count per caucus. Those are kept and marked, never corrected or
   dropped. The chamber publishes a count of senators per caucus for each
@@ -193,24 +217,30 @@ reproduce these numbers.
   `2001-11-21_r72`, `2001-11-29_r74`, and the 1997 tribunal, which yields
   nothing at all. Their text is unreliable; `parse_stats.csv` flags them
   (`scanned_page_share`), and they should be excluded from text analysis.
-- **5,210 passages carry no speaker, and most of them were never spoken.** In
+- **6,399 passages carry no speaker, and most of them were never spoken.** In
   the HTML era 83% of those words stand inside a run of inserted matter —
   speeches handed in for the record and never delivered, and the bills read
-  into it.
+  into it. In the PDF era 87% of those words stand in a run the page opens
+  with "— El texto es el siguiente:" or "…son los siguientes:" — bills, work
+  plans, lists of titles.
 - **19 printed speaker labels still open a turn that leaves no row.** 6 are in
-  the November 2001 scan; most of the rest are the secretary's label followed
-  by the document he reads, which the page sets as a heading or an inserted
-  text. Whether that document is his turn is a question of definition, left
-  open rather than decided silently.
-- **166 speech passages carry a label that resolves to nobody** (0.1%), and 48
+  the November 2001 scan, and 3 are the secretary's label of 16 June 1999
+  printed over an Orden del Día with nothing of his own after it. The other
+  10 are labels whose words the page gives only as a note in its own
+  paragraph ("— Contenido no inteligible.", a remark made off the
+  microphone, "(Lee)" over a document), or as a document or list that is
+  nobody's. Whether such a label opens a turn is a question of definition,
+  left open rather than decided silently.
+- **111 speech passages carry a label that resolves to nobody** (0.05%), and 45
   one that fits more than one senator; the label is kept either way.
 - **The 1998–1999 caucus has gaps.** No roster of the chamber's caucuses
   survives for those years, so they are rebuilt from the chair's own calls,
-  senators' statements on the floor and archived personal pages. 2,120
-  senators' passages (1.4%) carry no caucus, most of them there.
+  senators' statements on the floor and archived personal pages. 2,100
+  senators' passages (1.3%) carry no caucus, 97 of them in 1998–1999; most of
+  the rest fall in 2014 (578), 2005 (437), 2006 (248) and 2015 (219).
 - **Roughly a fifth of each document is dropped on purpose** — contents pages,
   attendance rolls, appendices, inserted documents that were never spoken.
-  The median sitting keeps 82.8% of its printed text.
+  The median sitting keeps 82.6% of its printed text.
 - **The text is what the page prints, not what was said.** A stenographic
   record is edited, and senators correct their own words afterwards.
 
@@ -225,32 +255,32 @@ itself; the archive's own SHA-256 is published beside the archive.
 
 ## Licence
 
-Two different things are in here and they are not under the same terms.
+Three kinds of material are in here, under different terms.
 
-- **The corpus and the reference tables** — `data/processed/senado/`,
-  `reference/` and `raw_data_manifest.csv` — are licensed
+- **What this project added** is
   [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/): reusable,
-  including commercially, on condition of attribution.
-- **The archived pages** under `data/raw/senado/` are the Senate's pages as
-  the Internet Archive captured them. They are not this project's work and
-  are not relicensed here.
-- **The code** in `scripts/` is MIT ([LICENSE](LICENSE)).
-- **The transcripts themselves** are the Argentine Senate's. They are not
-  relicensed here and not redistributed. Cite the chamber as publisher, with
+  including commercially, with attribution. That is the structure of the
+  corpus and everything said about each passage — its type, speaker label,
+  turn, section and page — together with the resolved speakers and caucuses,
+  the compiled reference tables, the annotations and the manifest.
+- **The Senate's words and documents are not relicensed.** That covers the
+  `text` column, which reproduces the record, the page images and HTML
+  fragments the annotations are checked against, the Senate's own list of
+  senators (`senadores_historico.json`), and the archived Senate pages under
+  `data/raw/senado/`. Argentine copyright law (Ley 11.723, art. 27) allows
+  parliamentary speeches to be published, but not for profit without the
+  speaker's authorisation. Commercial use of the text is therefore a matter
+  between the user and the rights holders. Cite the chamber as publisher, with
   the sitting date and the per-sitting URL from `raw_data_manifest.csv`. The
-  portal publishes no licence page. The governing framework is Argentina's
-  access-to-information law (Ley 27.275), which obliges the state to publish in
-  formats that permit reuse and redistribution; that is the basis on which this
-  derived corpus is released, and it is a reading of the law rather than a
-  grant from the chamber.
+  source files are not redistributed.
+- **The code** in `scripts/` is MIT ([LICENSE](LICENSE)).
 
-[LICENSE-DATA](LICENSE-DATA) states the split and lists exactly what each side
-covers.
+[LICENSE-DATA](LICENSE-DATA) lists exactly what each part covers.
 
 ## Citing it
 
 > Ripamonti, J. P. (2026). *Argentine Senate stenographic transcripts,
-> 1998–2026: a speaker-attributed corpus* (version 0.5.7) [Data set]. Zenodo.
+> 1998–2026: a speaker-attributed corpus* (version 0.5.8) [Data set]. Zenodo.
 > <https://doi.org/10.5281/zenodo.22661019>
 
 That is the concept DOI, which always resolves to the latest version. Cite it

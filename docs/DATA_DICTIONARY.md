@@ -3,21 +3,21 @@
 Written for someone who has never seen this project. It says what each field
 holds, what its values mean, and — where it matters — what you must not assume
 about it. The provenance of every source file is in `raw_data_manifest.csv`,
-one row per PDF, and the limits measured on them are summarised in the
+one row per source file, and the limits measured on them are summarised in the
 [README](../README.md).
 
 The corpus is the stenographic record of the Argentine Senate: what was said on
 the floor, who said it, and what the stenographer noted around it. 817 sittings
-spanning February 1998 to September 2026, 29.5 million words, of which 25.7
+spanning February 1998 to September 2026, 29.6 million words, of which 25.4
 million are attributed speech.
 
-## The three tables
+## The four tables
 
 | File | One row is | Rows |
 | --- | --- | --- |
-| `data/processed/senado/blocks/<sitting>.parquet` | a passage of one sitting — a turn of speech, a stenographer's note, a heading, or page matter | 439,686 across 817 files (one sitting of the 818 attempted fails to parse) |
+| `data/processed/senado/blocks/<sitting>.parquet` | a passage of one sitting — a turn of speech, a stenographer's note, a heading, or page matter | 440,447 across 817 files (one sitting of the 818 attempted fails to parse) |
 | `data/processed/senado/speakers.parquet` | one printed speaker label in one sitting, resolved to a person and to the caucus they sat with | one per (sitting, label) pair |
-| `data/processed/senado/parse_stats.csv` | one sitting, with 43 counts of what the parser did to it | 818 |
+| `data/processed/senado/parse_stats.csv` | one sitting, with 45 columns saying what the parser did to it, 36 of them counts | 818 |
 | `reference/senado/bloque_observado.csv` | one day the chamber's composition was actually recorded, for one senator | 25,227 over 425 dates, 1998–2026 |
 
 There is one file of passages per sitting rather than one big file, so that a
@@ -30,9 +30,9 @@ the normal way to work with it.
 
 | Column | Meaning |
 | --- | --- |
-| `type` | `speech` — words somebody said (245,722). `event` — the stenographer's note about something that happened (69,376). `heading` — a section title (33,582). `furniture` — printed page matter kept only for tracing; not speech (84,701), which from 0.5.4-html includes the HTML era's attendance roll. `inline_italic` — an italicised fragment that had no turn to belong to (1,095). `other` — text the parser could not attribute to anyone (5,210, 1.19%), most of it matter inserted into the record without being spoken: speeches handed in, and the bills read into it. |
+| `type` | `speech` — words somebody said (244,805). `event` — the stenographer's note about something that happened (69,290). `heading` — a section title (33,567). `furniture` — printed page matter kept only for tracing; not speech (85,597), which from 0.5.4-html includes the HTML era's attendance roll. `inline_italic` — an italicised fragment that had no turn to belong to (789). `other` — text the parser could not attribute to anyone (6,399, 1.45%), most of it matter inserted into the record without being spoken: speeches handed in, and the bills read into it. |
 | `text` | The words themselves, as printed. Spelling, punctuation and the edition's own mistakes are preserved: where a page misspells a senator's surname, so does this. |
-| `event_type` | Only for notes. `vote` (41,277), `unspecified` (13,872), `incident` (6,151, disorder in the chamber), `pause` (2,394), `timestamp` (2,196, the clock time the record prints), `stage` (1,820, someone entering, leaving or taking the chair), `applause` (1,484), `laughter` (182). From 0.5.0 a note printed on its own line is one row, so two notes in the same italic run no longer share one. From 0.5.1 a bracketed note set inside a speaker's paragraph — "…os lo demanden. (Aplausos.)" — is part of that speech and not a row of its own, which is why applause and laughter are far fewer than the notes the page prints: most of them are printed inside somebody's sentence. From 0.5.2 a "(Lee:)" printed right after a secretary's label is his turn and not a note, as the HTML half has always had it. |
+| `event_type` | Only for notes. `vote` (41,288), `unspecified` (13,774), `incident` (6,151, disorder in the chamber), `pause` (2,394), `timestamp` (2,197, the clock time the record prints), `stage` (1,820, someone entering, leaving or taking the chair), `applause` (1,484), `laughter` (182). From 0.5.0 a note printed on its own line is one row, so two notes in the same italic run no longer share one. From 0.5.1 a bracketed note set inside a speaker's paragraph — "…os lo demanden. (Aplausos.)" — is part of that speech and not a row of its own, which is why applause and laughter are far fewer than the notes the page prints: most of them are printed inside somebody's sentence. From 0.5.2 a "(Lee:)" printed right after a secretary's label is his turn and not a note, as the HTML half has always had it. |
 | `seq` | Position within the sitting. Sorting by it gives the order the words were printed in, which is the order they were spoken. |
 | `pages` | The page or pages of the PDF the passage came from, as a list, counted as positions in the file from 1 — not the number printed in the page's running header, which can be lower where the cover and contents pages are not numbered (on 7 May 2025, file page 86 prints "Pág. 84"). Open the PDF at this position to find the passage. Empty for the HTML era, which has no pages. |
 
@@ -47,20 +47,20 @@ The largest instance is the cue that marks the secretary reading aloud.
 Where the page sets it on its own line under the label, it is an `event`
 carrying that label — 29 rows. Where the page sets it inside the label's
 paragraph, as the HTML era almost always does, the whole turn is a `speech`
-row whose entire text is `(Lee:)` — 5,485 rows, 5,251 of them in the HTML
+row whose entire text is `(Lee:)` — 5,483 rows, 5,251 of them in the HTML
 era. A note that closes a speech behaves the same way: 1,658 speech rows end
 with `(Aplausos.)` or `(Risas.)` inside the text.
 
-Together that is 7,143 speech rows, 2.91% of `speech`, holding 7,866 words
-nobody spoke — **0.03% of the 25.7 million words of speech**, small enough to
+Together that is 7,141 speech rows, 2.92% of `speech`, holding 7,864 words
+nobody spoke — **0.03% of the 25.4 million words of speech**, small enough to
 ignore for most counting. It is not small in one place: **32.4% of the
-secretary's 16,890 turns are a speech whose whole content is the word
+secretary's 16,923 turns are a speech whose whole content is the word
 "Lee"**, so any count of turns or words by the secretary needs them
 removed. A regex over `text` removes them; the parser leaves them where the
 page puts them, which is the same reason the spelling is left alone.
 
-When two annotators were shown these pages without the parser's answer,
-both independently marked `Sr. PROSECRETARIO (Pontaquarto).- (Lee:)` as the
+When the annotating model was shown these pages twice without the parser's
+answer, both readings marked `Sr. PROSECRETARIO (Pontaquarto).- (Lee:)` as the
 secretary taking the floor. The rows are where readers of the page expect
 them to be; it is the word count that needs the care.
 
@@ -68,8 +68,8 @@ them to be; it is the word count that needs the care.
 
 | Column | Meaning |
 | --- | --- |
-| `speaker_raw` | The label exactly as printed: `Sr. Pichetto`, `Sra. Presidente (Michetti)`, `Varios señores senadores`. Not normalised, because normalising it would hide what the page actually says. Empty for anything that is not speech, with one exception: **167 stenographer's notes carry a label because the page printed one directly above them** and the note is the whole of what that turn holds — "Sr. Secretario (Estrada). — (Lee:)" is one printed line, and the secretary took the floor there. The same holds for an exchange a senator quotes in italics, where each line keeps the label printed before it ("Sr. Badeni. — ¿Se le permitió…?", 27 November 2003). Only the note straight after a label carries it: a second note on the line below is about the chamber and has none. The row stays `event`; the label says who the note is about. Filter on `type == "speech"` for anything counting words said, which is what `speakers.parquet` does. |
-| `turn_id` | Groups the passages of one continuous turn. A turn whose only content is a stenographer's note has that note as its one row. A turn interrupted by applause, or split across a page break, keeps one `turn_id` across several rows. **Count turns by this, not by rows.** |
+| `speaker_raw` | The label exactly as printed: `Sr. Pichetto`, `Sra. Presidente (Michetti)`, `Varios señores senadores`. Not normalised, because normalising it would hide what the page actually says. Empty for anything that is not speech, with one exception: **88 stenographer's notes carry a label because the page printed one directly above them** and the note is the whole of what that turn holds — "Sr. Secretario (Estrada). — (Lee:)" is one printed line, and the secretary took the floor there. Only the note straight after a label carries it: a second note on the line below is about the chamber and has none. The row stays `event`; the label says who the note is about. Filter on `type == "speech"` for anything counting words said, which is what `speakers.parquet` does. |
+| `turn_id` | Groups the passages of one continuous turn. A turn whose only content is a stenographer's note has that note as its one row. A turn interrupted by applause, or split across a page break, keeps one `turn_id` across several rows. **Count turns by this, not by rows.** Numbered from 1 within each sitting. Set on every `speech` row, on the 88 notes that carry a label, and on 408 `furniture` rows that were turns of matter printed after the record's sign-off; empty on every other row, which is why it is stored as a float — every value is a whole number. |
 
 To get from a label to a person, join `speakers.parquet` on
 (`session_id`, `speaker_raw`). That table is described below.
@@ -81,8 +81,8 @@ To get from a label to a person, join `speakers.parquet` on
 | `chapter`, `chapter_title` | The numbered section of the sitting's agenda the passage falls under, and its title. Present in 784 of the 817 sittings that parse; the rest print no section numbering the parser can read. |
 | `session_id` | The sitting: date plus its number within the year, e.g. `2014-05-07_r07`. |
 | `session_date` | The date of the sitting, `YYYY-MM-DD`. |
-| `session_type` | What kind of sitting, as the Senate names it, by row count: `ORDINARIA` (334,158), `ESPECIAL` (52,039), `EXTRAORDINARIA` (24,321), `ASAMBLEA` (7,411), `TRIBUNAL DE JUICIO POLITICO` (7,273), `INFORMATIVA ESPECIAL` (6,478), `PREPARATORIA` (3,120), `ESPECIAL EXTRAORDINARIA` (2,619), `ORDINARIA CONTINUACIÓN` (1,028), `EN MINORÍA` (882), `ESPECIAL EN MINORÍA` (194), `REUNIÓN CONJ.AMBAS CÁMARAS` (155), `FALTA DE QUORUM` (14). These are the chamber's own labels and they overlap — `EN MINORÍA` and `ESPECIAL EN MINORÍA` name the same thing — so use `session_kind` rather than grouping them yourself. **Mixing them without thinking will mislead you**: an impeachment trial and an ordinary sitting are not the same kind of speech. |
-| `session_kind` | `session_type` grouped into ten canonical kinds. Added beside the raw label and never in place of it, because how the chamber words a thing is evidence about the chamber. The mapping is `reference/senado/session_type_map.csv`, one row per raw label with the reasoning for each. By sitting (817 in all): `ordinaria` 441, `especial` 143, `asamblea` 57, `extraordinaria` 51, `en_minoria` 34, `preparatoria` 29, `tribunal_juicio_politico` 29, `informativa` 27, `reunion_conjunta` 5, `sin_quorum` 1. Four labels were folded in by judgment rather than identity and carry an `ambiguous` flag in the mapping: `ESPECIAL EXTRAORDINARIA` and `INFORMATIVA ESPECIAL` each pair a calling procedure with the thing that actually governs the sitting, and were grouped under the latter; `REUNIÓN CONJ.AMBAS CÁMARAS` and `FALTA DE QUORUM` were left as kinds of their own rather than merged into `asamblea` or into an intention the record never states. **One caveat before you group by it**: the column holds two different dimensions at once. `ordinaria`, `extraordinaria` and `especial` say how a sitting was called and in what period; `en_minoria` and `sin_quorum` say whether it had a quorum. A sitting in minority is also ordinary or special, and this column cannot say both — use `convened_as` and `quorum_failed` below, which split the two. `session_kind` is kept unchanged so nothing that already groups by it moves. |
+| `session_type` | What kind of sitting, as the Senate names it, by row count: `ORDINARIA` (334,897), `ESPECIAL` (52,068), `EXTRAORDINARIA` (24,319), `ASAMBLEA` (7,416), `TRIBUNAL DE JUICIO POLITICO` (7,272), `INFORMATIVA ESPECIAL` (6,478), `PREPARATORIA` (3,120), `ESPECIAL EXTRAORDINARIA` (2,619), `ORDINARIA CONTINUACIÓN` (1,028), `EN MINORÍA` (868), `ESPECIAL EN MINORÍA` (194), `REUNIÓN CONJ.AMBAS CÁMARAS` (154), `FALTA DE QUORUM` (14). These are the chamber's own labels and they overlap — `EN MINORÍA` and `ESPECIAL EN MINORÍA` name the same thing — so use `session_kind` rather than grouping them yourself. **Mixing them without thinking will mislead you**: an impeachment trial and an ordinary sitting are not the same kind of speech. |
+| `session_kind` | `session_type` grouped into ten canonical kinds. Added beside the raw label and never in place of it, because how the chamber words a thing is evidence about the chamber. The mapping is `reference/senado/session_type_map.csv`, one row per raw label with the reasoning for each. By sitting (817 in all): `ordinaria` 441, `especial` 143, `asamblea` 57, `extraordinaria` 51, `en_minoria` 34, `preparatoria` 29, `tribunal_juicio_politico` 29, `informativa` 27, `reunion_conjunta` 5, `sin_quorum` 1. Five labels were folded in by judgment rather than identity and carry an `ambiguous` flag in the mapping: `ESPECIAL EXTRAORDINARIA` and `INFORMATIVA ESPECIAL` each pair a calling procedure with the thing that actually governs the sitting, and were grouped under the latter; `ESPECIAL EN MINORÍA` was grouped with `EN MINORÍA`, by its quorum rather than by how it was called; `REUNIÓN CONJ.AMBAS CÁMARAS` and `FALTA DE QUORUM` were left as kinds of their own rather than merged into `asamblea` or into an intention the record never states. **One caveat before you group by it**: the column holds two different dimensions at once. `ordinaria`, `extraordinaria` and `especial` say how a sitting was called and in what period; `en_minoria` and `sin_quorum` say whether it had a quorum. A sitting in minority is also ordinary or special, and this column cannot say both — use `convened_as` and `quorum_failed` below, which split the two. `session_kind` is kept unchanged so nothing that already groups by it moves. |
 | `convened_as` | How the sitting was called: `ordinaria` 442 sittings, `especial` 152, `asamblea` 57, `extraordinaria` 51, `preparatoria` 29, `tribunal_juicio_politico` 29, `informativa` 27, `reunion_conjunta` 5, and **empty for 25 where the record does not say**. For every label but the three quorum ones it is `session_kind`. A sitting without quorum is labelled only as that, so what it had been called as is taken from the sitting itself, one at a time, with the quote in `reference/senado/session_convened_as.csv`: 6 are labelled `ESPECIAL EN MINORÍA`, the cover of 25 June 2026 says "SESIÓN ORDINARIA (SIN QUÓRUM)", and on 8 December 1998 (both sittings) and 29 September 2004 the words spoken say "sesión especial". The other 25 give no answer — their covers say only "Sesión en minoría" — and are left empty rather than defaulted. The running header some of them print, "Versión provisional - sesión ordinaria", is a template and is not read: on 8 December 1998 it sits over a sitting the chair calls "la otra sesión especial prevista para hoy". |
 | `quorum_failed` | `true` for the 35 sittings the chamber's own label says had no quorum (`EN MINORÍA`, `ESPECIAL EN MINORÍA`, `FALTA DE QUORUM`). Read from the label alone. `false` means the label records no failure, not that a quorum was counted. |
 | `sesion`, `reunion` | The Senate's own two numberings of the sitting, as printed on its cover. |
@@ -95,7 +95,7 @@ To get from a label to a person, join `speakers.parquet` on
 | `source_format` | `pdf` or `html` — which of the two the chamber served for that sitting. The HTML export covers most of 1998–2003 and carries no pagination, so `pages` is empty and `size` is null on those rows; do not read an empty `pages` as a parsing failure. |
 | `source_sha256` | That file's checksum, so a passage can be traced to the exact bytes it came from. Called `pdf_sha256` up to release 0.4.37. |
 | `parser_version` | Which version of the parser produced this row. |
-| `font`, `font_style`, `size` | The typeface the passage was printed in. Kept because the parser's decisions rest on it and they should be re-checkable, not because they carry meaning. On HTML rows `font` and `size` are null and `font_style` comes from the markup, which states outright what the PDF side has to infer. |
+| `font`, `font_style`, `size` | The typeface the passage was printed in. Kept because the parser's decisions rest on it and they should be re-checkable, not because they carry meaning. On HTML rows `font` and `size` are null and `font_style` comes from the markup, which states outright what the PDF side has to infer; it is set on the HTML era's speech and notes and null on its headings, page matter and `other` rows (73,244 rows in all). Every PDF row has all three. |
 
 ## The speakers table
 
@@ -104,16 +104,17 @@ people in different sittings, and sometimes within one sitting.
 
 | Column | Meaning |
 | --- | --- |
+| `session_id`, `session_date` | The sitting, as in the passages table; join on (`session_id`, `speaker_raw`). |
 | `speaker_raw` | The label as printed, matching the passages table. |
 | `label_clean` | The same label with the honorific and the terminator removed. |
-| `n_blocks` | How many `speech` passages in that sitting carry this label. The 167 notes that carry a label (see `speaker_raw`) are not counted. |
+| `n_blocks` | How many `speech` passages in that sitting carry this label. The 88 notes that carry a label (see `speaker_raw`) are not counted. |
 | `person_id`, `person_name` | The person, where one could be established. Empty otherwise. |
 | `role` | The office, for people who speak by office rather than by name — the chair, the secretaries, the cabinet chief, the President of the Nation. Taken verbatim from the record, so the same office appears under several spellings. |
-| `elected_ticket` | **The list the senator STOOD ON, not the caucus they sat with.** One value per mandate, taken from the roster. See the two-affiliations note below before using it. |
+| `elected_ticket` | **The list the senator STOOD ON, not the caucus they sat with.** One value per mandate, taken from the roster. An empty string, not a null, for three senators the roster gives no ticket — Capitanich, Neder and Cándida López, 909 passages. See the two-affiliations note below before using it. |
 | `province` | The province the senator represents. |
 | `bloc` | **The caucus the senator SAT WITH.** Taken from the nearest day the chamber's composition was actually recorded — see below. |
-| `bloc_status` | How far that caucus can be trusted, **judged on the date of the sitting, not on the day the caucus was recorded**: `confirmed` (90.0% of senators' floor passages), `anachronistic` (7.0% — the record names a caucus that did not exist on the day of the sitting), `disputed` (0.8% — two records that could each describe the day name different caucuses, so which one held is not established), `undatable` (0.6% — the caucus has no established start, so nothing can be checked), `bracketed` (0.1%, 1998-1999 only — **an inference, not an observation**: no record lies within 200 days of the sitting, but the same senator is recorded in the same caucus on both sides of it, inside one mandate; see `bloc_span_days`), `deduced` (0.06%, 1998-1999 only — **an inference, not an observation**: nobody recorded the senator's caucus, but the chamber's official count per caucus on 1 March 1999 leaves room for only one answer once every other senator's caucus is known; used only where no reading lies within 200 days, within 200 days of the count and inside the same mandate; see `scripts/deduce_bloc_from_counts.py`). Empty where there is no caucus at all (1.4%, spread thinly across the years). |
-| `bloc_basis` | Where the caucus came from: `roll call` (44.7% of senators' floor passages), `archived roster` (39.5%, May 2000 to 2004), `chair's call` (12.3%, 1998 to early 2000: the chair naming the caucus of the senator it gave the floor to, in the transcript itself), `floor statement` (0.9%, 1998 to May 2000: a senator saying on the floor which caucus they speak for — "en nombre del bloque justicialista…" — read by hand, one passage at a time) `official count` (0.1%, the `deduced` rows) or `archived senator page` (1.2%, the senators' own pages captured on 2 February 1998). `bloque_observado.csv` gives, for every observation, the address of the exact capture or transcript it rests on; `bloque_por_llamado.csv` and `bloque_por_declaracion.csv` also quote the words. |
+| `bloc_status` | How far that caucus can be trusted, **judged on the date of the sitting, not on the day the caucus was recorded**: `confirmed` (87.8% of senators' passages, in the chair or on the floor), `anachronistic` (9.4% — the record names a caucus that did not exist on the day of the sitting), `disputed` (0.7% — two records that could each describe the day name different caucuses, so which one held is not established), `undatable` (0.6% — the caucus has no established start, so nothing can be checked), `bracketed` (0.1%, 1998-1999 only — **an inference, not an observation**: no record lies within 200 days of the sitting, but the same senator is recorded in the same caucus on both sides of it, inside one mandate; see `bloc_span_days`), `deduced` (0.06%, 1998-1999 only — **an inference, not an observation**: nobody recorded the senator's caucus, but the chamber's official count per caucus on 1 March 1999 leaves room for only one answer once every other senator's caucus is known; used only where no reading lies within 200 days, within 200 days of the count and inside the same mandate; see `scripts/deduce_bloc_from_counts.py`). Empty where there is no caucus at all (1.3%, spread thinly across the years). |
+| `bloc_basis` | Where the caucus came from: `roll call` (47.8% of senators' passages), `archived roster` (37.3%, May 2000 to 2004), `chair's call` (11.6%, 1998 to early 2000: the chair naming the caucus of the senator it gave the floor to, in the transcript itself), `floor statement` (0.9%, 1998 to May 2000: a senator saying on the floor which caucus they speak for — "en nombre del bloque justicialista…" — read by hand, one passage at a time) `official count` (0.1%, the `deduced` rows) or `archived senator page` (1.1%, the senators' own pages captured on 2 February 1998). `bloque_observado.csv` gives, for every observation, the address of the exact capture or transcript it rests on; `bloque_por_llamado.csv` and `bloque_por_declaracion.csv` also quote the words. |
 | `bloc_observed` | The date the caucus was actually recorded on. |
 | `bloc_gap_days` | How many days that is from the sitting. Median 0 — most sittings are themselves roll-call days. Rows further than 200 days from any observation get no caucus, unless they are `bracketed`. |
 | `bloc_span_days` | Only on `bracketed` rows: how many days apart the two observations on either side of the sitting are (407 to 843). The shorter it is, the less room for an unrecorded switch; filter on it to set your own limit. |
@@ -126,17 +127,19 @@ people in different sittings, and sometimes within one sitting.
 with once in the chamber. They disagree across most of the corpus, and the
 disagreement is not noise:
 
-Measured over the 20.5 million words of floor speech by identified senators
-(`match_status == "matched_senator"`) where both affiliations are recorded,
+Measured over the 20.3 million words of floor speech by identified senators
+(`match_status == "matched_senator"`) where both affiliations are recorded —
+a ticket the roster leaves empty, as it does for Capitanich, Neder and
+Cándida López, counts as not recorded —
 and grouping labels into four party families — Peronist / Justicialist, Radical /
 Cambiemos / JxC, La Libertad Avanza, and provincial and other alliances — as
 `family()` in `scripts/map_blocs.py` defines them:
 
-- The two are written the same way in **19.6%**.
-- They are written differently but mean the same political camp in **63.4%** —
+- The two are written the same way, ignoring case, in **19.7%**.
+- They are written differently but mean the same political camp in **63.8%** —
   the peronist bloc renaming itself, mostly.
-- They fall in different camps in **17.0%**, and this is the part that matters:
-  two thirds of it is a senator elected on a **provincial alliance** who sits
+- They fall in different camps in **16.5%**, and this is the part that matters:
+  nearly two thirds of it is a senator elected on a **provincial alliance** who sits
   with a **national caucus**. Someone elected for the Frente Jujeño sits with
   the radicals; someone elected for Chubut Somos Todos sits with the Frente de
   Todos. The ticket does not say which side of the chamber they are on. The
@@ -153,7 +156,7 @@ later. Frente de Todos, formed in December 2019, is stamped on votes going back
 to 2010; Pichetto's whole 2013–2019 term is filed under a caucus he founded in
 2019 on leaving. Every reading is checked against the caucus's own dated life
 in `reference/senado/blocs_manual.csv`, and the ones that fail are **kept and
-marked, never corrected or dropped** — 13.1% of senators' floor passages. Dropping
+marked, never corrected or dropped** — 9.4% of senators' passages. Dropping
 them would hide how much of the Senate's own record is like this. Filter on
 `bloc_status == "confirmed"` for any claim about *when* the chamber realigned.
 
@@ -170,7 +173,7 @@ between two records that name DIFFERENT caucuses, the switch happened
 somewhere in between and the record does not say on which side of the sitting.
 Taking the nearer of the two projected one reading across a disagreement —
 sometimes backwards, onto a day an earlier record contradicts. Those rows read
-`disputed`: 178 (sitting, label) pairs, 1,180 passages, 21 senators, nearly
+`disputed`: 178 (sitting, label) pairs, 1,181 passages, 21 senators, nearly
 all of them 2000–2004, when caucuses split often and the records that date
 them are months apart. Only a
 record that could itself describe the day counts as the other side of a
@@ -185,7 +188,7 @@ Arancio de Beller between the radicals and the Frente Cívico Jujeño in
 Only roll-call readings are re-checked. The dates on an archived roster page
 are the days the page was **captured**, a floor on the caucus's life rather
 than a claim about when it began, so a sitting before the earliest capture is
-expected — twenty-two passages, all from the first months of 2000 — and
+expected — 2,001 passages, from 28 April 1999 to 18 May 2000 — and
 marking them would report
 the gaps in the Internet Archive as a fact about the chamber.
 
@@ -201,14 +204,14 @@ chair from anything about party positions.
 
 | Value | Share of speech | What it means |
 | --- | --- | --- |
-| `matched_senator` | 35.7% | A named senator, resolved against the roster and their mandate dates. |
-| `matched_senator_chair` | 27.5% | A senator speaking from the chair, where the page names them. Where two senators of the same surname sat at once, the sitting's own cover page decides which of them held the gavel that day. |
-| `office_only` | 22.0% | **A chamber office speaking under its bare title** — "Sr. Presidente", "Sr. Secretario", with no surname printed. This is how the record was printed before about 2016. **These are deliberately left without a person.** The chair changes hands during a sitting and the page does not say who holds it; the cover names two or more presiding officers in 522 of the 803 sittings whose cover says who presided. Any name here would be a guess. Five labels that DO print a name land here too, because the name is left over from an earlier year: nobody of that surname held any office or seat on the day, and someone who had one before did — "Sr. Presidente (Maqueda)" on routine agenda items of three 2003 sittings, after Maqueda left for the Supreme Court. Such a label says the chair spoke and nothing more. |
-| `matched_authority` | 13.7% | Someone holding a national or chamber office, resolved against a hand-compiled table of office-holders and the office-holders each sitting's cover page names. |
+| `matched_senator` | 35.8% | A named senator, resolved against the roster and their mandate dates. |
+| `matched_senator_chair` | 31.4% | A senator speaking from the chair, where the page names them. Where two senators of the same surname sat at once, the sitting's own cover page decides which of them held the gavel that day. |
+| `office_only` | 21.8% | **A chamber office speaking under its bare title** — "Sr. Presidente", "Sr. Secretario", with no surname printed. This is how the record was printed before about 2016. **These are deliberately left without a person.** The chair changes hands during a sitting and the page does not say who holds it; the cover names two or more presiding officers in 522 of the 802 sittings whose cover says who presided. Any name here would be a guess. Five labels that DO print a name land here too, because the name is left over from an earlier year: nobody of that surname held any office or seat on the day, and someone who had one before did — "Sr. Presidente (Maqueda)" on routine agenda items of three 2003 sittings, after Maqueda left for the Supreme Court. Such a label says the chair spoke and nothing more. |
+| `matched_authority` | 9.9% | Someone holding a national or chamber office, resolved against a hand-compiled table of office-holders and the office-holders each sitting's cover page names. |
 | `out_of_scope` | 0.9% | Correctly not a senator: parties and witnesses at the impeachment trials, deputies, ministers of the national executive, foreign heads of state. |
-| `unmatched` | 0.1% | A genuine failure: 166 passages, nearly all invited outside speakers at public hearings, named by surname alone. |
+| `unmatched` | 0.0% | A genuine failure: 111 passages under 80 labels — names misspelt or damaged by OCR beyond what the resolver tolerates ("Menen", "Oyarznn", "Colombro"), senators-elect before they took their seats, deputies and officials at joint assemblies, and outside speakers named by surname alone. |
 | `collective` | 0.2% | "Varios señores senadores" — the record attributing words to several people at once. |
-| `ambiguous` | 0.0% | A surname more than one person could hold on that date, with nothing left to separate them: four senators named Martínez and three named González, all of one gender within each group, and the preparatory sittings where the outgoing and the incoming holder of an office are both in window. 48 passages in all. |
+| `ambiguous` | 0.0% | A surname more than one person could hold on that date, with nothing left to separate them: four senators named Martínez and three named González, all of one gender within each group, and the preparatory sittings where the outgoing and the incoming holder of an office are both in window. 45 passages in all. |
 
 **Where a tie was broken, and how.** Two senators named Sapag sat for Neuquén
 together from November 1998 to December 2001, and a label reading "Sapag" and
@@ -229,7 +232,47 @@ all 69.
 **The trap to avoid**: treating `office_only` as missing data and dropping it
 loses 22% of the floor, most of it the chair conducting business. Treating it as
 one person is worse. For "who spoke most", exclude the chair entirely — that is
-what the analysis in this repository does, and it says so.
+what the project's analysis notebook, in its repository, does, and it says so.
+
+## The parse record
+
+`parse_stats.csv` has one row for each of the 818 sittings held, the one that
+fails to parse included, and 45 columns:
+
+- `session_id`, `file_name` — the sitting and the file read.
+- `parser_version`, `parsed_at`, `duration_s` — which parser, when, and in
+  how many seconds. `error` is empty except on the 1997 tribunal
+  (`no_opening_found`).
+- `characters_extracted`, `scanned_page_share` (the share of pages that are scanned
+  images, 1.0 on the three scans), `body_size` (the type size, in points,
+  read as the body of the debate) and `marker_mode` (how the start of the
+  sitting was found) — what was read.
+- 30 counts of the parser's steps, each named for its step — the blocks
+  it found (`blocks_generated`, `chapters_detected`, `events_tagged`, …) and
+  what it removed, split, rejoined or repaired (`header_chars_removed`,
+  `labels_rejoined`, `appendix_demoted`, …) — and 5 of what it wrote:
+  `speech_blocks`, `heading_blocks`, `furniture_blocks`, `other_blocks`,
+  `rows_written`. With `characters_extracted`, that is 36 counts.
+
+The HTML parser does not take most of those steps, so on its 213 rows only
+`blocks_generated`, `chapters_detected`, `events_tagged`, the five output
+counts and the run columns are filled; the rest are empty, not zero.
+`placeholders_filed` is filled only where a sitting had one.
+
+## The caucus observations
+
+`reference/senado/bloque_observado.csv` is what `bloc` is read from: one row
+per day one senator's caucus was recorded, 25,227 rows over 425 dates.
+
+| Column | Meaning |
+| --- | --- |
+| `fecha` | The day it was recorded: the vote, the capture, the sitting. |
+| `person_id`, `person_name` | The senator, as in `speakers.parquet`. |
+| `bloque` | The caucus, in the spelling of `blocs_manual.csv` where the caucus has an entry there, as printed otherwise. |
+| `fuente` | The record: `acta de votacion` (roll call, 23,701), `foto de la pagina de bloques` (archived roster page, 1,112), `llamado de la presidencia` (chair's call, 311), `ficha del senador` (archived senator page, 58), `declaracion en el recinto` (floor statement, 34), `conteo oficial por bloque` (official count, 11). |
+| `fiabilidad` | How far it can be trusted: `acta` (the caucus existed on the day of the vote), `acta_anacronica` (it did not), `acta_sin_control` (the caucus has no dated start), `foto`, `foto_bloque_previo` (a roster caucus that died before the roll calls begin), `llamado`, `declaracion`, and `conteo`, which is not an observation but a deduction. |
+| `procedencia` | The address of the exact vote, capture or transcript it rests on. |
+| `familia` | The party family, as `family()` in `scripts/map_blocs.py` defines it. |
 
 ## Things you should know before using this
 
@@ -253,11 +296,13 @@ what the analysis in this repository does, and it says so.
   another spoke, and four calls are refused for that. "Bloque de la Alianza"
   is never read as a caucus: the Alianza was a coalition, and its two caucuses
   sat apart. Where a call and an archived page fall within 200 days of each
-  other they agree in all 153 cases. The chair does not always say "bloque"
+  other they agree in all 130 pairs. The chair does not always say "bloque"
   ("de la Unión Cívica Radical", "del Partido Cruzada Renovadora"); those
-  calls are read too, only through a hand table of which party names a
-  caucus, and each of the 158 was checked against the same senator's other
-  readings within a year first: 153 agree, none disagrees, 5 have nothing
+  calls, 145 of the 311, are read too, only through a hand table of which
+  party names a caucus, and each of the 158 calls that second reading added
+  to the first 153 — these, and calls set after a comma, "por San Juan, del
+  bloque …" — was checked against the same senator's other readings within a
+  year first: 153 agree, none disagrees, 5 have nothing
   near. A senator who is never called by caucus has none unless they said it
   themselves: 34 floor statements, read by hand and each agreeing with every
   other source near it. Where a senator is still unrecorded, 208 blocks are
@@ -283,8 +328,8 @@ what the analysis in this repository does, and it says so.
   and in 2 the senator changed caucus exactly as the new mandate began. `bloc_basis` says which source each caucus came from.
 - **Roughly a fifth of each document is dropped on purpose**: contents pages,
   attendance rolls, appendices and inserted documents that were never spoken.
-  The median sitting keeps 82.8% of its printed text, and the two formats
-  differ: 79.3% for the PDFs against 91.2% for the HTML export, which has no
+  The median sitting keeps 82.6% of its printed text, and the two formats
+  differ: 78.9% for the PDFs against 91.2% for the HTML export, which has no
   repeated page headers or footers to drop.
 - **One sitting fails to parse**: `1997-12-18_r117`, the impeachment tribunal
   of December 1997, a photocopy saved as eight page images with no text layer
@@ -296,13 +341,14 @@ what the analysis in this repository does, and it says so.
 Three layers, summarised in the [README](../README.md). Each measures a
 different thing, and the strongest number rests on the smallest sample.
 
-- **505 turns annotated by hand**, in two sets, and this is the only layer that
+- **505 annotated turns**, in two sets, annotated by a language model from
+  the page, not by a person, and this is the only layer that
   measures whether a turn was found at all.
   **72 PDF pages** spanning 1998–2024: boundary and attribution F1 = 1.000,
   310 of 310 turns and 82 of 82 stenographer's notes at precision 1.000. **24 stretches of the
   HTML era** spanning 1998–2003, each about 7,000 characters and cut on the
   source rather than at anything the parser found: F1 = 1.000, 195 of 195
-  turns and 62 of 62 notes, under either reading. **Both readings are the
+  turns and 61 of 61 notes, under either reading. **Both readings are the
   same model working from the same brief, not two people.** `check_gold_html.py`
   reports how far the two readings agree before either is believed, and on
   the committed annotations they agree on every one of the 195 turn starts
@@ -336,7 +382,7 @@ different thing, and the strongest number rests on the smallest sample.
   wrong places. Both scores are the same on it.
   **Read the interval, not the point.** A perfect 310 still puts the 95%
   interval on the PDF recall at 0.988 to 1.000, those 505 turns are 0.21% of
-  the 245,722 in the corpus, and 44 of the 72 PDF pages, carrying 235 turns, are
+  the 244,805 speech passages in the corpus, and 44 of the 72 PDF pages, carrying 235 turns, are
   before 2016, which is where the printed conventions least resemble today's.
   Neither set checks the order the turns came out in.
   One PDF page is retired from the scoring and kept in full under
@@ -350,10 +396,12 @@ different thing, and the strongest number rests on the smallest sample.
 - **All 817 parsed sittings audited against their source files**: no page
   apparatus inside a turn and no turn carrying a second speaker's label outside
   the three scans, no sitting whose output is longer than the page it came from,
-  154,247 blocks probed for being findable in the file they came from with
-  0.072% not located once the scans are set aside and no sitting above 1%, and
-  every turn checked for beginning and ending the way speech does — 8 turns of
-  245,722 open mid-word and every one of them is printed that way.
+  153,631 blocks probed for being findable in the file they came from, 80
+  not located (0.052%) and 68 of those in the two scans — 12 of 153,377
+  (0.008%) once the scans are set aside, and no sitting above 1% — and every
+  turn checked for beginning and ending the way speech does: 8 passages of
+  244,805 open in lower case under a new speaker, each on a whole word, and
+  every one of them is printed that way.
 - **6,819 turns read blind** across thirteen rounds on 691 sittings, by readers
   that were never shown the parser's answer. Twenty-four disagreed at the time
   of reading and each was then checked against the printed page: **two were
@@ -364,10 +412,10 @@ different thing, and the strongest number rests on the smallest sample.
   a reader to a different printing of the same stock phrase, or one reader's
   own slip. Every answer is re-asked of the current corpus by the project's own
   release checks, because the rounds were run months and many parser versions
-  ago and a repair could quietly move a passage to somebody else: 6,529 still
+  ago and a repair could quietly move a passage to somebody else: 6,518 still
   resolve to the person the round named, **none resolves to anybody else**, and
-  290 cannot be re-asked at all — 264 quote words the page prints under more
-  than one name, 20 are passages a repair has since moved out of speech, 5
+  301 cannot be re-asked at all — 264 quote words the page prints under more
+  than one name, 31 are passages a repair has since moved out of speech, 5
   quote too little of a passage to find it, and 1 has no words recorded.
   This is the only check in the project whose ground truth was produced without
   sight of the parser, and it measures attribution only: it asks whether a turn

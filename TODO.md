@@ -2990,7 +2990,23 @@ signatures, all read by eye). PDF parser 0.5.8, HTML 0.5.11-html.
       (25 September 2026), and that the repository goes public with the data.
 - [x] The documents said the gold sets were annotated "by hand"; they say
       now that a language model annotated them and no person checked them.
-- [ ] Figures in the documents recomputed for 0.5.8 (in progress).
+- [x] **A body-size label with its words set off the body** (4 September
+      2013, 21 December 2016): a run with a word in it, led by a label right
+      above it, is restored too; split words are rejoined first, so a letter
+      set in another size no longer comes out as "s ilencio". Seven sittings
+      change, each read. Found by listing the turns that leave no row: 21
+      became 19.
+- [x] Figures in the documents recomputed for 0.5.8 by one Opus agent
+      (`.agent/scratch/doc_figures/figures.py`, re-runnable), each definition
+      first checked to reproduce the 0.5.7 figure on the 0.5.7 bundle; its
+      changes read and the headline figures recomputed independently. The
+      unresolved labels and the turns with no row were re-described from the
+      rows themselves. Gold, blind reads and audit re-run on the final build
+      (audit: 13 things to look at, all printed that way).
+- [x] Bundle 0.5.8 built and verified on a clean extraction: 1,468 files,
+      96 MB packed, sha256 3342de8c…; checksums, no personal path, every
+      script answers `--help`, the loading example gives 440,447 rows and
+      244,805 speech passages over 817 sittings; the archive records no owner.
 - [ ] Review again on the latest Opus, then bundle, DOI, tag v0.5.8.
 - [ ] **For the owner**: make the GitHub repository public, reserve the
       version DOI on Zenodo (New version on the published record); then the
