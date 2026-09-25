@@ -33,15 +33,15 @@ session_date,file,office,person,basis
 1998-03-25,1998-03-25_r05_ORDINARIA,secretario,Matilde del Valle Guerrero,masthead
 1998-03-25,1998-03-25_r05_ORDINARIA,vicepresidente de la nacion,Carlos F. Ruckauf,masthead
 1998-04-01,1998-04-01_r06_ORDINARIA,prosecretario,Alfredo A. Luques,masthead
-1998-04-01,1998-04-01_r08_ESPECIAL,prosecretario,Alfredo A. Luques,masthead
 1998-04-01,1998-04-01_r06_ORDINARIA,prosecretario,Berta Aldalur,masthead
-1998-04-01,1998-04-01_r08_ESPECIAL,prosecretario,Berta Aldalur,masthead
 1998-04-01,1998-04-01_r06_ORDINARIA,prosecretario,Mario L. Pontaquarto,masthead
+1998-04-01,1998-04-01_r06_ORDINARIA,secretario,Matilde del Valle Guerrero,masthead
+1998-04-01,1998-04-01_r06_ORDINARIA,vicepresidente 1°,Antonio Cafiero,masthead
+1998-04-01,1998-04-01_r08_ESPECIAL,prosecretario,Alfredo A. Luques,masthead
+1998-04-01,1998-04-01_r08_ESPECIAL,prosecretario,Berta Aldalur,masthead
 1998-04-01,1998-04-01_r08_ESPECIAL,prosecretario,Mario L. Pontaquarto,masthead
 1998-04-01,1998-04-01_r08_ESPECIAL,secretario,Edgardo R. Piuzzi,masthead
-1998-04-01,1998-04-01_r06_ORDINARIA,secretario,Matilde del Valle Guerrero,masthead
 1998-04-01,1998-04-01_r08_ESPECIAL,secretario,Matilde del Valle Guerrero,masthead
-1998-04-01,1998-04-01_r06_ORDINARIA,vicepresidente 1°,Antonio Cafiero,masthead
 1998-04-15,1998-04-15_r09_ORDINARIA,prosecretario,Alfredo A. Luques,masthead
 1998-04-15,1998-04-15_r09_ORDINARIA,prosecretario,Berta Aldalur,masthead
 1998-04-15,1998-04-15_r09_ORDINARIA,prosecretario,Mario L. Pontaquarto,masthead
@@ -119,19 +119,19 @@ session_date,file,office,person,basis
 1998-06-17,1998-06-17_r25_EN_MINORIA,secretario,Edgardo R. Piuzzi,masthead
 1998-06-17,1998-06-17_r25_EN_MINORIA,secretario,Matilde del Valle Guerrero,masthead
 1998-06-17,1998-06-17_r25_EN_MINORIA,vicepresidente de la nacion,Carlos F. Ruckauf,masthead
-1998-06-24,1998-06-24_r27_TRIBUNAL_DE_JUICIO_POLITICO,presidente provisional,Eduardo Menem,masthead
 1998-06-24,1998-06-24_r26_ORDINARIA,presidente provisional,Eduardo Menem,masthead
-1998-06-24,1998-06-24_r27_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Alfredo A. Luques,masthead
 1998-06-24,1998-06-24_r26_ORDINARIA,prosecretario,Alfredo A. Luques,masthead
-1998-06-24,1998-06-24_r27_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Berta Aldalur,masthead
 1998-06-24,1998-06-24_r26_ORDINARIA,prosecretario,Berta Aldalur,masthead
-1998-06-24,1998-06-24_r27_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Mario L. Pontaquarto,masthead
 1998-06-24,1998-06-24_r26_ORDINARIA,prosecretario,Mario Pontaquarto,masthead
 1998-06-24,1998-06-24_r26_ORDINARIA,prosecretario,Taha Ahmad,masthead
-1998-06-24,1998-06-24_r27_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Edgardo R. Piuzzi,masthead
 1998-06-24,1998-06-24_r26_ORDINARIA,secretario,Edgardo R. Piuzzi,masthead
-1998-06-24,1998-06-24_r27_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Matilde del Valle Guerrero,masthead
 1998-06-24,1998-06-24_r26_ORDINARIA,secretario,Matilde del Valle Guerrero,masthead
+1998-06-24,1998-06-24_r27_TRIBUNAL_DE_JUICIO_POLITICO,presidente provisional,Eduardo Menem,masthead
+1998-06-24,1998-06-24_r27_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Alfredo A. Luques,masthead
+1998-06-24,1998-06-24_r27_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Berta Aldalur,masthead
+1998-06-24,1998-06-24_r27_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Mario L. Pontaquarto,masthead
+1998-06-24,1998-06-24_r27_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Edgardo R. Piuzzi,masthead
+1998-06-24,1998-06-24_r27_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Matilde del Valle Guerrero,masthead
 1998-07-01,1998-07-01_r28_ORDINARIA,presidente provisional,Eduardo Menem,masthead
 1998-07-01,1998-07-01_r28_ORDINARIA,prosecretario,Alfredo A. Luques,masthead
 1998-07-01,1998-07-01_r28_ORDINARIA,prosecretario,Berta Aldalur,masthead
@@ -228,19 +228,19 @@ session_date,file,office,person,basis
 1998-11-18,1998-11-18_r58_ORDINARIA,vicepresidente,Antonio Cafiero,masthead
 1998-11-18,1998-11-18_r58_ORDINARIA,vicepresidente de la nacion,Carlos F. Ruckauf,masthead
 1998-11-25,1998-11-25_r62_ESPECIAL,presidente provisional,Eduardo Menem,masthead
-1998-11-25,1998-11-25_r63_ESPECIAL,presidente provisional,Eduardo Menem,masthead
-1998-11-25,1998-11-25_r64_ORDINARIA,presidente provisional,Eduardo Menem,masthead
 1998-11-25,1998-11-25_r62_ESPECIAL,prosecretario,Alfredo A. Luques,masthead
-1998-11-25,1998-11-25_r63_ESPECIAL,prosecretario,Alfredo A. Luques,masthead
-1998-11-25,1998-11-25_r64_ORDINARIA,prosecretario,Alfredo A. Luques,masthead
 1998-11-25,1998-11-25_r62_ESPECIAL,prosecretario,Berta Aldalur,masthead
-1998-11-25,1998-11-25_r63_ESPECIAL,prosecretario,Berta Aldalur,masthead
-1998-11-25,1998-11-25_r64_ORDINARIA,prosecretario,Berta Aldalur,masthead
 1998-11-25,1998-11-25_r62_ESPECIAL,vicepresidente,Antonio Cafiero,masthead
+1998-11-25,1998-11-25_r63_ESPECIAL,presidente provisional,Eduardo Menem,masthead
+1998-11-25,1998-11-25_r63_ESPECIAL,prosecretario,Alfredo A. Luques,masthead
+1998-11-25,1998-11-25_r63_ESPECIAL,prosecretario,Berta Aldalur,masthead
 1998-11-25,1998-11-25_r63_ESPECIAL,vicepresidente,Antonio Cafiero,masthead
 1998-11-25,1998-11-25_r63_ESPECIAL,vicepresidente 1°,Mario A. Losada,masthead
 1998-11-25,1998-11-25_r63_ESPECIAL,vicepresidente 2°,Carlos H. Almirón,masthead
 1998-11-25,1998-11-25_r63_ESPECIAL,vicepresidente de la nacion,Carlos F. Ruckauf,masthead
+1998-11-25,1998-11-25_r64_ORDINARIA,presidente provisional,Eduardo Menem,masthead
+1998-11-25,1998-11-25_r64_ORDINARIA,prosecretario,Alfredo A. Luques,masthead
+1998-11-25,1998-11-25_r64_ORDINARIA,prosecretario,Berta Aldalur,masthead
 1998-11-25,1998-11-25_r64_ORDINARIA,vicepresidente de la nacion,Carlos F. Ruckauf,masthead
 1998-11-26,1998-11-26_r65_ORDINARIA,presidente provisional,Eduardo Menem,masthead
 1998-11-26,1998-11-26_r65_ORDINARIA,prosecretario,Alfredo A. Luques,masthead
@@ -350,19 +350,19 @@ session_date,file,office,person,basis
 1999-05-05,1999-05-05_r15_ORDINARIA,secretario,Víctor Eduardo Pereira,masthead
 1999-05-05,1999-05-05_r15_ORDINARIA,vicepresidente de la nacion,Carlos F. Ruckauf,masthead
 1999-05-12,1999-05-12_r18_ESPECIAL,prosecretario,Alejandro L. Colombo,masthead
-1999-05-12,1999-05-12_r19_ORDINARIA,prosecretario,Alejandro L. Colombo,masthead
 1999-05-12,1999-05-12_r18_ESPECIAL,prosecretario,Mario L. Pontaquarto,masthead
-1999-05-12,1999-05-12_r19_ORDINARIA,prosecretario,Mario L. Pontaquarto,masthead
 1999-05-12,1999-05-12_r18_ESPECIAL,prosecretario,Ricardo Balestra,masthead
-1999-05-12,1999-05-12_r19_ORDINARIA,prosecretario,Ricardo Balestra,masthead
 1999-05-12,1999-05-12_r18_ESPECIAL,secretario,Juan Carlos Oyarzún,masthead
-1999-05-12,1999-05-12_r19_ORDINARIA,secretario,Juan Carlos Oyarzún,masthead
 1999-05-12,1999-05-12_r18_ESPECIAL,secretario,Pedro C. Maranguello,masthead
-1999-05-12,1999-05-12_r19_ORDINARIA,secretario,Pedro C. Maranguello,masthead
 1999-05-12,1999-05-12_r18_ESPECIAL,secretario,Víctor Eduardo Pereira,masthead
+1999-05-12,1999-05-12_r18_ESPECIAL,vicepresidente de la nacion,Carlos F. Ruckauf,masthead
+1999-05-12,1999-05-12_r19_ORDINARIA,prosecretario,Alejandro L. Colombo,masthead
+1999-05-12,1999-05-12_r19_ORDINARIA,prosecretario,Mario L. Pontaquarto,masthead
+1999-05-12,1999-05-12_r19_ORDINARIA,prosecretario,Ricardo Balestra,masthead
+1999-05-12,1999-05-12_r19_ORDINARIA,secretario,Juan Carlos Oyarzún,masthead
+1999-05-12,1999-05-12_r19_ORDINARIA,secretario,Pedro C. Maranguello,masthead
 1999-05-12,1999-05-12_r19_ORDINARIA,secretario,Víctor Eduardo Pereira,masthead
 1999-05-12,1999-05-12_r19_ORDINARIA,vicepresidente 1°,Mario A. Losada,masthead
-1999-05-12,1999-05-12_r18_ESPECIAL,vicepresidente de la nacion,Carlos F. Ruckauf,masthead
 1999-05-12,1999-05-12_r19_ORDINARIA,vicepresidente de la nacion,Carlos F. Ruckauf,masthead
 1999-05-19,1999-05-19_r20_EN_MINORIA,prosecretario,Alejandro L. Colombo,masthead
 1999-05-19,1999-05-19_r20_EN_MINORIA,prosecretario,Mario L. Pontaquarto,masthead
@@ -391,20 +391,20 @@ session_date,file,office,person,basis
 1999-06-09,1999-06-09_r22_ORDINARIA,vicepresidente 2°,Roberto A. Ulloa,masthead
 1999-06-09,1999-06-09_r22_ORDINARIA,vicepresidente de la nacion,Carlos F. Ruckauf,masthead
 1999-06-16,1999-06-16_r24_ESPECIAL,prosecretario,Alejandro L. Colombo,masthead
-1999-06-16,1999-06-16_r25_ORDINARIA,prosecretario,Alejandro L. Colombo,masthead
 1999-06-16,1999-06-16_r24_ESPECIAL,prosecretario,Mario L. Pontaquarto,masthead
-1999-06-16,1999-06-16_r25_ORDINARIA,prosecretario,Mario L. Pontaquarto,masthead
 1999-06-16,1999-06-16_r24_ESPECIAL,prosecretario,Ricardo Balestra,masthead
-1999-06-16,1999-06-16_r25_ORDINARIA,prosecretario,Ricardo Balestra,masthead
 1999-06-16,1999-06-16_r24_ESPECIAL,secretario,Juan Carlos Oyarzún,masthead
-1999-06-16,1999-06-16_r25_ORDINARIA,secretario,Juan Carlos Oyarzún,masthead
 1999-06-16,1999-06-16_r24_ESPECIAL,secretario,Pedro C. Maranguello,masthead
-1999-06-16,1999-06-16_r25_ORDINARIA,secretario,Pedro C. Maranguello,masthead
 1999-06-16,1999-06-16_r24_ESPECIAL,secretario,Víctor Eduardo Pereira,masthead
-1999-06-16,1999-06-16_r25_ORDINARIA,secretario,Víctor Eduardo Pereira,masthead
 1999-06-16,1999-06-16_r24_ESPECIAL,vicepresidente 1°,Mario A. Losada,masthead
-1999-06-16,1999-06-16_r25_ORDINARIA,vicepresidente 1°,Mario A. Losada,masthead
 1999-06-16,1999-06-16_r24_ESPECIAL,vicepresidente 2°,Roberto A. Ulloa,masthead
+1999-06-16,1999-06-16_r25_ORDINARIA,prosecretario,Alejandro L. Colombo,masthead
+1999-06-16,1999-06-16_r25_ORDINARIA,prosecretario,Mario L. Pontaquarto,masthead
+1999-06-16,1999-06-16_r25_ORDINARIA,prosecretario,Ricardo Balestra,masthead
+1999-06-16,1999-06-16_r25_ORDINARIA,secretario,Juan Carlos Oyarzún,masthead
+1999-06-16,1999-06-16_r25_ORDINARIA,secretario,Pedro C. Maranguello,masthead
+1999-06-16,1999-06-16_r25_ORDINARIA,secretario,Víctor Eduardo Pereira,masthead
+1999-06-16,1999-06-16_r25_ORDINARIA,vicepresidente 1°,Mario A. Losada,masthead
 1999-06-16,1999-06-16_r25_ORDINARIA,vicepresidente 2°,Roberto A. Ulloa,masthead
 1999-06-23,1999-06-23_r29_ORDINARIA,presidente provisional,Eduardo Menem,masthead
 1999-06-23,1999-06-23_r29_ORDINARIA,prosecretario,Alejandro L. Colombo,masthead
@@ -550,33 +550,33 @@ session_date,file,office,person,basis
 1999-11-17,1999-11-17_r59_ORDINARIA,vicepresidente,Antonio Cafiero,masthead
 1999-11-17,1999-11-17_r59_ORDINARIA,vicepresidente 2°,Roberto A. Ulloa,masthead
 1999-11-24,1999-11-24_r00_ASAMBLEA,presidente de la honorable camara de diputados,Alberto Reinaldo Pierri,masthead
+1999-11-24,1999-11-24_r00_ASAMBLEA,secretario,Esther H. Pereyra Arandía de Pérez Pardo,masthead
+1999-11-24,1999-11-24_r00_ASAMBLEA,secretario,Juan Carlos Oyarzún,masthead
 1999-11-24,1999-11-24_r62_ORDINARIA,presidente provisional,Eduardo Menem,masthead
 1999-11-24,1999-11-24_r62_ORDINARIA,prosecretario,Alejandro L. Colombo,masthead
 1999-11-24,1999-11-24_r62_ORDINARIA,prosecretario,Mario L. Pontaquarto,masthead
 1999-11-24,1999-11-24_r62_ORDINARIA,prosecretario,Ricardo Balestra,masthead
-1999-11-24,1999-11-24_r00_ASAMBLEA,secretario,Esther H. Pereyra Arandía de Pérez Pardo,masthead
-1999-11-24,1999-11-24_r00_ASAMBLEA,secretario,Juan Carlos Oyarzún,masthead
 1999-11-24,1999-11-24_r62_ORDINARIA,secretario,Juan Carlos Oyarzún,masthead
 1999-11-24,1999-11-24_r62_ORDINARIA,secretario,Pedro C. Maranguello,masthead
 1999-11-24,1999-11-24_r62_ORDINARIA,secretario,Víctor Eduardo Pereira,masthead
 1999-11-24,1999-11-24_r62_ORDINARIA,vicepresidente,Antonio Cafiero,masthead
 1999-11-24,1999-11-24_r62_ORDINARIA,vicepresidente 1°,Mario A. Losada,masthead
 1999-11-24,1999-11-24_r62_ORDINARIA,vicepresidente 2°,Roberto A. Ulloa,masthead
-1999-12-01,1999-12-01_r64_ORDINARIA,presidente provisional,José Genoud,masthead
 1999-12-01,1999-12-01_r63_ESPECIAL,presidente provisional,Siendo,masthead
 1999-12-01,1999-12-01_r63_ESPECIAL,prosecretario,Alejandro L. Colombo,masthead
-1999-12-01,1999-12-01_r64_ORDINARIA,prosecretario,Alejandro L. Colombo,masthead
 1999-12-01,1999-12-01_r63_ESPECIAL,prosecretario,Mario L. Pontaquarto,masthead
 1999-12-01,1999-12-01_r63_ESPECIAL,prosecretario,Ricardo Balestra,masthead
-1999-12-01,1999-12-01_r64_ORDINARIA,prosecretario,Ricardo Balestra,masthead
 1999-12-01,1999-12-01_r63_ESPECIAL,prosecretario,Taha Ahmad,masthead
 1999-12-01,1999-12-01_r63_ESPECIAL,secretario,Doctores Víctor Eduardo Pereira,masthead
-1999-12-01,1999-12-01_r64_ORDINARIA,secretario,Juan C. Oyarzún,masthead
 1999-12-01,1999-12-01_r63_ESPECIAL,secretario,Juan Carlos Oyarzún,masthead
 1999-12-01,1999-12-01_r63_ESPECIAL,secretario,Mario L. Pontaquarto,masthead
-1999-12-01,1999-12-01_r64_ORDINARIA,secretario,Mario L. Pontaquarto,masthead
 1999-12-01,1999-12-01_r63_ESPECIAL,secretario,Pedro C. Maranguello,masthead
 1999-12-01,1999-12-01_r63_ESPECIAL,secretario,Ricardo Mitre,masthead
+1999-12-01,1999-12-01_r64_ORDINARIA,presidente provisional,José Genoud,masthead
+1999-12-01,1999-12-01_r64_ORDINARIA,prosecretario,Alejandro L. Colombo,masthead
+1999-12-01,1999-12-01_r64_ORDINARIA,prosecretario,Ricardo Balestra,masthead
+1999-12-01,1999-12-01_r64_ORDINARIA,secretario,Juan C. Oyarzún,masthead
+1999-12-01,1999-12-01_r64_ORDINARIA,secretario,Mario L. Pontaquarto,masthead
 1999-12-01,1999-12-01_r64_ORDINARIA,secretario,Ricardo Mitre,masthead
 1999-12-01,1999-12-01_r64_ORDINARIA,vicepresidente 2°,Roberto A. Ulloa,masthead
 1999-12-07,1999-12-07_r66_EN_MINORIA,presidente provisional,José Genoud,masthead
@@ -616,41 +616,41 @@ session_date,file,office,person,basis
 1999-12-22,1999-12-22_r69_EXTRAORDINARIA,secretario,Ricardo Mitre,masthead
 1999-12-22,1999-12-22_r69_EXTRAORDINARIA,vicepresidente de la nacion,Carlos A. Álvarez,masthead
 1999-12-28,1999-12-28_r70_ESPECIAL,prosecretario,Alejandro L. Colombo,masthead
-1999-12-28,1999-12-28_r72_ESPECIAL,prosecretario,Alejandro L. Colombo,masthead
-1999-12-28,1999-12-28_r71_ESPECIAL,prosecretario,Alejandro L. Colombo,masthead
 1999-12-28,1999-12-28_r70_ESPECIAL,prosecretario,Rodolfo Bernardini,masthead
-1999-12-28,1999-12-28_r71_ESPECIAL,prosecretario,Rodolfo Bernardini,masthead
 1999-12-28,1999-12-28_r70_ESPECIAL,prosecretario,Vilma Ibarra,masthead
-1999-12-28,1999-12-28_r72_ESPECIAL,prosecretario,Vilma Ibarra,masthead
-1999-12-28,1999-12-28_r71_ESPECIAL,prosecretario,Vilma Ibarra,masthead
 1999-12-28,1999-12-28_r70_ESPECIAL,secretario,Juan Carlos Oyarzún,masthead
-1999-12-28,1999-12-28_r72_ESPECIAL,secretario,Juan Carlos Oyarzún,masthead
-1999-12-28,1999-12-28_r71_ESPECIAL,secretario,Juan Carlos Oyarzún,masthead
 1999-12-28,1999-12-28_r70_ESPECIAL,secretario,Mario L. Pontaquarto,masthead
-1999-12-28,1999-12-28_r72_ESPECIAL,secretario,Mario L. Pontaquarto,masthead
-1999-12-28,1999-12-28_r71_ESPECIAL,secretario,Mario L. Pontaquarto,masthead
 1999-12-28,1999-12-28_r70_ESPECIAL,secretario,Ricardo Mitre,masthead
-1999-12-28,1999-12-28_r72_ESPECIAL,secretario,Ricardo Mitre,masthead
-1999-12-28,1999-12-28_r71_ESPECIAL,secretario,Ricardo Mitre,masthead
 1999-12-28,1999-12-28_r70_ESPECIAL,vicepresidente de la nacion,Carlos A. Álvarez,masthead
-1999-12-28,1999-12-28_r72_ESPECIAL,vicepresidente de la nacion,Carlos A. Álvarez,masthead
+1999-12-28,1999-12-28_r71_ESPECIAL,prosecretario,Alejandro L. Colombo,masthead
+1999-12-28,1999-12-28_r71_ESPECIAL,prosecretario,Rodolfo Bernardini,masthead
+1999-12-28,1999-12-28_r71_ESPECIAL,prosecretario,Vilma Ibarra,masthead
+1999-12-28,1999-12-28_r71_ESPECIAL,secretario,Juan Carlos Oyarzún,masthead
+1999-12-28,1999-12-28_r71_ESPECIAL,secretario,Mario L. Pontaquarto,masthead
+1999-12-28,1999-12-28_r71_ESPECIAL,secretario,Ricardo Mitre,masthead
 1999-12-28,1999-12-28_r71_ESPECIAL,vicepresidente de la nacion,Carlos A. Álvarez,masthead
+1999-12-28,1999-12-28_r72_ESPECIAL,prosecretario,Alejandro L. Colombo,masthead
+1999-12-28,1999-12-28_r72_ESPECIAL,prosecretario,Vilma Ibarra,masthead
+1999-12-28,1999-12-28_r72_ESPECIAL,secretario,Juan Carlos Oyarzún,masthead
+1999-12-28,1999-12-28_r72_ESPECIAL,secretario,Mario L. Pontaquarto,masthead
+1999-12-28,1999-12-28_r72_ESPECIAL,secretario,Ricardo Mitre,masthead
+1999-12-28,1999-12-28_r72_ESPECIAL,vicepresidente de la nacion,Carlos A. Álvarez,masthead
+2000-02-23,2000-02-23_r01_PREPARATORIA,prosecretario,Alejandro L. Colombo,masthead
+2000-02-23,2000-02-23_r01_PREPARATORIA,prosecretario,Rodolfo Bernardini,masthead
+2000-02-23,2000-02-23_r01_PREPARATORIA,prosecretario,Vilma Ibarra,masthead
+2000-02-23,2000-02-23_r01_PREPARATORIA,secretario,Juan Carlos Oyarzún,masthead
+2000-02-23,2000-02-23_r01_PREPARATORIA,secretario,Mario L. Pontaquarto,masthead
+2000-02-23,2000-02-23_r01_PREPARATORIA,secretario,Ricardo Mitre,masthead
+2000-02-23,2000-02-23_r01_PREPARATORIA,vicepresidente de la nacion,Carlos A. Álvarez,masthead
 2000-02-23,2000-02-23_r73_EXTRAORDINARIA,presidente provisional,José Genoud,masthead
 2000-02-23,2000-02-23_r73_EXTRAORDINARIA,prosecretario,Alejandro L. Colombo,masthead
-2000-02-23,2000-02-23_r01_PREPARATORIA,prosecretario,Alejandro L. Colombo,masthead
 2000-02-23,2000-02-23_r73_EXTRAORDINARIA,prosecretario,Rodolfo Bernardini,masthead
-2000-02-23,2000-02-23_r01_PREPARATORIA,prosecretario,Rodolfo Bernardini,masthead
 2000-02-23,2000-02-23_r73_EXTRAORDINARIA,prosecretario,Vilma Ibarra,masthead
-2000-02-23,2000-02-23_r01_PREPARATORIA,prosecretario,Vilma Ibarra,masthead
 2000-02-23,2000-02-23_r73_EXTRAORDINARIA,secretario,Juan Carlos Oyarzún,masthead
-2000-02-23,2000-02-23_r01_PREPARATORIA,secretario,Juan Carlos Oyarzún,masthead
 2000-02-23,2000-02-23_r73_EXTRAORDINARIA,secretario,Mario L. Pontaquarto,masthead
-2000-02-23,2000-02-23_r01_PREPARATORIA,secretario,Mario L. Pontaquarto,masthead
 2000-02-23,2000-02-23_r73_EXTRAORDINARIA,secretario,Ricardo Mitre,masthead
-2000-02-23,2000-02-23_r01_PREPARATORIA,secretario,Ricardo Mitre,masthead
 2000-02-23,2000-02-23_r73_EXTRAORDINARIA,vicepresidente 2°,Roberto A. Ulloa,masthead
 2000-02-23,2000-02-23_r73_EXTRAORDINARIA,vicepresidente de la nacion,Carlos A. Álvarez,masthead
-2000-02-23,2000-02-23_r01_PREPARATORIA,vicepresidente de la nacion,Carlos A. Álvarez,masthead
 2000-03-01,2000-03-01_r00_ASAMBLEA,presidente de la honorable camara de diputados,Rafael Pascual,masthead
 2000-03-01,2000-03-01_r00_ASAMBLEA,secretario,Guillermo Aramburu,masthead
 2000-03-01,2000-03-01_r00_ASAMBLEA,secretario,Mario L. Pontaquarto,masthead
@@ -726,18 +726,18 @@ session_date,file,office,person,basis
 2000-05-18,2000-05-18_r00_ASAMBLEA,secretario,Mario L. Pontaquarto,masthead
 2000-05-18,2000-05-18_r00_ASAMBLEA,secretario,Secretariode,masthead
 2000-06-07,2000-06-07_r22_ORDINARIA,prosecretario,Alejandro L. Colombo,masthead
-2000-06-07,2000-06-07_r24_ESPECIAL,prosecretario,Alejandro L. Colombo,masthead
 2000-06-07,2000-06-07_r22_ORDINARIA,prosecretario,Rodolfo Bernardini,masthead
-2000-06-07,2000-06-07_r24_ESPECIAL,prosecretario,Rodolfo Bernardini,masthead
 2000-06-07,2000-06-07_r22_ORDINARIA,prosecretario,Vilma Ibarra,masthead
-2000-06-07,2000-06-07_r24_ESPECIAL,prosecretario,Vilma Ibarra,masthead
 2000-06-07,2000-06-07_r22_ORDINARIA,secretario,Juan Carlos Oyarzún,masthead
-2000-06-07,2000-06-07_r24_ESPECIAL,secretario,Juan Carlos Oyarzún,masthead
 2000-06-07,2000-06-07_r22_ORDINARIA,secretario,Mario L. Pontaquarto,masthead
-2000-06-07,2000-06-07_r24_ESPECIAL,secretario,Mario L. Pontaquarto,masthead
 2000-06-07,2000-06-07_r22_ORDINARIA,secretario,Ricardo Mitre,masthead
-2000-06-07,2000-06-07_r24_ESPECIAL,secretario,Ricardo Mitre,masthead
 2000-06-07,2000-06-07_r22_ORDINARIA,vicepresidente de la nacion,Carlos A. Álvarez,masthead
+2000-06-07,2000-06-07_r24_ESPECIAL,prosecretario,Alejandro L. Colombo,masthead
+2000-06-07,2000-06-07_r24_ESPECIAL,prosecretario,Rodolfo Bernardini,masthead
+2000-06-07,2000-06-07_r24_ESPECIAL,prosecretario,Vilma Ibarra,masthead
+2000-06-07,2000-06-07_r24_ESPECIAL,secretario,Juan Carlos Oyarzún,masthead
+2000-06-07,2000-06-07_r24_ESPECIAL,secretario,Mario L. Pontaquarto,masthead
+2000-06-07,2000-06-07_r24_ESPECIAL,secretario,Ricardo Mitre,masthead
 2000-06-07,2000-06-07_r24_ESPECIAL,vicepresidente de la nacion,Carlos A. Álvarez,masthead
 2000-06-14,2000-06-14_r25_ORDINARIA,presidente provisional,José Genoud,masthead
 2000-06-14,2000-06-14_r25_ORDINARIA,prosecretario,Alejandro L. Colombo,masthead
@@ -890,22 +890,22 @@ session_date,file,office,person,basis
 2000-10-04,2000-10-04_r55_ORDINARIA,secretario,Mario L. Pontaquarto,masthead
 2000-10-04,2000-10-04_r55_ORDINARIA,secretario,Ricardo Mitre,masthead
 2000-10-04,2000-10-04_r55_ORDINARIA,vicepresidente 1°,Luis A. León,masthead
-2000-10-11,2000-10-11_r57_ORDINARIA,presidente provisional,Mario A. Losada,masthead
 2000-10-11,2000-10-11_r56_ESPECIAL,prosecretario,Alejandro L. Colombo,masthead
-2000-10-11,2000-10-11_r57_ORDINARIA,prosecretario,Alejandro L. Colombo,masthead
 2000-10-11,2000-10-11_r56_ESPECIAL,prosecretario,Miguel Augusto Fernández Alías,masthead
-2000-10-11,2000-10-11_r57_ORDINARIA,prosecretario,Miguel Augusto Fernández Alías,masthead
 2000-10-11,2000-10-11_r56_ESPECIAL,prosecretario,Rodolfo Bernardini,masthead
-2000-10-11,2000-10-11_r57_ORDINARIA,prosecretario,Rodolfo Bernardini,masthead
 2000-10-11,2000-10-11_r56_ESPECIAL,prosecretario,Víctor Ramón Vannini,masthead
-2000-10-11,2000-10-11_r57_ORDINARIA,prosecretario,Víctor Ramón Vannini,masthead
 2000-10-11,2000-10-11_r56_ESPECIAL,secretario,Juan Carlos Oyarzún,masthead
-2000-10-11,2000-10-11_r57_ORDINARIA,secretario,Juan Carlos Oyarzún,masthead
 2000-10-11,2000-10-11_r56_ESPECIAL,secretario,Mario L. Pontaquarto,masthead
-2000-10-11,2000-10-11_r57_ORDINARIA,secretario,Mario L. Pontaquarto,masthead
 2000-10-11,2000-10-11_r56_ESPECIAL,secretario,Ricardo Mitre,masthead
-2000-10-11,2000-10-11_r57_ORDINARIA,secretario,Ricardo Mitre,masthead
 2000-10-11,2000-10-11_r56_ESPECIAL,vicepresidente,Antonio Cafiero,masthead
+2000-10-11,2000-10-11_r57_ORDINARIA,presidente provisional,Mario A. Losada,masthead
+2000-10-11,2000-10-11_r57_ORDINARIA,prosecretario,Alejandro L. Colombo,masthead
+2000-10-11,2000-10-11_r57_ORDINARIA,prosecretario,Miguel Augusto Fernández Alías,masthead
+2000-10-11,2000-10-11_r57_ORDINARIA,prosecretario,Rodolfo Bernardini,masthead
+2000-10-11,2000-10-11_r57_ORDINARIA,prosecretario,Víctor Ramón Vannini,masthead
+2000-10-11,2000-10-11_r57_ORDINARIA,secretario,Juan Carlos Oyarzún,masthead
+2000-10-11,2000-10-11_r57_ORDINARIA,secretario,Mario L. Pontaquarto,masthead
+2000-10-11,2000-10-11_r57_ORDINARIA,secretario,Ricardo Mitre,masthead
 2000-10-11,2000-10-11_r57_ORDINARIA,vicepresidente,Antonio Cafiero,masthead
 2000-10-12,2000-10-12_r00_REUNION_CONJ_AMBAS_CAMARAS,NONE,,
 2000-10-18,2000-10-18_r58_ORDINARIA,presidente provisional,Mario A. Losada,masthead
@@ -1076,20 +1076,20 @@ session_date,file,office,person,basis
 2001-05-03,2001-05-03_r24_ORDINARIA,secretario,Juan Carlos Oyarzún,masthead
 2001-05-03,2001-05-03_r24_ORDINARIA,secretario,Miguel J. Mamy,masthead
 2001-05-09,2001-05-09_r28_ORDINARIA,presidente provisional,Mario A. Losada,masthead
-2001-05-09,2001-05-09_r32_ESPECIAL,presidente provisional,Mario A. Losada,masthead
 2001-05-09,2001-05-09_r28_ORDINARIA,prosecretario,Juan J. Canals,masthead
-2001-05-09,2001-05-09_r32_ESPECIAL,prosecretario,Juan J. Canals,masthead
 2001-05-09,2001-05-09_r28_ORDINARIA,prosecretario,Miguel Augusto Fernández Alías,masthead
-2001-05-09,2001-05-09_r32_ESPECIAL,prosecretario,Miguel Augusto Fernández Alías,masthead
 2001-05-09,2001-05-09_r28_ORDINARIA,prosecretario,Rodolfo Bernardini,masthead
-2001-05-09,2001-05-09_r32_ESPECIAL,prosecretario,Rodolfo Bernardini,masthead
 2001-05-09,2001-05-09_r28_ORDINARIA,secretario,José D. Canata,masthead
-2001-05-09,2001-05-09_r32_ESPECIAL,secretario,José D. Canata,masthead
 2001-05-09,2001-05-09_r28_ORDINARIA,secretario,Juan Carlos Oyarzún,masthead
-2001-05-09,2001-05-09_r32_ESPECIAL,secretario,Juan Carlos Oyarzún,masthead
 2001-05-09,2001-05-09_r28_ORDINARIA,secretario,Miguel J. Mamy,masthead
-2001-05-09,2001-05-09_r32_ESPECIAL,secretario,Miguel J. Mamy,masthead
 2001-05-09,2001-05-09_r28_ORDINARIA,vicepresidente,Eduardo Menem,masthead
+2001-05-09,2001-05-09_r32_ESPECIAL,presidente provisional,Mario A. Losada,masthead
+2001-05-09,2001-05-09_r32_ESPECIAL,prosecretario,Juan J. Canals,masthead
+2001-05-09,2001-05-09_r32_ESPECIAL,prosecretario,Miguel Augusto Fernández Alías,masthead
+2001-05-09,2001-05-09_r32_ESPECIAL,prosecretario,Rodolfo Bernardini,masthead
+2001-05-09,2001-05-09_r32_ESPECIAL,secretario,José D. Canata,masthead
+2001-05-09,2001-05-09_r32_ESPECIAL,secretario,Juan Carlos Oyarzún,masthead
+2001-05-09,2001-05-09_r32_ESPECIAL,secretario,Miguel J. Mamy,masthead
 2001-05-09,2001-05-09_r32_ESPECIAL,vicepresidente,Eduardo Menem,masthead
 2001-05-16,2001-05-16_r33_ORDINARIA,prosecretario,Juan J. Canals,masthead
 2001-05-16,2001-05-16_r33_ORDINARIA,prosecretario,Miguel Augusto Fernández Alías,masthead
@@ -1267,12 +1267,12 @@ session_date,file,office,person,basis
 2001-11-28,2001-11-28_r73_ORDINARIA,secretario,Miguel J. Mamy,masthead
 2001-11-28,2001-11-28_r73_ORDINARIA,vicepresidente,Eduardo Menem,masthead
 2001-11-29,2001-11-29_r74_PREPARATORIA,prosecretario,Ademas,masthead
-2001-11-29,2001-11-29_r75_EN_MINORIA,prosecretario,Juan J. Canals,masthead
 2001-11-29,2001-11-29_r74_PREPARATORIA,prosecretario,Juan T. Canals Fsta Publicacion Contiene,masthead
+2001-11-29,2001-11-29_r74_PREPARATORIA,secretario,Juan C. Oyarzun,masthead
+2001-11-29,2001-11-29_r75_EN_MINORIA,prosecretario,Juan J. Canals,masthead
 2001-11-29,2001-11-29_r75_EN_MINORIA,prosecretario,Miguel Augusto Fernández Alías,masthead
 2001-11-29,2001-11-29_r75_EN_MINORIA,prosecretario,Rodolfo Bernardini,masthead
 2001-11-29,2001-11-29_r75_EN_MINORIA,secretario,José D. Canata,masthead
-2001-11-29,2001-11-29_r74_PREPARATORIA,secretario,Juan C. Oyarzun,masthead
 2001-11-29,2001-11-29_r75_EN_MINORIA,secretario,Juan Carlos Oyarzún,masthead
 2001-11-29,2001-11-29_r75_EN_MINORIA,secretario,Miguel J. Mamy,masthead
 2001-11-29,2001-11-29_r75_EN_MINORIA,vicepresidente,Eduardo Menem,masthead
@@ -1332,16 +1332,16 @@ session_date,file,office,person,basis
 2002-01-23,2002-01-23_r82_ORDINARIA,secretario,Juan Carlos Oyarzún,masthead
 2002-01-23,2002-01-23_r82_ORDINARIA,vicepresidente,Marcelo Eduardo López Arias,masthead
 2002-02-21,2002-02-21_r01_PREPARATORIA,presidente provisional,Juan Carlos Maqueda,masthead
-2002-02-21,2002-02-21_r83_ORDINARIA,presidente provisional,Juan Carlos Maqueda,masthead
 2002-02-21,2002-02-21_r01_PREPARATORIA,prosecretario,Alfredo A. Luques,masthead
-2002-02-21,2002-02-21_r83_ORDINARIA,prosecretario,Alfredo A. Luques,masthead
 2002-02-21,2002-02-21_r01_PREPARATORIA,prosecretario,José D. Canata,masthead
-2002-02-21,2002-02-21_r83_ORDINARIA,prosecretario,José D. Canata,masthead
 2002-02-21,2002-02-21_r01_PREPARATORIA,prosecretario,Juan J. Canals,masthead
-2002-02-21,2002-02-21_r83_ORDINARIA,prosecretario,Juan J. Canals,masthead
 2002-02-21,2002-02-21_r01_PREPARATORIA,secretario,Jorge Horacio Amarfil,masthead
-2002-02-21,2002-02-21_r83_ORDINARIA,secretario,Jorge Horacio Amarfil,masthead
 2002-02-21,2002-02-21_r01_PREPARATORIA,secretario,Juan Carlos Oyarzún,masthead
+2002-02-21,2002-02-21_r83_ORDINARIA,presidente provisional,Juan Carlos Maqueda,masthead
+2002-02-21,2002-02-21_r83_ORDINARIA,prosecretario,Alfredo A. Luques,masthead
+2002-02-21,2002-02-21_r83_ORDINARIA,prosecretario,José D. Canata,masthead
+2002-02-21,2002-02-21_r83_ORDINARIA,prosecretario,Juan J. Canals,masthead
+2002-02-21,2002-02-21_r83_ORDINARIA,secretario,Jorge Horacio Amarfil,masthead
 2002-02-21,2002-02-21_r83_ORDINARIA,secretario,Juan Carlos Oyarzún,masthead
 2002-02-21,2002-02-21_r83_ORDINARIA,vicepresidente,Marcelo Eduardo López Arias,masthead
 2002-03-01,2002-03-01_r00_ASAMBLEA,presidente de la honorable camara de diputados,Eduardo Oscar Camaño,masthead
@@ -1369,19 +1369,19 @@ session_date,file,office,person,basis
 2002-04-04,2002-04-04_r04_ORDINARIA,secretario,Juan Carlos Oyarzún,masthead
 2002-04-04,2002-04-04_r04_ORDINARIA,vicepresidente,Marcelo Eduardo López Arias,masthead
 2002-04-04,2002-04-04_r04_ORDINARIA,vicepresidente 1°,Raúl Baglini,masthead
-2002-04-11,2002-04-11_r06_ORDINARIA,presidente provisional,Juan Carlos Maqueda,masthead
 2002-04-11,2002-04-11_r05_ESPECIAL,presidente provisional,Juan Carlos Maqueda,masthead
-2002-04-11,2002-04-11_r06_ORDINARIA,prosecretario,Alfredo A. Luques,masthead
 2002-04-11,2002-04-11_r05_ESPECIAL,prosecretario,Alfredo A. Luques,masthead
-2002-04-11,2002-04-11_r06_ORDINARIA,prosecretario,José D. Canata,masthead
 2002-04-11,2002-04-11_r05_ESPECIAL,prosecretario,José D. Canata,masthead
-2002-04-11,2002-04-11_r06_ORDINARIA,prosecretario,Juan J. Canals,masthead
 2002-04-11,2002-04-11_r05_ESPECIAL,prosecretario,Juan J. Canals,masthead
-2002-04-11,2002-04-11_r06_ORDINARIA,secretario,Jorge Horacio Amarfil,masthead
 2002-04-11,2002-04-11_r05_ESPECIAL,secretario,Jorge Horacio Amarfil,masthead
-2002-04-11,2002-04-11_r06_ORDINARIA,secretario,Juan Carlos Oyarzún,masthead
 2002-04-11,2002-04-11_r05_ESPECIAL,secretario,Juan Carlos Oyarzún,masthead
 2002-04-11,2002-04-11_r05_ESPECIAL,vicepresidente,Marcelo Eduardo López Arias,masthead
+2002-04-11,2002-04-11_r06_ORDINARIA,presidente provisional,Juan Carlos Maqueda,masthead
+2002-04-11,2002-04-11_r06_ORDINARIA,prosecretario,Alfredo A. Luques,masthead
+2002-04-11,2002-04-11_r06_ORDINARIA,prosecretario,José D. Canata,masthead
+2002-04-11,2002-04-11_r06_ORDINARIA,prosecretario,Juan J. Canals,masthead
+2002-04-11,2002-04-11_r06_ORDINARIA,secretario,Jorge Horacio Amarfil,masthead
+2002-04-11,2002-04-11_r06_ORDINARIA,secretario,Juan Carlos Oyarzún,masthead
 2002-04-24,2002-04-24_r07_ESPECIAL,presidente provisional,Juan Carlos Maqueda,masthead
 2002-04-24,2002-04-24_r07_ESPECIAL,prosecretario,Alfredo A. Luques,masthead
 2002-04-24,2002-04-24_r07_ESPECIAL,prosecretario,José D. Canata,masthead
@@ -1524,16 +1524,16 @@ session_date,file,office,person,basis
 2002-10-16,2002-10-16_r28_ESPECIAL,secretario,Jorge Horacio Amarfil,masthead
 2002-10-16,2002-10-16_r28_ESPECIAL,secretario,Juan Carlos Oyarzún,masthead
 2002-10-23,2002-10-23_r29_ESPECIAL,presidente provisional,Juan Carlos Maqueda,masthead
-2002-10-23,2002-10-23_r30_ORDINARIA,presidente provisional,Juan Carlos Maqueda,masthead
 2002-10-23,2002-10-23_r29_ESPECIAL,prosecretario,Alfredo A. Luques,masthead
-2002-10-23,2002-10-23_r30_ORDINARIA,prosecretario,Alfredo A. Luques,masthead
 2002-10-23,2002-10-23_r29_ESPECIAL,prosecretario,José D. Canata,masthead
-2002-10-23,2002-10-23_r30_ORDINARIA,prosecretario,José D. Canata,masthead
 2002-10-23,2002-10-23_r29_ESPECIAL,prosecretario,Juan J. Canals,masthead
-2002-10-23,2002-10-23_r30_ORDINARIA,prosecretario,Juan J. Canals,masthead
 2002-10-23,2002-10-23_r29_ESPECIAL,secretario,Jorge Horacio Amarfil,masthead
-2002-10-23,2002-10-23_r30_ORDINARIA,secretario,Jorge Horacio Amarfil,masthead
 2002-10-23,2002-10-23_r29_ESPECIAL,secretario,Juan Carlos Oyarzún,masthead
+2002-10-23,2002-10-23_r30_ORDINARIA,presidente provisional,Juan Carlos Maqueda,masthead
+2002-10-23,2002-10-23_r30_ORDINARIA,prosecretario,Alfredo A. Luques,masthead
+2002-10-23,2002-10-23_r30_ORDINARIA,prosecretario,José D. Canata,masthead
+2002-10-23,2002-10-23_r30_ORDINARIA,prosecretario,Juan J. Canals,masthead
+2002-10-23,2002-10-23_r30_ORDINARIA,secretario,Jorge Horacio Amarfil,masthead
 2002-10-23,2002-10-23_r30_ORDINARIA,secretario,Juan Carlos Oyarzún,masthead
 2002-10-30,2002-10-30_r31_ORDINARIA,presidente provisional,Juan Carlos Maqueda,masthead
 2002-10-30,2002-10-30_r31_ORDINARIA,prosecretario,Alfredo A. Luques,masthead
@@ -1543,16 +1543,16 @@ session_date,file,office,person,basis
 2002-10-30,2002-10-30_r31_ORDINARIA,secretario,Juan Carlos Oyarzún,masthead
 2002-10-30,2002-10-30_r31_ORDINARIA,vicepresidente,Marcelo Eduardo López Arias,masthead
 2002-11-06,2002-11-06_r32_ESPECIAL,presidente provisional,Juan Carlos Maqueda,masthead
-2002-11-06,2002-11-06_r33_ORDINARIA,presidente provisional,Juan Carlos Maqueda,masthead
 2002-11-06,2002-11-06_r32_ESPECIAL,prosecretario,Alfredo A. Luques,masthead
-2002-11-06,2002-11-06_r33_ORDINARIA,prosecretario,Alfredo A. Luques,masthead
 2002-11-06,2002-11-06_r32_ESPECIAL,prosecretario,José D. Canata,masthead
-2002-11-06,2002-11-06_r33_ORDINARIA,prosecretario,José D. Canata,masthead
 2002-11-06,2002-11-06_r32_ESPECIAL,prosecretario,Juan J. Canals,masthead
-2002-11-06,2002-11-06_r33_ORDINARIA,prosecretario,Juan J. Canals,masthead
 2002-11-06,2002-11-06_r32_ESPECIAL,secretario,Jorge Horacio Amarfil,masthead
-2002-11-06,2002-11-06_r33_ORDINARIA,secretario,Jorge Horacio Amarfil,masthead
 2002-11-06,2002-11-06_r32_ESPECIAL,secretario,Juan Carlos Oyarzún,masthead
+2002-11-06,2002-11-06_r33_ORDINARIA,presidente provisional,Juan Carlos Maqueda,masthead
+2002-11-06,2002-11-06_r33_ORDINARIA,prosecretario,Alfredo A. Luques,masthead
+2002-11-06,2002-11-06_r33_ORDINARIA,prosecretario,José D. Canata,masthead
+2002-11-06,2002-11-06_r33_ORDINARIA,prosecretario,Juan J. Canals,masthead
+2002-11-06,2002-11-06_r33_ORDINARIA,secretario,Jorge Horacio Amarfil,masthead
 2002-11-06,2002-11-06_r33_ORDINARIA,secretario,Juan Carlos Oyarzún,masthead
 2002-11-06,2002-11-06_r33_ORDINARIA,vicepresidente,Marcelo Eduardo López Arias,masthead
 2002-11-06,2002-11-06_r33_ORDINARIA,vicepresidente 1°,Raúl Baglini,masthead
@@ -1571,16 +1571,16 @@ session_date,file,office,person,basis
 2002-11-21,2002-11-21_r35_ORDINARIA,secretario,Jorge Horacio Amarfil,masthead
 2002-11-21,2002-11-21_r35_ORDINARIA,secretario,Juan Carlos Oyarzún,masthead
 2002-11-27,2002-11-27_r36_ORDINARIA,presidente provisional,Juan Carlos Maqueda,masthead
-2002-11-27,2002-11-27_r37_ORDINARIA,presidente provisional,Juan Carlos Maqueda,masthead
 2002-11-27,2002-11-27_r36_ORDINARIA,prosecretario,Alfredo A. Luques,masthead
-2002-11-27,2002-11-27_r37_ORDINARIA,prosecretario,Alfredo A. Luques,masthead
 2002-11-27,2002-11-27_r36_ORDINARIA,prosecretario,José D. Canata,masthead
-2002-11-27,2002-11-27_r37_ORDINARIA,prosecretario,José D. Canata,masthead
 2002-11-27,2002-11-27_r36_ORDINARIA,prosecretario,Juan J. Canals,masthead
-2002-11-27,2002-11-27_r37_ORDINARIA,prosecretario,Juan J. Canals,masthead
 2002-11-27,2002-11-27_r36_ORDINARIA,secretario,Jorge Horacio Amarfil,masthead
-2002-11-27,2002-11-27_r37_ORDINARIA,secretario,Jorge Horacio Amarfil,masthead
 2002-11-27,2002-11-27_r36_ORDINARIA,secretario,Juan Carlos Oyarzún,masthead
+2002-11-27,2002-11-27_r37_ORDINARIA,presidente provisional,Juan Carlos Maqueda,masthead
+2002-11-27,2002-11-27_r37_ORDINARIA,prosecretario,Alfredo A. Luques,masthead
+2002-11-27,2002-11-27_r37_ORDINARIA,prosecretario,José D. Canata,masthead
+2002-11-27,2002-11-27_r37_ORDINARIA,prosecretario,Juan J. Canals,masthead
+2002-11-27,2002-11-27_r37_ORDINARIA,secretario,Jorge Horacio Amarfil,masthead
 2002-11-27,2002-11-27_r37_ORDINARIA,secretario,Juan Carlos Oyarzún,masthead
 2002-11-27,2002-11-27_r37_ORDINARIA,vicepresidente,Marcelo Eduardo López Arias,masthead
 2002-11-27,2002-11-27_r37_ORDINARIA,vicepresidente 1°,Raúl Baglini,masthead
@@ -1652,16 +1652,16 @@ session_date,file,office,person,basis
 2003-04-09,2003-04-09_r06_ORDINARIA,secretario,Juan Carlos Oyarzún,masthead
 2003-04-09,2003-04-09_r06_ORDINARIA,vicepresidente,Marcelo Eduardo López Arias,masthead
 2003-05-07,2003-05-07_r07_ESPECIAL,presidente provisional,José Luis Gioja,masthead
-2003-05-07,2003-05-07_r08_ORDINARIA,presidente provisional,José Luis Gioja,masthead
 2003-05-07,2003-05-07_r07_ESPECIAL,prosecretario,Alfredo A. Luques,masthead
-2003-05-07,2003-05-07_r08_ORDINARIA,prosecretario,Alfredo A. Luques,masthead
 2003-05-07,2003-05-07_r07_ESPECIAL,prosecretario,José D. Canata,masthead
-2003-05-07,2003-05-07_r08_ORDINARIA,prosecretario,José D. Canata,masthead
 2003-05-07,2003-05-07_r07_ESPECIAL,prosecretario,Juan J. Canals,masthead
-2003-05-07,2003-05-07_r08_ORDINARIA,prosecretario,Juan J. Canals,masthead
 2003-05-07,2003-05-07_r07_ESPECIAL,secretario,Jorge Horacio Amarfil,masthead
-2003-05-07,2003-05-07_r08_ORDINARIA,secretario,Jorge Horacio Amarfil,masthead
 2003-05-07,2003-05-07_r07_ESPECIAL,secretario,Juan Carlos Oyarzún,masthead
+2003-05-07,2003-05-07_r08_ORDINARIA,presidente provisional,José Luis Gioja,masthead
+2003-05-07,2003-05-07_r08_ORDINARIA,prosecretario,Alfredo A. Luques,masthead
+2003-05-07,2003-05-07_r08_ORDINARIA,prosecretario,José D. Canata,masthead
+2003-05-07,2003-05-07_r08_ORDINARIA,prosecretario,Juan J. Canals,masthead
+2003-05-07,2003-05-07_r08_ORDINARIA,secretario,Jorge Horacio Amarfil,masthead
 2003-05-07,2003-05-07_r08_ORDINARIA,secretario,Juan Carlos Oyarzún,masthead
 2003-05-08,2003-05-08_r00_ASAMBLEA,presidente de la honorable camara de diputados,Eduardo Oscar Camaño,masthead
 2003-05-08,2003-05-08_r00_ASAMBLEA,presidente provisional,José Luis Gioja,masthead
@@ -1726,19 +1726,19 @@ session_date,file,office,person,basis
 2003-08-06,2003-08-06_r16_ORDINARIA,vicepresidente,Marcelo Eduardo López Arias,masthead
 2003-08-06,2003-08-06_r16_ORDINARIA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2003-08-20,2003-08-20_r17_ORDINARIA,presidente provisional,José Luis Gioja,masthead
-2003-08-20,2003-08-20_r18_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Alfredo A. Luques,masthead
 2003-08-20,2003-08-20_r17_ORDINARIA,prosecretario,Alfredo A. Luques,masthead
-2003-08-20,2003-08-20_r18_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata,masthead
 2003-08-20,2003-08-20_r17_ORDINARIA,prosecretario,José D. Canata,masthead
-2003-08-20,2003-08-20_r18_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Juan J. Canals,masthead
 2003-08-20,2003-08-20_r17_ORDINARIA,prosecretario,Juan J. Canals,masthead
-2003-08-20,2003-08-20_r18_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Carlos Alberto Machiaroli,masthead
 2003-08-20,2003-08-20_r17_ORDINARIA,secretario,Carlos Alberto Machiaroli,masthead
-2003-08-20,2003-08-20_r18_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Juan Héctor Estrada,masthead
 2003-08-20,2003-08-20_r17_ORDINARIA,secretario,Juan Héctor Estrada,masthead
 2003-08-20,2003-08-20_r17_ORDINARIA,vicepresidente,Marcelo Eduardo López Arias,masthead
-2003-08-20,2003-08-20_r18_TRIBUNAL_DE_JUICIO_POLITICO,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2003-08-20,2003-08-20_r17_ORDINARIA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
+2003-08-20,2003-08-20_r18_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Alfredo A. Luques,masthead
+2003-08-20,2003-08-20_r18_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata,masthead
+2003-08-20,2003-08-20_r18_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Juan J. Canals,masthead
+2003-08-20,2003-08-20_r18_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Carlos Alberto Machiaroli,masthead
+2003-08-20,2003-08-20_r18_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Juan Héctor Estrada,masthead
+2003-08-20,2003-08-20_r18_TRIBUNAL_DE_JUICIO_POLITICO,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2003-08-27,2003-08-27_r19_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Alfredo A. Luques,masthead
 2003-08-27,2003-08-27_r19_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata,masthead
 2003-08-27,2003-08-27_r19_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Juan J. Canals,masthead
@@ -1749,37 +1749,37 @@ session_date,file,office,person,basis
 2003-08-28,2003-08-28_r00_ASAMBLEA,secretario,Juan Estrada,masthead
 2003-08-28,2003-08-28_r00_ASAMBLEA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2003-09-03,2003-09-03_r20_TRIBUNAL_DE_JUICIO_POLITICO,presidente provisional,José Luis Gioja,masthead
-2003-09-03,2003-09-03_r21_ORDINARIA,prosecretario,Alfredo A. Luques,masthead
 2003-09-03,2003-09-03_r20_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Alfredo A. Luques,masthead
-2003-09-03,2003-09-03_r21_ORDINARIA,prosecretario,José D. Canata,masthead
 2003-09-03,2003-09-03_r20_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata,masthead
-2003-09-03,2003-09-03_r21_ORDINARIA,prosecretario,Juan J. Canals,masthead
 2003-09-03,2003-09-03_r20_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Juan J. Canals,masthead
-2003-09-03,2003-09-03_r21_ORDINARIA,secretario,Carlos Alberto Machiaroli,masthead
 2003-09-03,2003-09-03_r20_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Carlos Alberto Machiaroli,masthead
-2003-09-03,2003-09-03_r21_ORDINARIA,secretario,Juan Héctor Estrada,masthead
 2003-09-03,2003-09-03_r20_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Juan Héctor Estrada,masthead
 2003-09-03,2003-09-03_r20_TRIBUNAL_DE_JUICIO_POLITICO,vicepresidente,Marcelo Eduardo López Arias,masthead
-2003-09-03,2003-09-03_r21_ORDINARIA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2003-09-03,2003-09-03_r20_TRIBUNAL_DE_JUICIO_POLITICO,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
+2003-09-03,2003-09-03_r21_ORDINARIA,prosecretario,Alfredo A. Luques,masthead
+2003-09-03,2003-09-03_r21_ORDINARIA,prosecretario,José D. Canata,masthead
+2003-09-03,2003-09-03_r21_ORDINARIA,prosecretario,Juan J. Canals,masthead
+2003-09-03,2003-09-03_r21_ORDINARIA,secretario,Carlos Alberto Machiaroli,masthead
+2003-09-03,2003-09-03_r21_ORDINARIA,secretario,Juan Héctor Estrada,masthead
+2003-09-03,2003-09-03_r21_ORDINARIA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2003-09-17,2003-09-17_r22_ORDINARIA,presidente provisional,José Luis Gioja,masthead
 2003-09-17,2003-09-17_r22_ORDINARIA,prosecretario,Alfredo A. Luques,masthead
 2003-09-17,2003-09-17_r22_ORDINARIA,prosecretario,José D. Canata,masthead
 2003-09-17,2003-09-17_r22_ORDINARIA,prosecretario,Juan J. Canals,masthead
 2003-09-17,2003-09-17_r22_ORDINARIA,secretario,Carlos Alberto Machiaroli,masthead
 2003-09-17,2003-09-17_r22_ORDINARIA,secretario,Juan Héctor Estrada,masthead
-2003-10-01,2003-10-01_r24_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Alfredo A. Luques,masthead
 2003-10-01,2003-10-01_r23_ORDINARIA,prosecretario,Alfredo A. Luques,masthead
-2003-10-01,2003-10-01_r24_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata,masthead
 2003-10-01,2003-10-01_r23_ORDINARIA,prosecretario,José D. Canata,masthead
-2003-10-01,2003-10-01_r24_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Juan J. Canals,masthead
 2003-10-01,2003-10-01_r23_ORDINARIA,prosecretario,Juan J. Canals,masthead
-2003-10-01,2003-10-01_r24_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Carlos Alberto Machiaroli,masthead
 2003-10-01,2003-10-01_r23_ORDINARIA,secretario,Carlos Alberto Machiaroli,masthead
-2003-10-01,2003-10-01_r24_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Juan Héctor Estrada,masthead
 2003-10-01,2003-10-01_r23_ORDINARIA,secretario,Juan Héctor Estrada,masthead
-2003-10-01,2003-10-01_r24_TRIBUNAL_DE_JUICIO_POLITICO,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2003-10-01,2003-10-01_r23_ORDINARIA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
+2003-10-01,2003-10-01_r24_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Alfredo A. Luques,masthead
+2003-10-01,2003-10-01_r24_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata,masthead
+2003-10-01,2003-10-01_r24_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Juan J. Canals,masthead
+2003-10-01,2003-10-01_r24_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Carlos Alberto Machiaroli,masthead
+2003-10-01,2003-10-01_r24_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Juan Héctor Estrada,masthead
+2003-10-01,2003-10-01_r24_TRIBUNAL_DE_JUICIO_POLITICO,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2003-10-08,2003-10-08_r25_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Alfredo A. Luques,masthead
 2003-10-08,2003-10-08_r25_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata,masthead
 2003-10-08,2003-10-08_r25_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Juan J. Canals,masthead
@@ -1798,68 +1798,68 @@ session_date,file,office,person,basis
 2003-10-16,2003-10-16_r00_ASAMBLEA,secretario,Juan Estrada,masthead
 2003-10-16,2003-10-16_r00_ASAMBLEA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2003-10-29,2003-10-29_r27_ORDINARIA,prosecretario,Alfredo A. Luques,masthead
-2003-10-29,2003-10-29_r28_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Alfredo A. Luques,masthead
 2003-10-29,2003-10-29_r27_ORDINARIA,prosecretario,José D. Canata,masthead
-2003-10-29,2003-10-29_r28_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata,masthead
 2003-10-29,2003-10-29_r27_ORDINARIA,prosecretario,Juan J. Canals,masthead
-2003-10-29,2003-10-29_r28_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Juan J. Canals,masthead
 2003-10-29,2003-10-29_r27_ORDINARIA,secretario,Carlos Alberto Machiaroli,masthead
-2003-10-29,2003-10-29_r28_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Carlos Alberto Machiaroli,masthead
 2003-10-29,2003-10-29_r27_ORDINARIA,secretario,Juan Héctor Estrada,masthead
+2003-10-29,2003-10-29_r28_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Alfredo A. Luques,masthead
+2003-10-29,2003-10-29_r28_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata,masthead
+2003-10-29,2003-10-29_r28_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Juan J. Canals,masthead
+2003-10-29,2003-10-29_r28_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Carlos Alberto Machiaroli,masthead
 2003-10-29,2003-10-29_r28_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Juan Héctor Estrada,masthead
 2003-11-04,2003-11-04_r29_TRIBUNAL_DE_JUICIO_POLITICO,NONE,,
 2003-11-05,2003-11-05_r30_ORDINARIA,presidente provisional,José Luis Gioja,masthead
-2003-11-05,2003-11-05_r31_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Alfredo A. Luques,masthead
 2003-11-05,2003-11-05_r30_ORDINARIA,prosecretario,Alfredo A. Luques,masthead
-2003-11-05,2003-11-05_r31_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata,masthead
 2003-11-05,2003-11-05_r30_ORDINARIA,prosecretario,José D. Canata,masthead
-2003-11-05,2003-11-05_r31_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Juan J. Canals,masthead
 2003-11-05,2003-11-05_r30_ORDINARIA,prosecretario,Juan J. Canals,masthead
-2003-11-05,2003-11-05_r31_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Carlos Alberto Machiaroli,masthead
 2003-11-05,2003-11-05_r30_ORDINARIA,secretario,Carlos Alberto Machiaroli,masthead
-2003-11-05,2003-11-05_r31_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Juan Héctor Estrada,masthead
 2003-11-05,2003-11-05_r30_ORDINARIA,secretario,Juan Héctor Estrada,masthead
 2003-11-05,2003-11-05_r30_ORDINARIA,vicepresidente,Marcelo Eduardo López Arias,masthead
 2003-11-05,2003-11-05_r30_ORDINARIA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
+2003-11-05,2003-11-05_r31_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Alfredo A. Luques,masthead
+2003-11-05,2003-11-05_r31_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata,masthead
+2003-11-05,2003-11-05_r31_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Juan J. Canals,masthead
+2003-11-05,2003-11-05_r31_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Carlos Alberto Machiaroli,masthead
+2003-11-05,2003-11-05_r31_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Juan Héctor Estrada,masthead
 2003-11-11,2003-11-11_r32_TRIBUNAL_DE_JUICIO_POLITICO,NONE,,
 2003-11-19,2003-11-19_r33_ORDINARIA,presidente provisional,José Luis Gioja,masthead
-2003-11-19,2003-11-19_r34_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Alfredo A. Luques,masthead
 2003-11-19,2003-11-19_r33_ORDINARIA,prosecretario,Alfredo A. Luques,masthead
-2003-11-19,2003-11-19_r34_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata,masthead
 2003-11-19,2003-11-19_r33_ORDINARIA,prosecretario,José D. Canata,masthead
-2003-11-19,2003-11-19_r34_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Juan J. Canals,masthead
 2003-11-19,2003-11-19_r33_ORDINARIA,prosecretario,Juan J. Canals,masthead
-2003-11-19,2003-11-19_r34_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Carlos Alberto Machiaroli,masthead
 2003-11-19,2003-11-19_r33_ORDINARIA,secretario,Carlos Alberto Machiaroli,masthead
-2003-11-19,2003-11-19_r34_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Juan Héctor Estrada,masthead
 2003-11-19,2003-11-19_r33_ORDINARIA,secretario,Juan Héctor Estrada,masthead
 2003-11-19,2003-11-19_r33_ORDINARIA,vicepresidente,Marcelo Eduardo López Arias,masthead
 2003-11-19,2003-11-19_r33_ORDINARIA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
+2003-11-19,2003-11-19_r34_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Alfredo A. Luques,masthead
+2003-11-19,2003-11-19_r34_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata,masthead
+2003-11-19,2003-11-19_r34_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Juan J. Canals,masthead
+2003-11-19,2003-11-19_r34_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Carlos Alberto Machiaroli,masthead
+2003-11-19,2003-11-19_r34_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Juan Héctor Estrada,masthead
 2003-11-26,2003-11-26_r35_ORDINARIA,presidente provisional,José Luis Gioja,masthead
-2003-11-26,2003-11-26_r36_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Alfredo A. Luques,masthead
 2003-11-26,2003-11-26_r35_ORDINARIA,prosecretario,Alfredo A. Luques,masthead
-2003-11-26,2003-11-26_r36_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata,masthead
 2003-11-26,2003-11-26_r35_ORDINARIA,prosecretario,José D. Canata,masthead
-2003-11-26,2003-11-26_r36_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Juan J. Canals,masthead
 2003-11-26,2003-11-26_r35_ORDINARIA,prosecretario,Juan J. Canals,masthead
-2003-11-26,2003-11-26_r36_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Carlos Alberto Machiaroli,masthead
 2003-11-26,2003-11-26_r35_ORDINARIA,secretario,Carlos Alberto Machiaroli,masthead
-2003-11-26,2003-11-26_r36_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Juan Héctor Estrada,masthead
 2003-11-26,2003-11-26_r35_ORDINARIA,secretario,Juan Héctor Estrada,masthead
 2003-11-26,2003-11-26_r35_ORDINARIA,vicepresidente,Marcelo Eduardo López Arias,masthead
-2003-11-26,2003-11-26_r36_TRIBUNAL_DE_JUICIO_POLITICO,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2003-11-26,2003-11-26_r35_ORDINARIA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
+2003-11-26,2003-11-26_r36_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Alfredo A. Luques,masthead
+2003-11-26,2003-11-26_r36_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata,masthead
+2003-11-26,2003-11-26_r36_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Juan J. Canals,masthead
+2003-11-26,2003-11-26_r36_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Carlos Alberto Machiaroli,masthead
+2003-11-26,2003-11-26_r36_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Juan Héctor Estrada,masthead
+2003-11-26,2003-11-26_r36_TRIBUNAL_DE_JUICIO_POLITICO,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2003-11-27,2003-11-27_r37_ESPECIAL,prosecretario,Alfredo A. Luques,masthead
 2003-11-27,2003-11-27_r37_ESPECIAL,prosecretario,José D. Canata,masthead
-2003-11-27,2003-11-27_r38_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata,masthead
 2003-11-27,2003-11-27_r37_ESPECIAL,prosecretario,Juan J. Canals,masthead
-2003-11-27,2003-11-27_r38_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Juan J. Canals,masthead
 2003-11-27,2003-11-27_r37_ESPECIAL,secretario,Carlos Alberto Machiaroli,masthead
-2003-11-27,2003-11-27_r38_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Carlos Alberto Machiaroli,masthead
 2003-11-27,2003-11-27_r37_ESPECIAL,secretario,Juan Héctor Estrada,masthead
+2003-11-27,2003-11-27_r37_ESPECIAL,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
+2003-11-27,2003-11-27_r38_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata,masthead
+2003-11-27,2003-11-27_r38_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Juan J. Canals,masthead
+2003-11-27,2003-11-27_r38_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Carlos Alberto Machiaroli,masthead
 2003-11-27,2003-11-27_r38_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Juan Héctor Estrada,masthead
 2003-11-27,2003-11-27_r38_TRIBUNAL_DE_JUICIO_POLITICO,vicepresidente,Marcelo Eduardo López Arias,masthead
-2003-11-27,2003-11-27_r37_ESPECIAL,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2003-11-27,2003-11-27_r38_TRIBUNAL_DE_JUICIO_POLITICO,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2003-12-03,2003-12-03_r39_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Alfredo A. Luques,masthead
 2003-12-03,2003-12-03_r39_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata,masthead
@@ -1881,37 +1881,37 @@ session_date,file,office,person,basis
 2003-12-17,2003-12-17_r41_ORDINARIA,secretario,Carlos Alberto Machiaroli,masthead
 2003-12-17,2003-12-17_r41_ORDINARIA,secretario,Juan Héctor Estrada,masthead
 2003-12-17,2003-12-17_r41_ORDINARIA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
-2004-02-24,2004-02-24_r43_EXTRAORDINARIA,presidente provisional,Marcelo Alejandro Horacio Guinle,masthead
 2004-02-24,2004-02-24_r01_PREPARATORIA,prosecretario,José D. Canata,masthead
-2004-02-24,2004-02-24_r43_EXTRAORDINARIA,prosecretario,José D. Canata,masthead
 2004-02-24,2004-02-24_r01_PREPARATORIA,prosecretario,Juan J. Canals,masthead
-2004-02-24,2004-02-24_r43_EXTRAORDINARIA,prosecretario,Juan J. Canals,masthead
 2004-02-24,2004-02-24_r01_PREPARATORIA,prosecretario,Ricardo Nicanor Gutiérrez,masthead
-2004-02-24,2004-02-24_r43_EXTRAORDINARIA,prosecretario,Ricardo Nicanor Gutiérrez,masthead
 2004-02-24,2004-02-24_r01_PREPARATORIA,secretario,Carlos Alberto Machiaroli,masthead
-2004-02-24,2004-02-24_r43_EXTRAORDINARIA,secretario,Carlos Alberto Machiaroli,masthead
 2004-02-24,2004-02-24_r01_PREPARATORIA,secretario,Juan Héctor Estrada,masthead
+2004-02-24,2004-02-24_r01_PREPARATORIA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
+2004-02-24,2004-02-24_r43_EXTRAORDINARIA,presidente provisional,Marcelo Alejandro Horacio Guinle,masthead
+2004-02-24,2004-02-24_r43_EXTRAORDINARIA,prosecretario,José D. Canata,masthead
+2004-02-24,2004-02-24_r43_EXTRAORDINARIA,prosecretario,Juan J. Canals,masthead
+2004-02-24,2004-02-24_r43_EXTRAORDINARIA,prosecretario,Ricardo Nicanor Gutiérrez,masthead
+2004-02-24,2004-02-24_r43_EXTRAORDINARIA,secretario,Carlos Alberto Machiaroli,masthead
 2004-02-24,2004-02-24_r43_EXTRAORDINARIA,secretario,Juan Héctor Estrada,masthead
 2004-02-24,2004-02-24_r43_EXTRAORDINARIA,vicepresidente,Marcelo Eduardo López Arias,masthead
-2004-02-24,2004-02-24_r01_PREPARATORIA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2004-02-24,2004-02-24_r43_EXTRAORDINARIA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2004-03-01,2004-03-01_r00_ASAMBLEA,presidente de la honorable camara de diputados,Eduardo Oscar Camaño,masthead
 2004-03-01,2004-03-01_r00_ASAMBLEA,secretario,Eduardo Daniel Rollano,masthead
 2004-03-01,2004-03-01_r00_ASAMBLEA,secretario,Juan Héctor Estrada,masthead
 2004-03-01,2004-03-01_r00_ASAMBLEA,vicepresidente,Daniel Osvaldo Scioli,masthead
 2004-03-18,2004-03-18_r02_ORDINARIA,presidente provisional,Marcelo Alejandro Horacio Guinle,masthead
-2004-03-18,2004-03-18_r03_ESPECIAL,prosecretario,José D. Canata,masthead
 2004-03-18,2004-03-18_r02_ORDINARIA,prosecretario,José D. Canata,masthead
-2004-03-18,2004-03-18_r03_ESPECIAL,prosecretario,Juan J. Canals,masthead
 2004-03-18,2004-03-18_r02_ORDINARIA,prosecretario,Juan J. Canals,masthead
-2004-03-18,2004-03-18_r03_ESPECIAL,prosecretario,Ricardo Nicanor Gutiérrez,masthead
 2004-03-18,2004-03-18_r02_ORDINARIA,prosecretario,Ricardo Nicanor Gutiérrez,masthead
-2004-03-18,2004-03-18_r03_ESPECIAL,secretario,Carlos Alberto Machiaroli,masthead
 2004-03-18,2004-03-18_r02_ORDINARIA,secretario,Carlos Alberto Machiaroli,masthead
-2004-03-18,2004-03-18_r03_ESPECIAL,secretario,Juan Héctor Estrada,masthead
 2004-03-18,2004-03-18_r02_ORDINARIA,secretario,Juan Héctor Estrada,masthead
-2004-03-18,2004-03-18_r03_ESPECIAL,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2004-03-18,2004-03-18_r02_ORDINARIA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
+2004-03-18,2004-03-18_r03_ESPECIAL,prosecretario,José D. Canata,masthead
+2004-03-18,2004-03-18_r03_ESPECIAL,prosecretario,Juan J. Canals,masthead
+2004-03-18,2004-03-18_r03_ESPECIAL,prosecretario,Ricardo Nicanor Gutiérrez,masthead
+2004-03-18,2004-03-18_r03_ESPECIAL,secretario,Carlos Alberto Machiaroli,masthead
+2004-03-18,2004-03-18_r03_ESPECIAL,secretario,Juan Héctor Estrada,masthead
+2004-03-18,2004-03-18_r03_ESPECIAL,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2004-03-31,2004-03-31_r04_ORDINARIA,presidente provisional,Marcelo Alejandro Horacio Guinle,masthead
 2004-03-31,2004-03-31_r04_ORDINARIA,prosecretario,José D. Canata,masthead
 2004-03-31,2004-03-31_r04_ORDINARIA,prosecretario,Juan J. Canals,masthead
@@ -2017,18 +2017,18 @@ session_date,file,office,person,basis
 2004-08-11,2004-08-11_r18_ORDINARIA,secretario,Juan Héctor Estrada,masthead
 2004-08-11,2004-08-11_r18_ORDINARIA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2004-08-18,2004-08-18_r19_ORDINARIA,presidente provisional,Marcelo Alejandro Horacio Guinle,masthead
-2004-08-18,2004-08-18_r20_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata,masthead
 2004-08-18,2004-08-18_r19_ORDINARIA,prosecretario,José D. Canata,masthead
-2004-08-18,2004-08-18_r20_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Juan J. Canals,masthead
 2004-08-18,2004-08-18_r19_ORDINARIA,prosecretario,Juan J. Canals,masthead
-2004-08-18,2004-08-18_r20_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Ricardo Nicanor Gutiérrez,masthead
 2004-08-18,2004-08-18_r19_ORDINARIA,prosecretario,Ricardo Nicanor Gutiérrez,masthead
-2004-08-18,2004-08-18_r20_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Carlos Alberto Machiaroli,masthead
 2004-08-18,2004-08-18_r19_ORDINARIA,secretario,Carlos Alberto Machiaroli,masthead
-2004-08-18,2004-08-18_r20_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Juan Héctor Estrada,masthead
 2004-08-18,2004-08-18_r19_ORDINARIA,secretario,Juan Héctor Estrada,masthead
-2004-08-18,2004-08-18_r20_TRIBUNAL_DE_JUICIO_POLITICO,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2004-08-18,2004-08-18_r19_ORDINARIA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
+2004-08-18,2004-08-18_r20_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata,masthead
+2004-08-18,2004-08-18_r20_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Juan J. Canals,masthead
+2004-08-18,2004-08-18_r20_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Ricardo Nicanor Gutiérrez,masthead
+2004-08-18,2004-08-18_r20_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Carlos Alberto Machiaroli,masthead
+2004-08-18,2004-08-18_r20_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Juan Héctor Estrada,masthead
+2004-08-18,2004-08-18_r20_TRIBUNAL_DE_JUICIO_POLITICO,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2004-08-25,2004-08-25_r21_ORDINARIA,presidente provisional,Marcelo Alejandro Horacio Guinle,masthead
 2004-08-25,2004-08-25_r21_ORDINARIA,prosecretario,José D. Canata,masthead
 2004-08-25,2004-08-25_r21_ORDINARIA,prosecretario,Juan J. Canals,masthead
@@ -2037,16 +2037,16 @@ session_date,file,office,person,basis
 2004-08-25,2004-08-25_r21_ORDINARIA,secretario,Juan Héctor Estrada,masthead
 2004-08-25,2004-08-25_r21_ORDINARIA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2004-09-01,2004-09-01_r22_TRIBUNAL_DE_JUICIO_POLITICO,presidente provisional,Marcelo Alejandro Horacio Guinle,masthead
-2004-09-01,2004-09-01_r23_ORDINARIA,presidente provisional,Marcelo Alejandro Horacio Guinle,masthead
 2004-09-01,2004-09-01_r22_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata,masthead
-2004-09-01,2004-09-01_r23_ORDINARIA,prosecretario,José D. Canata,masthead
 2004-09-01,2004-09-01_r22_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Juan J. Canals,masthead
-2004-09-01,2004-09-01_r23_ORDINARIA,prosecretario,Juan J. Canals,masthead
 2004-09-01,2004-09-01_r22_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Ricardo Nicanor Gutiérrez,masthead
-2004-09-01,2004-09-01_r23_ORDINARIA,prosecretario,Ricardo Nicanor Gutiérrez,masthead
 2004-09-01,2004-09-01_r22_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Carlos Alberto Machiaroli,masthead
-2004-09-01,2004-09-01_r23_ORDINARIA,secretario,Carlos Alberto Machiaroli,masthead
 2004-09-01,2004-09-01_r22_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Juan Héctor Estrada,masthead
+2004-09-01,2004-09-01_r23_ORDINARIA,presidente provisional,Marcelo Alejandro Horacio Guinle,masthead
+2004-09-01,2004-09-01_r23_ORDINARIA,prosecretario,José D. Canata,masthead
+2004-09-01,2004-09-01_r23_ORDINARIA,prosecretario,Juan J. Canals,masthead
+2004-09-01,2004-09-01_r23_ORDINARIA,prosecretario,Ricardo Nicanor Gutiérrez,masthead
+2004-09-01,2004-09-01_r23_ORDINARIA,secretario,Carlos Alberto Machiaroli,masthead
 2004-09-01,2004-09-01_r23_ORDINARIA,secretario,Juan Héctor Estrada,masthead
 2004-09-15,2004-09-15_r24_ORDINARIA,prosecretario,José D. Canata,masthead
 2004-09-15,2004-09-15_r24_ORDINARIA,prosecretario,Juan J. Canals,masthead
@@ -2073,16 +2073,16 @@ session_date,file,office,person,basis
 2004-10-06,2004-10-06_r27_ORDINARIA,secretario,Juan Héctor Estrada,masthead
 2004-10-06,2004-10-06_r27_ORDINARIA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2004-10-13,2004-10-13_r28_ORDINARIA,prosecretario,José D. Canata,masthead
-2004-10-13,2004-10-13_r29_ESPECIAL,prosecretario,José D. Canata,masthead
 2004-10-13,2004-10-13_r28_ORDINARIA,prosecretario,Juan J. Canals,masthead
-2004-10-13,2004-10-13_r29_ESPECIAL,prosecretario,Juan J. Canals,masthead
 2004-10-13,2004-10-13_r28_ORDINARIA,prosecretario,Ricardo Nicanor Gutiérrez,masthead
-2004-10-13,2004-10-13_r29_ESPECIAL,prosecretario,Ricardo Nicanor Gutiérrez,masthead
 2004-10-13,2004-10-13_r28_ORDINARIA,secretario,Carlos Alberto Machiaroli,masthead
-2004-10-13,2004-10-13_r29_ESPECIAL,secretario,Carlos Alberto Machiaroli,masthead
 2004-10-13,2004-10-13_r28_ORDINARIA,secretario,Juan Héctor Estrada,masthead
-2004-10-13,2004-10-13_r29_ESPECIAL,secretario,Juan Héctor Estrada,masthead
 2004-10-13,2004-10-13_r28_ORDINARIA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
+2004-10-13,2004-10-13_r29_ESPECIAL,prosecretario,José D. Canata,masthead
+2004-10-13,2004-10-13_r29_ESPECIAL,prosecretario,Juan J. Canals,masthead
+2004-10-13,2004-10-13_r29_ESPECIAL,prosecretario,Ricardo Nicanor Gutiérrez,masthead
+2004-10-13,2004-10-13_r29_ESPECIAL,secretario,Carlos Alberto Machiaroli,masthead
+2004-10-13,2004-10-13_r29_ESPECIAL,secretario,Juan Héctor Estrada,masthead
 2004-10-13,2004-10-13_r29_ESPECIAL,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2004-10-20,2004-10-20_r30_ORDINARIA,presidente provisional,Marcelo Alejandro Horacio Guinle,masthead
 2004-10-20,2004-10-20_r30_ORDINARIA,prosecretario,José D. Canata,masthead
@@ -2106,13 +2106,13 @@ session_date,file,office,person,basis
 2004-11-10,2004-11-10_r32_ORDINARIA,secretario,Juan Héctor Estrada,masthead
 2004-11-10,2004-11-10_r32_ORDINARIA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2004-11-17,2004-11-17_r00_ASAMBLEA,presidente de la honorable camara de diputados,Eduardo Oscar Camaño,masthead
+2004-11-17,2004-11-17_r00_ASAMBLEA,secretario,Eduardo Daniel Rollano,masthead
+2004-11-17,2004-11-17_r00_ASAMBLEA,secretario,Juan Héctor Estrada,masthead
 2004-11-17,2004-11-17_r33_ORDINARIA,presidente provisional,Marcelo Alejandro Horacio Guinle,masthead
 2004-11-17,2004-11-17_r33_ORDINARIA,prosecretario,José D. Canata,masthead
 2004-11-17,2004-11-17_r33_ORDINARIA,prosecretario,Juan J. Canals,masthead
 2004-11-17,2004-11-17_r33_ORDINARIA,prosecretario,Ricardo Nicanor Gutiérrez,masthead
 2004-11-17,2004-11-17_r33_ORDINARIA,secretario,Carlos Alberto Machiaroli,masthead
-2004-11-17,2004-11-17_r00_ASAMBLEA,secretario,Eduardo Daniel Rollano,masthead
-2004-11-17,2004-11-17_r00_ASAMBLEA,secretario,Juan Héctor Estrada,masthead
 2004-11-17,2004-11-17_r33_ORDINARIA,secretario,Juan Héctor Estrada,masthead
 2004-11-17,2004-11-17_r33_ORDINARIA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2004-11-24,2004-11-24_r34_ORDINARIA,presidente provisional,Marcelo Alejandro Horacio Guinle,masthead
@@ -2130,17 +2130,17 @@ session_date,file,office,person,basis
 2004-12-01,2004-12-01_r35_ORDINARIA,secretario,Carlos Alberto Machiaroli,masthead
 2004-12-01,2004-12-01_r35_ORDINARIA,secretario,Juan Héctor Estrada,masthead
 2004-12-01,2004-12-01_r35_ORDINARIA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
-2004-12-16,2004-12-16_r37_ORDINARIA,presidente provisional,Marcelo Alejandro Horacio Guinle,masthead
 2004-12-16,2004-12-16_r36_ORDINARIA,presidente provisional,Marcelo Alejandro Horacio Guinle,masthead
 2004-12-16,2004-12-16_r36_ORDINARIA,prosecretario,José D. Canata,masthead
 2004-12-16,2004-12-16_r36_ORDINARIA,prosecretario,Juan J. Canals,masthead
 2004-12-16,2004-12-16_r36_ORDINARIA,prosecretario,Ricardo Nicanor Gutiérrez,masthead
-2004-12-16,2004-12-16_r37_ORDINARIA,secretario,Carlos Alberto Machiaroli,masthead
 2004-12-16,2004-12-16_r36_ORDINARIA,secretario,Carlos Alberto Machiaroli,masthead
-2004-12-16,2004-12-16_r37_ORDINARIA,secretario,Juan Héctor Estrada,masthead
 2004-12-16,2004-12-16_r36_ORDINARIA,secretario,Juan Héctor Estrada,masthead
 2004-12-16,2004-12-16_r36_ORDINARIA,vicepresidente,Marcelo Eduardo López Arias,masthead
 2004-12-16,2004-12-16_r36_ORDINARIA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
+2004-12-16,2004-12-16_r37_ORDINARIA,presidente provisional,Marcelo Alejandro Horacio Guinle,masthead
+2004-12-16,2004-12-16_r37_ORDINARIA,secretario,Carlos Alberto Machiaroli,masthead
+2004-12-16,2004-12-16_r37_ORDINARIA,secretario,Juan Héctor Estrada,masthead
 2005-02-03,2005-02-03_r38_EXTRAORDINARIA,presidente provisional,Marcelo Alejandro Horacio Guinle,masthead
 2005-02-03,2005-02-03_r38_EXTRAORDINARIA,prosecretario,José D. Canata,masthead
 2005-02-03,2005-02-03_r38_EXTRAORDINARIA,prosecretario,Juan J. Canals,masthead
@@ -2149,16 +2149,16 @@ session_date,file,office,person,basis
 2005-02-03,2005-02-03_r38_EXTRAORDINARIA,secretario,Juan Héctor Estrada,masthead
 2005-02-03,2005-02-03_r38_EXTRAORDINARIA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2005-02-24,2005-02-24_r01_PREPARATORIA,prosecretario,José D. Canata,masthead
-2005-02-24,2005-02-24_r39_EXTRAORDINARIA,prosecretario,José D. Canata,masthead
 2005-02-24,2005-02-24_r01_PREPARATORIA,prosecretario,Juan J. Canals,masthead
-2005-02-24,2005-02-24_r39_EXTRAORDINARIA,prosecretario,Juan J. Canals,masthead
 2005-02-24,2005-02-24_r01_PREPARATORIA,prosecretario,Ricardo Nicanor Gutiérrez,masthead
-2005-02-24,2005-02-24_r39_EXTRAORDINARIA,prosecretario,Ricardo Nicanor Gutiérrez,masthead
 2005-02-24,2005-02-24_r01_PREPARATORIA,secretario,Carlos Alberto Machiaroli,masthead
-2005-02-24,2005-02-24_r39_EXTRAORDINARIA,secretario,Carlos Alberto Machiaroli,masthead
 2005-02-24,2005-02-24_r01_PREPARATORIA,secretario,Juan Héctor Estrada,masthead
-2005-02-24,2005-02-24_r39_EXTRAORDINARIA,secretario,Juan Héctor Estrada,masthead
 2005-02-24,2005-02-24_r01_PREPARATORIA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
+2005-02-24,2005-02-24_r39_EXTRAORDINARIA,prosecretario,José D. Canata,masthead
+2005-02-24,2005-02-24_r39_EXTRAORDINARIA,prosecretario,Juan J. Canals,masthead
+2005-02-24,2005-02-24_r39_EXTRAORDINARIA,prosecretario,Ricardo Nicanor Gutiérrez,masthead
+2005-02-24,2005-02-24_r39_EXTRAORDINARIA,secretario,Carlos Alberto Machiaroli,masthead
+2005-02-24,2005-02-24_r39_EXTRAORDINARIA,secretario,Juan Héctor Estrada,masthead
 2005-02-24,2005-02-24_r39_EXTRAORDINARIA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2005-03-01,2005-03-01_r00_ASAMBLEA,presidente de la honorable camara de diputados,Eduardo Oscar Camaño,masthead
 2005-03-01,2005-03-01_r00_ASAMBLEA,secretario,Eduardo Daniel Rollano,masthead
@@ -2171,18 +2171,18 @@ session_date,file,office,person,basis
 2005-03-02,2005-03-02_r02_ORDINARIA,secretario,Juan Héctor Estrada,masthead
 2005-03-02,2005-03-02_r02_ORDINARIA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2005-03-09,2005-03-09_r03_ORDINARIA,presidente provisional,Marcelo Alejandro Horacio Guinle,masthead
-2005-03-09,2005-03-09_r04_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata,masthead
 2005-03-09,2005-03-09_r03_ORDINARIA,prosecretario,José D. Canata,masthead
-2005-03-09,2005-03-09_r04_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Juan J. Canals,masthead
 2005-03-09,2005-03-09_r03_ORDINARIA,prosecretario,Juan J. Canals,masthead
-2005-03-09,2005-03-09_r04_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Ricardo Nicanor Gutiérrez,masthead
 2005-03-09,2005-03-09_r03_ORDINARIA,prosecretario,Ricardo Nicanor Gutiérrez,masthead
-2005-03-09,2005-03-09_r04_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Carlos Alberto Machiaroli,masthead
 2005-03-09,2005-03-09_r03_ORDINARIA,secretario,Carlos Alberto Machiaroli,masthead
-2005-03-09,2005-03-09_r04_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Juan Héctor Estrada,masthead
 2005-03-09,2005-03-09_r03_ORDINARIA,secretario,Juan Héctor Estrada,masthead
-2005-03-09,2005-03-09_r04_TRIBUNAL_DE_JUICIO_POLITICO,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2005-03-09,2005-03-09_r03_ORDINARIA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
+2005-03-09,2005-03-09_r04_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata,masthead
+2005-03-09,2005-03-09_r04_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Juan J. Canals,masthead
+2005-03-09,2005-03-09_r04_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Ricardo Nicanor Gutiérrez,masthead
+2005-03-09,2005-03-09_r04_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Carlos Alberto Machiaroli,masthead
+2005-03-09,2005-03-09_r04_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Juan Héctor Estrada,masthead
+2005-03-09,2005-03-09_r04_TRIBUNAL_DE_JUICIO_POLITICO,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2005-03-16,2005-03-16_r05_ORDINARIA,presidente provisional,Marcelo Alejandro Horacio Guinle,masthead
 2005-03-16,2005-03-16_r05_ORDINARIA,prosecretario,José D. Canata,masthead
 2005-03-16,2005-03-16_r05_ORDINARIA,prosecretario,Juan J. Canals,masthead
@@ -2191,49 +2191,49 @@ session_date,file,office,person,basis
 2005-03-16,2005-03-16_r05_ORDINARIA,secretario,Juan Héctor Estrada,masthead
 2005-03-16,2005-03-16_r05_ORDINARIA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2005-04-06,2005-04-06_r06_ESPECIAL,presidente provisional,Marcelo Alejandro Horacio Guinle,masthead
-2005-04-06,2005-04-06_r08_TRIBUNAL_DE_JUICIO_POLITICO,presidente provisional,Marcelo Alejandro Horacio Guinle,masthead
-2005-04-06,2005-04-06_r07_ORDINARIA,presidente provisional,Marcelo Alejandro Horacio Guinle,masthead
 2005-04-06,2005-04-06_r06_ESPECIAL,prosecretario,José D. Canata,masthead
-2005-04-06,2005-04-06_r08_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata,masthead
-2005-04-06,2005-04-06_r07_ORDINARIA,prosecretario,José D. Canata,masthead
 2005-04-06,2005-04-06_r06_ESPECIAL,prosecretario,Juan J. Canals,masthead
-2005-04-06,2005-04-06_r08_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Juan J. Canals,masthead
-2005-04-06,2005-04-06_r07_ORDINARIA,prosecretario,Juan J. Canals,masthead
 2005-04-06,2005-04-06_r06_ESPECIAL,prosecretario,Ricardo Nicanor Gutiérrez,masthead
-2005-04-06,2005-04-06_r08_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Ricardo Nicanor Gutiérrez,masthead
-2005-04-06,2005-04-06_r07_ORDINARIA,prosecretario,Ricardo Nicanor Gutiérrez,masthead
 2005-04-06,2005-04-06_r06_ESPECIAL,secretario,Carlos Alberto Machiaroli,masthead
-2005-04-06,2005-04-06_r08_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Carlos Alberto Machiaroli,masthead
-2005-04-06,2005-04-06_r07_ORDINARIA,secretario,Carlos Alberto Machiaroli,masthead
 2005-04-06,2005-04-06_r06_ESPECIAL,secretario,Juan Héctor Estrada,masthead
-2005-04-06,2005-04-06_r08_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Juan Héctor Estrada,masthead
+2005-04-06,2005-04-06_r07_ORDINARIA,presidente provisional,Marcelo Alejandro Horacio Guinle,masthead
+2005-04-06,2005-04-06_r07_ORDINARIA,prosecretario,José D. Canata,masthead
+2005-04-06,2005-04-06_r07_ORDINARIA,prosecretario,Juan J. Canals,masthead
+2005-04-06,2005-04-06_r07_ORDINARIA,prosecretario,Ricardo Nicanor Gutiérrez,masthead
+2005-04-06,2005-04-06_r07_ORDINARIA,secretario,Carlos Alberto Machiaroli,masthead
 2005-04-06,2005-04-06_r07_ORDINARIA,secretario,Juan Héctor Estrada,masthead
-2005-04-20,2005-04-20_r10_TRIBUNAL_DE_JUICIO_POLITICO,presidente provisional,Marcelo Alejandro Horacio Guinle,masthead
+2005-04-06,2005-04-06_r08_TRIBUNAL_DE_JUICIO_POLITICO,presidente provisional,Marcelo Alejandro Horacio Guinle,masthead
+2005-04-06,2005-04-06_r08_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata,masthead
+2005-04-06,2005-04-06_r08_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Juan J. Canals,masthead
+2005-04-06,2005-04-06_r08_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Ricardo Nicanor Gutiérrez,masthead
+2005-04-06,2005-04-06_r08_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Carlos Alberto Machiaroli,masthead
+2005-04-06,2005-04-06_r08_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Juan Héctor Estrada,masthead
 2005-04-20,2005-04-20_r09_ORDINARIA,presidente provisional,Marcelo Alejandro Horacio Guinle,masthead
-2005-04-20,2005-04-20_r10_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata,masthead
 2005-04-20,2005-04-20_r09_ORDINARIA,prosecretario,José D. Canata,masthead
-2005-04-20,2005-04-20_r10_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Juan J. Canals,masthead
 2005-04-20,2005-04-20_r09_ORDINARIA,prosecretario,Juan J. Canals,masthead
-2005-04-20,2005-04-20_r10_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Ricardo Nicanor Gutiérrez,masthead
 2005-04-20,2005-04-20_r09_ORDINARIA,prosecretario,Ricardo Nicanor Gutiérrez,masthead
-2005-04-20,2005-04-20_r10_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Carlos Alberto Machiaroli,masthead
 2005-04-20,2005-04-20_r09_ORDINARIA,secretario,Carlos Alberto Machiaroli,masthead
-2005-04-20,2005-04-20_r10_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Juan Héctor Estrada,masthead
 2005-04-20,2005-04-20_r09_ORDINARIA,secretario,Juan Héctor Estrada,masthead
+2005-04-20,2005-04-20_r10_TRIBUNAL_DE_JUICIO_POLITICO,presidente provisional,Marcelo Alejandro Horacio Guinle,masthead
+2005-04-20,2005-04-20_r10_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata,masthead
+2005-04-20,2005-04-20_r10_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Juan J. Canals,masthead
+2005-04-20,2005-04-20_r10_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Ricardo Nicanor Gutiérrez,masthead
+2005-04-20,2005-04-20_r10_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Carlos Alberto Machiaroli,masthead
+2005-04-20,2005-04-20_r10_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Juan Héctor Estrada,masthead
 2005-04-20,2005-04-20_r10_TRIBUNAL_DE_JUICIO_POLITICO,vicepresidenta 1°,Mirian Belén Curletti,masthead
 2005-05-04,2005-05-04_r11_ORDINARIA,presidente provisional,Marcelo Alejandro Horacio Guinle,masthead
-2005-05-04,2005-05-04_r12_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata,masthead
 2005-05-04,2005-05-04_r11_ORDINARIA,prosecretario,José D. Canata,masthead
-2005-05-04,2005-05-04_r12_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Juan J. Canals,masthead
 2005-05-04,2005-05-04_r11_ORDINARIA,prosecretario,Juan J. Canals,masthead
-2005-05-04,2005-05-04_r12_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Ricardo Nicanor Gutiérrez,masthead
 2005-05-04,2005-05-04_r11_ORDINARIA,prosecretario,Ricardo Nicanor Gutiérrez,masthead
-2005-05-04,2005-05-04_r12_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Carlos Alberto Machiaroli,masthead
 2005-05-04,2005-05-04_r11_ORDINARIA,secretario,Carlos Alberto Machiaroli,masthead
-2005-05-04,2005-05-04_r12_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Juan Héctor Estrada,masthead
 2005-05-04,2005-05-04_r11_ORDINARIA,secretario,Juan Héctor Estrada,masthead
-2005-05-04,2005-05-04_r12_TRIBUNAL_DE_JUICIO_POLITICO,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2005-05-04,2005-05-04_r11_ORDINARIA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
+2005-05-04,2005-05-04_r12_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata,masthead
+2005-05-04,2005-05-04_r12_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Juan J. Canals,masthead
+2005-05-04,2005-05-04_r12_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Ricardo Nicanor Gutiérrez,masthead
+2005-05-04,2005-05-04_r12_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Carlos Alberto Machiaroli,masthead
+2005-05-04,2005-05-04_r12_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Juan Héctor Estrada,masthead
+2005-05-04,2005-05-04_r12_TRIBUNAL_DE_JUICIO_POLITICO,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2005-05-11,2005-05-11_r13_ORDINARIA,prosecretario,José D. Canata,masthead
 2005-05-11,2005-05-11_r13_ORDINARIA,prosecretario,Juan J. Canals,masthead
 2005-05-11,2005-05-11_r13_ORDINARIA,prosecretario,Ricardo Nicanor Gutiérrez,masthead
@@ -2254,18 +2254,18 @@ session_date,file,office,person,basis
 2005-06-01,2005-06-01_r15_ORDINARIA,secretario,Juan Héctor Estrada,masthead
 2005-06-01,2005-06-01_r15_ORDINARIA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2005-06-08,2005-06-08_r16_ORDINARIA,presidente provisional,Marcelo Alejandro Horacio Guinle,masthead
-2005-06-08,2005-06-08_r17_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata,masthead
 2005-06-08,2005-06-08_r16_ORDINARIA,prosecretario,José D. Canata,masthead
-2005-06-08,2005-06-08_r17_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Juan J. Canals,masthead
 2005-06-08,2005-06-08_r16_ORDINARIA,prosecretario,Juan J. Canals,masthead
-2005-06-08,2005-06-08_r17_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Ricardo Nicanor Gutiérrez,masthead
 2005-06-08,2005-06-08_r16_ORDINARIA,prosecretario,Ricardo Nicanor Gutiérrez,masthead
-2005-06-08,2005-06-08_r17_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Carlos Alberto Machiaroli,masthead
 2005-06-08,2005-06-08_r16_ORDINARIA,secretario,Carlos Alberto Machiaroli,masthead
-2005-06-08,2005-06-08_r17_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Juan Héctor Estrada,masthead
 2005-06-08,2005-06-08_r16_ORDINARIA,secretario,Juan Héctor Estrada,masthead
-2005-06-08,2005-06-08_r17_TRIBUNAL_DE_JUICIO_POLITICO,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2005-06-08,2005-06-08_r16_ORDINARIA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
+2005-06-08,2005-06-08_r17_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata,masthead
+2005-06-08,2005-06-08_r17_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Juan J. Canals,masthead
+2005-06-08,2005-06-08_r17_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Ricardo Nicanor Gutiérrez,masthead
+2005-06-08,2005-06-08_r17_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Carlos Alberto Machiaroli,masthead
+2005-06-08,2005-06-08_r17_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Juan Héctor Estrada,masthead
+2005-06-08,2005-06-08_r17_TRIBUNAL_DE_JUICIO_POLITICO,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2005-06-15,2005-06-15_r18_ORDINARIA,presidente provisional,Marcelo Alejandro Horacio Guinle,masthead
 2005-06-15,2005-06-15_r18_ORDINARIA,prosecretario,José D. Canata,masthead
 2005-06-15,2005-06-15_r18_ORDINARIA,prosecretario,Juan J. Canals,masthead
@@ -2273,18 +2273,18 @@ session_date,file,office,person,basis
 2005-06-15,2005-06-15_r18_ORDINARIA,secretario,Carlos Alberto Machiaroli,masthead
 2005-06-15,2005-06-15_r18_ORDINARIA,secretario,Juan Héctor Estrada,masthead
 2005-06-15,2005-06-15_r18_ORDINARIA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
-2005-06-22,2005-06-22_r20_TRIBUNAL_DE_JUICIO_POLITICO,presidente provisional,Marcelo Alejandro Horacio Guinle,masthead
 2005-06-22,2005-06-22_r19_ORDINARIA,prosecretario,José D. Canata,masthead
-2005-06-22,2005-06-22_r20_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata,masthead
 2005-06-22,2005-06-22_r19_ORDINARIA,prosecretario,Juan J. Canals,masthead
-2005-06-22,2005-06-22_r20_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Juan J. Canals,masthead
 2005-06-22,2005-06-22_r19_ORDINARIA,prosecretario,Ricardo Nicanor Gutiérrez,masthead
-2005-06-22,2005-06-22_r20_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Ricardo Nicanor Gutiérrez,masthead
 2005-06-22,2005-06-22_r19_ORDINARIA,secretario,Carlos Alberto Machiaroli,masthead
-2005-06-22,2005-06-22_r20_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Carlos Alberto Machiaroli,masthead
 2005-06-22,2005-06-22_r19_ORDINARIA,secretario,Juan Héctor Estrada,masthead
-2005-06-22,2005-06-22_r20_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Juan Héctor Estrada,masthead
 2005-06-22,2005-06-22_r19_ORDINARIA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
+2005-06-22,2005-06-22_r20_TRIBUNAL_DE_JUICIO_POLITICO,presidente provisional,Marcelo Alejandro Horacio Guinle,masthead
+2005-06-22,2005-06-22_r20_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata,masthead
+2005-06-22,2005-06-22_r20_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Juan J. Canals,masthead
+2005-06-22,2005-06-22_r20_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Ricardo Nicanor Gutiérrez,masthead
+2005-06-22,2005-06-22_r20_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Carlos Alberto Machiaroli,masthead
+2005-06-22,2005-06-22_r20_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Juan Héctor Estrada,masthead
 2005-06-22,2005-06-22_r20_TRIBUNAL_DE_JUICIO_POLITICO,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2005-07-27,2005-07-27_r21_ORDINARIA,presidente provisional,Marcelo Alejandro Horacio Guinle,masthead
 2005-07-27,2005-07-27_r21_ORDINARIA,prosecretario,José D. Canata,masthead
@@ -2294,18 +2294,18 @@ session_date,file,office,person,basis
 2005-07-27,2005-07-27_r21_ORDINARIA,secretario,Juan Héctor Estrada,masthead
 2005-07-27,2005-07-27_r21_ORDINARIA,vicepresidenta 1°,Mirian Belén Curletti,masthead
 2005-08-10,2005-08-10_r22_ORDINARIA,presidente provisional,Marcelo Alejandro Horacio Guinle,masthead
-2005-08-10,2005-08-10_r23_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata,masthead
 2005-08-10,2005-08-10_r22_ORDINARIA,prosecretario,José D. Canata,masthead
-2005-08-10,2005-08-10_r23_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Juan J. Canals,masthead
 2005-08-10,2005-08-10_r22_ORDINARIA,prosecretario,Juan J. Canals,masthead
-2005-08-10,2005-08-10_r23_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Ricardo Nicanor Gutiérrez,masthead
 2005-08-10,2005-08-10_r22_ORDINARIA,prosecretario,Ricardo Nicanor Gutiérrez,masthead
-2005-08-10,2005-08-10_r23_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Carlos Alberto Machiaroli,masthead
 2005-08-10,2005-08-10_r22_ORDINARIA,secretario,Carlos Alberto Machiaroli,masthead
-2005-08-10,2005-08-10_r23_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Juan Héctor Estrada,masthead
 2005-08-10,2005-08-10_r22_ORDINARIA,secretario,Juan Héctor Estrada,masthead
-2005-08-10,2005-08-10_r23_TRIBUNAL_DE_JUICIO_POLITICO,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2005-08-10,2005-08-10_r22_ORDINARIA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
+2005-08-10,2005-08-10_r23_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata,masthead
+2005-08-10,2005-08-10_r23_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Juan J. Canals,masthead
+2005-08-10,2005-08-10_r23_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Ricardo Nicanor Gutiérrez,masthead
+2005-08-10,2005-08-10_r23_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Carlos Alberto Machiaroli,masthead
+2005-08-10,2005-08-10_r23_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Juan Héctor Estrada,masthead
+2005-08-10,2005-08-10_r23_TRIBUNAL_DE_JUICIO_POLITICO,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2005-08-17,2005-08-17_r24_ORDINARIA,presidente provisional,Marcelo Alejandro Horacio Guinle,masthead
 2005-08-17,2005-08-17_r24_ORDINARIA,prosecretario,José D. Canata,masthead
 2005-08-17,2005-08-17_r24_ORDINARIA,prosecretario,Juan J. Canals,masthead
@@ -2314,45 +2314,45 @@ session_date,file,office,person,basis
 2005-08-17,2005-08-17_r24_ORDINARIA,secretario,Juan Héctor Estrada,masthead
 2005-08-17,2005-08-17_r24_ORDINARIA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2005-08-25,2005-08-25_r25_ORDINARIA,presidente provisional,Marcelo Alejandro Horacio Guinle,masthead
-2005-08-25,2005-08-25_r26_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata,masthead
 2005-08-25,2005-08-25_r25_ORDINARIA,prosecretario,José D. Canata,masthead
-2005-08-25,2005-08-25_r26_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Juan J. Canals,masthead
 2005-08-25,2005-08-25_r25_ORDINARIA,prosecretario,Juan J. Canals,masthead
-2005-08-25,2005-08-25_r26_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Ricardo Nicanor Gutiérrez,masthead
 2005-08-25,2005-08-25_r25_ORDINARIA,prosecretario,Ricardo Nicanor Gutiérrez,masthead
-2005-08-25,2005-08-25_r26_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Carlos Alberto Machiaroli,masthead
 2005-08-25,2005-08-25_r25_ORDINARIA,secretario,Carlos Alberto Machiaroli,masthead
-2005-08-25,2005-08-25_r26_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Juan Héctor Estrada,masthead
 2005-08-25,2005-08-25_r25_ORDINARIA,secretario,Juan Héctor Estrada,masthead
-2005-08-25,2005-08-25_r26_TRIBUNAL_DE_JUICIO_POLITICO,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2005-08-25,2005-08-25_r25_ORDINARIA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
+2005-08-25,2005-08-25_r26_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata,masthead
+2005-08-25,2005-08-25_r26_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Juan J. Canals,masthead
+2005-08-25,2005-08-25_r26_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Ricardo Nicanor Gutiérrez,masthead
+2005-08-25,2005-08-25_r26_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Carlos Alberto Machiaroli,masthead
+2005-08-25,2005-08-25_r26_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Juan Héctor Estrada,masthead
+2005-08-25,2005-08-25_r26_TRIBUNAL_DE_JUICIO_POLITICO,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2005-09-07,2005-09-07_r27_ORDINARIA,presidente provisional,Marcelo Alejandro Horacio Guinle,masthead
-2005-09-07,2005-09-07_r28_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata,masthead
 2005-09-07,2005-09-07_r27_ORDINARIA,prosecretario,José D. Canata,masthead
-2005-09-07,2005-09-07_r28_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Juan J. Canals,masthead
 2005-09-07,2005-09-07_r27_ORDINARIA,prosecretario,Juan J. Canals,masthead
-2005-09-07,2005-09-07_r28_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Ricardo Nicanor Gutiérrez,masthead
 2005-09-07,2005-09-07_r27_ORDINARIA,prosecretario,Ricardo Nicanor Gutiérrez,masthead
-2005-09-07,2005-09-07_r28_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Carlos Alberto Machiaroli,masthead
 2005-09-07,2005-09-07_r27_ORDINARIA,secretario,Carlos Alberto Machiaroli,masthead
-2005-09-07,2005-09-07_r28_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Juan Héctor Estrada,masthead
 2005-09-07,2005-09-07_r27_ORDINARIA,secretario,Juan Héctor Estrada,masthead
 2005-09-07,2005-09-07_r27_ORDINARIA,vicepresidente,Marcelo Eduardo López Arias,masthead
-2005-09-07,2005-09-07_r28_TRIBUNAL_DE_JUICIO_POLITICO,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2005-09-07,2005-09-07_r27_ORDINARIA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
+2005-09-07,2005-09-07_r28_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata,masthead
+2005-09-07,2005-09-07_r28_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Juan J. Canals,masthead
+2005-09-07,2005-09-07_r28_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Ricardo Nicanor Gutiérrez,masthead
+2005-09-07,2005-09-07_r28_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Carlos Alberto Machiaroli,masthead
+2005-09-07,2005-09-07_r28_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Juan Héctor Estrada,masthead
+2005-09-07,2005-09-07_r28_TRIBUNAL_DE_JUICIO_POLITICO,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2005-09-21,2005-09-21_r29_ORDINARIA,presidente provisional,Marcelo Alejandro Horacio Guinle,masthead
-2005-09-21,2005-09-21_r30_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata,masthead
 2005-09-21,2005-09-21_r29_ORDINARIA,prosecretario,José D. Canata,masthead
-2005-09-21,2005-09-21_r30_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Juan J. Canals,masthead
 2005-09-21,2005-09-21_r29_ORDINARIA,prosecretario,Juan J. Canals,masthead
-2005-09-21,2005-09-21_r30_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Ricardo Nicanor Gutiérrez,masthead
 2005-09-21,2005-09-21_r29_ORDINARIA,prosecretario,Ricardo Nicanor Gutiérrez,masthead
-2005-09-21,2005-09-21_r30_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Carlos Alberto Machiaroli,masthead
 2005-09-21,2005-09-21_r29_ORDINARIA,secretario,Carlos Alberto Machiaroli,masthead
-2005-09-21,2005-09-21_r30_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Juan Héctor Estrada,masthead
 2005-09-21,2005-09-21_r29_ORDINARIA,secretario,Juan Héctor Estrada,masthead
-2005-09-21,2005-09-21_r30_TRIBUNAL_DE_JUICIO_POLITICO,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2005-09-21,2005-09-21_r29_ORDINARIA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
+2005-09-21,2005-09-21_r30_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata,masthead
+2005-09-21,2005-09-21_r30_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Juan J. Canals,masthead
+2005-09-21,2005-09-21_r30_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Ricardo Nicanor Gutiérrez,masthead
+2005-09-21,2005-09-21_r30_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Carlos Alberto Machiaroli,masthead
+2005-09-21,2005-09-21_r30_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Juan Héctor Estrada,masthead
+2005-09-21,2005-09-21_r30_TRIBUNAL_DE_JUICIO_POLITICO,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2005-09-22,2005-09-22_r31_TRIBUNAL_DE_JUICIO_POLITICO,presidente provisional,Marcelo Alejandro Horacio Guinle,masthead
 2005-09-22,2005-09-22_r31_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata,masthead
 2005-09-22,2005-09-22_r31_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Juan J. Canals,masthead
@@ -2362,16 +2362,16 @@ session_date,file,office,person,basis
 2005-09-22,2005-09-22_r31_TRIBUNAL_DE_JUICIO_POLITICO,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2005-09-28,2005-09-28_r32_ORDINARIA,presidente provisional,Marcelo Alejandro Horacio Guinle,masthead
 2005-09-28,2005-09-28_r32_ORDINARIA,prosecretario,José D. Canata,masthead
-2005-09-28,2005-09-28_r33_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata,masthead
 2005-09-28,2005-09-28_r32_ORDINARIA,prosecretario,Juan J. Canals,masthead
-2005-09-28,2005-09-28_r33_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Juan J. Canals,masthead
 2005-09-28,2005-09-28_r32_ORDINARIA,prosecretario,Ricardo Nicanor Gutiérrez,masthead
-2005-09-28,2005-09-28_r33_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Ricardo Nicanor Gutiérrez,masthead
 2005-09-28,2005-09-28_r32_ORDINARIA,secretario,Carlos Alberto Machiaroli,masthead
-2005-09-28,2005-09-28_r33_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Carlos Alberto Machiaroli,masthead
 2005-09-28,2005-09-28_r32_ORDINARIA,secretario,Juan Héctor Estrada,masthead
-2005-09-28,2005-09-28_r33_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Juan Héctor Estrada,masthead
 2005-09-28,2005-09-28_r32_ORDINARIA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
+2005-09-28,2005-09-28_r33_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata,masthead
+2005-09-28,2005-09-28_r33_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Juan J. Canals,masthead
+2005-09-28,2005-09-28_r33_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Ricardo Nicanor Gutiérrez,masthead
+2005-09-28,2005-09-28_r33_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Carlos Alberto Machiaroli,masthead
+2005-09-28,2005-09-28_r33_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Juan Héctor Estrada,masthead
 2005-09-28,2005-09-28_r33_TRIBUNAL_DE_JUICIO_POLITICO,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2005-11-02,2005-11-02_r34_ORDINARIA,presidente provisional,Marcelo Alejandro Horacio Guinle,masthead
 2005-11-02,2005-11-02_r34_ORDINARIA,prosecretario,José D. Canata,masthead
@@ -2380,19 +2380,19 @@ session_date,file,office,person,basis
 2005-11-02,2005-11-02_r34_ORDINARIA,secretario,Carlos Alberto Machiaroli,masthead
 2005-11-02,2005-11-02_r34_ORDINARIA,secretario,Juan Héctor Estrada,masthead
 2005-11-02,2005-11-02_r34_ORDINARIA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
-2005-11-09,2005-11-09_r36_TRIBUNAL_DE_JUICIO_POLITICO,presidente provisional,Marcelo Alejandro Horacio Guinle,masthead
 2005-11-09,2005-11-09_r35_ORDINARIA,presidente provisional,Marcelo Alejandro Horacio Guinle,masthead
-2005-11-09,2005-11-09_r36_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata,masthead
 2005-11-09,2005-11-09_r35_ORDINARIA,prosecretario,José D. Canata,masthead
-2005-11-09,2005-11-09_r36_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Juan J. Canals,masthead
 2005-11-09,2005-11-09_r35_ORDINARIA,prosecretario,Juan J. Canals,masthead
-2005-11-09,2005-11-09_r36_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Ricardo Nicanor Gutiérrez,masthead
 2005-11-09,2005-11-09_r35_ORDINARIA,prosecretario,Ricardo Nicanor Gutiérrez,masthead
-2005-11-09,2005-11-09_r36_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Carlos Alberto Machiaroli,masthead
 2005-11-09,2005-11-09_r35_ORDINARIA,secretario,Carlos Alberto Machiaroli,masthead
-2005-11-09,2005-11-09_r36_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Juan Héctor Estrada,masthead
 2005-11-09,2005-11-09_r35_ORDINARIA,secretario,Juan Héctor Estrada,masthead
 2005-11-09,2005-11-09_r35_ORDINARIA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
+2005-11-09,2005-11-09_r36_TRIBUNAL_DE_JUICIO_POLITICO,presidente provisional,Marcelo Alejandro Horacio Guinle,masthead
+2005-11-09,2005-11-09_r36_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,José D. Canata,masthead
+2005-11-09,2005-11-09_r36_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Juan J. Canals,masthead
+2005-11-09,2005-11-09_r36_TRIBUNAL_DE_JUICIO_POLITICO,prosecretario,Ricardo Nicanor Gutiérrez,masthead
+2005-11-09,2005-11-09_r36_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Carlos Alberto Machiaroli,masthead
+2005-11-09,2005-11-09_r36_TRIBUNAL_DE_JUICIO_POLITICO,secretario,Juan Héctor Estrada,masthead
 2005-11-16,2005-11-16_r37_ORDINARIA,prosecretario,José D. Canata,masthead
 2005-11-16,2005-11-16_r37_ORDINARIA,prosecretario,Juan J. Canals,masthead
 2005-11-16,2005-11-16_r37_ORDINARIA,prosecretario,Ricardo Nicanor Gutiérrez,masthead
@@ -2451,18 +2451,18 @@ session_date,file,office,person,basis
 2006-02-15,2006-02-15_r44_EXTRAORDINARIA,secretario,Carlos Alberto Machiaroli,masthead
 2006-02-15,2006-02-15_r44_EXTRAORDINARIA,secretario,Juan Héctor Estrada,masthead
 2006-02-15,2006-02-15_r44_EXTRAORDINARIA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
-2006-02-22,2006-02-22_r45_EXTRAORDINARIA,presidente provisional,Marcelo Eduardo López Arias,masthead
 2006-02-22,2006-02-22_r01_PREPARATORIA,prosecretario,José D. Canata,masthead
 2006-02-22,2006-02-22_r01_PREPARATORIA,prosecretario,Juan J. Canals,masthead
+2006-02-22,2006-02-22_r01_PREPARATORIA,prosecretario,Ricardo Nicanor Gutiérrez,masthead
+2006-02-22,2006-02-22_r01_PREPARATORIA,secretario,Carlos Alberto Machiaroli,masthead
+2006-02-22,2006-02-22_r01_PREPARATORIA,secretario,Juan Héctor Estrada,masthead
+2006-02-22,2006-02-22_r01_PREPARATORIA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
+2006-02-22,2006-02-22_r45_EXTRAORDINARIA,presidente provisional,Marcelo Eduardo López Arias,masthead
 2006-02-22,2006-02-22_r45_EXTRAORDINARIA,prosecretario,Juan J. Canals,masthead
 2006-02-22,2006-02-22_r45_EXTRAORDINARIA,prosecretario,Néstor H. Righetti,masthead
-2006-02-22,2006-02-22_r01_PREPARATORIA,prosecretario,Ricardo Nicanor Gutiérrez,masthead
 2006-02-22,2006-02-22_r45_EXTRAORDINARIA,prosecretario,Ricardo Nicanor Gutiérrez,masthead
-2006-02-22,2006-02-22_r01_PREPARATORIA,secretario,Carlos Alberto Machiaroli,masthead
 2006-02-22,2006-02-22_r45_EXTRAORDINARIA,secretario,Carlos Alberto Machiaroli,masthead
-2006-02-22,2006-02-22_r01_PREPARATORIA,secretario,Juan Héctor Estrada,masthead
 2006-02-22,2006-02-22_r45_EXTRAORDINARIA,secretario,Juan Héctor Estrada,masthead
-2006-02-22,2006-02-22_r01_PREPARATORIA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2006-02-22,2006-02-22_r45_EXTRAORDINARIA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2006-03-01,2006-03-01_r00_ASAMBLEA,presidente de la honorable camara de diputados,Alberto Edgardo Balestrini,masthead
 2006-03-01,2006-03-01_r00_ASAMBLEA,secretario,Enrique Hidalgo,masthead
@@ -2484,15 +2484,15 @@ session_date,file,office,person,basis
 2006-03-15,2006-03-15_r03_ORDINARIA,secretario,Juan Héctor Estrada,masthead
 2006-03-15,2006-03-15_r03_ORDINARIA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2006-03-22,2006-03-22_r00_ASAMBLEA,presidente de la honorable camara de diputados,Alberto Edgardo Balestrini,masthead
+2006-03-22,2006-03-22_r00_ASAMBLEA,secretario,Enrique Hidalgo,masthead
+2006-03-22,2006-03-22_r00_ASAMBLEA,secretario,Juan Héctor Estrada,masthead
+2006-03-22,2006-03-22_r00_ASAMBLEA,vicepresidente,Daniel Osvaldo Scioli,masthead
 2006-03-22,2006-03-22_r04_ORDINARIA,presidente provisional,José Juan Bautista Pampuro,masthead
 2006-03-22,2006-03-22_r04_ORDINARIA,prosecretario,Juan J. Canals,masthead
 2006-03-22,2006-03-22_r04_ORDINARIA,prosecretario,Néstor H. Righetti,masthead
 2006-03-22,2006-03-22_r04_ORDINARIA,prosecretario,Ricardo Nicanor Gutiérrez,masthead
 2006-03-22,2006-03-22_r04_ORDINARIA,secretario,Carlos Alberto Machiaroli,masthead
-2006-03-22,2006-03-22_r00_ASAMBLEA,secretario,Enrique Hidalgo,masthead
 2006-03-22,2006-03-22_r04_ORDINARIA,secretario,Juan Héctor Estrada,masthead
-2006-03-22,2006-03-22_r00_ASAMBLEA,secretario,Juan Héctor Estrada,masthead
-2006-03-22,2006-03-22_r00_ASAMBLEA,vicepresidente,Daniel Osvaldo Scioli,masthead
 2006-03-22,2006-03-22_r04_ORDINARIA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2006-04-05,2006-04-05_r05_ORDINARIA,presidente provisional,José Juan Bautista Pampuro,masthead
 2006-04-05,2006-04-05_r05_ORDINARIA,prosecretario,Juan J. Canals,masthead
@@ -2816,37 +2816,37 @@ session_date,file,office,person,basis
 2007-11-14,2007-11-14_r14_ORDINARIA,vicepresidenta 1°,Mirian Belén Curletti,masthead
 2007-11-14,2007-11-14_r14_ORDINARIA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2007-11-21,2007-11-21_r00_ASAMBLEA,presidente de la honorable camara de diputados,Alberto Edgardo Balestrini,masthead
+2007-11-21,2007-11-21_r00_ASAMBLEA,secretario,Enrique Hidalgo,masthead
+2007-11-21,2007-11-21_r00_ASAMBLEA,secretario,Juan Héctor Estrada,masthead
+2007-11-21,2007-11-21_r00_ASAMBLEA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2007-11-21,2007-11-21_r15_ORDINARIA,presidente provisional,José Juan Bautista Pampuro,masthead
 2007-11-21,2007-11-21_r15_ORDINARIA,prosecretario,Juan J. Canals,masthead
 2007-11-21,2007-11-21_r15_ORDINARIA,prosecretario,Néstor H. Righetti,masthead
 2007-11-21,2007-11-21_r15_ORDINARIA,prosecretario,Roberto Vicente Maiques,masthead
 2007-11-21,2007-11-21_r15_ORDINARIA,secretario,Carlos Alberto Machiaroli,masthead
-2007-11-21,2007-11-21_r00_ASAMBLEA,secretario,Enrique Hidalgo,masthead
-2007-11-21,2007-11-21_r00_ASAMBLEA,secretario,Juan Héctor Estrada,masthead
 2007-11-21,2007-11-21_r15_ORDINARIA,secretario,Juan Héctor Estrada,masthead
 2007-11-21,2007-11-21_r15_ORDINARIA,vicepresidente,Marcelo Eduardo López Arias,masthead
 2007-11-21,2007-11-21_r15_ORDINARIA,vicepresidente 2°,Roberto Gustavo Basualdo,masthead
-2007-11-21,2007-11-21_r00_ASAMBLEA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
-2007-11-28,2007-11-28_r18_ORDINARIA,presidente provisional,José Juan Bautista Pampuro,masthead
 2007-11-28,2007-11-28_r16_ORDINARIA,prosecretario,Juan J. Canals,masthead
-2007-11-28,2007-11-28_r17_ESPECIAL,prosecretario,Juan J. Canals,masthead
-2007-11-28,2007-11-28_r18_ORDINARIA,prosecretario,Juan J. Canals,masthead
 2007-11-28,2007-11-28_r16_ORDINARIA,prosecretario,Néstor Carlos Kirchner,masthead
 2007-11-28,2007-11-28_r16_ORDINARIA,prosecretario,Néstor H. Righetti,masthead
-2007-11-28,2007-11-28_r17_ESPECIAL,prosecretario,Néstor H. Righetti,masthead
-2007-11-28,2007-11-28_r18_ORDINARIA,prosecretario,Néstor H. Righetti,masthead
-2007-11-28,2007-11-28_r17_ESPECIAL,prosecretario,Roberto Vicente Maiques,masthead
-2007-11-28,2007-11-28_r18_ORDINARIA,prosecretario,Roberto Vicente Maiques,masthead
 2007-11-28,2007-11-28_r16_ORDINARIA,prosecretario,Roberto Vicente Maiques Presencia,masthead
 2007-11-28,2007-11-28_r16_ORDINARIA,secretario,Carlos Alberto Machiaroli,masthead
-2007-11-28,2007-11-28_r17_ESPECIAL,secretario,Carlos Alberto Machiaroli,masthead
-2007-11-28,2007-11-28_r18_ORDINARIA,secretario,Carlos Alberto Machiaroli,masthead
 2007-11-28,2007-11-28_r16_ORDINARIA,secretario,Juan Héctor Estrada,masthead
+2007-11-28,2007-11-28_r16_ORDINARIA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
+2007-11-28,2007-11-28_r17_ESPECIAL,prosecretario,Juan J. Canals,masthead
+2007-11-28,2007-11-28_r17_ESPECIAL,prosecretario,Néstor H. Righetti,masthead
+2007-11-28,2007-11-28_r17_ESPECIAL,prosecretario,Roberto Vicente Maiques,masthead
+2007-11-28,2007-11-28_r17_ESPECIAL,secretario,Carlos Alberto Machiaroli,masthead
 2007-11-28,2007-11-28_r17_ESPECIAL,secretario,Juan Héctor Estrada,masthead
+2007-11-28,2007-11-28_r17_ESPECIAL,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
+2007-11-28,2007-11-28_r18_ORDINARIA,presidente provisional,José Juan Bautista Pampuro,masthead
+2007-11-28,2007-11-28_r18_ORDINARIA,prosecretario,Juan J. Canals,masthead
+2007-11-28,2007-11-28_r18_ORDINARIA,prosecretario,Néstor H. Righetti,masthead
+2007-11-28,2007-11-28_r18_ORDINARIA,prosecretario,Roberto Vicente Maiques,masthead
+2007-11-28,2007-11-28_r18_ORDINARIA,secretario,Carlos Alberto Machiaroli,masthead
 2007-11-28,2007-11-28_r18_ORDINARIA,secretario,Juan Héctor Estrada,masthead
 2007-11-28,2007-11-28_r18_ORDINARIA,vicepresidente,Marcelo Eduardo López Arias,masthead
-2007-11-28,2007-11-28_r16_ORDINARIA,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
-2007-11-28,2007-11-28_r17_ESPECIAL,vicepresidente de la nacion,Daniel Osvaldo Scioli,masthead
 2007-12-05,2007-12-05_r19_ORDINARIA,presidente provisional,José Juan Bautista Pampuro,masthead
 2007-12-05,2007-12-05_r19_ORDINARIA,prosecretario,Juan J. Canals,masthead
 2007-12-05,2007-12-05_r19_ORDINARIA,prosecretario,Néstor H. Righetti,masthead
@@ -2894,16 +2894,16 @@ session_date,file,office,person,basis
 2008-02-22,2008-02-22_r00_ASAMBLEA,secretario,Juan Héctor Estrada,masthead
 2008-02-22,2008-02-22_r00_ASAMBLEA,vicepresidente de la nacion,Julio César Cleto Cobos,masthead
 2008-02-27,2008-02-27_r01_PREPARATORIA,prosecretario,Gustavo Carlos Vélez,masthead
-2008-02-27,2008-02-27_r24_EXTRAORDINARIA,prosecretario,Gustavo Carlos Vélez,masthead
 2008-02-27,2008-02-27_r01_PREPARATORIA,prosecretario,Juan J. Canals,masthead
-2008-02-27,2008-02-27_r24_EXTRAORDINARIA,prosecretario,Juan J. Canals,masthead
 2008-02-27,2008-02-27_r01_PREPARATORIA,prosecretario,Mario Daniele,masthead
-2008-02-27,2008-02-27_r24_EXTRAORDINARIA,prosecretario,Mario Daniele,masthead
 2008-02-27,2008-02-27_r01_PREPARATORIA,secretario,Juan Héctor Estrada,masthead
-2008-02-27,2008-02-27_r24_EXTRAORDINARIA,secretario,Juan Héctor Estrada,masthead
 2008-02-27,2008-02-27_r01_PREPARATORIA,secretario,Luis Alberto Tieppo,masthead
-2008-02-27,2008-02-27_r24_EXTRAORDINARIA,secretario,Luis Alberto Tieppo,masthead
 2008-02-27,2008-02-27_r01_PREPARATORIA,vicepresidente de la nacion,Julio César Cleto Cobos,masthead
+2008-02-27,2008-02-27_r24_EXTRAORDINARIA,prosecretario,Gustavo Carlos Vélez,masthead
+2008-02-27,2008-02-27_r24_EXTRAORDINARIA,prosecretario,Juan J. Canals,masthead
+2008-02-27,2008-02-27_r24_EXTRAORDINARIA,prosecretario,Mario Daniele,masthead
+2008-02-27,2008-02-27_r24_EXTRAORDINARIA,secretario,Juan Héctor Estrada,masthead
+2008-02-27,2008-02-27_r24_EXTRAORDINARIA,secretario,Luis Alberto Tieppo,masthead
 2008-02-27,2008-02-27_r24_EXTRAORDINARIA,vicepresidente de la nacion,Julio César Cleto Cobos,masthead
 2008-03-01,2008-03-01_r00_ASAMBLEA,secretario,Enrique Hidalgo,masthead
 2008-03-01,2008-03-01_r00_ASAMBLEA,secretario,Juan Héctor Estrada,masthead
@@ -3151,18 +3151,18 @@ session_date,file,office,person,basis
 2009-09-02,2009-09-02_r09_EN_MINORIA,secretario,Juan Héctor Estrada,masthead
 2009-09-02,2009-09-02_r09_EN_MINORIA,vicepresidente de la nacion,Julio César Cleto Cobos,masthead
 2009-09-09,2009-09-09_r10_ORDINARIA,prosecretario,Gustavo Carlos Vélez,masthead
-2009-09-09,2009-09-09_r11_INFORMATIVA_ESPECIAL,prosecretario,Gustavo Carlos Vélez,masthead
 2009-09-09,2009-09-09_r10_ORDINARIA,prosecretario,Juan J. Canals,masthead
-2009-09-09,2009-09-09_r11_INFORMATIVA_ESPECIAL,prosecretario,Juan J. Canals,masthead
 2009-09-09,2009-09-09_r10_ORDINARIA,prosecretario,Mario Daniele,masthead
-2009-09-09,2009-09-09_r11_INFORMATIVA_ESPECIAL,prosecretario,Mario Daniele,masthead
 2009-09-09,2009-09-09_r10_ORDINARIA,secretario,Jorge Luis Alberto Tieppo,masthead
-2009-09-09,2009-09-09_r11_INFORMATIVA_ESPECIAL,secretario,Jorge Luis Alberto Tieppo,masthead
 2009-09-09,2009-09-09_r10_ORDINARIA,secretario,Juan Héctor Estrada,masthead
+2009-09-09,2009-09-09_r10_ORDINARIA,vicepresidente de la nacion,Julio César Cleto Cobos,masthead
+2009-09-09,2009-09-09_r11_INFORMATIVA_ESPECIAL,prosecretario,Gustavo Carlos Vélez,masthead
+2009-09-09,2009-09-09_r11_INFORMATIVA_ESPECIAL,prosecretario,Juan J. Canals,masthead
+2009-09-09,2009-09-09_r11_INFORMATIVA_ESPECIAL,prosecretario,Mario Daniele,masthead
+2009-09-09,2009-09-09_r11_INFORMATIVA_ESPECIAL,secretario,Jorge Luis Alberto Tieppo,masthead
 2009-09-09,2009-09-09_r11_INFORMATIVA_ESPECIAL,secretario,Juan Héctor Estrada,masthead
 2009-09-09,2009-09-09_r11_INFORMATIVA_ESPECIAL,vicepresidente,Rubén Hugo Marín,masthead
 2009-09-09,2009-09-09_r11_INFORMATIVA_ESPECIAL,vicepresidente 1º,Juan Carlos Marino,masthead
-2009-09-09,2009-09-09_r10_ORDINARIA,vicepresidente de la nacion,Julio César Cleto Cobos,masthead
 2009-09-09,2009-09-09_r11_INFORMATIVA_ESPECIAL,vicepresidente de la nacion,Julio César Cleto Cobos,masthead
 2009-09-23,2009-09-23_r12_ORDINARIA,presidente provisional,José Juan Bautista Pampuro,masthead
 2009-09-23,2009-09-23_r12_ORDINARIA,prosecretario,Gustavo Carlos Vélez,masthead
@@ -3293,16 +3293,16 @@ session_date,file,office,person,basis
 2010-05-19,2010-05-19_r09_ORDINARIA,vicepresidente 1°,Juan Carlos Romero,masthead
 2010-05-19,2010-05-19_r09_ORDINARIA,vicepresidente 2°,Roberto Gustavo Basualdo,masthead
 2010-06-02,2010-06-02_r10_ORDINARIA,presidente provisional,José Juan Bautista Pampuro,masthead
-2010-06-02,2010-06-02_r11_INFORMATIVA_ESPECIAL,presidente provisional,José Juan Bautista Pampuro,masthead
 2010-06-02,2010-06-02_r10_ORDINARIA,prosecretario,Gustavo Carlos Vélez,masthead
-2010-06-02,2010-06-02_r11_INFORMATIVA_ESPECIAL,prosecretario,Gustavo Carlos Vélez,masthead
 2010-06-02,2010-06-02_r10_ORDINARIA,prosecretario,Juan J. Canals,masthead
-2010-06-02,2010-06-02_r11_INFORMATIVA_ESPECIAL,prosecretario,Juan J. Canals,masthead
 2010-06-02,2010-06-02_r10_ORDINARIA,prosecretario,Mario Daniele,masthead
-2010-06-02,2010-06-02_r11_INFORMATIVA_ESPECIAL,prosecretario,Mario Daniele,masthead
 2010-06-02,2010-06-02_r10_ORDINARIA,secretario,Antonio Benigno Rins,masthead
-2010-06-02,2010-06-02_r11_INFORMATIVA_ESPECIAL,secretario,Antonio Benigno Rins,masthead
 2010-06-02,2010-06-02_r10_ORDINARIA,secretario,Juan Héctor Estrada,masthead
+2010-06-02,2010-06-02_r11_INFORMATIVA_ESPECIAL,presidente provisional,José Juan Bautista Pampuro,masthead
+2010-06-02,2010-06-02_r11_INFORMATIVA_ESPECIAL,prosecretario,Gustavo Carlos Vélez,masthead
+2010-06-02,2010-06-02_r11_INFORMATIVA_ESPECIAL,prosecretario,Juan J. Canals,masthead
+2010-06-02,2010-06-02_r11_INFORMATIVA_ESPECIAL,prosecretario,Mario Daniele,masthead
+2010-06-02,2010-06-02_r11_INFORMATIVA_ESPECIAL,secretario,Antonio Benigno Rins,masthead
 2010-06-02,2010-06-02_r11_INFORMATIVA_ESPECIAL,secretario,Juan Héctor Estrada,masthead
 2010-06-02,2010-06-02_r11_INFORMATIVA_ESPECIAL,vicepresidente de la nacion,Julio César Cleto Cobos,masthead
 2010-06-09,2010-06-09_r12_ORDINARIA,presidente provisional,José Juan Bautista Pampuro,masthead
@@ -3494,16 +3494,16 @@ session_date,file,office,person,basis
 2011-11-02,2011-11-02_r12_ORDINARIA,vicepresidente,Juan Carlos Marino,masthead
 2011-11-02,2011-11-02_r12_ORDINARIA,vicepresidente 2°,Roberto Gustavo Basualdo,masthead
 2011-11-30,2011-11-30_r13_ESPECIAL,prosecretario,Gustavo Carlos Vélez,masthead
-2011-11-30,2011-11-30_r14_ORDINARIA,prosecretario,Gustavo Carlos Vélez,masthead
 2011-11-30,2011-11-30_r13_ESPECIAL,prosecretario,Luis Gustavo Borsani,masthead
-2011-11-30,2011-11-30_r14_ORDINARIA,prosecretario,Luis Gustavo Borsani,masthead
 2011-11-30,2011-11-30_r13_ESPECIAL,prosecretario,Mario Daniele,masthead
-2011-11-30,2011-11-30_r14_ORDINARIA,prosecretario,Mario Daniele,masthead
 2011-11-30,2011-11-30_r13_ESPECIAL,secretario,Antonio Benigno Rins,masthead
-2011-11-30,2011-11-30_r14_ORDINARIA,secretario,Antonio Benigno Rins,masthead
 2011-11-30,2011-11-30_r13_ESPECIAL,secretario,Juan Héctor Estrada,masthead
-2011-11-30,2011-11-30_r14_ORDINARIA,secretario,Juan Héctor Estrada,masthead
 2011-11-30,2011-11-30_r13_ESPECIAL,vicepresidente de la nacion,Julio César Cleto Cobos,masthead
+2011-11-30,2011-11-30_r14_ORDINARIA,prosecretario,Gustavo Carlos Vélez,masthead
+2011-11-30,2011-11-30_r14_ORDINARIA,prosecretario,Luis Gustavo Borsani,masthead
+2011-11-30,2011-11-30_r14_ORDINARIA,prosecretario,Mario Daniele,masthead
+2011-11-30,2011-11-30_r14_ORDINARIA,secretario,Antonio Benigno Rins,masthead
+2011-11-30,2011-11-30_r14_ORDINARIA,secretario,Juan Héctor Estrada,masthead
 2011-11-30,2011-11-30_r14_ORDINARIA,vicepresidente de la nacion,Julio César Cleto Cobos,masthead
 2011-12-01,2011-12-01_r00_ASAMBLEA,presidente de la honorable camara de diputados,Eduardo Alfredo Fellner,masthead
 2011-12-01,2011-12-01_r00_ASAMBLEA,secretario,Enrique Hidalgo,masthead
@@ -3580,18 +3580,18 @@ session_date,file,office,person,basis
 2012-05-16,2012-05-16_r06_ORDINARIA,secretario,Juan Horacio Zabaleta,masthead
 2012-05-16,2012-05-16_r06_ORDINARIA,secretario,Juan Héctor Estrada,masthead
 2012-05-16,2012-05-16_r06_ORDINARIA,vicepresidente,Gerardo Rubén Morales,masthead
-2012-05-30,2012-05-30_r08_INFORMATIVA_ESPECIAL,presidenta provisional,Beatriz Rojkés de Alperovich,masthead
 2012-05-30,2012-05-30_r07_ORDINARIA,prosecretario,Luis Borsani,masthead
-2012-05-30,2012-05-30_r08_INFORMATIVA_ESPECIAL,prosecretario,Luis Borsani,masthead
 2012-05-30,2012-05-30_r07_ORDINARIA,prosecretario,Mario Daniele,masthead
-2012-05-30,2012-05-30_r08_INFORMATIVA_ESPECIAL,prosecretario,Mario Daniele,masthead
 2012-05-30,2012-05-30_r07_ORDINARIA,prosecretario,Santiago Eduardo Révora,masthead
-2012-05-30,2012-05-30_r08_INFORMATIVA_ESPECIAL,prosecretario,Santiago Eduardo Révora,masthead
 2012-05-30,2012-05-30_r07_ORDINARIA,secretario,Juan Horacio Zabaleta,masthead
-2012-05-30,2012-05-30_r08_INFORMATIVA_ESPECIAL,secretario,Juan Horacio Zabaleta,masthead
 2012-05-30,2012-05-30_r07_ORDINARIA,secretario,Juan Héctor Estrada,masthead
-2012-05-30,2012-05-30_r08_INFORMATIVA_ESPECIAL,secretario,Juan Héctor Estrada,masthead
 2012-05-30,2012-05-30_r07_ORDINARIA,vicepresidente de la nacion,Amado Boudou,masthead
+2012-05-30,2012-05-30_r08_INFORMATIVA_ESPECIAL,presidenta provisional,Beatriz Rojkés de Alperovich,masthead
+2012-05-30,2012-05-30_r08_INFORMATIVA_ESPECIAL,prosecretario,Luis Borsani,masthead
+2012-05-30,2012-05-30_r08_INFORMATIVA_ESPECIAL,prosecretario,Mario Daniele,masthead
+2012-05-30,2012-05-30_r08_INFORMATIVA_ESPECIAL,prosecretario,Santiago Eduardo Révora,masthead
+2012-05-30,2012-05-30_r08_INFORMATIVA_ESPECIAL,secretario,Juan Horacio Zabaleta,masthead
+2012-05-30,2012-05-30_r08_INFORMATIVA_ESPECIAL,secretario,Juan Héctor Estrada,masthead
 2012-05-30,2012-05-30_r08_INFORMATIVA_ESPECIAL,vicepresidente de la nacion,Amado Boudou,masthead
 2012-06-25,2012-06-25_r09_ESPECIAL,prosecretario,Luis Borsani,masthead
 2012-06-25,2012-06-25_r09_ESPECIAL,prosecretario,Mario Daniele,masthead
@@ -3758,18 +3758,18 @@ session_date,file,office,person,basis
 2013-05-22,2013-05-22_r08_ORDINARIA,secretario,Juan Horacio Zabaleta,masthead
 2013-05-22,2013-05-22_r08_ORDINARIA,secretario,Juan Héctor Estrada,masthead
 2013-05-22,2013-05-22_r08_ORDINARIA,vicepresidente de la nacion,Amado Boudou,masthead
-2013-06-05,2013-06-05_r10_INFORMATIVA_ESPECIAL,presidenta provisional,Beatriz Rojkés de Alperovich,masthead
 2013-06-05,2013-06-05_r09_ORDINARIA,prosecretario,Luis Borsani,masthead
-2013-06-05,2013-06-05_r10_INFORMATIVA_ESPECIAL,prosecretario,Luis Borsani,masthead
 2013-06-05,2013-06-05_r09_ORDINARIA,prosecretario,Mario Daniele,masthead
-2013-06-05,2013-06-05_r10_INFORMATIVA_ESPECIAL,prosecretario,Mario Daniele,masthead
 2013-06-05,2013-06-05_r09_ORDINARIA,prosecretario,Santiago Eduardo Révora,masthead
-2013-06-05,2013-06-05_r10_INFORMATIVA_ESPECIAL,prosecretario,Santiago Eduardo Révora,masthead
 2013-06-05,2013-06-05_r09_ORDINARIA,secretario,Juan Horacio Zabaleta,masthead
-2013-06-05,2013-06-05_r10_INFORMATIVA_ESPECIAL,secretario,Juan Horacio Zabaleta,masthead
 2013-06-05,2013-06-05_r09_ORDINARIA,secretario,Juan Héctor Estrada,masthead
-2013-06-05,2013-06-05_r10_INFORMATIVA_ESPECIAL,secretario,Juan Héctor Estrada,masthead
 2013-06-05,2013-06-05_r09_ORDINARIA,vicepresidente de la nacion,Amado Boudou,masthead
+2013-06-05,2013-06-05_r10_INFORMATIVA_ESPECIAL,presidenta provisional,Beatriz Rojkés de Alperovich,masthead
+2013-06-05,2013-06-05_r10_INFORMATIVA_ESPECIAL,prosecretario,Luis Borsani,masthead
+2013-06-05,2013-06-05_r10_INFORMATIVA_ESPECIAL,prosecretario,Mario Daniele,masthead
+2013-06-05,2013-06-05_r10_INFORMATIVA_ESPECIAL,prosecretario,Santiago Eduardo Révora,masthead
+2013-06-05,2013-06-05_r10_INFORMATIVA_ESPECIAL,secretario,Juan Horacio Zabaleta,masthead
+2013-06-05,2013-06-05_r10_INFORMATIVA_ESPECIAL,secretario,Juan Héctor Estrada,masthead
 2013-06-05,2013-06-05_r10_INFORMATIVA_ESPECIAL,vicepresidente de la nacion,Amado Boudou,masthead
 2013-06-26,2013-06-26_r11_ORDINARIA,prosecretario,Luis Borsani,masthead
 2013-06-26,2013-06-26_r11_ORDINARIA,prosecretario,Mario Daniele,masthead
@@ -3818,18 +3818,18 @@ session_date,file,office,person,basis
 2013-11-13,2013-11-13_r17_ORDINARIA,secretario,Juan Horacio Zabaleta,masthead
 2013-11-13,2013-11-13_r17_ORDINARIA,secretario,Juan Héctor Estrada,masthead
 2013-11-13,2013-11-13_r17_ORDINARIA,vicepresidente,Juan Carlos Marino,masthead
-2013-11-27,2013-11-27_r19_ESPECIAL,presidenta provisional,Beatriz Rojkés de Alperovich,masthead
 2013-11-27,2013-11-27_r18_ESPECIAL,prosecretario,Luis Borsani,masthead
-2013-11-27,2013-11-27_r19_ESPECIAL,prosecretario,Luis Borsani,masthead
 2013-11-27,2013-11-27_r18_ESPECIAL,prosecretario,Mario Daniele,masthead
-2013-11-27,2013-11-27_r19_ESPECIAL,prosecretario,Mario Daniele,masthead
 2013-11-27,2013-11-27_r18_ESPECIAL,prosecretario,Santiago Eduardo Révora,masthead
-2013-11-27,2013-11-27_r19_ESPECIAL,prosecretario,Santiago Eduardo Révora,masthead
 2013-11-27,2013-11-27_r18_ESPECIAL,secretario,Juan Horacio Zabaleta,masthead
-2013-11-27,2013-11-27_r19_ESPECIAL,secretario,Juan Horacio Zabaleta,masthead
 2013-11-27,2013-11-27_r18_ESPECIAL,secretario,Juan Héctor Estrada,masthead
-2013-11-27,2013-11-27_r19_ESPECIAL,secretario,Juan Héctor Estrada,masthead
 2013-11-27,2013-11-27_r18_ESPECIAL,vicepresidente de la nacion,Amado Boudou,masthead
+2013-11-27,2013-11-27_r19_ESPECIAL,presidenta provisional,Beatriz Rojkés de Alperovich,masthead
+2013-11-27,2013-11-27_r19_ESPECIAL,prosecretario,Luis Borsani,masthead
+2013-11-27,2013-11-27_r19_ESPECIAL,prosecretario,Mario Daniele,masthead
+2013-11-27,2013-11-27_r19_ESPECIAL,prosecretario,Santiago Eduardo Révora,masthead
+2013-11-27,2013-11-27_r19_ESPECIAL,secretario,Juan Horacio Zabaleta,masthead
+2013-11-27,2013-11-27_r19_ESPECIAL,secretario,Juan Héctor Estrada,masthead
 2013-11-27,2013-11-27_r19_ESPECIAL,vicepresidente de la nacion,Amado Boudou,masthead
 2013-12-04,2013-12-04_r20_ORDINARIA,presidenta provisional,Beatriz Rojkés de Alperovich,masthead
 2013-12-04,2013-12-04_r20_ORDINARIA,prosecretario,Luis Borsani,masthead
@@ -3854,19 +3854,19 @@ session_date,file,office,person,basis
 2014-03-01,2014-03-01_r00_ASAMBLEA,presidente de la honorable camara de diputados,Julián Andrés Domínguez,masthead
 2014-03-01,2014-03-01_r00_ASAMBLEA,secretario,Juan Héctor Estrada,masthead
 2014-03-01,2014-03-01_r00_ASAMBLEA,secretario,Lucas Chedrese,masthead
-2014-03-12,2014-03-12_r03_INFORMATIVA_ESPECIAL,presidente provisional,Gerardo Zamora,masthead
 2014-03-12,2014-03-12_r02_ORDINARIA,prosecretario,D.José Lepere,masthead
-2014-03-12,2014-03-12_r03_INFORMATIVA_ESPECIAL,prosecretario,José Lepere,masthead
 2014-03-12,2014-03-12_r02_ORDINARIA,prosecretario,Luis Borsani,masthead
-2014-03-12,2014-03-12_r03_INFORMATIVA_ESPECIAL,prosecretario,Luis Borsani,masthead
 2014-03-12,2014-03-12_r02_ORDINARIA,prosecretario,Mario Daniele,masthead
-2014-03-12,2014-03-12_r03_INFORMATIVA_ESPECIAL,prosecretario,Mario Daniele,masthead
 2014-03-12,2014-03-12_r02_ORDINARIA,secretario,Juan Horacio Zabaleta,masthead
+2014-03-12,2014-03-12_r02_ORDINARIA,secretario,JuanHéctorEstrada,masthead
+2014-03-12,2014-03-12_r02_ORDINARIA,vicepresidente de la nacion,Amado Boudou,masthead
+2014-03-12,2014-03-12_r03_INFORMATIVA_ESPECIAL,presidente provisional,Gerardo Zamora,masthead
+2014-03-12,2014-03-12_r03_INFORMATIVA_ESPECIAL,prosecretario,José Lepere,masthead
+2014-03-12,2014-03-12_r03_INFORMATIVA_ESPECIAL,prosecretario,Luis Borsani,masthead
+2014-03-12,2014-03-12_r03_INFORMATIVA_ESPECIAL,prosecretario,Mario Daniele,masthead
 2014-03-12,2014-03-12_r03_INFORMATIVA_ESPECIAL,secretario,Juan Horacio Zabaleta,masthead
 2014-03-12,2014-03-12_r03_INFORMATIVA_ESPECIAL,secretario,Juan Héctor Estrada,masthead
-2014-03-12,2014-03-12_r02_ORDINARIA,secretario,JuanHéctorEstrada,masthead
 2014-03-12,2014-03-12_r03_INFORMATIVA_ESPECIAL,vicepresidente,Juan Carlos Marino,masthead
-2014-03-12,2014-03-12_r02_ORDINARIA,vicepresidente de la nacion,Amado Boudou,masthead
 2014-03-12,2014-03-12_r03_INFORMATIVA_ESPECIAL,vicepresidente de la nacion,Amado Boudou,masthead
 2014-03-26,2014-03-26_r04_ESPECIAL,presidente provisional,Gerardo Zamora,masthead
 2014-03-26,2014-03-26_r04_ESPECIAL,prosecretario,José Lepere,masthead
@@ -3957,16 +3957,16 @@ session_date,file,office,person,basis
 2014-10-08,2014-10-08_r15_ESPECIAL,secretario,Juan Héctor Estrada,masthead
 2014-10-08,2014-10-08_r15_ESPECIAL,vicepresidente de la nacion,Amado Boudou,masthead
 2014-10-22,2014-10-22_r16_ORDINARIA,prosecretario,José Lepere,masthead
-2014-10-22,2014-10-22_r17_INFORMATIVA_ESPECIAL,prosecretario,José Lepere,masthead
 2014-10-22,2014-10-22_r16_ORDINARIA,prosecretario,Luis Borsani,masthead
-2014-10-22,2014-10-22_r17_INFORMATIVA_ESPECIAL,prosecretario,Luis Borsani,masthead
 2014-10-22,2014-10-22_r16_ORDINARIA,prosecretario,Mario Daniele,masthead
-2014-10-22,2014-10-22_r17_INFORMATIVA_ESPECIAL,prosecretario,Mario Daniele,masthead
 2014-10-22,2014-10-22_r16_ORDINARIA,secretario,Juan Horacio Zabaleta,masthead
-2014-10-22,2014-10-22_r17_INFORMATIVA_ESPECIAL,secretario,Juan Horacio Zabaleta,masthead
 2014-10-22,2014-10-22_r16_ORDINARIA,secretario,Juan Héctor Estrada,masthead
-2014-10-22,2014-10-22_r17_INFORMATIVA_ESPECIAL,secretario,Juan Héctor Estrada,masthead
 2014-10-22,2014-10-22_r16_ORDINARIA,vicepresidente de la nacion,Amado Boudou,masthead
+2014-10-22,2014-10-22_r17_INFORMATIVA_ESPECIAL,prosecretario,José Lepere,masthead
+2014-10-22,2014-10-22_r17_INFORMATIVA_ESPECIAL,prosecretario,Luis Borsani,masthead
+2014-10-22,2014-10-22_r17_INFORMATIVA_ESPECIAL,prosecretario,Mario Daniele,masthead
+2014-10-22,2014-10-22_r17_INFORMATIVA_ESPECIAL,secretario,Juan Horacio Zabaleta,masthead
+2014-10-22,2014-10-22_r17_INFORMATIVA_ESPECIAL,secretario,Juan Héctor Estrada,masthead
 2014-10-22,2014-10-22_r17_INFORMATIVA_ESPECIAL,vicepresidente de la nacion,Amado Boudou,masthead
 2014-10-29,2014-10-29_r18_ORDINARIA,presidente provisional,Gerardo Zamora,masthead
 2014-10-29,2014-10-29_r18_ORDINARIA,prosecretario,José Lepere,masthead
@@ -4119,17 +4119,17 @@ session_date,file,office,person,basis
 2016-02-11,2016-02-11_r14_EXTRAORDINARIA,secretario,Juan Pedro Tunessi,masthead
 2016-02-11,2016-02-11_r14_EXTRAORDINARIA,vicepresidente de la nacion,Dña. Marta Gabriela Michetti,masthead
 2016-02-23,2016-02-23_r01_PREPARATORIA,presidente provisional,Federico Pinedo,masthead
-2016-02-23,2016-02-23_r15_EXTRAORDINARIA,presidente provisional,Federico Pinedo,masthead
 2016-02-23,2016-02-23_r01_PREPARATORIA,prosecretario,Eric Calcagno,masthead
-2016-02-23,2016-02-23_r15_EXTRAORDINARIA,prosecretario,Eric Calcagno,masthead
 2016-02-23,2016-02-23_r01_PREPARATORIA,prosecretario,Juan H. Estrada,masthead
 2016-02-23,2016-02-23_r01_PREPARATORIA,prosecretario,Mario Daniele,masthead
-2016-02-23,2016-02-23_r15_EXTRAORDINARIA,prosecretario,Mario Daniele,masthead
 2016-02-23,2016-02-23_r01_PREPARATORIA,prosecretario,Ángel Torres,masthead
-2016-02-23,2016-02-23_r15_EXTRAORDINARIA,prosecretario,Ángel Torres,masthead
 2016-02-23,2016-02-23_r01_PREPARATORIA,secretario,Helio Rebot,masthead
-2016-02-23,2016-02-23_r15_EXTRAORDINARIA,secretario,Helio Rebot,masthead
 2016-02-23,2016-02-23_r01_PREPARATORIA,secretario,Juan Pedro Tunessi,masthead
+2016-02-23,2016-02-23_r15_EXTRAORDINARIA,presidente provisional,Federico Pinedo,masthead
+2016-02-23,2016-02-23_r15_EXTRAORDINARIA,prosecretario,Eric Calcagno,masthead
+2016-02-23,2016-02-23_r15_EXTRAORDINARIA,prosecretario,Mario Daniele,masthead
+2016-02-23,2016-02-23_r15_EXTRAORDINARIA,prosecretario,Ángel Torres,masthead
+2016-02-23,2016-02-23_r15_EXTRAORDINARIA,secretario,Helio Rebot,masthead
 2016-02-23,2016-02-23_r15_EXTRAORDINARIA,secretario,Juan Pedro Tunessi,masthead
 2016-03-01,2016-03-01_r00_ASAMBLEA,presidente de la honorable camara de diputados,Emilio Monzó,masthead
 2016-03-01,2016-03-01_r00_ASAMBLEA,secretario,Eugenio Inchausti,masthead
@@ -4161,14 +4161,14 @@ session_date,file,office,person,basis
 2016-05-18,2016-05-18_r05_ESPECIAL,secretario,Helio Rebot,masthead
 2016-05-18,2016-05-18_r05_ESPECIAL,secretario,Juan Pedro Tunessi,masthead
 2016-06-01,2016-06-01_r06_ESPECIAL,prosecretario,Eric Calcagno,masthead
-2016-06-01,2016-06-01_r07_INFORMATIVA_ESPECIAL,prosecretario,Eric Calcagno,masthead
 2016-06-01,2016-06-01_r06_ESPECIAL,prosecretario,Mario Daniele,masthead
-2016-06-01,2016-06-01_r07_INFORMATIVA_ESPECIAL,prosecretario,Mario Daniele,masthead
 2016-06-01,2016-06-01_r06_ESPECIAL,prosecretario,Ángel Torres,masthead
-2016-06-01,2016-06-01_r07_INFORMATIVA_ESPECIAL,prosecretario,Ángel Torres,masthead
 2016-06-01,2016-06-01_r06_ESPECIAL,secretario,Helio Rebot,masthead
-2016-06-01,2016-06-01_r07_INFORMATIVA_ESPECIAL,secretario,Helio Rebot,masthead
 2016-06-01,2016-06-01_r06_ESPECIAL,secretario,Juan Pedro Tunessi,masthead
+2016-06-01,2016-06-01_r07_INFORMATIVA_ESPECIAL,prosecretario,Eric Calcagno,masthead
+2016-06-01,2016-06-01_r07_INFORMATIVA_ESPECIAL,prosecretario,Mario Daniele,masthead
+2016-06-01,2016-06-01_r07_INFORMATIVA_ESPECIAL,prosecretario,Ángel Torres,masthead
+2016-06-01,2016-06-01_r07_INFORMATIVA_ESPECIAL,secretario,Helio Rebot,masthead
 2016-06-01,2016-06-01_r07_INFORMATIVA_ESPECIAL,secretario,Juan Pedro Tunessi,masthead
 2016-06-08,2016-06-08_r08_ORDINARIA,prosecretario,Eric Calcagno,masthead
 2016-06-08,2016-06-08_r08_ORDINARIA,prosecretario,Mario Daniele,masthead
@@ -4286,18 +4286,18 @@ session_date,file,office,person,basis
 2017-03-29,2017-03-29_r02_ORDINARIA,secretario,Juan Pedro Tunessi,masthead
 2017-03-29,2017-03-29_r02_ORDINARIA,vicepresidente 1º,Juan Carlos Marino,masthead
 2017-03-29,2017-03-29_r02_ORDINARIA,vicepresidente de la nacion,Marta Gabriela Michetti,masthead
-2017-04-25,2017-04-25_r04_INFORMATIVA_ESPECIAL,presidente provisional,Federico Pinedo,masthead
 2017-04-25,2017-04-25_r03_ESPECIAL,presidente provisional,Federico Pinedo,masthead
-2017-04-25,2017-04-25_r04_INFORMATIVA_ESPECIAL,prosecretario,Eric Calcagno,masthead
 2017-04-25,2017-04-25_r03_ESPECIAL,prosecretario,Eric Calcagno,masthead
-2017-04-25,2017-04-25_r04_INFORMATIVA_ESPECIAL,prosecretario,Mario Daniele,masthead
 2017-04-25,2017-04-25_r03_ESPECIAL,prosecretario,Mario Daniele,masthead
-2017-04-25,2017-04-25_r04_INFORMATIVA_ESPECIAL,prosecretario,Ángel Torres,masthead
 2017-04-25,2017-04-25_r03_ESPECIAL,prosecretario,Ángel Torres,masthead
-2017-04-25,2017-04-25_r04_INFORMATIVA_ESPECIAL,secretario,Helio Rebot,masthead
 2017-04-25,2017-04-25_r03_ESPECIAL,secretario,Helio Rebot,masthead
-2017-04-25,2017-04-25_r04_INFORMATIVA_ESPECIAL,secretario,Juan Pedro Tunessi,masthead
 2017-04-25,2017-04-25_r03_ESPECIAL,secretario,Juan Pedro Tunessi,masthead
+2017-04-25,2017-04-25_r04_INFORMATIVA_ESPECIAL,presidente provisional,Federico Pinedo,masthead
+2017-04-25,2017-04-25_r04_INFORMATIVA_ESPECIAL,prosecretario,Eric Calcagno,masthead
+2017-04-25,2017-04-25_r04_INFORMATIVA_ESPECIAL,prosecretario,Mario Daniele,masthead
+2017-04-25,2017-04-25_r04_INFORMATIVA_ESPECIAL,prosecretario,Ángel Torres,masthead
+2017-04-25,2017-04-25_r04_INFORMATIVA_ESPECIAL,secretario,Helio Rebot,masthead
+2017-04-25,2017-04-25_r04_INFORMATIVA_ESPECIAL,secretario,Juan Pedro Tunessi,masthead
 2017-04-25,2017-04-25_r04_INFORMATIVA_ESPECIAL,vicepresidente de la nacion,Marta Gabriela Michetti,masthead
 2017-04-26,2017-04-26_r05_ESPECIAL,presidente provisional,Federico Pinedo,masthead
 2017-04-26,2017-04-26_r05_ESPECIAL,prosecretario,Eric Calcagno,masthead
@@ -4366,16 +4366,16 @@ session_date,file,office,person,basis
 2017-09-27,2017-09-27_r13_ESPECIAL,secretario,Helio Rebot,masthead
 2017-09-27,2017-09-27_r13_ESPECIAL,secretario,Juan Pedro Tunessi,masthead
 2017-11-01,2017-11-01_r14_ESPECIAL,presidente provisional,Federico Pinedo,masthead
-2017-11-01,2017-11-01_r15_INFORMATIVA_ESPECIAL,presidente provisional,Federico Pinedo,masthead
 2017-11-01,2017-11-01_r14_ESPECIAL,prosecretario,Eric Calcagno,masthead
-2017-11-01,2017-11-01_r15_INFORMATIVA_ESPECIAL,prosecretario,Eric Calcagno,masthead
 2017-11-01,2017-11-01_r14_ESPECIAL,prosecretario,Mario Daniele,masthead
-2017-11-01,2017-11-01_r15_INFORMATIVA_ESPECIAL,prosecretario,Mario Daniele,masthead
 2017-11-01,2017-11-01_r14_ESPECIAL,prosecretario,Ángel Torres,masthead
-2017-11-01,2017-11-01_r15_INFORMATIVA_ESPECIAL,prosecretario,Ángel Torres,masthead
 2017-11-01,2017-11-01_r14_ESPECIAL,secretario,Helio Rebot,masthead
-2017-11-01,2017-11-01_r15_INFORMATIVA_ESPECIAL,secretario,Helio Rebot,masthead
 2017-11-01,2017-11-01_r14_ESPECIAL,secretario,Juan Pedro Tunessi,masthead
+2017-11-01,2017-11-01_r15_INFORMATIVA_ESPECIAL,presidente provisional,Federico Pinedo,masthead
+2017-11-01,2017-11-01_r15_INFORMATIVA_ESPECIAL,prosecretario,Eric Calcagno,masthead
+2017-11-01,2017-11-01_r15_INFORMATIVA_ESPECIAL,prosecretario,Mario Daniele,masthead
+2017-11-01,2017-11-01_r15_INFORMATIVA_ESPECIAL,prosecretario,Ángel Torres,masthead
+2017-11-01,2017-11-01_r15_INFORMATIVA_ESPECIAL,secretario,Helio Rebot,masthead
 2017-11-01,2017-11-01_r15_INFORMATIVA_ESPECIAL,secretario,Juan Pedro Tunessi,masthead
 2017-11-01,2017-11-01_r15_INFORMATIVA_ESPECIAL,vicepresidente 1º,Juan Carlos Marino,masthead
 2017-11-22,2017-11-22_r16_ESPECIAL_EN_MINORIA,presidente provisional,Federico Pinedo,masthead
@@ -4383,20 +4383,20 @@ session_date,file,office,person,basis
 2017-11-22,2017-11-22_r16_ESPECIAL_EN_MINORIA,prosecretario,Mario Daniele,masthead
 2017-11-22,2017-11-22_r16_ESPECIAL_EN_MINORIA,secretario,Helio Rebot,masthead
 2017-11-22,2017-11-22_r16_ESPECIAL_EN_MINORIA,secretario,Juan Pedro Tunessi,masthead
-2017-11-29,2017-11-29_r18_ORDINARIA,presidente provisional,Federico Pinedo,masthead
 2017-11-29,2017-11-29_r17_ESPECIAL,prosecretario,Eric Calcagno,masthead
-2017-11-29,2017-11-29_r18_ORDINARIA,prosecretario,Eric Calcagno,masthead
 2017-11-29,2017-11-29_r17_ESPECIAL,prosecretario,Mario Daniele,masthead
-2017-11-29,2017-11-29_r18_ORDINARIA,prosecretario,Mario Daniele,masthead
 2017-11-29,2017-11-29_r17_ESPECIAL,prosecretario,Ángel Torres,masthead
-2017-11-29,2017-11-29_r18_ORDINARIA,prosecretario,Ángel Torres,masthead
 2017-11-29,2017-11-29_r17_ESPECIAL,secretario,Helio Rebot,masthead
-2017-11-29,2017-11-29_r18_ORDINARIA,secretario,Helio Rebot,masthead
 2017-11-29,2017-11-29_r17_ESPECIAL,secretario,Juan Pedro Tunessi,masthead
+2017-11-29,2017-11-29_r17_ESPECIAL,vicepresidente de la nacion,Marta Gabriela Michetti,masthead
+2017-11-29,2017-11-29_r18_ORDINARIA,presidente provisional,Federico Pinedo,masthead
+2017-11-29,2017-11-29_r18_ORDINARIA,prosecretario,Eric Calcagno,masthead
+2017-11-29,2017-11-29_r18_ORDINARIA,prosecretario,Mario Daniele,masthead
+2017-11-29,2017-11-29_r18_ORDINARIA,prosecretario,Ángel Torres,masthead
+2017-11-29,2017-11-29_r18_ORDINARIA,secretario,Helio Rebot,masthead
 2017-11-29,2017-11-29_r18_ORDINARIA,secretario,Juan Pedro Tunessi,masthead
 2017-11-29,2017-11-29_r18_ORDINARIA,vicepresidente 1º,Juan Carlos Marino,masthead
 2017-11-29,2017-11-29_r18_ORDINARIA,vicepresidente 2º,Adolfo Rodríguez Saá,masthead
-2017-11-29,2017-11-29_r17_ESPECIAL,vicepresidente de la nacion,Marta Gabriela Michetti,masthead
 2017-11-29,2017-11-29_r18_ORDINARIA,vicepresidente de la nacion,Marta Gabriela Michetti,masthead
 2017-12-27,2017-12-27_r19_EXTRAORDINARIA,presidente provisional,Federico Pinedo,masthead
 2017-12-27,2017-12-27_r19_EXTRAORDINARIA,prosecretario,Eric Calcagno,masthead
@@ -4425,15 +4425,15 @@ session_date,file,office,person,basis
 2018-04-18,2018-04-18_r03_ORDINARIA,secretario,Juan Pedro Tunessi,masthead
 2018-04-18,2018-04-18_r03_ORDINARIA,vicepresidente de la nacion,Marta Gabriela Michetti,masthead
 2018-04-25,2018-04-25_r04_ESPECIAL,presidente provisional,Federico Pinedo,masthead
-2018-04-25,2018-04-25_r05_INFORMATIVA_ESPECIAL,prosecretario,Eric Calcagno,masthead
 2018-04-25,2018-04-25_r04_ESPECIAL,prosecretario,Eric Calcagno,masthead
-2018-04-25,2018-04-25_r05_INFORMATIVA_ESPECIAL,prosecretario,Mario Daniele,masthead
 2018-04-25,2018-04-25_r04_ESPECIAL,prosecretario,Mario Daniele,masthead
-2018-04-25,2018-04-25_r05_INFORMATIVA_ESPECIAL,secretario,Juan Pedro Tunessi,masthead
 2018-04-25,2018-04-25_r04_ESPECIAL,secretario,Juan Pedro Tunessi,masthead
 2018-04-25,2018-04-25_r04_ESPECIAL,vicepresidente,Omar Ángel Perotti,masthead
-2018-04-25,2018-04-25_r05_INFORMATIVA_ESPECIAL,vicepresidente de la nacion,Marta Gabriela Michetti,masthead
 2018-04-25,2018-04-25_r04_ESPECIAL,vicepresidente de la nacion,Marta Gabriela Michetti,masthead
+2018-04-25,2018-04-25_r05_INFORMATIVA_ESPECIAL,prosecretario,Eric Calcagno,masthead
+2018-04-25,2018-04-25_r05_INFORMATIVA_ESPECIAL,prosecretario,Mario Daniele,masthead
+2018-04-25,2018-04-25_r05_INFORMATIVA_ESPECIAL,secretario,Juan Pedro Tunessi,masthead
+2018-04-25,2018-04-25_r05_INFORMATIVA_ESPECIAL,vicepresidente de la nacion,Marta Gabriela Michetti,masthead
 2018-05-30,2018-05-30_r06_ESPECIAL,presidente provisional,Federico Pinedo,masthead
 2018-05-30,2018-05-30_r06_ESPECIAL,prosecretario,Eric Calcagno,masthead
 2018-05-30,2018-05-30_r06_ESPECIAL,prosecretario,Mario Daniele,masthead
@@ -4441,15 +4441,15 @@ session_date,file,office,person,basis
 2018-05-30,2018-05-30_r06_ESPECIAL,vicepresidente,Omar Ángel Perotti,masthead
 2018-05-30,2018-05-30_r06_ESPECIAL,vicepresidente 1º,Juan Carlos Marino,masthead
 2018-05-30,2018-05-30_r06_ESPECIAL,vicepresidente de la nacion,Marta Gabriela Michetti,masthead
-2018-06-27,2018-06-27_r08_INFORMATIVA_ESPECIAL,presidente provisional,Federico Pinedo,masthead
 2018-06-27,2018-06-27_r07_ORDINARIA,prosecretario,Eric Calcagno,masthead
-2018-06-27,2018-06-27_r08_INFORMATIVA_ESPECIAL,prosecretario,Eric Calcagno,masthead
 2018-06-27,2018-06-27_r07_ORDINARIA,prosecretario,Mario Daniele,masthead
-2018-06-27,2018-06-27_r08_INFORMATIVA_ESPECIAL,prosecretario,Mario Daniele,masthead
 2018-06-27,2018-06-27_r07_ORDINARIA,secretario,Juan Pedro Tunessi,masthead
+2018-06-27,2018-06-27_r07_ORDINARIA,vicepresidente de la nacion,Marta Gabriela Michetti,masthead
+2018-06-27,2018-06-27_r08_INFORMATIVA_ESPECIAL,presidente provisional,Federico Pinedo,masthead
+2018-06-27,2018-06-27_r08_INFORMATIVA_ESPECIAL,prosecretario,Eric Calcagno,masthead
+2018-06-27,2018-06-27_r08_INFORMATIVA_ESPECIAL,prosecretario,Mario Daniele,masthead
 2018-06-27,2018-06-27_r08_INFORMATIVA_ESPECIAL,secretario,Juan Pedro Tunessi,masthead
 2018-06-27,2018-06-27_r08_INFORMATIVA_ESPECIAL,vicepresidente 1º,Juan Carlos Marino,masthead
-2018-06-27,2018-06-27_r07_ORDINARIA,vicepresidente de la nacion,Marta Gabriela Michetti,masthead
 2018-06-27,2018-06-27_r08_INFORMATIVA_ESPECIAL,vicepresidente de la nacion,Marta Gabriela Michetti,masthead
 2018-07-04,2018-07-04_r09_ORDINARIA,prosecretario,Eric Calcagno,masthead
 2018-07-04,2018-07-04_r09_ORDINARIA,prosecretario,Mario Daniele,masthead
@@ -4519,12 +4519,12 @@ session_date,file,office,person,basis
 2019-03-20,2019-03-20_r02_ORDINARIA,prosecretario,Mario Daniele,masthead
 2019-03-20,2019-03-20_r02_ORDINARIA,secretario,Juan Pedro Tunessi,masthead
 2019-03-27,2019-03-27_r03_ORDINARIA_CONTINUACION,presidente provisional,Federico Pinedo,masthead
-2019-03-27,2019-03-27_r04_INFORMATIVA_ESPECIAL,presidente provisional,Federico Pinedo,masthead
 2019-03-27,2019-03-27_r03_ORDINARIA_CONTINUACION,prosecretario,Eric Calcagno,masthead
-2019-03-27,2019-03-27_r04_INFORMATIVA_ESPECIAL,prosecretario,Eric Calcagno,masthead
 2019-03-27,2019-03-27_r03_ORDINARIA_CONTINUACION,prosecretario,Mario Daniele,masthead
-2019-03-27,2019-03-27_r04_INFORMATIVA_ESPECIAL,prosecretario,Mario Daniele,masthead
 2019-03-27,2019-03-27_r03_ORDINARIA_CONTINUACION,secretario,Juan Pedro Tunessi,masthead
+2019-03-27,2019-03-27_r04_INFORMATIVA_ESPECIAL,presidente provisional,Federico Pinedo,masthead
+2019-03-27,2019-03-27_r04_INFORMATIVA_ESPECIAL,prosecretario,Eric Calcagno,masthead
+2019-03-27,2019-03-27_r04_INFORMATIVA_ESPECIAL,prosecretario,Mario Daniele,masthead
 2019-03-27,2019-03-27_r04_INFORMATIVA_ESPECIAL,secretario,Juan Pedro Tunessi,masthead
 2019-04-16,2019-04-16_r05_ESPECIAL,presidente provisional,Federico Pinedo,masthead
 2019-04-16,2019-04-16_r05_ESPECIAL,prosecretario,Eric Calcagno,masthead
@@ -4547,10 +4547,10 @@ session_date,file,office,person,basis
 2019-09-18,2019-09-18_r08_ESPECIAL,secretario,Juan Pedro Tunessi,masthead
 2019-09-18,2019-09-18_r08_ESPECIAL,vicepresidente de la nacion,Marta Gabriela Michetti,masthead
 2019-11-13,2019-11-13_r00_ASAMBLEA,presidente de la honorable camara de diputados,Emilio Monzó,masthead
+2019-11-13,2019-11-13_r00_ASAMBLEA,secretario,Juan Pedro Tunessi,masthead
 2019-11-13,2019-11-13_r09_ESPECIAL,presidente provisional,Federico Pinedo,masthead
 2019-11-13,2019-11-13_r09_ESPECIAL,prosecretario,Eric Calcagno,masthead
 2019-11-13,2019-11-13_r09_ESPECIAL,prosecretario,Mario Daniele,masthead
-2019-11-13,2019-11-13_r00_ASAMBLEA,secretario,Juan Pedro Tunessi,masthead
 2019-11-13,2019-11-13_r09_ESPECIAL,secretario,Juan Pedro Tunessi,masthead
 2019-11-13,2019-11-13_r09_ESPECIAL,vicepresidente de la nacion,Marta Gabriela Michetti,masthead
 2019-11-27,2019-11-27_r10_ESPECIAL,prosecretario,Eric Calcagno,masthead
@@ -4571,12 +4571,12 @@ session_date,file,office,person,basis
 2020-02-05,05-02-2020_ESPECIAL_EXTRAORDINARIA,secretario,Marcelo Jorge Fuentes,masthead
 2020-02-05,05-02-2020_ESPECIAL_EXTRAORDINARIA,vicepresidente 1º,Maurice Fabián Closs,masthead
 2020-02-20,20-02-2020_EXTRAORDINARIA,prosecretario,Juan Pedro Tunessi,masthead
-2020-02-20,20-02-2020_PREPARATORIA,prosecretario,Juan Pedro Tunessi,masthead
 2020-02-20,20-02-2020_EXTRAORDINARIA,prosecretario,Mariano Ramiro Cabral,masthead
-2020-02-20,20-02-2020_PREPARATORIA,prosecretario,Mariano Ramiro Cabral,masthead
 2020-02-20,20-02-2020_EXTRAORDINARIA,secretario,Marcelo Jorge Fuentes,masthead
-2020-02-20,20-02-2020_PREPARATORIA,secretario,Marcelo Jorge Fuentes,masthead
 2020-02-20,20-02-2020_EXTRAORDINARIA,vicepresidenta de la nacion,Cristina Fernandez de Kirchner,masthead
+2020-02-20,20-02-2020_PREPARATORIA,prosecretario,Juan Pedro Tunessi,masthead
+2020-02-20,20-02-2020_PREPARATORIA,prosecretario,Mariano Ramiro Cabral,masthead
+2020-02-20,20-02-2020_PREPARATORIA,secretario,Marcelo Jorge Fuentes,masthead
 2020-02-20,20-02-2020_PREPARATORIA,vicepresidenta de la nacion,Cristina Fernandez de Kirchner,masthead
 2020-02-28,28-02-2020_EXTRAORDINARIA,presidenta provisional,Claudia Ledesma Abdala,masthead
 2020-02-28,28-02-2020_EXTRAORDINARIA,prosecretario,Juan Pedro Tunessi,masthead
@@ -4682,12 +4682,12 @@ session_date,file,office,person,basis
 2021-02-04,04-02-2021_EXTRAORDINARIA,prosecretario,Juan Pedro Tunessi,masthead
 2021-02-04,04-02-2021_EXTRAORDINARIA,prosecretario,Mariano Ramiro Cabral,masthead
 2021-02-04,04-02-2021_EXTRAORDINARIA,secretario,Marcelo Jorge Fuentes,masthead
-2021-02-24,24-02-2021_PREPARATORIA,prosecretario,Juan Pedro Tunessi,masthead
 2021-02-24,24-02-2021_EXTRAORDINARIA,prosecretario,Juan Pedro Tunessi,masthead
-2021-02-24,24-02-2021_PREPARATORIA,prosecretario,Mariano Ramiro Cabral,masthead
 2021-02-24,24-02-2021_EXTRAORDINARIA,prosecretario,Mariano Ramiro Cabral,masthead
-2021-02-24,24-02-2021_PREPARATORIA,secretario,Marcelo Jorge Fuentes,masthead
 2021-02-24,24-02-2021_EXTRAORDINARIA,secretario,Marcelo Jorge Fuentes,masthead
+2021-02-24,24-02-2021_PREPARATORIA,prosecretario,Juan Pedro Tunessi,masthead
+2021-02-24,24-02-2021_PREPARATORIA,prosecretario,Mariano Ramiro Cabral,masthead
+2021-02-24,24-02-2021_PREPARATORIA,secretario,Marcelo Jorge Fuentes,masthead
 2021-03-01,01-03-2021_ASAMBLEA,presidente de la honorable camara de diputados,Sergio Tomás Massa,masthead
 2021-03-01,01-03-2021_ASAMBLEA,secretario,Marcelo Jorge Fuentes,masthead
 2021-03-11,11-03-2021_ESPECIAL,prosecretario,Juan Pedro Tunessi,masthead
@@ -4727,10 +4727,10 @@ session_date,file,office,person,basis
 2021-10-28,28-10-2021_ORDINARIA,prosecretario,Mariano Ramiro Cabral,masthead
 2021-10-28,28-10-2021_ORDINARIA,secretario,Marcelo Jorge Fuentes,masthead
 2021-12-09,09-12-2021_ESPECIAL,prosecretario,Juan Pedro Tunessi,masthead
-2021-12-09,09-12-2021_ORDINARIA,prosecretario,Juan Pedro Tunessi,masthead
 2021-12-09,09-12-2021_ESPECIAL,prosecretario,Mariano Ramiro Cabral,masthead
-2021-12-09,09-12-2021_ORDINARIA,prosecretario,Mariano Ramiro Cabral,masthead
 2021-12-09,09-12-2021_ESPECIAL,secretario,Marcelo Jorge Fuentes,masthead
+2021-12-09,09-12-2021_ORDINARIA,prosecretario,Juan Pedro Tunessi,masthead
+2021-12-09,09-12-2021_ORDINARIA,prosecretario,Mariano Ramiro Cabral,masthead
 2021-12-09,09-12-2021_ORDINARIA,secretario,Marcelo Jorge Fuentes,masthead
 2021-12-29,29-12-2021_ESPECIAL,prosecretario,Juan Pedro Tunessi,masthead
 2021-12-29,29-12-2021_ESPECIAL,prosecretario,Mariano Ramiro Cabral,masthead
@@ -4750,10 +4750,10 @@ session_date,file,office,person,basis
 2022-05-12,12-05-2022_ESPECIAL,prosecretario,Mariano Ramiro Cabral,masthead
 2022-05-12,12-05-2022_ESPECIAL,secretario,Marcelo Jorge Fuentes,masthead
 2022-06-02,02-06-2022_ESPECIAL,prosecretario,Juan Pedro Tunessi,masthead
-2022-06-02,02-06-2022_INFORMATIVA_ESPECIAL,prosecretario,Juan Pedro Tunessi,masthead
 2022-06-02,02-06-2022_ESPECIAL,prosecretario,Mariano Ramiro Cabral,masthead
-2022-06-02,02-06-2022_INFORMATIVA_ESPECIAL,prosecretario,Mariano Ramiro Cabral,masthead
 2022-06-02,02-06-2022_ESPECIAL,secretario,Marcelo Jorge Fuentes,masthead
+2022-06-02,02-06-2022_INFORMATIVA_ESPECIAL,prosecretario,Juan Pedro Tunessi,masthead
+2022-06-02,02-06-2022_INFORMATIVA_ESPECIAL,prosecretario,Mariano Ramiro Cabral,masthead
 2022-06-02,02-06-2022_INFORMATIVA_ESPECIAL,secretario,Marcelo Jorge Fuentes,masthead
 2022-06-30,30-06-2022_ORDINARIA,prosecretario,Juan Pedro Tunessi,masthead
 2022-06-30,30-06-2022_ORDINARIA,prosecretario,Mariano Ramiro Cabral,masthead
@@ -4872,24 +4872,24 @@ session_date,file,office,person,basis
 2024-07-04,04-07-2024_ESPECIAL,vicepresidencia primera,Carolina Losada,roster
 2024-07-04,04-07-2024_ESPECIAL,vicepresidencia segunda,Alejandra María Vigo,roster
 2024-08-22,22-08-2024_ESPECIAL,presidencia del senado (vicepresidencia de la nacion),Victoria Villarruel,roster
-2024-08-22,22-08-2024_ORDINARIA,presidencia del senado (vicepresidencia de la nacion),Victoria Villarruel,roster
 2024-08-22,22-08-2024_ESPECIAL,presidencia provisional,Bartolomé Esteban Abdala,roster
-2024-08-22,22-08-2024_ORDINARIA,presidencia provisional,Bartolomé Esteban Abdala,roster
 2024-08-22,22-08-2024_ESPECIAL,prosecretaria administrativa,Lucas Clark,roster
-2024-08-22,22-08-2024_ORDINARIA,prosecretaria administrativa,Lucas Clark,roster
 2024-08-22,22-08-2024_ESPECIAL,prosecretaria de coordinacion operativa,Manuel Ignacio Chavarría,roster
-2024-08-22,22-08-2024_ORDINARIA,prosecretaria de coordinacion operativa,Manuel Ignacio Chavarría,roster
 2024-08-22,22-08-2024_ESPECIAL,prosecretaria parlamentaria,Dolores Martínez,roster
-2024-08-22,22-08-2024_ORDINARIA,prosecretaria parlamentaria,Dolores Martínez,roster
 2024-08-22,22-08-2024_ESPECIAL,secretaria administrativa,María Laura Izzo,roster
-2024-08-22,22-08-2024_ORDINARIA,secretaria administrativa,María Laura Izzo,roster
 2024-08-22,22-08-2024_ESPECIAL,secretaria parlamentaria,Agustín Wenceslao Giustinian,roster
-2024-08-22,22-08-2024_ORDINARIA,secretaria parlamentaria,Agustín Wenceslao Giustinian,roster
 2024-08-22,22-08-2024_ESPECIAL,vicepresidencia,Silvia Sapag,roster
-2024-08-22,22-08-2024_ORDINARIA,vicepresidencia,Silvia Sapag,roster
 2024-08-22,22-08-2024_ESPECIAL,vicepresidencia primera,Carolina Losada,roster
-2024-08-22,22-08-2024_ORDINARIA,vicepresidencia primera,Carolina Losada,roster
 2024-08-22,22-08-2024_ESPECIAL,vicepresidencia segunda,Alejandra María Vigo,roster
+2024-08-22,22-08-2024_ORDINARIA,presidencia del senado (vicepresidencia de la nacion),Victoria Villarruel,roster
+2024-08-22,22-08-2024_ORDINARIA,presidencia provisional,Bartolomé Esteban Abdala,roster
+2024-08-22,22-08-2024_ORDINARIA,prosecretaria administrativa,Lucas Clark,roster
+2024-08-22,22-08-2024_ORDINARIA,prosecretaria de coordinacion operativa,Manuel Ignacio Chavarría,roster
+2024-08-22,22-08-2024_ORDINARIA,prosecretaria parlamentaria,Dolores Martínez,roster
+2024-08-22,22-08-2024_ORDINARIA,secretaria administrativa,María Laura Izzo,roster
+2024-08-22,22-08-2024_ORDINARIA,secretaria parlamentaria,Agustín Wenceslao Giustinian,roster
+2024-08-22,22-08-2024_ORDINARIA,vicepresidencia,Silvia Sapag,roster
+2024-08-22,22-08-2024_ORDINARIA,vicepresidencia primera,Carolina Losada,roster
 2024-08-22,22-08-2024_ORDINARIA,vicepresidencia segunda,Alejandra María Vigo,roster
 2024-09-12,12-09-2024_ORDINARIA,presidencia del senado (vicepresidencia de la nacion),Victoria Villarruel,roster
 2024-09-12,12-09-2024_ORDINARIA,presidencia provisional,Bartolomé Esteban Abdala,roster
@@ -5066,20 +5066,20 @@ session_date,file,office,person,basis
 2026-02-11,2026-02-11_r13_ESPECIAL_EXTRAORDINARIA,vicepresidencia primera,Carolina Losada,roster
 2026-02-11,2026-02-11_r13_ESPECIAL_EXTRAORDINARIA,vicepresidencia segunda,Alejandra María Vigo,roster
 2026-02-24,2026-02-24_r01_PREPARATORIA,presidencia del senado (vicepresidencia de la nacion),Victoria Villarruel,roster
-2026-02-24,2026-02-24_r14_ESPECIAL_EXTRAORDINARIA,presidencia del senado (vicepresidencia de la nacion),Victoria Villarruel,roster
 2026-02-24,2026-02-24_r01_PREPARATORIA,presidencia provisional,Bartolomé Esteban Abdala,roster
-2026-02-24,2026-02-24_r14_ESPECIAL_EXTRAORDINARIA,presidencia provisional,Bartolomé Esteban Abdala,roster
 2026-02-24,2026-02-24_r01_PREPARATORIA,prosecretaria administrativa,Lucas Clark,roster
-2026-02-24,2026-02-24_r14_ESPECIAL_EXTRAORDINARIA,prosecretaria administrativa,Lucas Clark,roster
 2026-02-24,2026-02-24_r01_PREPARATORIA,prosecretaria parlamentaria,Dolores Martínez,roster
-2026-02-24,2026-02-24_r14_ESPECIAL_EXTRAORDINARIA,prosecretaria parlamentaria,Dolores Martínez,roster
 2026-02-24,2026-02-24_r01_PREPARATORIA,secretaria administrativa,Alejandro Eduardo Fitzgerald,roster
-2026-02-24,2026-02-24_r14_ESPECIAL_EXTRAORDINARIA,secretaria administrativa,Alejandro Eduardo Fitzgerald,roster
 2026-02-24,2026-02-24_r01_PREPARATORIA,secretaria parlamentaria,Agustín Wenceslao Giustinian,roster
-2026-02-24,2026-02-24_r14_ESPECIAL_EXTRAORDINARIA,secretaria parlamentaria,Agustín Wenceslao Giustinian,roster
 2026-02-24,2026-02-24_r01_PREPARATORIA,vicepresidencia,Vicepresidencia,roster
-2026-02-24,2026-02-24_r14_ESPECIAL_EXTRAORDINARIA,vicepresidencia,Vicepresidencia,roster
 2026-02-24,2026-02-24_r01_PREPARATORIA,vicepresidencia segunda,Alejandra María Vigo,roster
+2026-02-24,2026-02-24_r14_ESPECIAL_EXTRAORDINARIA,presidencia del senado (vicepresidencia de la nacion),Victoria Villarruel,roster
+2026-02-24,2026-02-24_r14_ESPECIAL_EXTRAORDINARIA,presidencia provisional,Bartolomé Esteban Abdala,roster
+2026-02-24,2026-02-24_r14_ESPECIAL_EXTRAORDINARIA,prosecretaria administrativa,Lucas Clark,roster
+2026-02-24,2026-02-24_r14_ESPECIAL_EXTRAORDINARIA,prosecretaria parlamentaria,Dolores Martínez,roster
+2026-02-24,2026-02-24_r14_ESPECIAL_EXTRAORDINARIA,secretaria administrativa,Alejandro Eduardo Fitzgerald,roster
+2026-02-24,2026-02-24_r14_ESPECIAL_EXTRAORDINARIA,secretaria parlamentaria,Agustín Wenceslao Giustinian,roster
+2026-02-24,2026-02-24_r14_ESPECIAL_EXTRAORDINARIA,vicepresidencia,Vicepresidencia,roster
 2026-02-24,2026-02-24_r14_ESPECIAL_EXTRAORDINARIA,vicepresidencia segunda,Alejandra María Vigo,roster
 2026-02-26,2026-02-26_r15_ESPECIAL_EXTRAORDINARIA,presidencia del senado (vicepresidencia de la nacion),Victoria Villarruel,roster
 2026-02-26,2026-02-26_r15_ESPECIAL_EXTRAORDINARIA,presidencia provisional,Bartolomé Esteban Abdala,roster

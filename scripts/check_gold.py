@@ -18,6 +18,7 @@ misreading of what the page means.
 Output: a per-file report; exit status 1 if any check fails.
 """
 
+import argparse
 import json
 import re
 import sys
@@ -141,4 +142,6 @@ def main():
 
 
 if __name__ == "__main__":
+    # no options, but --help must describe the script, not run it
+    argparse.ArgumentParser(description=__doc__.strip().split("\n\n")[0]).parse_args()
     sys.exit(main())

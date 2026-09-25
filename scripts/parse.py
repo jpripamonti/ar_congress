@@ -55,7 +55,7 @@ import pdfplumber
 
 from session_kind import convened_as_for, quorum_failed_for, session_kind_for
 
-PARSER_VERSION = "0.5.7"
+PARSER_VERSION = "0.5.8"
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
@@ -306,11 +306,15 @@ LABEL_CLOSED_RE = re.compile(r"[–—−(]")  # label already carries its own p
 # the same bold run, and the space between them is often the one the PDF drops
 # at a line join ("…bandera nacionalSr. Presidente"). Cut on either, and cap
 # the tail so a title that merely names a person cannot be mistaken for one.
-LABEL_SPLIT_RE = re.compile(r"\s?(?=(?:Sr|Sra|Srta|Sres)\.\s)")  # fused "TÍTULO Sr. X" headings
+LABEL_SPLIT_RE = re.compile(  # fused "TÍTULO Sr. X" headings
+    r"\s?(?=(?:Sr|Sra|Srta|Sres)\.\s"
+    # the honorific without its stop, only when a name and the label's own
+    # terminator follow: "…sismo en Catamarca (Continuación) Sra Colombo.-"
+    r"|(?:Sr|Sra|Srta|Sres)\s+[A-ZÁÉÍÓÚÑ][^.\s]*(?:\s+[^.\s]+){0,3}\s*\.\s*[-–—])")
 MAX_LABEL_TAIL = 70
 # 2006-2009 files drop the space at line joins ("…Fiscalía N°3Sr. Presidente"),
 # so the label can be glued straight onto the heading with no separator.
-FUSED_LABEL_RE = re.compile(r"\s?(?=(?:Sr|Sra|Srta|Sres)\.\s)")
+FUSED_LABEL_RE = LABEL_SPLIT_RE
 # How a sitting opens once the dash is off the front: "En la Ciudad Autónoma
 # de Buenos Aires, a las 15 y 2 del miércoles..." or plainly "A las 15:02".
 OPENING_TEXT_RE = re.compile(r"^(?:En\s+[^,]{3,70},\s*)?a\s+las\s+\d", re.I)
@@ -435,6 +439,8 @@ STATS_COLUMNS = [
     "title_labels_cut",
     "fused_labels_split",
     "inline_labels_recovered",
+    "small_set_debate_restored",
+    "placeholders_filed",
     "split_words_rejoined",
     "labels_rejoined",
     "label_spillover_split",
@@ -1468,6 +1474,68 @@ def classify_event(text):
     return "unspecified"
 
 
+def restore_small_set_debate(blocks, body_size):
+    """Read as body the debate a sitting prints a point smaller than its body.
+
+    Type smaller than the body's is page apparatus and dropped (classify_
+    blocks). But from 2006 to 2014 the typesetters now and then set a stretch
+    of the debate itself at 11 pt in a 12 pt sitting — the chair's "Aprobado."
+    after a vote, a quick exchange of short turns — and that stretch went out
+    as furniture with its labels, so the words after it fell to whoever spoke
+    before: 30 March 2011 gave the chair's "En consideración en general" to
+    Pichetto, and 15 August 2012 lost 3,576 words of debate.
+
+    What tells such a stretch from a footnote or an inserted document set in
+    the same size is a speaker's label: a bold "Sr. …" of a few words inside
+    it. So a run of consecutive blocks set between half a point and a point
+    off the body is restored to body size when it holds such a label, and
+    only inside the debate: before the sitting's last closing formula or its
+    last label printed at body size, whichever comes later, after which small
+    type is appendix. The printed size is kept and put back when the rows are
+    written.
+
+    Off the body in either direction, because the body size is a reading of
+    the file and can be wrong: the no-quorum sitting of 10 November 2010 is
+    read at 11 pt and its minority speeches, set at 12, had all gone out as
+    furniture.
+    """
+    def small(b):
+        s = b.get("size")
+        return s is not None and 0.5 < abs(body_size - s) <= 1.0
+
+    end = None
+    for i, b in enumerate(blocks):
+        s = b.get("size")
+        if s is None or abs(body_size - s) > 1.0:
+            continue
+        if ANY_CLOSE_RE.search(b["text"]):
+            end = i
+        elif (b["font_style"] == "bold" and is_body(s, body_size)
+                and len(b["text"].strip()) <= 60 and SPEAKER_RE.match(b["text"].strip())):
+            end = i
+    if end is None:
+        return blocks, 0
+    close = end
+
+    restored = 0
+    i = 0
+    while i < close:
+        if not small(blocks[i]):
+            i += 1
+            continue
+        j = i
+        while j < len(blocks) and small(blocks[j]):
+            j += 1
+        if any(b["font_style"] == "bold" and len(b["text"].strip()) <= 60
+               and SPEAKER_RE.match(b["text"].strip()) for b in blocks[i:j]):
+            for b in blocks[i:j]:
+                b["size_printed"] = b["size"]
+                b["size"] = body_size
+                restored += 1
+        i = j
+    return blocks, restored
+
+
 def rejoin_split_word(blocks, body_size):
     """Rescue the words that a change of type size cut off mid-word.
 
@@ -1618,7 +1686,7 @@ def classify_blocks(blocks, body_size):
     events = 0
     for i, b in enumerate(blocks):
         t = b["text"].strip()
-        if DGT_RE.match(t) or VOLVER_RE.match(t):
+        if DGT_RE.match(t) or VOLVER_RE.match(t) or (len(t) < 80 and SIGNOFF_RE.match(t)):
             b["type"] = "furniture"      # office sign-off and plate back-link
             continue
         if not is_body(b["size"], body_size):
@@ -2471,6 +2539,17 @@ def identify_speakers(blocks, body_size):
             # is the only place the record says who it is about, and it was
             # being consumed and written nowhere — 182 printed labels in the
             # corpus opened a turn whose every row was a note like this one.
+            # "— El texto es el siguiente:" and "— Los órdenes del día en
+            # consideración, cuyos textos se incluyen en el Apéndice, son los
+            # siguientes:" introduce a document printed into the record, not
+            # read: a bill, the work plan "sobre las bancas", a list of titles.
+            # What follows is nobody's speech until a label is printed again.
+            # Carrying the turn over it had put 685 passages, 300,036 words
+            # of 2001-2019, in the mouth of whoever spoke before the note —
+            # the HTML half has always ended the turn at a note.
+            if (b["type"] == "event" and not opened
+                    and DOC_FOLLOWS_RE.search(t)):
+                current = None
             if b["type"] == "event" and opened and current:
                 b["speaker"] = current
                 b["turn_id"] = turn_id
@@ -2758,6 +2837,24 @@ def consolidate_speaker_blocks(blocks):
 # ---------------------------------------------------------------------------
 
 SESSION_CLOSE_RE = re.compile(r"queda levantada la sesión|se levanta la sesión", re.IGNORECASE)
+# The director's signature under the close, in each of the titles the office
+# has carried ("Director del Cuerpo de Taquígrafos", "Subdirector General a/c
+# de la Dirección General de Taquígrafos", "Directora adjunta…"). Anchored on
+# the title opening the line, which the page footer "Dirección General de
+# Taquígrafos" and the note on insertions sent to it do not have.
+# Every way a chair closes a sitting, the set formula and the looser ones —
+# "damos por finalizada la reunión", "doy por levantada la sesión" — which
+# 23 sittings use instead of it. Only for telling debate from appendix in
+# restore_small_set_debate; the rest of the pipeline keys on the set formula.
+ANY_CLOSE_RE = re.compile(
+    r"queda levantada la sesión|se levanta la sesión"
+    r"|(?:damos|se da|doy) por (?:finalizada|terminada|concluida|levantada) la (?:reuni[óo]n|sesi[óo]n)",
+    re.IGNORECASE)
+PLACEHOLDER_RE = re.compile(
+    r"(?:\(Lee:\)\s*)?(?:AQU[IÍ] INCLUIR\b.{0,120}"
+    r"|\((?:INCORPORAR|INCLUIR|INSERTAR) [A-ZÁÉÍÓÚÑ ,.]+\)|GOTOBUTTON\b.{0,40})", re.S)
+DOC_FOLLOWS_RE = re.compile(r"\btextos?\b[^.]{0,80}\bsiguientes?\s*:?\s*$", re.IGNORECASE)
+SIGNOFF_RE = re.compile(r"^\s*(?:Sub)?director[a]?\b[^\n]{0,60}?Taqu[íi]grafos", re.IGNORECASE)
 
 
 def demote_appendix_debris(blocks):
@@ -2775,6 +2872,24 @@ def demote_appendix_debris(blocks):
             if b.get("type") == "other":
                 b["type"] = "furniture"
                 demoted += 1
+        # The stenographers' director signs the record off a few lines under
+        # the close ("Rubén A. Marino, Director del Cuerpo de Taquígrafos"),
+        # and nothing after the signature was said in this sitting. Twelve
+        # files carry something after it that the parser read as debate: a
+        # committee meeting of 2 November 2004 appended to 18 May 2005 (176
+        # turns, 27,934 words), two more meetings behind tribunal sittings of
+        # 2005, and the speeches senators handed in for the record in
+        # 2005-2007, whose opening "Sr. Presidente:" was read as the chair
+        # speaking. All of it is appendix, filed as furniture like the rest.
+        for k in range(last + 1, min(last + 13, len(blocks))):
+            if SIGNOFF_RE.search(blocks[k]["text"]):
+                for b in blocks[k + 1:]:
+                    if b.get("type") in ("speech", "event", "inline", "inline_italic"):
+                        b["type"] = "furniture"
+                        b.pop("speaker", None)
+                        b.pop("event_type", None)
+                        demoted += 1
+                break
     if demoted:
         print(f"Apéndice: {demoted} bloques sin atribuir demovidos a furniture tras el cierre.")
     return blocks, demoted
@@ -2861,6 +2976,12 @@ def process_pdf(pdf_path):
     blocks, empty_removed = remove_empty_blocks(blocks)
     stats["empty_blocks_removed"] = empty_removed
 
+    # not in the scans: their type sizes are OCR's guess, not the printer's
+    small_set = 0
+    if stats.get("scanned_page_share", 0) < 0.5:
+        blocks, small_set = restore_small_set_debate(blocks, body_size)
+    stats["small_set_debate_restored"] = small_set
+
     blocks, split_words = rejoin_split_word(blocks, body_size)
     stats["split_words_rejoined"] = split_words
 
@@ -2915,6 +3036,20 @@ def process_pdf(pdf_path):
     # last, so that every pass above still sees a note as one block
     blocks, welded = split_welded_notes(blocks)
     stats["welded_notes_split"] = welded
+
+    # An instruction to the typesetter left in the file — "AQUI INCLUIR
+    # Expediente S. 1.645/03", "(INCORPORAR DECRETO)", a Word field code — is
+    # where a document was to go, not anybody's words. Nine such rows of
+    # 2003-2007 stood as speech, most of them the chair's.
+    for b in blocks:
+        if b.get("type") == "speech" and PLACEHOLDER_RE.fullmatch(b["text"].strip()):
+            b["type"] = "furniture"
+            b.pop("speaker", None)
+            stats["placeholders_filed"] = stats.get("placeholders_filed", 0) + 1
+
+    for b in blocks:
+        if "size_printed" in b:
+            b["size"] = b.pop("size_printed")
 
     return blocks, chapters, stats
 

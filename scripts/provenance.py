@@ -23,11 +23,54 @@ masthead of most sittings before 2004, and a bare match counts those as draft
 records: it puts the figure at 87% of the HTML holdings where the truth is 22%.
 """
 
+import csv
 import html
 import re
+import sys
 import unicodedata
+from functools import lru_cache
+from pathlib import Path
 
 HEAD_CHARS = 4_000
+
+MANIFEST = Path(__file__).resolve().parents[1] / "raw_data_manifest.csv"
+
+
+@lru_cache(maxsize=1)
+def manifest_rows():
+    """Every source file the corpus was built from, as the manifest lists it."""
+    with open(MANIFEST, encoding="utf-8", newline="") as fh:
+        return tuple(csv.DictReader(fh))
+
+
+def source_url(filename):
+    """The URL the chamber served a source file from, by its file name."""
+    key = unicodedata.normalize("NFC", filename)
+    for row in manifest_rows():
+        if unicodedata.normalize("NFC", row["filename"]) == key:
+            return row["source_url"]
+    return ""
+
+
+def require_sources(raw_dir, formats=("pdf", "html"), until=None):
+    """Stop, naming what is missing, unless every listed source is held.
+
+    A table built from all the sources is only right when all of them are
+    there: run on three files, the authorities extractor wrote a 17-row
+    table over the 3,000-odd rows the corpus needs, and speaker resolution
+    went on to leave 3.5% of speech unresolved without a word of warning.
+    """
+    held = {unicodedata.normalize("NFC", p.name) for p in Path(raw_dir).iterdir()} \
+        if Path(raw_dir).is_dir() else set()
+    missing = [r["filename"] for r in manifest_rows()
+               if r["format"] in formats
+               and (until is None or r["session_date_iso"] < until)
+               and unicodedata.normalize("NFC", r["filename"]) not in held]
+    if missing:
+        sys.exit(f"{len(missing)} of the source files in raw_data_manifest.csv are "
+                 f"not under {raw_dir} (first: {missing[0]}). This step reads all "
+                 f"of them and would write an incomplete table; fetch them first "
+                 f"with: uv run scripts/download.py --from-manifest")
 
 # The chamber prints "VERSIÓN TAQUIGRÁFICA (PROVISIONAL)" on an uncorrected record.
 PROVISIONAL_RE = re.compile(r"VERSION\s+TAQUIGRAFICA\s*\(?\s*PROVISIONAL")

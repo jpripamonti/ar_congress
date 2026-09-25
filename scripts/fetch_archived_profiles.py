@@ -37,6 +37,7 @@ archive still answering. Names and caucuses are left exactly as printed.
 Output: reference/senado/bloque_por_ficha.csv
 """
 
+import argparse
 import csv
 import hashlib
 import json
@@ -230,4 +231,6 @@ def main():
 
 
 if __name__ == "__main__":
+    # no options, but --help must describe the script, not run it
+    argparse.ArgumentParser(description=__doc__.strip().split("\n\n")[0]).parse_args()
     main()

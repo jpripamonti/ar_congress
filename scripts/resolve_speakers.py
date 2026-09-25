@@ -46,6 +46,7 @@ Output:  data/processed/senado/speakers.parquet — one row per
          printed summary.
 """
 
+import argparse
 import csv
 import difflib
 import json
@@ -94,7 +95,11 @@ ROLE_CANON = ["presidente", "presidenta", "vicepresidente", "vicepresidenta",
 # state, a ministry. They are named in the record but are not the Senate's
 # own people, and no roster covers them.
 FOREIGN_OFFICE_RE = re.compile(
-    r"c[áa]mara de diputados|rep[úu]blica de|rep[úu]blica del|estado plurinacional"
+    # Any republic but this one: "de Chile", "del Perú", and those whose
+    # name runs without a "de" — "Federativa del Brasil", "Italiana",
+    # "Popular China", which had given Lula to Scioli and Mattarella to
+    # Michetti, who were chairing.
+    r"c[áa]mara de diputados|rep[úu]blica(?!\s+argentina)\s+\w|estado plurinacional"
     r"|escribano|escribana|secretari[oa] de (?:obras|estado|hacienda|gobierno)"
     # A minister summoned to the chamber. Singular and followed by its
     # portfolio, which is what keeps "Jefe de Gabinete de Ministros" — an
@@ -114,6 +119,8 @@ def norm(s):
 def clean_label(label):
     """Strip parser debris around a label and normalize its punctuation."""
     s = unicodedata.normalize("NFC", label or "").strip()
+    # a digit struck with the honorific's stop: "Sr.0 Presidente (Losada)"
+    s = re.sub(r"^((?i:Sr|Sra|Srta|Sres)\.)\d+\s*", r"\1 ", s)
     # glued prefixes: keep from the LAST title token onward
     matches = list(re.finditer(rf"(?:{TITLE_RE}|Varios|Varias|Un\b|Una\b)\s", s))
     if matches and matches[-1].start() > 0:
@@ -640,6 +647,21 @@ def resolve_one(label, session_date, session_type, mandates, auth, presiding=(),
         hits = match_authorities(auth, key, d, role_hint=m["pre"])
         if hits:
             a = hits[0]
+            # A senator in the chair is still a senator. From 2020 the
+            # authorities list carries the provisional president and the
+            # vice-presidents who chair, and matching it first had filed their
+            # words under an office id with no caucus — about 9,000 passages
+            # of Ledesma Abdala, Closs, Losada, Abdala and six more — while
+            # Pinedo and Zamora, chairing before 2020, kept their senator id.
+            # Where the holder sat as a senator that day, they keep it too.
+            sens = [sen for sen in match_senators(mandates, key, d)
+                    if norm(sen["surname"]) in norm(a["name"])]
+            if len(sens) == 1:
+                sen = sens[0]
+                return {"match_status": "matched_senator_chair", "person_id": sen["person_id"],
+                        "person_name": f"{sen['surname']}, {sen['given']}",
+                        "role": m["pre"].strip(), "party": sen["party"],
+                        "province": sen["province"]}
             return {"match_status": "matched_authority", "person_id": a["person_id"],
                     "person_name": a["name"], "role": m["pre"].strip() or a["role"]}
         if FOREIGN_OFFICE_RE.search(m["pre"]):
@@ -1053,4 +1075,6 @@ def main():
 
 
 if __name__ == "__main__":
+    # no options, but --help must describe the script, not run it
+    argparse.ArgumentParser(description=__doc__.strip().split("\n\n")[0]).parse_args()
     main()

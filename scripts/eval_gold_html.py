@@ -23,6 +23,7 @@ What is scored, as on the PDF side:
     uv run scripts/eval_gold_html.py
 """
 
+import argparse
 import csv
 import html as htmllib
 import json
@@ -197,4 +198,6 @@ def main():
 
 
 if __name__ == "__main__":
+    # no options, but --help must describe the script, not run it
+    argparse.ArgumentParser(description=__doc__.strip().split("\n\n")[0]).parse_args()
     main()

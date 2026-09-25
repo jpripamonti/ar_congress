@@ -53,6 +53,7 @@ site, and the chair's words verbatim, so it can be checked against the page.
 Output: reference/senado/bloque_por_llamado.csv
 """
 
+import argparse
 import csv
 import json
 import re
@@ -63,7 +64,7 @@ from html import unescape
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from provenance import decode_html  # noqa: E402
+from provenance import decode_html, require_sources, source_url  # noqa: E402
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RAW = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
@@ -168,6 +169,7 @@ def who(label, province, date, roster):
 
 
 def main():
+    require_sources(RAW, formats=("html",), until=UNTIL)
     roster = load_roster()
     kept, refused = [], Counter()
     notes = []
@@ -175,8 +177,7 @@ def main():
         date = f.name[:10]
         if not (re.match(r"\d{4}-\d{2}-\d{2}$", date) and date < UNTIL):
             continue
-        side = f.with_suffix(".json")
-        url = json.loads(side.read_text(encoding="utf-8")).get("url", "") if side.exists() else ""
+        url = source_url(f.name)
         text = " ".join(unescape(TAG.sub(" ", decode_html(f.read_bytes()))).split())
         for m in CALL.finditer(text):
             label = re.sub(r"^Sra?\.?\s*", "", m["label"]).strip()
@@ -229,4 +230,6 @@ def main():
 
 
 if __name__ == "__main__":
+    # no options, but --help must describe the script, not run it
+    argparse.ArgumentParser(description=__doc__.strip().split("\n\n")[0]).parse_args()
     main()

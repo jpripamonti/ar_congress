@@ -2919,91 +2919,84 @@ and 21.5 million words of attributed speech become 25.7.
       nothing else; 65 rows still hold "Pág. N", all bibliographic citations
       or contents entries, none in speech. Gold, HTML gold, annotations
       and blind reads re-run: unchanged.
-- [ ] **Review again on the latest Opus.** Review agents run on the latest
-      Opus by default, not Sonnet; the Sonnet round's findings stand.
-- [ ] **For the owner**: reserve the version DOI on Zenodo (New version on
-      the published record), then put it in `CITATION.cff`,
-      `docs/DEPOSIT_README.md`, `README.md`, `docs/RELEASE.md` and the notes,
-      rebuild, tag `v0.5.7`, upload and publish.
+- [x] **Review again on the latest Opus.** Review agents run on the latest
+      Opus by default, not Sonnet; the Sonnet round's findings stand. Done:
+      Phase 43, which is why 0.5.7 was not published either.
 
-## Phase 43 — what the Opus review of 0.5.7 found (24 September 2026)
+## Phase 43 — what the Opus review of 0.5.7 found, and 0.5.8 (24–25 September 2026)
 
 Three reviewers on the latest Opus read the built 0.5.7 bundle: who said
 what against the pages, every figure in the shipped documents, and the bundle
-as a stranger gets it. Working files in `.agent/scratch/review_opus_*`.
-Upload held until these are closed. Each is to be checked on the page and
-scoped by a full-corpus scan before it is changed.
+as a stranger gets it. Each finding was checked on the page and scoped by a
+full-corpus scan before it was changed; every parser change was measured by
+re-parsing all 818 files and classifying every changed stretch against
+0.5.7 by the rule that explains it (716 appendix, 684 document note, 65
+small type, 34 HTML, 3 placeholders; the 17 left over were document-note
+lists further than three rows from their note, and seven director
+signatures, all read by eye). PDF parser 0.5.8, HTML 0.5.11-html.
 
-Attribution (checked so far: the first, on the page):
-- [ ] **Printed labels filed as furniture in 13 PDF sittings, 2006–2014.**
-      Short label lines in a smaller type are dropped as page matter and the
-      words after them go to the previous speaker or out of speech: 83 labels,
-      ~5,550 words out of speech, ~450 words to the wrong person.
-      2011-03-30_r03 p. 9 confirmed: "Sr. Presidente. – Aprobado." as
-      furniture, the chair's "En consideración en general…" under Pichetto.
-- [ ] **HTML labels missed where the bold is broken or a stray character
-      precedes it**: 11 rows in 10 sittings, e.g. Genoud's 1,415 words under
-      the chair (1999-08-11_r39 seq 149), "{B}Sr. Vaqui{/B}r. --"
-      (2001-04-18_r18). Also 17 HTML chair turns filed as heading, furniture
-      or other; labels behind leading dots; a roman-type label in 2016.
-- [ ] **Foreign heads of state resolved to the Argentine chair**: Lula
-      (2003-10-16_r00) to Scioli, Mattarella (2017-05-09_r00) to Michetti,
-      and a speech's salutation (2006-12-06_r30 seq 647) to Scioli.
-- [ ] **Speeches handed in for the record read as the chair** from their
-      opening "Sr. Presidente:": 23 rows, ~13,350 words, six sittings of
-      2006–2007.
-- [ ] **Documents after "— El texto es el siguiente:" filed as the chair's
-      speech**: 388 rows, ~19,900 words, 55 sittings 2001–2008 (Orden del
-      Día captions, placeholders such as "(INCORPORAR DECRETO)", the work
-      plan, a decree); three "(Lee:) AQUI INCLUIR…" placeholders as the
-      secretary's.
-- [ ] **Senators chairing since 2020 resolve to an office id** ("auth:")
-      with no caucus, ~9,260 passages; earlier ones keep their senator id.
-
-Bundle and scripts:
-- [ ] The README says the gold sets were annotated "by hand" by readers who
-      never saw each other's work; they were the same model from the same
-      brief (the dictionary says so). `eval_gold.py` still says "pending
-      owner verification".
-- [ ] `--help` runs 12 scripts that take no arguments; three rewrote shipped
-      files (one emptied `bloque_por_llamado.csv`) and one called the
-      Internet Archive.
-- [ ] `--from-manifest` does not write the per-file `.json` metadata the two
-      caucus extractors read the sitting URL from; rebuilt tables lose it.
-- [ ] The rebuild instructions omit `--force`, so re-parsing inside the
-      bundle skips everything.
-- [ ] Nothing downstream refuses an incomplete set of sources
-      (`extract_authorities.py` on 3 files wrote a 17-row table).
-- [ ] The full download's size and time are not stated.
-- [ ] Licence: `LICENSE-DATA` puts the `text` column, the gold page images,
-      the HTML stretches and `senadores_actuales.json` under CC BY 4.0,
-      though they are the Senate's. Owner's decision.
-- [ ] Documents point to a repository readers cannot reach (it is private)
-      and a commit in it. Owner's decision whether it goes public.
-- [ ] Small: CITATION.cff licence and title dash, pyproject version and
-      notebook dependencies, tar owner names, undocumented manifest,
-      `parse_stats.csv` and `bloque_observado.csv` columns.
-
-Figures in the documents (bundle README, dictionary, notes, repo README):
-- [ ] Passages with no caucus are not mostly 1998–1999 (97 of 2,120).
-- [ ] Dictionary: anachronistic 13.1% is 0.4.37's (now 7.0%); "twenty-two
-      passages" before the first roster capture are 2,001; `session_type`
-      counts six rows stale; four ambiguous labels are five; "one row per
-      PDF"; "three tables" over four.
-- [ ] Ticket-versus-caucus counts 379 passages with an empty ticket as
-      "both recorded"; without them 16.5%, not 17.0%. Empty tickets
-      undocumented.
-- [ ] 1.19% is 1.18%; 29.5 million words is 29.6; 522 of 803 counts files.
-- [ ] "0.072% not located" is an unweighted mean including the scans;
-      pooled 0.052%, without scans 0.008%.
-- [ ] 55 documents is 60 (41 with turns); HTML notes 62 are 61.
-- [ ] Release notes: 559 + 211 + 29 is not 819 (260 files are new);
-      four stray-parenthesis labels are five.
-- [ ] Repo README: provisional 338/172 are 340/170; 1.25%; 331 blocks
-      (214); the HTML-vs-PDF unresolved shares; 173 and 2,119.
-- [ ] Wording: "8 turns of 245,722" are passages; they open lower-case, not
-      mid-word; blind-read "6 quote too little" is 5 + 1; PDF coverage 79.3
-      vs 79.5; 158 calls "without bloque" are 158 added; 153 call–page pairs.
+- [x] **Debate set a point off the body went out as furniture** (2006–2014):
+      83 labels in 13 sittings, the words after them to the previous speaker.
+      `restore_small_set_debate` reads a run of blocks half a point to a point
+      off the body as body when it holds a bold label, inside the debate
+      (before the last closing formula, strict or loose, or the last
+      body-size label), and never in the scans. 14 sittings, 328 blocks;
+      2011-03-30 p. 9 read on the page. The no-quorum sitting of 10 November
+      2010, whose body size is misread as 11, gets its minority speeches back.
+      Also: the director's signature is furniture wherever it stands.
+- [x] **HTML labels the typist broke** (`broken_label`,
+      `split_embedded_labels`, centred labels): 34 changed stretches, every one
+      read in the source. Genoud's 1,415 words of 11 August 1999 are his.
+      "Sr. Varios señores senadores" is one label, not split at its own stop.
+- [x] **Foreign heads of state** out of scope: any republic but Argentina.
+      Four labels change, no other.
+- [x] **Everything after the director's sign-off under the last close is
+      appendix**: 12 files, 326 speech rows, 56,897 words — committee
+      meetings bound into 2005-04-06, 2005-05-18 (176 turns) and 2005-08-10,
+      the 2003 tribunal's annex, and the handed-in speeches of 2005–2007.
+- [x] **Text after "— El texto es el siguiente:" and "…cuyos textos se
+      incluyen en el Apéndice, son los siguientes:" is nobody's**: the turn
+      ends at the note, as the HTML half always had it. 2001–2019, about
+      300,000 words out of speech. Where the chair's next words follow with
+      no label reprinted (2008-11-20) they are now `other`, where they had
+      been the secretary's.
+- [x] **Senators chairing since 2020 keep their senator id and caucus**:
+      213 labels, 9,256 passages, nine senators; nothing else changes.
+- [x] Typesetter placeholders ("AQUI INCLUIR…", "(INCORPORAR DECRETO)") are
+      furniture; "Sra Colombo.-" glued to a heading (2004-09-15) is cut off
+      it; "Sr.0 Presidente (Losada)" reads as Losada.
+- [x] The blind-read check: a passage printed twice on its page, once in a
+      turn and once in a list now out of speech, is "printed under more than
+      one name", not a reattribution. One record changes. 6,518 hold, none
+      resolves to anyone else.
+- [x] Checks on the build: gold 310/310 and 82/82, HTML gold 195/195 on
+      both readings, 108/108 annotations, 24/24 stretches agree; audit: 0
+      page apparatus in speech outside the scans, 0 second labels, 0 of 817
+      longer than their source, 14,443 of 14,443 HTML split labels, 14
+      things to look at, all printed that way. The seven official-count
+      differences are unchanged. Three declared-caucus entries re-pointed
+      to their rows' new positions.
+- [x] Scripts: the twelve with no options answer `--help` instead of
+      running; `extract_authorities`, `extract_chair_caucus`,
+      `make_manifest` and the audit's source checks stop on a partial set of
+      sources; the caucus extractors take each sitting's URL from the
+      manifest, so `--from-manifest` downloads rebuild them exactly;
+      `extract_authorities` sorts deterministically; the archive records no
+      owner; notebook dependencies are a group of their own.
+- [x] Licence: CC BY 4.0 covers what the project adds; the text column, the
+      page images, the HTML fragments, the Senate's roster and the archived
+      pages are the Senate's (Ley 11.723 art. 27 noted). The list of sitting
+      senators with their contact details no longer ships. The owner agreed
+      (25 September 2026), and that the repository goes public with the data.
+- [x] The documents said the gold sets were annotated "by hand"; they say
+      now that a language model annotated them and no person checked them.
+- [ ] Figures in the documents recomputed for 0.5.8 (in progress).
+- [ ] Review again on the latest Opus, then bundle, DOI, tag v0.5.8.
+- [ ] **For the owner**: make the GitHub repository public, reserve the
+      version DOI on Zenodo (New version on the published record); then the
+      DOI goes into `CITATION.cff`, `docs/DEPOSIT_README.md`, `README.md`,
+      `docs/RELEASE.md` and the notes, the bundle is rebuilt, tagged, uploaded
+      and published.
 
 ## Explicitly not building
 

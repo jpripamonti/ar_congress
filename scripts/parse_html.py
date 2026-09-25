@@ -34,7 +34,7 @@ from parse import SPEAKER_RE, classify_event  # noqa: E402
 from provenance import decode_html  # noqa: E402
 from session_kind import convened_as_for, quorum_failed_for, session_kind_for  # noqa: E402
 
-PARSER_VERSION = "0.5.10-html"
+PARSER_VERSION = "0.5.11-html"
 
 # A paragraph break: WordPerfect writes <p> with no closing tag and uses <br>
 # for the lines of a masthead or the two lines of a heading.
@@ -339,7 +339,7 @@ def split_label(para):
         return None
     raw = runs[0]["text"].strip()
     if not SPEAKER_RE.match(raw):
-        return None
+        return broken_label(para)
     bold = runs[0]["style"] in ("bold", "bold-italic")
     rest = "".join(r["text"] for r in runs[1:])
 
@@ -356,7 +356,7 @@ def split_label(para):
             # is where the name ends and where the reader closes it too.
             term = LABEL_TERM_RE.search(raw) or LABEL_GLUED_RE.search(raw)
             if term is None:
-                return None
+                return broken_label(para)
             raw = f"{raw[:term.start()]}){raw[term.start():]}"
 
     # Two shapes, both common: the terminator sits inside the bold run
@@ -404,7 +404,93 @@ def split_label(para):
         bare = LABEL_BARE_RE.match(f"{raw}{rest}")
         if bare:
             return tidy(bare.group("label"), f"{raw}{rest}"[bare.end():])
-    return None
+    return broken_label(para)
+
+
+# A label whose bold the typist broke or started late — "<b>Sr. Vaqui</b>r.
+# --", "<b>Sr</b>. <b>PRESIDENTE.-</b>", "Sr. <b>MAYA.-</b>" — or put a dash
+# or dots in front of — "-<b>Sr. Presidente</b>", "..<b>Sr. PRESIDENTE.-</b>".
+# The runs do not line up with the label, so it is read off the paragraph's
+# plain text instead, and only with a dash to end it and some bold inside it,
+# which is what an inserted letter's "Sr. Presidente:" never has.
+_HONORIFIC_LOOSE = (r"(?:(?i:Sr|Sra|Srta|Sres)(?:(?:\s*[.\-]\s*)+|\s+)"
+                    r"|(?i:Varios señores|Varias señoras|Un señor|Una señora)\s+)")
+BROKEN_LABEL_RE = re.compile(
+    rf"(?P<label>{_HONORIFIC_LOOSE}{_LABEL_BODY})"
+    r"(?:(?<=\))\s*|[.,;:]+\s*|\s+)[-–—]{1,2}[.,;:]*\s*")
+LEADING_JUNK_RE = re.compile(r"^[\s.\-–—…]*")
+
+
+def bold_mask(para):
+    """The paragraph's raw text, and for each character whether it is bold."""
+    text, mask = "", []
+    for r in para["runs"]:
+        text += r["text"]
+        mask += [r["style"] in ("bold", "bold-italic")] * len(r["text"])
+    return text, mask
+
+
+def broken_label(para):
+    """(label, speech) read off the plain text, where the runs hide the label."""
+    text, mask = bold_mask(para)
+    start = LEADING_JUNK_RE.match(text).end()
+    match = BROKEN_LABEL_RE.match(text, start)
+    if match is None or not any(mask[match.start():match.end()]):
+        return None
+    label = re.sub(r"\s+", " ", match.group("label"))
+    label = re.sub(r"^((?i:Sr|Sra|Srta|Sres))\s+\.", r"\1.", label)
+    label, speech = tidy(label, text[match.end():])
+    if not re.search(r"\w", speech):
+        return None
+    return label, speech
+
+
+# A label printed in the middle of a paragraph, with no <P> before it: the
+# typist ran the next speaker on after the last one's full stop —
+# "…de la Unión Cívica Radical.<b>Sr. GENOUD.- </b>Señor presidente: rindo
+# este homenaje" (11 August 1999), which gave Genoud's 1,415 words to the
+# chair. Split there, as the page reads, when the label follows the end of a
+# sentence, ends in a dash, and carries some bold.
+EMBEDDED_LABEL_RE = re.compile(
+    r"(?<=[.?!:…)»\"])\s*[-–—]?\s*(?=" + _HONORIFIC_LOOSE + ")")
+
+
+def slice_runs(runs, cut):
+    """The runs before and after character offset `cut`."""
+    head, tail, pos = [], [], 0
+    for r in runs:
+        end = pos + len(r["text"])
+        if end <= cut:
+            head.append(r)
+        elif pos >= cut:
+            tail.append(r)
+        else:
+            head.append(dict(r, text=r["text"][:cut - pos]))
+            tail.append(dict(r, text=r["text"][cut - pos:]))
+        pos = end
+    return head, tail
+
+
+def split_embedded_labels(para):
+    """One paragraph as several, at each label run on inside it."""
+    text, mask = bold_mask(para)
+    for m in EMBEDDED_LABEL_RE.finditer(text):
+        at = m.start()
+        if not re.search(r"\w", text[:at]):
+            continue
+        # the stop behind it is the honorific's own: "Sr. Varios señores
+        # senadores" is one label, printed that way, not two
+        if re.search(r"\b(?i:Sr|Sra|Srta|Sres)\s*[.\-]?\s*$", text[:at]):
+            continue
+        label = BROKEN_LABEL_RE.match(text, m.end())
+        if label is None or not any(mask[label.start():label.end()]):
+            continue
+        if not re.search(r"\w", text[label.end():]):
+            continue
+        head, tail = slice_runs(para["runs"], at)
+        return [dict(para, runs=head)] + split_embedded_labels(
+            dict(para, runs=tail, center=False))
+    return [para]
 
 
 def tidy(label, speech):
@@ -462,7 +548,10 @@ def classify(paragraphs):
     for para in paragraphs:
         pair = unweld(para)
         split.extend(pair if pair else [para])
-    paragraphs = split
+    paragraphs = []
+    for para in split:
+        paragraphs.extend(split_embedded_labels(para))
+    stats["embedded_labels_split"] = len(paragraphs) - len(split)
 
     for para in paragraphs:
         text = paragraph_text(para)
@@ -494,6 +583,19 @@ def classify(paragraphs):
             continue
 
         # -- section headings ------------------------------------------------
+        # A label the typist centred is still a speaker taking the floor:
+        # "Sr. Presidente (Gioja). -- En consideración en general." (7 May
+        # 2003) was read as a section title, and the chair's words after it
+        # as nobody's. Only with words after the label, which a title lacks.
+        label = split_label(para) if para["center"] else None
+        if label is not None and re.search(r"\w", label[1]):
+            speaker, speech = label
+            turn += 1
+            blocks.append({
+                "type": "speech", "speaker": speaker, "turn_id": turn,
+                "text": speech, "capítulo": chapter, "font_style": "normal",
+            })
+            continue
         if para["center"]:
             if CHAPTER_NUM_RE.match(text):
                 pending_number = text

@@ -20,6 +20,7 @@ the names behind every caucus where they differ.
     uv run scripts/check_bloc_counts.py
 """
 
+import argparse
 import collections
 import contextlib
 import io
@@ -131,4 +132,6 @@ def main():
 
 
 if __name__ == "__main__":
+    # no options, but --help must describe the script, not run it
+    argparse.ArgumentParser(description=__doc__.strip().split("\n\n")[0]).parse_args()
     main()

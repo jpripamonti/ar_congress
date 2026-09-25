@@ -73,6 +73,7 @@ Inputs:  reference/senado/bloques_por_fecha.csv     (fetch_blocs.py)
 Output:  reference/senado/bloque_observado.csv
 """
 
+import argparse
 import json
 import re
 import sys
@@ -439,4 +440,6 @@ def main():
 
 
 if __name__ == "__main__":
+    # no options, but --help must describe the script, not run it
+    argparse.ArgumentParser(description=__doc__.strip().split("\n\n")[0]).parse_args()
     main()

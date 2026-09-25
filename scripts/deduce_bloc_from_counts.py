@@ -46,6 +46,7 @@ Run it after build_bloc_observations.py, then run that again to take it in.
 Output: reference/senado/bloque_por_conteo.csv
 """
 
+import argparse
 import collections
 import contextlib
 import csv
@@ -159,4 +160,6 @@ def main():
 
 
 if __name__ == "__main__":
+    # no options, but --help must describe the script, not run it
+    argparse.ArgumentParser(description=__doc__.strip().split("\n\n")[0]).parse_args()
     main()

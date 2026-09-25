@@ -27,7 +27,7 @@ Read the MARKUP, not a stripped version: the typography is the evidence.
   honra. (<i>Aplausos</i>.) ¡Cafiero no está imputado de nada! ¡Es un hombre
   honorable! <i>(Aplausos.)</i>" is one turn with no events in it, not a turn
   interrupted twice. The corpus merges a note like this back into the speech
-  (TODO.md, Phase 2). Whether the note itself is in `<i>` is not the test —
+  (TODO.md, Phase 2, in the project's repository). Whether the note itself is in `<i>` is not the test —
   some typists forget the italics on a note that still opens its own `<P>`,
   and that is still an event; the `<P>` boundary decides, not the font.
   Typography decides this, not what happened in the room: this is the corpus
@@ -76,7 +76,7 @@ Rules that decide the hard cases:
    a fresh `<p><b>Sr. PRESIDENTE (Cafiero).-</b> Queda aprobada...` — two
    turns for the chair, not one continuous one. This rule reaches only an
    UNLABELLED paragraph that runs on: that is not a new turn. Where the
-   typist re-sets the label, list it. (TODO.md Phase 2; the PDF gold set does
+   typist re-sets the label, list it. (TODO.md Phase 2, in the repository; the PDF gold set does
    the same.) Getting this wrong cost four re-emissions in the first round.
 3. An inserted document — a bill, a letter, a committee report handed in for
    the record — has no speaker. Do not invent one. Say so in notes.

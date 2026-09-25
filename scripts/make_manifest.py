@@ -13,11 +13,16 @@ have sidecars that predate the size/checksum fields; their download time is
 recorded as unknown rather than guessed.
 """
 
+import argparse
 import csv
+import sys
 import hashlib
 import json
 from datetime import datetime
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from provenance import manifest_rows  # noqa: E402
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
@@ -77,6 +82,16 @@ def main():
         })
 
     rows.sort(key=lambda r: (r["session_date_iso"], r["reunion"]))
+    # The manifest is the record of what the corpus was built from. Written
+    # from a partial holding — a few files fetched to try the pipeline, or
+    # files fetched with --from-manifest, which carry no sidecar — it would
+    # silently drop every source not on disk, so it is not written at all.
+    listed = {r["filename"] for r in manifest_rows()} if OUT_PATH.exists() else set()
+    lost = sorted(listed - {r["filename"] for r in rows})
+    if missing_sidecar or lost:
+        sys.exit(f"Not rewriting {OUT_PATH.name}: {len(missing_sidecar)} held files have "
+                 f"no sidecar and {len(lost)} listed files would be dropped"
+                 f"{f' (first: {lost[0]})' if lost else ''}.")
     with open(OUT_PATH, "w", newline="", encoding="utf-8") as fh:
         writer = csv.DictWriter(fh, fieldnames=COLUMNS)
         writer.writeheader()
@@ -94,4 +109,6 @@ def main():
 
 
 if __name__ == "__main__":
+    # no options, but --help must describe the script, not run it
+    argparse.ArgumentParser(description=__doc__.strip().split("\n\n")[0]).parse_args()
     main()

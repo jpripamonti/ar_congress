@@ -1,49 +1,70 @@
 # Licence for the data
 
-Two different things live in this repository and they are not under the same
-terms.
+This dataset holds three kinds of material, and they are not under the same
+terms: the code, what this project added to the Senate's record, and the
+Senate's own words and documents.
 
 ## The code — MIT
 
 Everything under `scripts/` (and, in the repository, `notebooks/`), and the
 prose of the documentation, is MIT-licensed. See [LICENSE](LICENSE).
 
-## The derived data — CC BY 4.0
+## What this project added — CC BY 4.0
 
-The corpus this repository produces, and the reference tables it was built
-from, are licensed **Creative Commons Attribution 4.0 International
-(CC BY 4.0)**: <https://creativecommons.org/licenses/by/4.0/>
+The work of turning the record into a dataset is licensed **Creative Commons
+Attribution 4.0 International (CC BY 4.0)**:
+<https://creativecommons.org/licenses/by/4.0/>
 
 That covers:
 
-- `data/processed/senado/` — the per-sitting Parquet tables, the resolved
-  speakers, the parse record
-- `reference/senado/` — the roster snapshots, the caucus observations, the
-  hand-dated caucus lives, the observed authorities
-- `reference/gold/`, `reference/gold_html/` — the hand-annotated PDF pages
-  and HTML stretches the accuracy figures are measured on
-- `reference/verification/` — in the repository only: the blind-read records,
-  which are not part of a release
-- `raw_data_manifest.csv` — the provenance manifest
+- in `data/processed/senado/`, the structure of the corpus and everything
+  said about each passage: how the record is divided into passages, their
+  types and note types, the speaker labels as fields, turns, sections, page
+  positions and typography, the resolved speakers and their caucuses
+  (`speakers.parquet`), and the parse record (`parse_stats.csv`). It does not
+  cover the words in the `text` column; see below.
+- `reference/senado/`: the tables this project compiled — the caucus
+  observations and the caucus lives dated by hand, the authorities observed
+  on the cover pages, the mappings of sitting labels. `senadores_historico.json`
+  is excluded: it is a copy of the Senate's open data.
+- `reference/gold/` and `reference/gold_html/`: the annotations (the `.json`
+  files, the stretch list and the briefs). The page images in
+  `reference/gold/pages/` and the fragments of the chamber's HTML in
+  `reference/gold_html/stretches/` are the Senate's; see below.
+- `raw_data_manifest.csv`: the provenance manifest.
+- `reference/verification/`, in the repository only: the blind-read
+  records, which are not part of a release.
 
-You may copy, redistribute and build on this material, including commercially,
-provided you give attribution. The citation to use is in
+You may copy, redistribute and build on this material, including
+commercially, provided you give attribution. The citation to use is in
 [README.md](README.md), and in machine-readable form in `CITATION.cff`.
 
-## What is not covered
+## The Senate's words and documents — not relicensed
 
-The source transcripts are the Argentine Senate's, not this project's, and are
-not relicensed here. They are not redistributed either: the manifest identifies
-each source file by checksum and URL, and `scripts/download.py` fetches them
-again. The Senate's portal publishes no licence page; the governing framework
-is Argentina's access-to-information law (Ley 27.275), which obliges the state
-to publish in formats that permit reuse and redistribution. That is a reading
-of the law, not a grant from the chamber.
+The speeches, the stenographers' notes and every other word of the record are
+the Argentine Senate's and its members', not this project's. This project
+grants no licence to them. That covers:
 
-The archived pages under `data/raw/senado/bloques_archivados/` and
-`data/raw/senado/fichas_archivadas/` are Internet Archive captures of Senate
-pages that no longer exist — the chamber's bloc roster and senators' own
-pages. They are the Senate's pages as the Internet Archive recorded them, not
-this project's work, and are not relicensed here. They are kept because the
-caucus before 2005 cannot be rebuilt without them; each row derived from them
-carries the archive URL it came from.
+- the `text` column of the per-sitting tables, which reproduces the record;
+- the page images in `reference/gold/pages/` and the HTML fragments in
+  `reference/gold_html/stretches/`, copied from the chamber's files so the
+  annotations can be checked against what they annotate;
+- `reference/senado/senadores_historico.json`, the Senate's list of former
+  and serving senators as its open-data portal serves it;
+- the archived pages under `data/raw/senado/bloques_archivados/` and
+  `data/raw/senado/fichas_archivadas/`: Internet Archive captures of Senate
+  pages that no longer exist, the chamber's caucus roster and senators' own
+  pages, kept because the caucuses before 2005 cannot be rebuilt without them.
+  Each row derived from them carries the archive URL it came from.
+
+The source transcripts themselves are not redistributed: the manifest
+identifies each file by checksum and URL, and `scripts/download.py` fetches it
+again.
+
+Two points of Argentine law bear on reusing this material. Neither is a
+grant from the chamber or from this project, and neither is legal advice.
+Argentina's access-to-information law (Ley 27.275) obliges the state to
+publish its information in formats that allow reuse. Copyright law (Ley
+11.723, art. 27) allows parliamentary speeches to be published, but not for
+profit without the speaker's authorisation. Commercial use of the text is
+therefore a matter between the user and the rights holders.

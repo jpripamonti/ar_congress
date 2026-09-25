@@ -18,8 +18,9 @@ them with the parsed Parquet corpus:
   marked as appendix/no-debate.
 
 Output: per-page table + aggregates, written to
-data/processed/senado/gold_eval.csv. The gold set is machine-assisted
-(annotated from rendered pages) and pending owner verification.
+data/processed/senado/gold_eval.csv. The gold set was annotated by a
+language model from the rendered pages, against a written brief and without
+the parser's answer; no person has checked it.
 """
 
 import argparse
@@ -121,8 +122,8 @@ def multiset_overlap(a, b):
 def gold_files(reading):
     """One annotation per page.
 
-    The pages drawn in September 2026 were read twice, by annotators who never
-    saw each other, and are stored as `gold_<page>.A.json` and `.B.json`. The
+    The pages drawn in September 2026 were read twice, in two separate runs
+    that never saw each other's output, and are stored as `gold_<page>.A.json` and `.B.json`. The
     36 older pages have a single reading and no letter. Taking the glob whole
     would score the twice-read pages twice over, so a reading is chosen and the
     single-reading files come along with it. Run it for both and compare: a

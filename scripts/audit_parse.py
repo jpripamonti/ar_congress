@@ -1048,10 +1048,12 @@ def main():
         speech = corpus[corpus.type.isin(["speech", "event", "heading"])]
         jobs = [(sid, g.source_file.iloc[0], g.text.tolist())
                 for sid, g in speech.groupby("session_id")]
-        if not any((RAW_DIR / name).exists() for _, name, _ in jobs):
-            sys.exit(f"No source files under {RAW_DIR}: fetch them with "
-                     f"scripts/download.py, or pass --skip-source to run only the "
-                     f"checks on the output.")
+        missing = [name for _, name, _ in jobs if not (RAW_DIR / name).exists()]
+        if missing:
+            sys.exit(f"{len(missing)} of the {len(jobs)} parsed sittings have no source "
+                     f"file under {RAW_DIR} (first: {missing[0]}): fetch them with "
+                     f"scripts/download.py --from-manifest, or pass --skip-source to "
+                     f"run only the checks on the output.")
         rows = []
         with ProcessPoolExecutor(max_workers=args.workers) as pool:
             futures = [pool.submit(audit_source, j) for j in jobs]

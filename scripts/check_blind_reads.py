@@ -226,6 +226,19 @@ def judge(record, blocks):
 
     for where, pool in (("page", on_page), ("sitting", speech)):
         hits = matches(pool)
+        # The words can be printed twice on the page, once in a turn and
+        # once in a note or document a repair has since taken out of speech:
+        # on 20 March 2019 the secretary summarised a bill that the list of
+        # titles under "— Los proyectos en consideración… son los siguientes:"
+        # prints again, and the round quoted the list. The record names the
+        # page and the words, not which of the two, so it cannot be re-asked.
+        if hits and where == "page" and page is not None:
+            whole = [b for b in blocks if b.type != "speech"
+                     and page in b.page_set and key in b.flat_text]
+            verdict = verdict_for(record, {r.speaker_raw for r in hits}, where)
+            if whole and verdict[0] != "holds":
+                return ("printed on the page under more than one name",
+                        f"{verdict[1]} | {whole[0].type}", where)
         if hits:
             if len(hits) > 1:
                 where += f" ({len(hits)} turns print it)"

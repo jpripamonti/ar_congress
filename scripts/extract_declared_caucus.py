@@ -34,16 +34,18 @@ on text that is no longer there.
 Output: reference/senado/bloque_por_declaracion.csv
 """
 
+import argparse
 import csv
-import json
 import sys
 from pathlib import Path
 
 import pandas as pd
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from provenance import source_url  # noqa: E402
+
 REPO_ROOT = Path(__file__).resolve().parents[1]
 BLOCKS = REPO_ROOT / "data" / "processed" / "senado" / "blocks"
-RAW = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
 SPEAKERS = REPO_ROOT / "data" / "processed" / "senado" / "speakers.parquet"
 OUT = REPO_ROOT / "reference" / "senado" / "bloque_por_declaracion.csv"
 
@@ -59,13 +61,13 @@ DECLARED = [
      "en nombre de mi bloque, que los señores senadores del justicialismo nos sentimos"),
     ("1998-04-01_r06", 280, "sen:31", "MOVIMIENTO POPULAR FUEGUINO", "propia",
      "el bloque del Movimiento Popular Fueguino, a través de mi persona"),
-    ("1998-05-13_r15", 235, "sen:42", "MOVIMIENTO POPULAR NEUQUINO", "propia",
+    ("1998-05-13_r15", 236, "sen:42", "MOVIMIENTO POPULAR NEUQUINO", "propia",
      "en nombre del bloque del Movimiento Popular Neuquino"),
     ("1998-05-20_r18", 947, "sen:244", UCR, "propia",
      "en nombre del bloque de senadores de la Unión Cívica Radical adelanto nuestro"),
     ("1998-05-27_r21", 139, "sen:106", PJ, "propia",
      "en nombre del bloque de senadores justicialistas"),
-    ("1998-06-10_r24", 388, "sen:205", UCR, "propia",
+    ("1998-06-10_r24", 387, "sen:205", UCR, "propia",
      "En nombre del bloque de la Unión Cívica Radical quiero dejar expresamente aclarado"),
     ("1998-06-24_r26", 140, "sen:205", UCR, "propia",
      "en nombre del bloque de la Unión Cívica Radical adherimos"),
@@ -101,7 +103,7 @@ DECLARED = [
      "en nombre del bloque justicialista, el mismo éxito"),
     ("1999-08-04_r37", 1679, "sen:106", PJ, "propia",
      "como miembro del bloque justicialista"),
-    ("1999-08-11_r39", 151, "sen:229", PJ, "propia",
+    ("1999-08-11_r39", 152, "sen:229", PJ, "propia",
      "en nombre del bloque justicialista vengo a adherir"),
     ("1999-08-25_r43", 150, "sen:234", UCR, "propia",
      "en nombre del bloque radical, solicito"),
@@ -145,8 +147,7 @@ def main():
         if kind == "propia" and speaker_id != person:
             bad.append(f"{session} seq {seq}: speaker is {speaker_id}, not {person}")
             continue
-        side = RAW / Path(r.source_file).with_suffix(".json").name
-        url = json.loads(side.read_text(encoding="utf-8")).get("url", "") if side.exists() else ""
+        url = source_url(r.source_file)
         rows.append({
             "fecha": r.session_date,
             "person_id": person.removeprefix("sen:"),
@@ -172,4 +173,6 @@ def main():
 
 
 if __name__ == "__main__":
+    # no options, but --help must describe the script, not run it
+    argparse.ArgumentParser(description=__doc__.strip().split("\n\n")[0]).parse_args()
     main()

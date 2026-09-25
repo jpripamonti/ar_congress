@@ -27,6 +27,7 @@ roster_rows), which says who held each office but not who presided; the
 Output: reference/senado/authorities_observed.csv
 """
 
+import argparse
 import csv
 import glob
 import html
@@ -39,7 +40,7 @@ from pathlib import Path
 import pdfplumber
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from provenance import decode_html  # noqa: E402
+from provenance import decode_html, require_sources  # noqa: E402
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = REPO_ROOT / "data" / "raw" / "senado" / "taquigraficas"
@@ -299,6 +300,7 @@ def extract_one(path):
 
 
 def main():
+    require_sources(RAW_DIR)
     files = sorted(glob.glob(str(RAW_DIR / "*.pdf")) + glob.glob(str(RAW_DIR / "*.html")))
     if not files:
         sys.exit(f"No transcripts under {RAW_DIR} — fetch them first with scripts/download.py")
@@ -319,7 +321,7 @@ def main():
             r["session_date"] = f"{m.group(3)}-{m.group(2)}-{m.group(1)}"
         else:
             r["session_date"] = ""
-    out.sort(key=lambda r: (r["session_date"], r["office"], r["person"]))
+    out.sort(key=lambda r: (r["session_date"], r["file"], r["office"], r["person"]))
 
     OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     with OUT_PATH.open("w", encoding="utf-8", newline="") as fh:
@@ -334,4 +336,6 @@ def main():
 
 
 if __name__ == "__main__":
+    # no options, but --help must describe the script, not run it
+    argparse.ArgumentParser(description=__doc__.strip().split("\n\n")[0]).parse_args()
     main()

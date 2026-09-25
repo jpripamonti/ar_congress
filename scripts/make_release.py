@@ -46,7 +46,7 @@ PARTS = [
     (RAW / "bloques_archivados", "data/raw/senado"),
     (RAW / "fichas_archivadas", "data/raw/senado"),
     # What the pipeline resolves against, and what the accuracy figures are
-    # measured on: one hand-annotated set per format.
+    # measured on: one annotated set per format.
     (REPO_ROOT / "reference" / "senado", "reference"),
     (REPO_ROOT / "reference" / "gold", "reference"),
     (REPO_ROOT / "reference" / "gold_html", "reference"),
@@ -60,6 +60,14 @@ PARTS = [
     (REPO_ROOT / "LICENSE", ""),
     (REPO_ROOT / "LICENSE-DATA", ""),
     (REPO_ROOT / "CITATION.cff", ""),
+]
+
+# Copied with their folder but not shipped. The Senate's list of sitting
+# senators is a verbatim copy of its open data, carrying each one's office
+# email, phone extension and social-media links; no step reads it, so it
+# stays in the repository.
+LEFT_OUT = [
+    "reference/senado/senadores_actuales.json",
 ]
 
 # The pipeline, script by script, so that adding one to the repository is a
@@ -166,6 +174,8 @@ def main():
                   rename[0] if rename else None)
     for script in SCRIPTS:
         copy_part(REPO_ROOT / "scripts" / script, out_dir / "scripts")
+    for rel in LEFT_OUT:
+        (out_dir / rel).unlink()
 
     broken = broken_links(out_dir)
     if broken:
@@ -185,7 +195,10 @@ def main():
     if archive.exists():
         archive.unlink()
     subprocess.run(
-        ["tar", "--exclude", ".DS_Store", "-czf", archive.name, name],
+        # owner and group as 0 with no names, and no macOS extended
+        # attributes: the archive otherwise records the builder's login
+        ["tar", "--uid", "0", "--gid", "0", "--uname", "", "--gname", "",
+         "--no-mac-metadata", "--exclude", ".DS_Store", "-czf", archive.name, name],
         cwd=RELEASES, check=True,
     )
     digest = sha256(archive)
