@@ -3113,9 +3113,10 @@ signatures, all read by eye). PDF parser 0.5.8, HTML 0.5.11-html.
       list of sitting senators too; DATA.md no longer describes one machine.
 - [x] Repository made public, with its description, homepage (the concept
       DOI) and topics.
-- [ ] Tag v0.5.8 (push that tag alone: the local backup tag and Codex refs
-      must never be pushed), then upload the bundle and its .sha256 to the
-      Zenodo draft and publish.
+- [x] Tag v0.5.8 on 5e02dda, pushed alone (the local backup tag and Codex
+      refs must never be pushed).
+- [ ] **For the owner**: upload the bundle and its .sha256 to the Zenodo
+      draft (sha256 5280c663…), and publish.
 
 ## Explicitly not building
 
