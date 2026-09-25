@@ -1,5 +1,11 @@
 # Data sources, terms, and provenance
 
+> This file is the working record of where each source came from and what
+> was learned about it, written as the work went. Figures in it are those of
+> the parser version each section names or was written at, and many are older
+> than the current release. The current figures are in
+> [docs/DATA_DICTIONARY.md](docs/DATA_DICTIONARY.md) and the deposit README.
+
 ## Transcripts (the corpus)
 
 - **Source:** Senado de la Nación Argentina, open-data portal —
@@ -13,7 +19,7 @@
   requester makes and not something the listing declares: it is read off the
   first bytes of the response and recorded per sitting as `format`. Files are
   kept in the format served, never converted.
-- **Holdings:** 819 sittings spanning 1998–2026, retrieved 2025-01, 2026-07 and
+- **Holdings:** 819 files (818 sittings; one is served twice) spanning 1998–2026, retrieved 2025-01, 2026-07 and
   2026-09. Complete from 2002 on — every sitting the portal lists for those
   years is held. Partial before it: 51 of 73 for 1998, 47 of 74 for 1999, 46 of
   75 for 2000, 44 of 83 for 2001, plus a single sitting of 1997.
@@ -24,11 +30,11 @@
   question does not need asking again.
 - **Provisional records.** A sitting's masthead may declare itself
   "VERSIÓN TAQUIGRÁFICA (PROVISIONAL)", the uncorrected record. The manifest
-  carries this as `provisional` with three values: 309 sittings declare
-  themselves provisional, 338 declare themselves not, and 172 declare nothing,
-  because from 2018 the phrase leaves the masthead. The third value is not a
-  gap in our reading — it is what the document says, and treating it as "final"
-  would invent a fact about 134 sittings. `scripts/provenance.py` holds the
+  carries this as `provisional` with three values: 309 files declare
+  themselves provisional, 340 declare themselves not, and 170 declare nothing,
+  153 of those because from 2018 the phrase leaves the masthead. The third
+  value is not a gap in our reading — it is what the document says, and
+  treating it as "final" would invent a fact about those files. `scripts/provenance.py` holds the
   rule; `scripts/mark_provenance.py` applies it to every held file.
 - **One sitting is served twice, and the document says which one it is.**
   29 October 2003 appears as reunión 27 and as reunión 28, and both URLs return
@@ -364,6 +370,9 @@ turn is a secretary's "(Lee:)" on page 3 of 20 August 2003, and rounding it to
 1.00 said the parser had missed nothing.
 
 ## Corpus-wide audit
+
+*Written at parser 0.4.x; the current audit figures are in the data
+dictionary's "How far it has been checked".*
 
 The gold set answers a narrow question well — did the parser read *these 36
 pages* the way a careful reader does — but 36 pages is 0.08% of the 45,687 in

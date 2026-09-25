@@ -128,6 +128,14 @@ def main():
     golds = sorted(GOLD_DIR.glob("gold_*.json"))
     if not golds:
         sys.exit(f"No gold files in {GOLD_DIR}")
+    held = {unicodedata.normalize("NFC", p.name) for p in RAW_DIR.glob("*.pdf")}
+    wanted = {unicodedata.normalize("NFC", json.loads(g.read_text(encoding="utf-8"))["pdf"])
+              for g in golds}
+    missing = sorted(wanted - held)
+    if missing:
+        sys.exit(f"{len(missing)} of the {len(wanted)} PDFs the annotations name are not "
+                 f"under {RAW_DIR} (first: {missing[0]}): fetch them with "
+                 f"scripts/download.py --from-manifest")
     bad = 0
     for path in golds:
         problems = check(path)

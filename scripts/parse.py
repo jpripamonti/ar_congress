@@ -2935,6 +2935,33 @@ def strip_label_residue(blocks):
             stripped += 1
     return blocks, stripped
 
+# One schema for every sitting's table, whichever parser wrote it. Left to
+# pandas, a column that is empty in every row of a sitting is stored as the
+# null type — `pages`, `font` and `size` in all 213 HTML sittings — and a
+# reader handed a list of files that starts with one of those could not cast
+# the rest: seven schemas across the 817 files.
+def blocks_schema():
+    import pyarrow as pa
+    text = pa.string()
+    return pa.schema([
+        ("session_id", text), ("session_date", text), ("session_type", text),
+        ("session_kind", text), ("convened_as", text), ("quorum_failed", pa.bool_()),
+        ("sesion", text), ("reunion", text), ("seq", pa.int64()), ("type", text),
+        ("event_type", text), ("turn_id", pa.float64()), ("chapter", text),
+        ("chapter_title", text), ("speaker_raw", text), ("text", text),
+        ("pages", pa.list_(pa.int64())), ("font", text), ("font_style", text),
+        ("size", pa.float64()), ("source_file", text), ("source_format", text),
+        ("source_sha256", text), ("parser_version", text),
+    ])
+
+
+def write_blocks(frame, path):
+    """Write one sitting's table under the shared schema."""
+    import pyarrow as pa
+    import pyarrow.parquet as pq
+    table = pa.Table.from_pandas(frame, schema=blocks_schema(), preserve_index=False)
+    pq.write_table(table.replace_schema_metadata(None), path)
+
 DOC_FOLLOWS_RE = re.compile(
     r"\b(?:es|son)\s+(?:el|la|los|las|lo)\s+siguientes?\s*(?::|\.?\s*\[?\s*$)", re.IGNORECASE)
 SIGNOFF_RE = re.compile(r"^\s*(?:Sub)?director[a]?\b[^\n]{0,60}?Taqu[íi]grafos", re.IGNORECASE)
@@ -3288,7 +3315,7 @@ def parse_one(pdf_path_str, meta):
             stats.update(run_stats)
             if blocks:
                 frame = blocks_to_frame(blocks, chapters, meta)
-                frame.to_parquet(out_path, index=False)
+                write_blocks(frame, out_path)
                 counts = frame["type"].value_counts()
                 stats["rows_written"] = len(frame)
                 stats["speech_blocks"] = int(counts.get("speech", 0))

@@ -116,7 +116,7 @@ people in different sittings, and sometimes within one sitting.
 | `bloc_status` | How far that caucus can be trusted, **judged on the date of the sitting, not on the day the caucus was recorded**: `confirmed` (87.8% of senators' passages, in the chair or on the floor), `anachronistic` (9.4% — the record names a caucus that did not exist on the day of the sitting), `disputed` (0.7% — two records that could each describe the day name different caucuses, so which one held is not established), `undatable` (0.6% — the caucus has no established start, so nothing can be checked), `bracketed` (0.1%, 1998-1999 only — **an inference, not an observation**: no record lies within 200 days of the sitting, but the same senator is recorded in the same caucus on both sides of it, inside one mandate; see `bloc_span_days`), `deduced` (0.06%, 1998-1999 only — **an inference, not an observation**: nobody recorded the senator's caucus, but the chamber's official count per caucus on 1 March 1999 leaves room for only one answer once every other senator's caucus is known; used only where no reading lies within 200 days, within 200 days of the count and inside the same mandate; see `scripts/deduce_bloc_from_counts.py`). Empty where there is no caucus at all (1.3%; 97 of these passages are in 1998–1999 and most of the rest in 2014 and 2005). |
 | `bloc_basis` | Where the caucus came from: `roll call` (47.8% of senators' passages), `archived roster` (37.3%, sittings of April 1999 to 2004 — the nearest capture may come after the sitting, and the first is of May 2000), `chair's call` (11.6%, 1998 to early 2000: the chair naming the caucus of the senator it gave the floor to, in the transcript itself), `floor statement` (0.9%, 1998 to May 2000: a senator saying on the floor which caucus they speak for — "en nombre del bloque justicialista…" — read by hand, one passage at a time) `official count` (0.06%, the `deduced` rows) or `archived senator page` (1.1%, the senators' own pages captured on 2 February 1998). `bloque_observado.csv` gives, for every observation, the address of the exact capture or transcript it rests on; `bloque_por_llamado.csv` and `bloque_por_declaracion.csv` also quote the words. |
 | `bloc_observed` | The date the caucus was actually recorded on. |
-| `bloc_gap_days` | How many days that is from the sitting. Median 0 — most sittings are themselves roll-call days. Rows further than 200 days from any observation get no caucus, unless they are `bracketed`. |
+| `bloc_gap_days` | How many days that is from the sitting. Median 0 over (sitting, label) rows, 4 days weighted by passages — most sittings are themselves roll-call days. Rows further than 200 days from any observation get no caucus, unless they are `bracketed`. |
 | `bloc_span_days` | Only on `bracketed` rows: how many days apart the two observations on either side of the sitting are (407 to 843). The shorter it is, the less room for an unrecorded switch; filter on it to set your own limit. |
 | `match_status` | How the label was resolved. This is the field to filter on, and its values are not interchangeable — see below. |
 | `tiebreak` | Empty on all but 58 rows. It says what separated two senators the roster left in a tie, and it exists so you can refuse either answer: `masthead` (5 rows, 477 passages) means the sitting's cover page STATES who presided that day; `honorific` (53 rows, 175 passages) means only the courtesy title on the label distinguished them, which is how the chamber writes rather than something it states. Drop `tiebreak == "honorific"` if a courtesy title is not evidence you will accept. |
@@ -206,7 +206,7 @@ chair from anything about party positions.
 | --- | --- | --- |
 | `matched_senator` | 35.8% | A named senator, resolved against the roster and their mandate dates. |
 | `matched_senator_chair` | 31.4% | A senator speaking from the chair, where the page names them. Where two senators of the same surname sat at once, the sitting's own cover page decides which of them held the gavel that day. |
-| `office_only` | 21.8% | **A chamber office speaking under its bare title** — "Sr. Presidente", "Sr. Secretario", with no surname printed. This is how the record was printed before about 2016. **These are deliberately left without a person.** The chair changes hands during a sitting and the page does not say who holds it; the cover page names two or more of the officers who may take the chair (the vice-president of the nation, the provisional president, the vice-presidents) in 413 of the 691 files whose cover `reference/senado/authorities_observed.csv` records them for. Any name here would be a guess. Five labels that DO print a name land here too, because the name is left over from an earlier year: nobody of that surname held any office or seat on the day, and someone who had one before did — "Sr. Presidente (Maqueda)" on routine agenda items of three 2003 sittings, after Maqueda left for the Supreme Court. Such a label says the chair spoke and nothing more. |
+| `office_only` | 21.8% | **A chamber office speaking under its bare title** — "Sr. Presidente", "Sr. Secretario", with no surname printed. This is how the record was printed before about 2016. **These are deliberately left without a person.** The chair changes hands during a sitting and the page does not say who holds it; the cover page names two or more of the officers who may take the chair (the vice-president of the nation, the provisional president, the vice-presidents) in 369 of the 665 files whose cover names any of them, counting the cover entries of `reference/senado/authorities_observed.csv` whose office is a vice-presidency or the provisional presidency. Any name here would be a guess. Five labels that DO print a name land here too, because the name is left over from an earlier year: nobody of that surname held any office or seat on the day, and someone who had one before did — "Sr. Presidente (Maqueda)" on routine agenda items of three 2003 sittings, after Maqueda left for the Supreme Court. Such a label says the chair spoke and nothing more. |
 | `matched_authority` | 9.9% | Someone holding a national or chamber office, resolved against a hand-compiled table of office-holders and the office-holders each sitting's cover page names. |
 | `out_of_scope` | 0.9% | Correctly not a senator: parties and witnesses at the impeachment trials, deputies, ministers of the national executive, foreign heads of state. |
 | `unmatched` | 0.0% | A genuine failure: 112 passages under 80 labels — names misspelt or damaged by OCR beyond what the resolver tolerates ("Menen", "Oyarznn", "Colombro"), senators-elect before they took their seats, deputies and officials at joint assemblies, and outside speakers named by surname alone. |
@@ -267,7 +267,7 @@ per day one senator's caucus was recorded, 25,227 rows over 425 dates.
 | Column | Meaning |
 | --- | --- |
 | `fecha` | The day it was recorded: the vote, the capture, the sitting. |
-| `person_id`, `person_name` | The senator, as in `speakers.parquet`. |
+| `person_id`, `person_name` | The senator: `person_id` is the number that `speakers.parquet` writes as `sen:<number>`. |
 | `bloque` | The caucus, in the spelling of `blocs_manual.csv` where the caucus has an entry there, as printed otherwise. |
 | `fuente` | The record: `acta de votacion` (roll call, 23,701), `foto de la pagina de bloques` (archived roster page, 1,112), `llamado de la presidencia` (chair's call, 311), `ficha del senador` (archived senator page, 58), `declaracion en el recinto` (floor statement, 34), `conteo oficial por bloque` (official count, 11). |
 | `fiabilidad` | How far it can be trusted: `acta` (the caucus existed on the day of the vote), `acta_anacronica` (it did not), `acta_sin_control` (the caucus has no dated start), `foto`, `foto_bloque_previo` (a roster caucus that died before the roll calls begin), `llamado`, `declaracion`, and `conteo`, which is not an observation but a deduction. |
@@ -301,7 +301,8 @@ corpus was built from — 605 PDFs and 214 HTML exports — and these columns:
   third, `1997-12-18_r117`, does not parse at all and contributes no rows.
 - **The caucus is observed, never continuous.** It is recorded on 357 days
   from 25 May 2000 to 17 September 2026 — roll-call days from 2005, and sixteen
-  archived captures of the Senate's own bloc-roster page before that. Every row
+  archived captures of the Senate's own bloc-roster page before that (425 dates
+  in all, counting the earlier sources of 1998–2000). Every row
   says which day it used and how far that is from the sitting. A senator who
   changed caucus between two observations changes on the later one, not on the
   day they moved.
@@ -405,7 +406,7 @@ different thing, and the strongest number rests on the smallest sample.
   One PDF page is retired from the scoring and kept in full under
   `reference/gold/retired/`, with the reason written beside it: it was drawn
   from a committee meeting the file reproduces behind the sitting, which the
-  corpus no longer attributes to that sitting, so its annotation describes
+  corpus keeps in that sitting's table only as page matter, not speech, so its annotation describes
   speech that does not belong to it. A page is only retired when the
   annotation and the parser disagree about WHICH DOCUMENT the page is and the
   parser is right; a page the parser merely reads differently stays in and
@@ -420,14 +421,16 @@ different thing, and the strongest number rests on the smallest sample.
   244,662 open in lower case under a new speaker, each on a whole word, and
   every one of them is printed that way.
 - **6,819 turns read blind** across thirteen rounds on 691 sittings, each read by a
-  language model from the rendered page, never shown the parser's answer. Twenty-four disagreed at the time
+  language model from the rendered page (for the HTML era, the source file),
+  never shown the parser's answer. Twenty-four disagreed at the time
   of reading and each was then checked against the printed page: **two were
   real defects of the parser**, both since fixed — a centred section number read
   as words the chair said, and a bold label split across three font runs that
-  cost four senators their turns — and the other twenty-two were the page
-  printing no label at all because the speech began earlier, the sheet sending
-  a reader to a different printing of the same stock phrase, or one reader's
-  own slip. Every answer is re-asked of the current corpus by the project's own
+  cost four senators their turns — and the parser was right in the other
+  twenty-two: nine pages print no label because the speech began pages
+  earlier, seven readers were sent by the sheet to a different printing of the
+  same stock phrase, and six were the reader's own slip (a "Presidenta" the
+  page prints as "Presidente", a label read from the wrong paragraph). Every answer is re-asked of the current corpus by the project's own
   release checks, because the rounds were run months and many parser versions
   ago and a repair could quietly move a passage to somebody else: 6,516 still
   resolve to the person the round named, **none resolves to anybody else**, and

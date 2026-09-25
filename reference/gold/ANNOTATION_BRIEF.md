@@ -7,7 +7,8 @@ Accuracy matters far more than speed.
 
 Paths below are relative to the repository root.
 Pages: `reference/gold/pages/<page_id>.png`
-Index: `reference/gold/pages.csv`
+Index: `reference/gold/pages.csv` (the 36 pages drawn in September 2026; the
+first 36 are named by their annotation files)
 
 ## Read the image. Nothing else.
 

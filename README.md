@@ -309,7 +309,7 @@ as its own HTML export for most of 1998–2003; both are read here.
   independent human audit. One page has been retired from the scoring, kept
   in full under `reference/gold/retired/` with the reason: it was drawn from
   a committee meeting the file reproduces behind the sitting, which the
-  corpus no longer attributes to that sitting. **On all 817 sessions that parse, in both formats**
+  corpus keeps in that sitting's table only as page matter, not speech. **On all 817 sessions that parse, in both formats**
   (`scripts/audit_parse.py`): outside the two scans no turn carries a second
   speaker's label (8 do inside them), no label
   is absorbed by the section title above it, no page apparatus leaks into speech
@@ -474,11 +474,13 @@ as its own HTML export for most of 1998–2003; both are read here.
   **Twenty-four of the 6,819 disagreed at the time of reading, and exactly two
   of those were defects of the parser** — both found in the HTML era, both
   fixed. Every case left over from the
-  rounds themselves was checked afterwards against the page image and the
-  parser is right in all of them — pages that print the quoted phrase twice, so the reader could
-  not know which occurrence was meant, and, in the ninth round, ten pages that
-  carry no printed label at all — nine because the speech began pages earlier and
-  the reader rightly refused to guess a name, one a reader's own slip. **Who is speaking is settled; what the turn
+  rounds themselves was checked afterwards against the page or the source
+  file, and the parser is right in all twenty-two: nine pages carry no printed
+  label because the speech began pages earlier and the reader rightly refused
+  to guess a name, seven HTML readers were sent by the sheet to a different
+  printing of the same stock phrase, and six were the reader's own slip.
+  (Eight more records quote a phrase the page prints twice, and are not
+  counted as disagreements.) **Who is speaking is settled; what the turn
   says is still being corrected.** Earlier rounds exposed four of the defects
   fixed in 0.4.7–0.4.10; the fifth found an editorial note cut off by a change of
   font and left as a two-character turn (0.4.12); the sixth, while agreeing on
@@ -495,8 +497,8 @@ as its own HTML export for most of 1998–2003; both are read here.
   about 2016. **These are deliberately left without a person.** The chair
   changes hands during a sitting and the page does not say who holds it, so
   any name would be a guess; the sitting's own cover page names two or more
-  of the officers who may take the chair in 413 of the 691 files whose cover
-  the authorities table records them for. They are marked as
+  of the officers who may take the chair (a vice-presidency or the
+  provisional presidency) in 369 of the 665 files whose cover names any. They are marked as
   office-known-person-unstated. Another 0.9% is correctly out of scope —
   parties and witnesses at the impeachment trials, deputies, ministers of
   the national executive, foreign heads of state. **Genuine lookup failures
@@ -597,7 +599,7 @@ below and the tables behind them.
   sitting that attests it, and those readings are marked `anachronistic`. What
   they get wrong is the NAME; this panel reads the FAMILY, and the notebook
   compares each mis-dated reading against the same senator's nearest attested
-  one: **1.0% of them land in a different family** (153 of 15,503 passages). Dropping them instead would
+  one: **1.0% of them land in a different family** (153 of 15,462 passages). Dropping them instead would
   cost 40% of the evidence in 2018–2019, and not at random — the readings the
   Senate back-labels are overwhelmingly peronist, so the cure would bias the
   panel against the family it mislabels.
@@ -607,8 +609,8 @@ below and the tables behind them.
 - The 2020–2023 collapse was fewer sittings, not quieter ones. Floor words
   fell 6.4-fold, which splits into a 3.9-fold fall in sittings held (31 to 8)
   and only a 1.65-fold fall in words per sitting. The three years since settle
-  it: 2024, 2025 and 2026 run 41,000–45,000 floor words per sitting — the
-  longest sittings in the corpus — on 12 to 14 of them a year.
+  it: 2024, 2025 and 2026 run 41,000–45,000 floor words per sitting, as long
+  as the longest years before them (2013, 2020), on 12 to 14 sittings a year.
 
 ![Incidents, reactions and votes per 10,000 floor words](figures/chamber_temperature.png)
 
@@ -616,8 +618,8 @@ below and the tables behind them.
   Recorded incidents per 10,000 floor words ran near 1 through the 2000s,
   peaked at 13.2 in 2023 and have eased since, to 10.3 in 2024 and 7.0 in 2025
   — roughly a tenfold rise and a partial retreat, beginning well before the
-  remote sittings of 2020. The 1998–2003 holdings extend the quiet baseline
-  back four years without disturbing it. This is a measurement only possible
+  remote sittings of 2020. The series starts in 2002, the first year held
+  complete; the partly held years before it are left out of it. This is a measurement only possible
   because stenographer events are preserved and typed rather than deleted.
 - Recorded votes per word fell and then held: 36–68 per 10,000 floor words
   from 2002 to 2005, falling through 2006–2009, and between 3 and 12 every

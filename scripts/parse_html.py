@@ -30,7 +30,7 @@ from html.parser import HTMLParser
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from parse import SPEAKER_RE, classify_event, strip_label_residue  # noqa: E402
+from parse import SPEAKER_RE, classify_event, strip_label_residue, write_blocks  # noqa: E402
 from provenance import decode_html  # noqa: E402
 from session_kind import convened_as_for, quorum_failed_for, session_kind_for  # noqa: E402
 
@@ -807,7 +807,7 @@ def parse_one(path_str, meta, out_dir):
         stats.update(run_stats)
         if blocks:
             frame = blocks_to_frame(blocks, chapters, meta)
-            frame.to_parquet(out_dir / "blocks" / f"{meta['session_id']}.parquet", index=False)
+            write_blocks(frame, out_dir / "blocks" / f"{meta['session_id']}.parquet")
             stats["rows_written"] = len(frame)
     except Exception as e:  # per-file isolation, as on the PDF side
         stats["error"] = f"{type(e).__name__}: {e}"

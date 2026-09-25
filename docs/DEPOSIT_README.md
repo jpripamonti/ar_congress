@@ -48,7 +48,7 @@ data/processed/senado/blocks/*.parquet   the corpus, one file per sitting (817)
 data/processed/senado/speakers.parquet   each printed label resolved to a person and a caucus
 data/processed/senado/parse_stats.csv    what the parser did to each sitting, counted
 data/raw/senado/bloques_archivados/      Internet Archive captures of the Senate's bloc roster, 2000–2004
-data/raw/senado/fichas_archivadas/       Internet Archive captures of senators' own pages, 1997–1998
+data/raw/senado/fichas_archivadas/       Internet Archive captures of senators' own pages, 2 February 1998
 reference/senado/                        rosters, roll-call caucus readings, hand-dated caucuses
 reference/gold/                          72 PDF pages annotated for scoring
 reference/gold_html/                     24 HTML stretches annotated for scoring, each read twice
@@ -123,9 +123,12 @@ between requests so as not to load the Senate's site: allow a little over an
 hour. `--force` is needed because the bundle already holds the parsed
 tables, and without it the parsers skip every sitting whose table exists.
 The steps that build one table out of all the sources —
-`extract_authorities.py`, `extract_chair_caucus.py`, `make_manifest.py` and
+`extract_authorities.py`, `extract_chair_caucus.py`, `check_gold.py` and
 the source checks of `audit_parse.py` — stop and name what is missing if any
-file the manifest lists is not there, rather than write a partial table.
+file they read is not there, rather than write a partial table.
+`make_manifest.py` is the maintainer's tool for a fresh download and is not
+part of the rebuild: it needs the portal's metadata record saved beside each
+file, which `--from-manifest` does not fetch, and refuses without it.
 
 `--from-manifest` fetches each file from the URL the manifest records, saves
 it under the name the manifest records, and keeps it only if its SHA-256
@@ -151,11 +154,12 @@ status 1 whenever it lists anything, and on this build it lists 13 — among
 them the seven turns that open in lower case, the few labels printed with a
 stray parenthesis and the two sittings whose opening note gives the wrong
 year, each of them printed that way on the page. The checks marked "must be
-0" are the ones that must be 0, and they are. Re-running any step rewrites
-the timestamp in `parse_stats.csv` and the evaluation files it writes
-(`gold_eval.csv`, `gold_html_eval.csv`, `audit_source.csv`), so
-`CHECKSUMS.sha256` stops matching those files after a rebuild; it is for
-checking the download, not the rebuild.
+0" are the ones that must be 0, and they are. Re-parsing rewrites
+`parse_stats.csv` with the time of the run and how long each sitting took, so
+`CHECKSUMS.sha256` stops matching that one file after a rebuild; it is for
+checking the download, not the rebuild. The checks also write their detail
+(`gold_eval.csv`, `gold_html_eval.csv`, `audit_source.csv`,
+`blind_read_check.csv`) beside the tables; those files are not shipped.
 
 The other scripts in `scripts/` built the reference tables that ship in
 `reference/senado/` — `fetch_roster.py`, `fetch_blocs.py`,
@@ -208,14 +212,16 @@ reproduce these numbers.
   sitting above 1%. 7 passages of 244,662 open in lower case under a new
   speaker, each on a whole word, and every one is printed that way.
 - **6,819 turns read blind** across thirteen rounds, each by a language model
-  reading the rendered page and never shown the parser's answer, and
+  reading the rendered page (for the HTML era, the source file) and never
+  shown the parser's answer, and
   re-asked of this build: 6,516 still resolve to the
   person the round recorded and none resolves to anybody else. 303 cannot be
   re-asked — 264 quote words the page prints under two different names, 33 are
   passages a repair has since taken out of speech, 5 quote too damaged to locate,
   and 1 has no words recorded.
   Those records are not in this deposit; the count is what they produced.
-- **29 turns checked by a person against the page images**, one a year from
+- **29 turns checked by a person against the page images** (for the six
+  sittings of 1998–2003, against the source text, which has no pages), one a year from
   1998 to 2026: all 29 agree with the parser. The person saw each page with
   the passage marked and the parser's answer beside it, and took about four
   minutes for the 29, so this is a check that the answer is plausible on the
