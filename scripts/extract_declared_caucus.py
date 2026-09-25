@@ -81,7 +81,7 @@ DECLARED = [
      "A nosotros, en el bloque de la Unión Cívica Radical, se nos ha autorizado"),
     ("1998-12-09_r71", 375, "sen:88", PJ, "propia",
      "los hombres que integramos el bloque justicialista de este Senado"),
-    ("1998-12-09_r71", 1654, "sen:234", UCR, "propia",
+    ("1998-12-09_r71", 1655, "sen:234", UCR, "propia",
      "en nombre del bloque de la Unión Cívica Radical, la posición que hemos tomado"),
     ("1998-12-16_r73", 145, "sen:226", PJ, "propia",
      "en nombre del bloque justicialista quiero hacer presente"),

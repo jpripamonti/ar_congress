@@ -396,6 +396,15 @@ LABEL_TERM_RE = re.compile(rf"\.\s*[–—−─\-{PUA}]\s*")
 # paragraph, where the typesetter forgot to set it in bold.
 INLINE_LABEL_RE = re.compile(
     rf"(?:Sr|Sra|Srta)\.\s*[A-ZÁÉÍÓÚÑ][^.]{{1,45}}?\s*\.\s*[–—−─{PUA}]\s"
+    # A chamber office in roman, which is the commonest way the typesetter
+    # forgets the bold: "Sra. Presidente.- Aprobados." (hyphen for the dash),
+    # "…en consecuencia.  Sr. Presidente (Guinle) — Corresponde" (no stop), and
+    # "Sr. Secretario (Estrada) Se registraron 42 votos" (no terminator at all,
+    # which only the holder's name in parentheses makes safe to read).
+    rf"|(?:Sr|Sra)\.\s*(?:President[ae]|Secretari[oa]|Prosecretari[oa])"
+    rf"(?:\s*\([^)]{{2,40}}\))?\s*\.?\s*[-–—−─{PUA}]{{1,2}}\s"
+    rf"|(?:Sr|Sra)\.\s*(?:President[ae]|Secretari[oa]|Prosecretari[oa])"
+    rf"\s*\([^)]{{2,40}}\)\s+(?=[¿¡A-ZÁÉÍÓÚÑ])"
 )
 SENTENCE_END = set('.!?:"”’\')]')
 COURIER_RE = re.compile(r"courier", re.I)
@@ -441,6 +450,9 @@ STATS_COLUMNS = [
     "inline_labels_recovered",
     "small_set_debate_restored",
     "placeholders_filed",
+    "roman_notes_filed",
+    "label_residue_stripped",
+    "sentence_notes_rejoined",
     "split_words_rejoined",
     "labels_rejoined",
     "label_spillover_split",
@@ -1542,12 +1554,27 @@ def restore_small_set_debate(blocks, body_size):
                     or any(SPEAKER_RE.match(before["text"][m.end():].strip())
                            and len(before["text"][m.end():].strip()) <= MAX_LABEL_TAIL
                            for m in LABEL_SPLIT_RE.finditer(before["text"]))))
-        if led or any(b["font_style"] == "bold" and len(b["text"].strip()) <= 60
-                      and SPEAKER_RE.match(b["text"].strip()) for b in blocks[i:j]):
+        # or the run carries on a sentence the body left open — "…para que
+        # pu" and then "edan llegar…" a point smaller (15 August 2012): body
+        # text ending on a letter or comma, the run opening in lower case
+        continues = (worded and before is not None and before["font_style"] == "normal"
+                     and is_body(before.get("size"), body_size)
+                     and re.search(r"[^\W\d_,]$|,$", before["text"].rstrip())
+                     and blocks[i]["text"].lstrip()[:1].islower())
+        if led or continues or any(b["font_style"] == "bold" and len(b["text"].strip()) <= 60
+                                   and SPEAKER_RE.match(b["text"].strip()) for b in blocks[i:j]):
             for b in blocks[i:j]:
                 b["size_printed"] = b["size"]
                 b["size"] = body_size
                 restored += 1
+            # a word the change of size cut in two, "pu" + "edan", is one word
+            if (continues and not before["text"].endswith((" ", "\n"))
+                    and not blocks[i]["text"][:1].isspace()
+                    and before["text"].rstrip()[-1:].isalpha()):
+                before["text"] += blocks[i]["text"]
+                del blocks[i]
+                j -= 1
+                close -= 1
         i = j
     return blocks, restored
 
@@ -1803,8 +1830,8 @@ def reattach_note_tails(blocks):
         # a note whose closing parenthesis is followed by a letter or two is the
         # other fault entirely — the italic run overrunning into the sentence,
         # repaired further down — so it must not be fed more of that sentence
-        is_sentence = (note[-1:].isalpha() and t[:1].islower()
-                       and not NOTE_TAIL_RE.search(note))
+        is_sentence = ((note[-1:].isalpha() or note[-1:] == ",") and t[:1].islower()
+                       and not PAREN_TAIL_RE.search(note))
         if is_scrap or is_sentence:
             prev["text"] = prev["text"].rstrip() + (" " if is_sentence else "") + t
             prev["pages"] = sorted(set(prev["pages"]) | set(b["pages"]))
@@ -1888,8 +1915,19 @@ def return_stage_direction_punctuation(blocks):
         if not ((letters and resumes) or re.fullmatch(r"[,;—–]+", stripped)):
             continue
         b["text"] = b["text"].rstrip()[: m.start(1)]
-        # a tail ending in a letter is half of a word: join it with no space
-        rest = nxt["text"].lstrip() if stripped[-1:].isalpha() else nxt["text"]
+        # a tail ending in a letter is half of a word — join it with no space —
+        # unless that letter is a word of its own: "(aplausos), s" + "i la
+        # Argentina" is "si", but "(aplausos), y" + "el que…" is "y el que"
+        last = re.search(r"(?:^|[\s,;])([^\W\d_]+)$", stripped)
+        # "e" and "u" are words only before an i- or o- sound ("e incluso",
+        # "u otro"); elsewhere they are half of one: "); e" + "s en el ejemplo"
+        head = nxt["text"].lstrip()[:2].lower()
+        whole_word = last is not None and (
+            last.group(1) in ("y", "o", "a")
+            or (last.group(1) == "e" and (head[:1] in ("i", "í") or head in ("hi", "hí")))
+            or (last.group(1) == "u" and (head[:1] in ("o", "ó") or head in ("ho", "hó"))))
+        rest = (nxt["text"].lstrip() if stripped[-1:].isalpha() and not whole_word
+                else " " + nxt["text"].lstrip() if whole_word else nxt["text"])
         nxt["text"] = stripped + rest
         tails += 1
     if dashes or colons or tails:
@@ -2869,7 +2907,36 @@ ANY_CLOSE_RE = re.compile(
 PLACEHOLDER_RE = re.compile(
     r"(?:\(Lee:\)\s*)?(?:AQU[IÍ] INCLUIR\b.{0,120}"
     r"|\((?:INCORPORAR|INCLUIR|INSERTAR) [A-ZÁÉÍÓÚÑ ,.]+\)|GOTOBUTTON\b.{0,40})", re.S)
-DOC_FOLLOWS_RE = re.compile(r"\btextos?\b[^.]{0,80}\bsiguientes?\s*:?\s*$", re.IGNORECASE)
+# A note that introduces what is printed after it: "— El texto es el
+# siguiente:", "— Los órdenes del día en consideración son los siguientes:",
+# "— El plan de labor acordado es el siguiente:". The stop after it varies
+# (colon, full stop, an opening bracket), and so does what it names.
+# What is left of a label's terminator at the start of its speech when the
+# label was cut before it: ".─ Sí, cómo no.", "-- En consideración", ". ¿Citamos
+# a la comisión…?". Never an ellipsis, which is a turn resuming, and only where
+# a sentence opens after it.
+LABEL_RESIDUE_RE = re.compile(
+    r"^\s*(?:[.,](?![.])\s*[─—–\-]{0,2}|[─—–\-]{1,2})\s*(?=[¿¡\"“«(A-ZÁÉÍÓÚÑ])")
+
+
+def strip_label_residue(blocks):
+    """Take a label's stray terminator off the first words of its turn."""
+    seen, stripped = set(), 0
+    for b in blocks:
+        if b.get("type") != "speech":
+            continue
+        key = b.get("turn_id")
+        if key in seen:
+            continue
+        seen.add(key)
+        m = LABEL_RESIDUE_RE.match(b["text"])
+        if m and m.end():
+            b["text"] = b["text"][m.end():]
+            stripped += 1
+    return blocks, stripped
+
+DOC_FOLLOWS_RE = re.compile(
+    r"\b(?:es|son)\s+(?:el|la|los|las|lo)\s+siguientes?\s*(?::|\.?\s*\[?\s*$)", re.IGNORECASE)
 SIGNOFF_RE = re.compile(r"^\s*(?:Sub)?director[a]?\b[^\n]{0,60}?Taqu[íi]grafos", re.IGNORECASE)
 
 
@@ -3052,6 +3119,50 @@ def process_pdf(pdf_path):
     # last, so that every pass above still sees a note as one block
     blocks, welded = split_welded_notes(blocks)
     stats["welded_notes_split"] = welded
+
+    # A note the typesetter set in roman, dash and all, right under another
+    # note: "— El resultado de la votación surge del Acta Nº 8" then "— El
+    # artículo 14 es de forma." (2 March 2005), which went to the secretary.
+    for k in range(1, len(blocks)):
+        b, prev = blocks[k], blocks[k - 1]
+        if (b.get("type") == "speech" and prev.get("type") == "event"
+                and re.match(r"\s*[—–]\s*[A-ZÁÉÍÓÚÑ]", b["text"])
+                and len(b["text"].split()) <= 30):
+            b["type"] = "event"
+            b.pop("speaker", None)
+            b["event_type"] = classify_event(EVENT_DASH_RE.sub("", b["text"].strip()).strip())
+            stats["roman_notes_filed"] = stats.get("roman_notes_filed", 0) + 1
+    # The director's name printed over the signature line, after the close:
+    # "Jorge A. Bravo" / "Director General de Taquígrafos" (30 June 2010)
+    for k in range(1, len(blocks)):
+        if (SIGNOFF_RE.match(blocks[k]["text"].strip())
+                and blocks[k - 1].get("type") == "speech"
+                and len(blocks[k - 1]["text"].split()) <= 5):
+            blocks[k - 1]["type"] = "furniture"
+            blocks[k - 1].pop("speaker", None)
+
+    # A bracketed note the page sets in the middle of a sentence belongs to
+    # the speech, as the convention says, even where it falls at the start of
+    # a line and was read as a row of its own: "…Tucumán" / "(Aplausos.)" /
+    # ", a la que quiero…" in a president's address to the assembly.
+    k, merged = 1, 0
+    while k < len(blocks) - 1:
+        prev, note, nxt = blocks[k - 1], blocks[k], blocks[k + 1]
+        if (note.get("type") == "event" and re.fullmatch(r"\([^()]{1,80}\)\.?", note["text"].strip())
+                and prev.get("type") == "speech" and nxt.get("type") == "speech"
+                and prev.get("speaker") == nxt.get("speaker")
+                and not re.search(r"[.!?:»\"”…]$", prev["text"].rstrip())
+                and re.match(r"\s*[a-záéíóúñü,;]", nxt["text"])):
+            prev["text"] = rejoin(rejoin(prev["text"].rstrip(), " " + note["text"].strip()), nxt["text"])
+            prev["pages"] = sorted(set(prev["pages"]) | set(note["pages"]) | set(nxt["pages"]))
+            del blocks[k:k + 2]
+            merged += 1
+            continue
+        k += 1
+    stats["sentence_notes_rejoined"] = merged
+
+    blocks, residue = strip_label_residue(blocks)
+    stats["label_residue_stripped"] = residue
 
     # An instruction to the typesetter left in the file — "AQUI INCLUIR
     # Expediente S. 1.645/03", "(INCORPORAR DECRETO)", a Word field code — is

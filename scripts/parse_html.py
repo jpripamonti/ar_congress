@@ -30,7 +30,7 @@ from html.parser import HTMLParser
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from parse import SPEAKER_RE, classify_event  # noqa: E402
+from parse import SPEAKER_RE, classify_event, strip_label_residue  # noqa: E402
 from provenance import decode_html  # noqa: E402
 from session_kind import convened_as_for, quorum_failed_for, session_kind_for  # noqa: E402
 
@@ -62,6 +62,7 @@ CSS_ITALIC_RE = re.compile(r"font-style\s*:\s*italic", re.I)
 # The label a paragraph opens with, e.g. "Sr. Presidente" — then the chamber
 # prints the holder in parentheses: "Sr. Presidente (Cafiero). -- Se gira..."
 QUALIFIER_RE = re.compile(r"^\s*\(([^)]{1,60})\)")
+UNCLOSED_QUALIFIER_RE = re.compile(r"^\s*\(([^()]{2,40}?)(?=\s*[.,]\s*[-–—])")
 # The same, with one or two characters stranded between the bold label and the
 # holder, which otherwise hide the parenthetical and lose the chair the turn.
 # Two ways round, and the office word settles which: the typist struck a key
@@ -136,6 +137,14 @@ ROLL_ENTRY_RE = re.compile(
 LEADING_DASH_RE = re.compile(r"^\s*[-–—−]+\s*")
 CHAPTER_NUM_RE = re.compile(r"^\d{1,3}$")
 # "[Volver al sumario]" and the sumario's own entries are navigation.
+# How a note the typist left without its dash still opens: the chamber's
+# stage language, impersonal or about the room — "Se lee el dictamen.",
+# "Varios señores senadores rodean…", "Ocupa la Presidencia…".
+NOTE_OPENING_RE = re.compile(
+    r"\s*(?:Se\s|Varios\s|Varias\s|Ocupa\s|Ocupan\s|Puestos\s|Puestas\s|Son las\s"
+    r"|A las\s|Siendo las\s|Ingresa|Se retira|Aplausos|Risas|Murmullos|Manifestaciones"
+    r"|La votación|En particular|Así se hace|No se alcanza|Hablan)")
+NAV_TEXT_RE = re.compile(r"\s*\[?\s*volver al sumario\s*\]?\s*", re.I)
 NAV_RE = re.compile(r"volver al sumario|^\s*\[?\s*sumario\s*\]?\s*$", re.I)
 # Printed apparatus with no speaker: the footnote pointing at the appendix
 # ("1. Ver el Apéndice."), and the sign-off the stenographers' office puts at
@@ -391,6 +400,10 @@ def split_label(para):
                 if mended is not None:
                     label = f"{mended} ({stray.group('holder').strip()})"
                     rest = rest[stray.end():]
+        if qualifier is None:
+            # the holder's parenthesis never closed: "<b>Sr. Presidente </b>
+            # (Maqueda<b>. -- </b>En consideración" (23 May 2002, twice)
+            qualifier = UNCLOSED_QUALIFIER_RE.match(rest)
         if qualifier:
             label = f"{label} ({qualifier.group(1).strip()})"
             rest = rest[qualifier.end():]
@@ -414,10 +427,16 @@ def split_label(para):
 # plain text instead, and only with a dash to end it and some bold inside it,
 # which is what an inserted letter's "Sr. Presidente:" never has.
 _HONORIFIC_LOOSE = (r"(?:(?i:Sr|Sra|Srta|Sres)(?:(?:\s*[.\-]\s*)+|\s+)"
+                    # the typist's slips on the honorific: "S r. Presidente",
+                    # "S. Presidente (Genoud)" — only before an office
+                    r"|(?:S\s+r|S)\.\s*(?=(?i:President|Secretari|Prosecretari))"
                     r"|(?i:Varios señores|Varias señoras|Un señor|Una señora)\s+)")
 BROKEN_LABEL_RE = re.compile(
     rf"(?P<label>{_HONORIFIC_LOOSE}{_LABEL_BODY})"
-    r"(?:(?<=\))\s*|[.,;:]+\s*|\s+)[-–—]{1,2}[.,;:]*\s*")
+    r"(?:(?:(?<=\))\s*|[.,;:]+\s*|\s+)[-–—]{1,2}[.,;:]*\s*"
+    # no terminator at all, which only the holder's name in parentheses
+    # makes safe: "Pido la palabra. Sr. Presidente (Losada) Tiene la palabra"
+    r"|(?<=\))\s+(?=[¿¡A-ZÁÉÍÓÚÑ]))")
 LEADING_JUNK_RE = re.compile(r"^[\s.\-–—…]*")
 
 
@@ -430,15 +449,37 @@ def bold_mask(para):
     return text, mask
 
 
+# A label printed with no honorific at all, in bold: the chair's office and
+# holder, "PRESIDENTE (Cafiero).-", "Presidente (Losada). --", or a surname
+# shouted with its terminator, "DEL PIERO.-". Read only when the whole label is
+# bold and a dash ends it (or, for the chair, the holder closes it), which is
+# how no section title or emphasised word is printed.
+BARE_LABEL_RE = re.compile(
+    r"(?P<label>(?i:president[ae]|secretari[oa]|prosecretari[oa])\s*\([^)]{2,40}\)"
+    r"|[A-ZÁÉÍÓÚÑ]{2,}(?:\s+[A-ZÁÉÍÓÚÑ]{2,}){0,2})"
+    r"\s*[.,]\s*[-–—]{1,2}[.,;:]*\s*")
+
+
 def broken_label(para):
     """(label, speech) read off the plain text, where the runs hide the label."""
     text, mask = bold_mask(para)
     start = LEADING_JUNK_RE.match(text).end()
     match = BROKEN_LABEL_RE.match(text, start)
-    if match is None or not any(mask[match.start():match.end()]):
+    if match is None:
+        bare = BARE_LABEL_RE.match(text, start)
+        # the whole label bold, or for an office only the office word — the
+        # holder is set roman, as in "<b>Presidente </b>(Losada)<b>. -- </b>"
+        head_end = text.find("(", bare.start("label"), bare.end("label")) if bare else -1
+        bold_part = (bare.start("label"), head_end if head_end != -1 else bare.end("label")) if bare else None
+        if (bare and all(mask[bold_part[0]:bold_part[1]])
+                and re.search(r"\w", text[bare.end():])):
+            return tidy(bare.group("label"), text[bare.end():])
+        return None
+    if not any(mask[match.start():match.end()]):
         return None
     label = re.sub(r"\s+", " ", match.group("label"))
     label = re.sub(r"^((?i:Sr|Sra|Srta|Sres))\s+\.", r"\1.", label)
+    label = re.sub(r"^S\s+r\.", "Sr.", label)
     label, speech = tidy(label, text[match.end():])
     if not re.search(r"\w", speech):
         return None
@@ -564,7 +605,11 @@ def classify(paragraphs):
             blocks.append({"type": "furniture", "text": text})
             speaker = None
             continue
-        if para["link_only"] or NAV_RE.search(text) or APPARATUS_RE.match(text):
+        # a back-link printed in a turn's own paragraph does not make the turn
+        # page matter: "Sr. PRESIDENTE (Menem).- Queda aprobada… [Volver al
+        # sumario]" (1 September 1999) is the chair speaking, link and all
+        if para["link_only"] or APPARATUS_RE.match(text) or (
+                NAV_RE.search(text) and split_label(para) is None):
             stats["nav_cut"] += 1
             blocks.append({"type": "furniture", "text": text})
             continue
@@ -617,6 +662,7 @@ def classify(paragraphs):
         label = split_label(para)
         if label is not None:
             speaker, speech = label
+            speech = NAV_TEXT_RE.sub(" ", speech).strip()
             turn += 1
             blocks.append({
                 "type": "speech", "speaker": speaker, "turn_id": turn,
@@ -626,7 +672,18 @@ def classify(paragraphs):
 
         # -- a stenographer's note --------------------------------------------
         # Set in italics, and it ends the turn it interrupts.
-        if italic_share(para) >= 0.6:
+        # A paragraph in italics is a note when it reads as one: it opens with
+        # the note's dash or bracket, or says what notes say (a vote, applause,
+        # the time). Otherwise it is words set in italics — a passage the
+        # speaker quotes, a list of titles — and the speaker goes on: Gómez
+        # Diez quoting the US Treasury secretary (5 March 2002), Avelín's song
+        # titles (4 November 1998). Read as notes, they ended the turn and the
+        # rest of the speech went to nobody.
+        if italic_share(para) >= 0.6 and (
+                re.match(r"\s*(?:[-–—(\[_]|\.\.)", text)
+                or NOTE_OPENING_RE.match(text) or text.rstrip().endswith(")")
+                or classify_event(LEADING_DASH_RE.sub("", text)) != "unspecified"
+                or speaker is None):
             blocks.append({
                 "type": "event",
                 "event_type": classify_event(LEADING_DASH_RE.sub("", text)),
@@ -668,6 +725,7 @@ def process_html(path):
     paragraphs = read_paragraphs(Path(path))
     blocks, chapters, stats = classify(paragraphs)
     blocks = consolidate(blocks)
+    blocks, _ = strip_label_residue(blocks)
     # counted as written: blocks_to_frame drops a block with no visible text
     blocks = [b for b in blocks if (b.get("text") or "").strip()]
     counts = {}

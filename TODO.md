@@ -3007,7 +3007,51 @@ signatures, all read by eye). PDF parser 0.5.8, HTML 0.5.11-html.
       96 MB packed, sha256 3342de8c…; checksums, no personal path, every
       script answers `--help`, the loading example gives 440,447 rows and
       244,805 speech passages over 817 sittings; the archive records no owner.
-- [ ] Review again on the latest Opus, then bundle, DOI, tag v0.5.8.
+- [x] **Second Opus round on 0.5.8** (three reviewers: attribution, figures,
+      the bundle as a stranger). Each finding checked on the page or in the
+      markup, each rule measured by a full re-parse against the previous
+      build, every changed stretch classified and the unexplained ones read:
+  - Notes introducing a document in any wording ("…son los siguientes:",
+    "…es el siguiente:", with a colon, a full stop or a bracket after, or
+    welded to the document's first words) end the turn: 88 rows, ~68,000
+    words of 2019–2025 lists were the chair's or the secretary's.
+  - HTML italic paragraphs are notes only when they read as notes (a dash
+    or bracket, the chamber's stage language, a vote or applause); quoted
+    passages and lists of titles stay in the speaker's turn (Gómez Diez
+    2002, Avelín 1998, Yoma 1998, Bioy Casares's and Luna's homages).
+  - HTML labels the typist misspelt or left without the honorific ("S r.",
+    "S.", "PRESIDENTE (Cafiero).-", "DEL PIERO.-", an unclosed "(Maqueda"),
+    a holder in roman after a bold office, a label with no terminator but
+    a holder in parentheses, a turn whose paragraph carries a back-link;
+    resolution reads a missing honorific as "Sr.". 11 new labels, all to
+    the right person.
+  - PDF office labels set in roman ("Sr. Secretario (Estrada) Se
+    registraron…", "Sra. Presidente.- Aprobados.").
+  - A note whose italic run overran the next word's first letter no longer
+    takes the rest of the speech with it (Fuentes 2018, 1,559 words; four
+    presidents' addresses); a one-letter word keeps its space ("y el que"),
+    half a word does not ("si", "es").
+  - Bracketed notes printed mid-sentence rejoin the speech (78 in 46
+    sittings, mostly assemblies); label punctuation stripped from 158 turn
+    starts; roman notes under a note, a note's comma-ended second line and
+    the director's name over the signature filed as what they are; debate
+    set off the body that continues an open sentence restored, a word the
+    size change split rejoined.
+  - Misspelt chair labels since 2020 resolve to the senator: the senator is
+    found by the office-holder's full name, whole words, chair only (four
+    labels of Ledesma Abdala; a first attempt matched "Arce" inside
+    "Marcelo" and was caught by the comparison).
+  - Documents: annotation independence per batch, the person check as a
+    plausibility check, provisional records, the manifest's columns, the
+    audit as a list, which gold pages ship an image, figures recomputed,
+    the Results section from a re-run of the notebook. Bundle: only the
+    archived captures a table cites (the 1997 senators' pages with personal
+    details stay out), the caucus-periods table rebuilt to 2026, an offline
+    rebuild no longer restamps the manifest.
+  - Checks on the build: gold 310/310 and 82/82, HTML 195/195, 108/108,
+    blind reads none reattributed, audit 13 things to look at.
+- [ ] Figures recomputed on the final build; bundle rebuilt and verified.
+- [ ] A last Opus review of the final bundle, then DOI and tag v0.5.8.
 - [ ] **For the owner**: make the GitHub repository public, reserve the
       version DOI on Zenodo (New version on the published record); then the
       DOI goes into `CITATION.cff`, `docs/DEPOSIT_README.md`, `README.md`,

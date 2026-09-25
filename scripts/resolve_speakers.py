@@ -121,6 +121,13 @@ def clean_label(label):
     s = unicodedata.normalize("NFC", label or "").strip()
     # a digit struck with the honorific's stop: "Sr.0 Presidente (Losada)"
     s = re.sub(r"^((?i:Sr|Sra|Srta|Sres)\.)\d+\s*", r"\1 ", s)
+    # the honorific misspelt or left out, which the HTML typists did now and
+    # then — "S. Presidente (Genoud)", "PRESIDENTE (Cafiero)", "DEL PIERO". It
+    # is read as "Sr.", the form every such label of the corpus stands for;
+    # speaker_raw keeps what was printed.
+    s = re.sub(r"^S\.\s*(?=(?i:President|Secretari|Prosecretari))", "Sr. ", s)
+    if s and not re.match(r"(?i:Sr|Sra|Srta|Sres|Varios|Varias|Un\b|Una\b)", s):
+        s = "Sr. " + s
     # glued prefixes: keep from the LAST title token onward
     matches = list(re.finditer(rf"(?:{TITLE_RE}|Varios|Varias|Un\b|Una\b)\s", s))
     if matches and matches[-1].start() > 0:
@@ -654,8 +661,20 @@ def resolve_one(label, session_date, session_type, mandates, auth, presiding=(),
             # of Ledesma Abdala, Closs, Losada, Abdala and six more — while
             # Pinedo and Zamora, chairing before 2020, kept their senator id.
             # Where the holder sat as a senator that day, they keep it too.
-            sens = [sen for sen in match_senators(mandates, key, d)
-                    if norm(sen["surname"]) in norm(a["name"])]
+            # The senator is found by the office-holder's full name, not the
+            # label, so a misspelt label that found the office ("Ledezma
+            # Abdala", "Abdala Ledesma") finds the senator too; by whole words
+            # and the longest surname that fits, so "Rodríguez Machado" is not
+            # the senator Rodríguez and nobody is "Arce" inside "Marcelo"; and
+            # only for the chair, since a secretary is never a senator.
+            full = f" {norm(a['name'])} "
+            fits = {}
+            if re.search(r"presid", norm(m["pre"])):
+                fits = {c["person_id"]: c for c in mandates
+                        if in_window(c, d, 0) and norm(c["surname"])
+                        and f" {norm(c['surname'])} " in full}
+            longest = max((len(norm(c["surname"])) for c in fits.values()), default=0)
+            sens = [c for c in fits.values() if len(norm(c["surname"])) == longest]
             if len(sens) == 1:
                 sen = sens[0]
                 return {"match_status": "matched_senator_chair", "person_id": sen["person_id"],
