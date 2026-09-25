@@ -30,9 +30,9 @@ the normal way to work with it.
 
 | Column | Meaning |
 | --- | --- |
-| `type` | `speech` — words somebody said (244,625). `event` — the stenographer's note about something that happened (69,297). `heading` — a section title (33,566). `furniture` — printed page matter kept only for tracing; not speech (85,696), which from 0.5.4-html includes the HTML era's attendance roll. `inline_italic` — an italicised fragment that had no turn to belong to (808). `other` — text the parser could not attribute to anyone (6,453, 1.47%), most of it matter inserted into the record without being spoken: speeches handed in, and the bills read into it. Two sittings reprint an earlier debate as an insertion, under its original speakers' labels — 23 February 2000 part of the debate of 6/7 May 1998, 8 August 2001 the tribute of 13 June 2001 — and those 61 passages are here too, because they were not said that day; `reference/senado/inserted_debates.csv` lists them with the evidence. Inserted matter is also found outside `other`: appendices printed past the closing formula are `furniture` (page-matter rows over 300 characters number 6,541 and hold 2.4 million words), and 492 notes run over 200 characters (31,134 words), a document the page printed as a note, such as a work plan. |
-| `text` | The words themselves, as printed. Spelling, punctuation and the edition's own mistakes are preserved: where a page misspells a senator's surname, so does this. No passage starts or ends in a space, so `text == "(Lee:)"` finds every row that is only that. |
-| `event_type` | Only for notes. `vote` (41,369), `unspecified` (13,730), `incident` (6,166, disorder in the chamber), `pause` (2,397), `timestamp` (2,209, the clock time the record prints), `stage` (1,824, someone entering, leaving or taking the chair), `applause` (1,430), `laughter` (172). From 0.5.0 a note printed on its own line is one row, so two notes in the same italic run no longer share one. From 0.5.1 a bracketed note set inside a speaker's paragraph — "…os lo demanden. (Aplausos.)" — is part of that speech and not a row of its own, which is why applause and laughter are far fewer than the notes the page prints: most of them are printed inside somebody's sentence. From 0.5.2 a "(Lee:)" printed right after a secretary's label is his turn and not a note, as the HTML half has always had it. |
+| `type` | `speech` — words somebody said (244,624). `event` — the stenographer's note about something that happened (69,290). `heading` — a section title (33,566). `furniture` — printed page matter kept only for tracing; not speech (85,696), which from 0.5.4-html includes the HTML era's attendance roll. `inline_italic` — an italicised fragment that had no turn to belong to (808). `other` — text the parser could not attribute to anyone (6,461, 1.47%), most of it matter inserted into the record without being spoken: speeches handed in, and the bills read into it. Three sittings reprint an earlier speech or debate as an insertion, under its original speakers' labels — 23 February 2000 part of the debate of 6/7 May 1998, 15 November 2000 Menem's speech of 25 October, 8 August 2001 the tribute of 13 June 2001 — and all of it is here, notes included (86 rows, 15,798 words), because none of it was said or happened that day; the labels it was printed under are not kept. `reference/senado/inserted_debates.csv` lists them with the evidence. They were found by comparing every speech against every other sitting, so a reprint of a sitting the portal no longer serves could still be missed. Inserted matter is also found outside `other`: appendices printed past the closing formula are `furniture` (page-matter rows over 300 characters number 6,541 and hold 2.4 million words), and 492 notes run over 200 characters (31,134 words), a document the page printed as a note, such as a work plan. |
+| `text` | The words themselves, as printed. Spelling, punctuation and the edition's own mistakes are preserved: where a page misspells a senator's surname, so does this. No passage starts or ends in a space. |
+| `event_type` | Only for notes. `vote` (41,365), `unspecified` (13,729), `incident` (6,165, disorder in the chamber), `pause` (2,397), `timestamp` (2,209, the clock time the record prints), `stage` (1,823, someone entering, leaving or taking the chair), `applause` (1,430), `laughter` (172). From 0.5.0 a note printed on its own line is one row, so two notes in the same italic run no longer share one. From 0.5.1 a bracketed note set inside a speaker's paragraph — "…os lo demanden. (Aplausos.)" — is part of that speech and not a row of its own, which is why applause and laughter are far fewer than the notes the page prints: most of them are printed inside somebody's sentence. From 0.5.2 a "(Lee:)" printed right after a secretary's label is his turn and not a note, as the HTML half has always had it. |
 | `seq` | Position within the sitting. Sorting by it gives the order the words were printed in, which is the order they were spoken. |
 | `pages` | The page or pages of the PDF the passage came from, as a list, counted as positions in the file from 1 — not the number printed in the page's running header, which can be lower where the cover and contents pages are not numbered (on 7 May 2025, file page 86 prints "Pág. 84"). Open the PDF at this position to find the passage. Empty for the HTML era, which has no pages. |
 
@@ -95,7 +95,7 @@ To get from a label to a person, join `speakers.parquet` on
 | `source_format` | `pdf` or `html` — which of the two the chamber served for that sitting. The HTML export covers most of 1998–2003 and carries no pagination, so `pages` is empty and `size` is null on those rows; do not read an empty `pages` as a parsing failure. |
 | `source_sha256` | That file's checksum, so a passage can be traced to the exact bytes it came from. Called `pdf_sha256` up to release 0.4.37. |
 | `parser_version` | Which version of the parser produced this row. |
-| `font`, `font_style`, `size` | The typeface the passage was printed in. Kept because the parser's decisions rest on it and they should be re-checkable, not because they carry meaning. On HTML rows `font` and `size` are null and `font_style` comes from the markup, which states outright what the PDF side has to infer; it is set on the HTML era's speech and notes and null on its headings, page matter and `other` rows (73,205 rows in all). Every PDF row has all three. |
+| `font`, `font_style`, `size` | The typeface the passage was printed in. Kept because the parser's decisions rest on it and they should be re-checkable, not because they carry meaning. On HTML rows `font` and `size` are null and `font_style` comes from the markup, which states outright what the PDF side has to infer; it is set on the HTML era's speech and notes and null on its headings, page matter and `other` rows (73,213 rows in all). Every PDF row has all three. |
 
 ## The speakers table
 
@@ -135,8 +135,8 @@ and grouping labels into four party families — Peronist / Justicialist, Radica
 Cambiemos / JxC, La Libertad Avanza, and provincial and other alliances — as
 `family()` in `scripts/map_blocs.py` defines them:
 
-- The two are written the same way, ignoring case, in **19.7%**.
-- They are written differently but mean the same political camp in **63.8%** —
+- The two are written the same way, ignoring case, in **19.6%**.
+- They are written differently but mean the same political camp in **63.9%** —
   the peronist bloc renaming itself, mostly.
 - They fall in different camps in **16.5%**, and this is the part that matters:
   nearly two thirds of it is a senator elected on a **provincial alliance** who sits
@@ -204,7 +204,7 @@ chair from anything about party positions.
 
 | Value | Share of speech | What it means |
 | --- | --- | --- |
-| `matched_senator` | 35.8% | A named senator, resolved against the roster and their mandate dates. A label printed as a senator-elect's ("Sr. Senador electo Altuna"), mostly the oath at a preparatory sitting, resolves to the incoming senator up to 300 days before the mandate starts: 394 of the 426 such (sitting, label) pairs, whose caucus is the one observed nearest that date. |
+| `matched_senator` | 35.8% | A named senator, resolved against the roster and their mandate dates. A label printed as a senator-elect's ("Sr. Senador electo Altuna"), mostly the oath at a preparatory sitting, resolves to the incoming senator up to 300 days before the mandate starts: 394 of the 411 such (sitting, label) pairs, whose caucus is the one observed nearest that date. |
 | `matched_senator_chair` | 31.4% | A senator speaking from the chair, where the page names them. Where two senators of the same surname sat at once, the sitting's own cover page decides which of them held the gavel that day. |
 | `office_only` | 21.8% | **A chamber office speaking under its bare title** — "Sr. Presidente", "Sr. Secretario", with no surname printed. This is how the record was printed before about 2016. **These are deliberately left without a person.** The chair changes hands during a sitting and the page does not say who holds it; the cover page names two or more of the officers who may take the chair (the vice-president of the nation, the provisional president, the vice-presidents) in 397 of the 665 files whose cover names any of them, counting the cover entries of `reference/senado/authorities_observed.csv` whose office is a vice-presidency or the provisional presidency. Any name here would be a guess. Five labels that DO print a name land here too, because the name is left over from an earlier year: nobody of that surname held any office or seat on the day, and someone who had one before did — "Sr. Presidente (Maqueda)" on routine agenda items of three 2003 sittings, after Maqueda left for the Supreme Court. Such a label says the chair spoke and nothing more. |
 | `matched_authority` | 9.9% | Someone holding a national or chamber office, resolved against a hand-compiled table of office-holders and the office-holders each sitting's cover page names. |
@@ -400,7 +400,7 @@ different thing, and the strongest number rests on the smallest sample.
   wrong places. Both scores are the same on it.
   **Read the interval, not the point.** A perfect 310 still puts the 95%
   interval on the PDF recall at 0.988 to 1.000, those 505 turns are 0.21% of
-  the 244,625 speech passages in the corpus, and 44 of the 72 PDF pages, carrying 235 turns, are
+  the 244,624 speech passages in the corpus, and 44 of the 72 PDF pages, carrying 235 turns, are
   before 2016, which is where the printed conventions least resemble today's.
   Neither set checks the order the turns came out in.
   One PDF page is retired from the scoring and kept in full under
@@ -414,11 +414,11 @@ different thing, and the strongest number rests on the smallest sample.
 - **All 817 parsed sittings audited against their source files**: no page
   apparatus inside a turn and no turn carrying a second speaker's label outside
   the three scans, no sitting whose output is longer than the page it came from,
-  153,433 blocks probed for being findable in the file they came from, 81
-  not located (0.053%) and 69 of those in the two scans — 12 of 153,172
+  153,431 blocks probed for being findable in the file they came from, 81
+  not located (0.053%) and 69 of those in the two scans — 12 of 153,170
   (0.008%) once the scans are set aside, and no sitting above 1% — and every
   turn checked for beginning and ending the way speech does: 6 passages of
-  244,625 open in lower case under a new speaker, each on a whole word, and
+  244,624 open in lower case under a new speaker, each on a whole word, and
   every one of them is printed that way.
 - **6,819 turns read blind** across thirteen rounds on 691 sittings, each read by a
   language model from the rendered page (for the HTML era, the source file),

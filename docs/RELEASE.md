@@ -132,7 +132,7 @@ uv run scripts/check_blind_reads.py
   "Sra. González MT" — two senators the record disambiguates by initials — as
   one person.
 
-  264 records cannot be re-asked because the page prints their words under
+  265 records cannot be re-asked because the page prints their words under
   two different names, and the record says which page and which words but
   never which of two identical turns the reader was looking at. Those are
   reported as unaskable, not as holding. So are the passages a repair has

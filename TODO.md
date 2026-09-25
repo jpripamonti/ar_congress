@@ -3097,9 +3097,15 @@ signatures, all read by eye). PDF parser 0.5.8, HTML 0.5.11-html.
       spaces stripped from every text; "369 of the 665" cover pages is 397;
       senators-elect, inserted matter in notes and page matter, and "most of
       1998-2003" documented. Build: 440,445 rows, 244,625 speech passages,
-      6,453 unattributed (1.47%); gold 310/310, 82/82, HTML 195/195;
-      blind reads none reattributed (304 cannot be re-asked); audit 12 to
-      look at. Bundle: 1,251 files, 95 MB, sha256 b4e851da….
+      gold 310/310, 82/82, HTML 195/195; blind reads none reattributed (304
+      cannot be re-asked); audit 12 to
+      look at. A third Opus agent checking those fixes found a third reprint
+      (Menem's speech of 25 October 2000 reprinted on 15 November) and the
+      notes inside reprints still counted as that day's events; both fixed,
+      and the chair's label of 11 June 2003 kept as printed. Build: 440,445
+      rows, 244,624 speech passages, 69,290 notes, 6,461 unattributed
+      (1.47%); gold unchanged; blind reads none reattributed; audit 13 to look
+      at. Bundle: 1,251 files, 95 MB, sha256 2562fe3e….
 - [ ] **For the owner**: make the GitHub repository public (the bundle links
       to it and cites it as evidence), then tag v0.5.8, upload the bundle and
       its .sha256 to the Zenodo draft, and publish.

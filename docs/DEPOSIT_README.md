@@ -15,11 +15,11 @@ HTML export and are read by `scripts/parse_html.py`, at 0.5.11-html.
 | --- | --- |
 | Sittings | 818 held, 817 parsed |
 | Passages | 440,445 rows |
-| Speech | 244,625 passages, 25.29 million words |
-| Stenographer's notes, typed | 69,297 |
+| Speech | 244,624 passages, 25.28 million words |
+| Stenographer's notes, typed | 69,290 |
 | All rows together | 29.63 million words, the rest being headings and page matter kept only for tracing (`type == "furniture"`) |
-| Passages the parser could not attribute | 6,453 (1.47%), most of them matter inserted into the record without being spoken |
-| (sitting, label) pairs | 23,917, of which 22,704 resolve to a person |
+| Passages the parser could not attribute | 6,461 (1.47%), most of them matter inserted into the record without being spoken |
+| (sitting, label) pairs | 23,918, of which 22,705 resolve to a person |
 
 Coverage is complete from 2002 onward: every sitting the portal lists for those
 years is here. Before that it is partial, because the portal lists the sittings
@@ -150,7 +150,7 @@ parsers, `extract_authorities.py`, `check_gold.py`, `eval_gold_html.py` and
 the source checks of `audit_parse.py` need the sources.
 
 The audit is a list of things to look at, not a pass or fail: it exits with
-status 1 whenever it lists anything, and on this build it lists 12 — among
+status 1 whenever it lists anything, and on this build it lists 13 — among
 them the six turns that open in lower case, the few labels printed with a
 stray parenthesis and the two sittings whose opening note gives the wrong
 year, each of them printed that way on the page. The checks marked "must be
@@ -206,10 +206,10 @@ reproduce these numbers.
   outside the scans (8 inside them), no
   document yielding more text than it prints (0 of 817), and every one of
   14,443 labels of the HTML era's commonest shape — a bold run that begins at
-  the heading above — attributed to its own speaker. 153,433 passages were
+  the heading above — attributed to its own speaker. 153,431 passages were
   probed against the source and 81 could not be located (0.053%), 69 of them
-  in the two scans; with the scans set aside it is 12 of 153,172 (0.008%), no
-  sitting above 1%. 6 passages of 244,625 open in lower case under a new
+  in the two scans; with the scans set aside it is 12 of 153,170 (0.008%), no
+  sitting above 1%. 6 passages of 244,624 open in lower case under a new
   speaker, each on a whole word, and every one is printed that way.
 - **6,819 turns read blind** across thirteen rounds, each by a language model
   reading the rendered page (for the HTML era, the source file) and never
@@ -249,15 +249,15 @@ reproduce these numbers.
   `2001-11-21_r72`, `2001-11-29_r74`, and the 1997 tribunal, which yields
   nothing at all. Their text is unreliable; `parse_stats.csv` flags them
   (`scanned_page_share`), and they should be excluded from text analysis.
-- **6,453 passages carry no speaker, and most of them were never spoken.** In
+- **6,461 passages carry no speaker, and most of them were never spoken.** In
   the HTML era 92% of those words stand in a run the page opens with a note
   ending "…es el siguiente:" —
   speeches handed in for the record and never delivered, and the bills read
   into it. In the PDF era 89% of those words stand in a run the page opens
   with a note ending "…es el siguiente:" or "…son los siguientes:" — bills,
-  work plans, lists of titles. Among them are two earlier debates a sitting
-  reprints under their original speakers' labels (61 passages, listed in
-  `reference/senado/inserted_debates.csv`). Inserted matter also sits in the
+  work plans, lists of titles. Among them are an earlier speech and two
+  earlier debates that three sittings reprint under their original speakers'
+  labels (86 rows, listed in `reference/senado/inserted_debates.csv`). Inserted matter also sits in the
   page matter, where the appendices go, and in a few long notes: anyone
   after speeches handed in for the record should look there too.
 - **19 printed speaker labels still open a turn that leaves no row.** 6 are in

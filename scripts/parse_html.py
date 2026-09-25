@@ -506,6 +506,8 @@ def broken_label(para):
     label, speech = tidy(label, text[match.end():])
     if not re.search(r"\w", speech):
         return None
+    if slip:
+        label = label.replace("(", "", 1)   # as printed; the resolver reads it
     return label, speech
 
 
@@ -907,9 +909,11 @@ def inserted_debates():
 
     Two sittings reprint a whole earlier exchange under its original speakers'
     labels, as an insertion a senator asked for: on 23 February 2000
-    Villarroel's part in the debate of 6/7 May 1998, on 8 August 2001 the
-    tribute of 13 June 2001. The labels are real but the words were not said
-    that day, so they are nobody's speech in this sitting. Nothing on the page
+    Villarroel's part in the debate of 6/7 May 1998, on 15 November 2000
+    Menem's speech of 25 October, on 8 August 2001 the tribute of 13 June
+    2001. The labels are real but the words were not said that day, so they
+    are nobody's speech in this sitting, and the notes printed inside them
+    are not that day's events. Nothing on the page
     closes the reprint, so each is listed in
     reference/senado/inserted_debates.csv by its first and last words, with
     the evidence.
@@ -924,7 +928,7 @@ def inserted_debates():
 
 
 def unattribute_inserted_debate(blocks, stem):
-    """The speech of a listed reprint, as unattributed text."""
+    """The speech and notes of a listed reprint, as unattributed text."""
     for row in inserted_debates():
         if not stem.startswith(row["session_id"] + "_"):
             continue
@@ -934,11 +938,10 @@ def unattribute_inserted_debate(blocks, stem):
                     if blocks[i].get("text", "").strip().startswith(row["last_words"])
                     or row["last_words"] in blocks[i].get("text", ""))
         for block in blocks[first:last + 1]:
-            if block.get("type") == "speech":
-                block.update(type="other", speaker=None, turn_id=None)
+            if block.get("type") in ("speech", "event"):
+                block.update(type="other", speaker=None, turn_id=None,
+                             event_type=None)
                 block.pop("font_style", None)
-            elif block.get("type") == "event":
-                block["turn_id"] = None
         # the reprint's turns are gone, and the turns after it close up, so
         # every turn number still leaves a row
         order = {}
