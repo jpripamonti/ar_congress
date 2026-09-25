@@ -232,10 +232,11 @@ committed.
 
 ## Depositing it on Zenodo
 
-The upload is done by hand. Zenodo can take a release straight from GitHub, but
-only from a public repository, and this one is private; `.zenodo.json` in the
-repository root is written for the day that changes, and until then it is the
-record of what to type into the form.
+The upload is done by hand. Zenodo can take a release straight from GitHub,
+and the repository has been public since 0.5.8, but the bundle is built from
+data that is not in Git, so a GitHub release would not carry it.
+`.zenodo.json` in the repository root is the record of what to type into the
+form.
 
 **Reserve the DOI before publishing, not after.** The upload form has a Reserve
 DOI button, which hands out the version's DOI while the deposit is still a

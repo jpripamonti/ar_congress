@@ -3111,9 +3111,11 @@ signatures, all read by eye). PDF parser 0.5.8, HTML 0.5.11-html.
       public (Opus agent): no secrets, no private personal data, no source
       files ever committed. Fixed: LICENSE-DATA now excludes the Senate's
       list of sitting senators too; DATA.md no longer describes one machine.
-- [ ] **For the owner**: make the GitHub repository public (the bundle links
-      to it and cites it as evidence), then tag v0.5.8, upload the bundle and
-      its .sha256 to the Zenodo draft, and publish.
+- [x] Repository made public, with its description, homepage (the concept
+      DOI) and topics.
+- [ ] Tag v0.5.8 (push that tag alone: the local backup tag and Codex refs
+      must never be pushed), then upload the bundle and its .sha256 to the
+      Zenodo draft and publish.
 
 ## Explicitly not building
 
