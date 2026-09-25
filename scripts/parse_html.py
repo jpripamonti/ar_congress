@@ -907,14 +907,14 @@ def consolidate(blocks):
 def inserted_debates():
     """Earlier debates reprinted inside a later sitting's record.
 
-    Two sittings reprint a whole earlier exchange under its original speakers'
-    labels, as an insertion a senator asked for: on 23 February 2000
-    Villarroel's part in the debate of 6/7 May 1998, on 15 November 2000
+    Three sittings reprint an earlier speech or exchange under its original
+    speakers' labels, as an insertion a senator asked for: on 23 February
+    2000 Villarroel's part in the debate of 6/7 May 1998, on 15 November 2000
     Menem's speech of 25 October, on 8 August 2001 the tribute of 13 June
     2001. The labels are real but the words were not said that day, so they
     are nobody's speech in this sitting, and the notes printed inside them
-    are not that day's events. Nothing on the page
-    closes the reprint, so each is listed in
+    are not that day's events. Nothing on the page closes the reprint, so
+    each is listed in
     reference/senado/inserted_debates.csv by its first and last words, with
     the evidence.
     """
