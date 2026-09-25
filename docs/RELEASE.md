@@ -185,11 +185,11 @@ The terms and the exact list of what they cover are in
 A citation should name the corpus, its version, the span it covers and where it
 lives, for example:
 
-> Ripamonti, J. P. (2026). *Argentine Senate stenographic transcripts, 2000–2024:
-> a speaker-attributed corpus* (version 0.4.37) [Data set]. Zenodo.
-> <https://doi.org/10.5281/zenodo.22661020>
+> Ripamonti, J. P. (2026). *Argentine Senate stenographic transcripts, 1998–2026:
+> a speaker-attributed corpus* (version 0.5.8) [Data set]. Zenodo.
+> <https://doi.org/10.5281/zenodo.22959187>
 
-Version 0.4.37 has its own DOI, above. To cite the corpus rather than one
+Version 0.5.8 has its own DOI, above. To cite the corpus rather than one
 release of it, use the concept DOI, which always resolves to the latest:
 <https://doi.org/10.5281/zenodo.22661019>.
 

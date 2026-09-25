@@ -315,9 +315,10 @@ Three kinds of material are in here, under different terms.
 
 > Ripamonti, J. P. (2026). *Argentine Senate stenographic transcripts,
 > 1998–2026: a speaker-attributed corpus* (version 0.5.8) [Data set]. Zenodo.
-> <https://doi.org/10.5281/zenodo.22661019>
+> <https://doi.org/10.5281/zenodo.22959187>
 
-That is the concept DOI, which always resolves to the latest version. Cite it
-unless the exact bytes matter.
+That is this version's DOI, for when the exact bytes matter. To cite the corpus
+rather than one release of it, use the concept DOI, which always resolves to
+the latest version: <https://doi.org/10.5281/zenodo.22661019>.
 
 [CITATION.cff](CITATION.cff) carries the same in machine-readable form.
