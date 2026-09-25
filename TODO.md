@@ -3085,12 +3085,24 @@ signatures, all read by eye). PDF parser 0.5.8, HTML 0.5.11-html.
     108/108, blind reads none reattributed, audit 13 things to look at.
     Bundle rebuilt and verified on a clean extraction: 1,250 files, 95 MB
     packed, sha256 6815859c…; checksums, no personal path, loading example.
-- [ ] DOI and tag v0.5.8.
-- [ ] **For the owner**: make the GitHub repository public, reserve the
-      version DOI on Zenodo (New version on the published record); then the
-      DOI goes into `CITATION.cff`, `docs/DEPOSIT_README.md`, `README.md`,
-      `docs/RELEASE.md` and the notes, the bundle is rebuilt, tagged, uploaded
-      and published.
+- [x] Version DOI reserved on Zenodo, 10.5281/zenodo.22959187, and put in
+      the five documents that carry the citation.
+- [x] An independent review before the deposit (two Opus agents: the bundle
+      as a stranger gets it, and 80 passages read against the sources, none
+      wrong). Fixed: two earlier debates reprinted as insertions and counted
+      as that day's speech (2000-02-23, 2001-08-08; 61 passages, listed in
+      `reference/senado/inserted_debates.csv`); two chair replies welded into
+      the turn before in the HTML (1998-05-13, 2003-06-11), and the audit's
+      glued-label check, which did not know the HTML's double hyphen; edge
+      spaces stripped from every text; "369 of the 665" cover pages is 397;
+      senators-elect, inserted matter in notes and page matter, and "most of
+      1998-2003" documented. Build: 440,445 rows, 244,625 speech passages,
+      6,453 unattributed (1.47%); gold 310/310, 82/82, HTML 195/195;
+      blind reads none reattributed (304 cannot be re-asked); audit 12 to
+      look at. Bundle: 1,251 files, 95 MB, sha256 b4e851da….
+- [ ] **For the owner**: make the GitHub repository public (the bundle links
+      to it and cites it as evidence), then tag v0.5.8, upload the bundle and
+      its .sha256 to the Zenodo draft, and publish.
 
 ## Explicitly not building
 

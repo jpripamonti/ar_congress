@@ -9,9 +9,9 @@ title: >-
 abstract: >-
   Every stenographic record (versión taquigráfica) the Argentine Senate serves
   for its sittings from February 1998 to September 2026, parsed from the
-  chamber's own PDFs and, for 1998-2003, its HTML export into
-  speaker-attributed passages: 817 sittings, 440,443 rows, 244,684 passages of
-  speech and 69,297 typed stenographer's notes, 25.30 million words of speech.
+  chamber's own PDFs and, for most of 1998-2003, its HTML export into
+  speaker-attributed passages: 817 sittings, 440,445 rows, 244,625 passages of
+  speech and 69,297 typed stenographer's notes, 25.29 million words of speech.
   Each passage carries the printed speaker label, the senator it resolves to
   and the caucus that senator sat with on the day. The source files are not
   redistributed: a manifest identifies each one by SHA-256 and source URL, and

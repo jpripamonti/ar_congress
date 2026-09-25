@@ -122,7 +122,10 @@ FURNITURE = {
     "page-number dateline": re.compile(r"\bPág\.+\s*\d{1,4}\b"),
 }
 # A complete printed label — title, name, ". —" terminator — inside a turn.
-GLUED_LABEL = re.compile(r"(?<![A-Za-zÁÉÍÓÚÑ])(?:Sr|Sra|Srta)\.\s+[A-ZÁÉÍÓÚÑ][^.]{1,45}?\.\s*[–—−─]\s")
+# The dash is the typographic one in the PDFs and "-" or "--" in the HTML,
+# and a lower-case letter may sit right before the label where the typist
+# left out the full stop ("…católicaSr. PRESIDENTE (Menem).- Es correcto").
+GLUED_LABEL = re.compile(r"(?<![A-ZÁÉÍÓÚÑ])(?:Sr|Sra|Srta)\.\s+[A-ZÁÉÍÓÚÑ][^.]{1,45}?\.\s*(?:[–—−─]|--?)\s")
 
 
 def flatten(text):

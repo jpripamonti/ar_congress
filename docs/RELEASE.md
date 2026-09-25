@@ -17,7 +17,7 @@ is a decision about the release rather than an accident of a glob.
 | The passages, one file per sitting | `data/processed/senado/blocks/*.parquet` | The corpus itself. |
 | The resolved speakers | `data/processed/senado/speakers.parquet` | Turns a printed label into a person, and into the caucus they sat with. |
 | The parse record | `data/processed/senado/parse_stats.csv` | What the parser did to each sitting, counted, so every repair can be recomputed rather than trusted. |
-| The archived Senate pages | `data/raw/senado/bloques_archivados/`, `data/raw/senado/fichas_archivadas/` | Internet Archive captures of the bloc roster (2000–2004) and of senators' own pages (1997–1998). The Senate pages no longer exist, and the caucus before 2005 cannot be rebuilt without them. |
+| The archived Senate pages | `data/raw/senado/bloques_archivados/`, `data/raw/senado/fichas_archivadas/` | Internet Archive captures of the bloc roster (2000–2004) and of senators' own pages (February 1998). The Senate pages no longer exist, and the caucus before 2005 cannot be rebuilt without them. |
 | The reference tables | `reference/senado/` | Roster snapshots, caucus observations with their sources, hand-dated caucuses, observed authorities. |
 | The accuracy sets | `reference/gold/`, `reference/gold_html/` | The annotated PDF pages and HTML stretches the accuracy figures are measured on. |
 | The provenance manifest | `raw_data_manifest.csv` | Checksum, source URL, format and download time of every source file. |

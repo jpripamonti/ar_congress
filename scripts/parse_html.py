@@ -472,10 +472,21 @@ BARE_LABEL_RE = re.compile(
     r"\s*[.,]\s*[-–—]{1,2}[.,;:]*\s*")
 
 
+# The chair's label with the holder's opening parenthesis dropped: "<b>Sr.
+# Presidente </b>López Arias)<b>. -- </b>" (11 June 2003). Put it back, so the
+# label reads as the chair's and not as a senator called Presidente.
+MISSING_PAREN_RE = re.compile(
+    r"(?i:Sr|Sra)\.\s*(?i:president[ae])\s+(?=[A-ZÁÉÍÓÚÑ][^()]{1,40}\)\s*[.,]?\s*[-–—]{1,2})")
+
+
 def broken_label(para):
     """(label, speech) read off the plain text, where the runs hide the label."""
     text, mask = bold_mask(para)
     start = LEADING_JUNK_RE.match(text).end()
+    slip = MISSING_PAREN_RE.match(text, start)
+    if slip and mask[slip.start()]:
+        text = text[:slip.end()] + "(" + text[slip.end():]
+        mask = mask[:slip.end()] + [False] + mask[slip.end():]
     match = BROKEN_LABEL_RE.match(text, start)
     if match is None:
         bare = BARE_LABEL_RE.match(text, start)
@@ -503,9 +514,12 @@ def broken_label(para):
 # "…de la Unión Cívica Radical.<b>Sr. GENOUD.- </b>Señor presidente: rindo
 # este homenaje" (11 August 1999), which gave Genoud's 1,415 words to the
 # chair. Split there, as the page reads, when the label follows the end of a
-# sentence, ends in a dash, and carries some bold.
+# sentence, ends in a dash, and carries some bold. Or when the typist left
+# out the full stop too — "…eminentemente católica<b>Sr. PRESIDENTE (Menem).-
+# </b>Es correcto" (13 May 1998) — where the whole label is bold and the word
+# before it is not, which no emphasised word inside a sentence looks like.
 EMBEDDED_LABEL_RE = re.compile(
-    r"(?<=[.?!:…)»\"])\s*[-–—]?\s*(?=" + _HONORIFIC_LOOSE + ")")
+    r"(?<=[.?!:…)»\"a-záéíóúñ])\s*[-–—]?\s*(?=" + _HONORIFIC_LOOSE + ")")
 
 
 def slice_runs(runs, cut):
@@ -537,6 +551,9 @@ def split_embedded_labels(para):
             continue
         label = BROKEN_LABEL_RE.match(text, m.end())
         if label is None or not any(mask[label.start():label.end()]):
+            continue
+        if text[at - 1].isalpha() and (
+                mask[at - 1] or not all(mask[m.end():label.end("label")])):
             continue
         if not re.search(r"\w", text[label.end():]):
             continue
@@ -885,11 +902,61 @@ def consolidate(blocks):
     return merged
 
 
+def inserted_debates():
+    """Earlier debates reprinted inside a later sitting's record.
+
+    Two sittings reprint a whole earlier exchange under its original speakers'
+    labels, as an insertion a senator asked for: on 23 February 2000
+    Villarroel's part in the debate of 6/7 May 1998, on 8 August 2001 the
+    tribute of 13 June 2001. The labels are real but the words were not said
+    that day, so they are nobody's speech in this sitting. Nothing on the page
+    closes the reprint, so each is listed in
+    reference/senado/inserted_debates.csv by its first and last words, with
+    the evidence.
+    """
+    import csv
+    path = (Path(__file__).resolve().parents[1]
+            / "reference" / "senado" / "inserted_debates.csv")
+    if not path.exists():
+        return []
+    with path.open(encoding="utf-8") as fh:
+        return list(csv.DictReader(fh))
+
+
+def unattribute_inserted_debate(blocks, stem):
+    """The speech of a listed reprint, as unattributed text."""
+    for row in inserted_debates():
+        if not stem.startswith(row["session_id"] + "_"):
+            continue
+        first = next(i for i, b in enumerate(blocks)
+                     if b.get("text", "").strip().startswith(row["first_words"]))
+        last = next(i for i in range(first, len(blocks))
+                    if blocks[i].get("text", "").strip().startswith(row["last_words"])
+                    or row["last_words"] in blocks[i].get("text", ""))
+        for block in blocks[first:last + 1]:
+            if block.get("type") == "speech":
+                block.update(type="other", speaker=None, turn_id=None)
+                block.pop("font_style", None)
+            elif block.get("type") == "event":
+                block["turn_id"] = None
+        # the reprint's turns are gone, and the turns after it close up, so
+        # every turn number still leaves a row
+        order = {}
+        for block in blocks:
+            if block.get("turn_id") is not None:
+                order.setdefault(block["turn_id"], len(order) + 1)
+        for block in blocks:
+            if block.get("turn_id") is not None:
+                block["turn_id"] = order[block["turn_id"]]
+    return blocks
+
+
 def process_html(path):
     """Parse one HTML transcript. Returns (blocks, chapters, stats)."""
     paragraphs = read_paragraphs(Path(path))
     blocks, chapters, stats = classify(paragraphs)
     blocks = consolidate(blocks)
+    blocks = unattribute_inserted_debate(blocks, Path(path).stem)
     blocks, _ = split_embedded_notes(blocks)
     for block in blocks:
         if block.get("type") == "other":

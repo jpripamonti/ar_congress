@@ -3066,6 +3066,9 @@ def write_blocks(frame, path):
     """Write one sitting's table under the shared schema."""
     import pyarrow as pa
     import pyarrow.parquet as pq
+    # no passage starts or ends in a space the layout left, so a match on the
+    # whole text — text == "(Lee:)" — finds every row that is only that
+    frame = frame.assign(text=frame["text"].str.strip())
     table = pa.Table.from_pandas(frame, schema=blocks_schema(), preserve_index=False)
     pq.write_table(table.replace_schema_metadata(None), path)
 

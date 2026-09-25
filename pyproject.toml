@@ -3,9 +3,11 @@ name = "ar-congress"
 version = "0.5.8"
 description = "Speaker-attributed corpus of Argentine Senate stenographic transcripts (versiones taquigráficas), 1998–2026: acquisition and parsing"
 requires-python = ">=3.13,<3.14"
-# Versions pinned to the Jan 2025 environment the parsing heuristics were
-# calibrated against (recovered from the old .venv dist-info). pdfplumber's
-# char-level extraction output changes across versions — do not bump casually.
+# Versions pinned to the environment the parsing heuristics were calibrated
+# against: the Jan 2025 one (recovered from the old .venv dist-info), plus
+# pyarrow, which writes every sitting's table and is pinned exactly since
+# 0.5.8. pdfplumber's char-level extraction output changes across versions —
+# do not bump casually.
 dependencies = [
     "pdfplumber==0.11.5",
     "pandas==2.2.3",

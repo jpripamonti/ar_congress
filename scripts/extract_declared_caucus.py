@@ -61,7 +61,7 @@ DECLARED = [
      "en nombre de mi bloque, que los señores senadores del justicialismo nos sentimos"),
     ("1998-04-01_r06", 280, "sen:31", "MOVIMIENTO POPULAR FUEGUINO", "propia",
      "el bloque del Movimiento Popular Fueguino, a través de mi persona"),
-    ("1998-05-13_r15", 236, "sen:42", "MOVIMIENTO POPULAR NEUQUINO", "propia",
+    ("1998-05-13_r15", 237, "sen:42", "MOVIMIENTO POPULAR NEUQUINO", "propia",
      "en nombre del bloque del Movimiento Popular Neuquino"),
     ("1998-05-20_r18", 947, "sen:244", UCR, "propia",
      "en nombre del bloque de senadores de la Unión Cívica Radical adelanto nuestro"),

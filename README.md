@@ -33,8 +33,8 @@ as its own HTML export for most of 1998–2003; both are read here.
   170 sittings. Read it from
   the raw file: the parser drops the masthead as page apparatus, so parsed text
   puts every PDF at "not provisional" when 261 of 605 are.
-- Corpus parsed: 244,684 speaker-attributed speech blocks and 69,297 typed
-  stenographer events in 440,443 rows over 817 sittings, as per-session Parquet
+- Corpus parsed: 244,625 speaker-attributed speech blocks and 69,297 typed
+  stenographer events in 440,445 rows over 817 sittings, as per-session Parquet
   under `data/processed/senado/`. 25.3 million words of attributed speech, of
   which the HTML side contributes 5.9 million. The PDF side is parser 0.5.8 and
   the HTML side `scripts/parse_html.py` at 0.5.11-html; the two share the speaker
@@ -44,7 +44,7 @@ as its own HTML export for most of 1998–2003; both are read here.
   November 2001 joined the corpus in 0.4.38, when the front-matter cut learned
   to recognise an opening whose dash the file had set in roman with the page
   number before it. Text that
-  cannot be attributed to a speaker is 1.45% of the corpus's rows, and in the HTML era
+  cannot be attributed to a speaker is 1.47% of the corpus's rows, and in the HTML era
   92% of those words stand in a run the page opens with a note ending "…es el
   siguiente:" — speeches handed in for the record and never delivered, and the
   bills read into it.
@@ -314,12 +314,12 @@ as its own HTML export for most of 1998–2003; both are read here.
   (`scripts/audit_parse.py`): outside the two scans no turn carries a second
   speaker's label (8 do inside them), no label
   is absorbed by the section title above it, no page apparatus leaks into speech
-  outside the three scans, no text is written out twice, 153,470 blocks are
+  outside the three scans, no text is written out twice, 153,433 blocks are
   probed for being in the file they came from and 81 are not located (0.053%),
-  69 of them in the two scans — 12 of 153,209 (0.008%) once the scans are set
-  aside, and no sitting above 1% — 7 passages of 244,684 open in lower case
+  69 of them in the two scans — 12 of 153,172 (0.008%) once the scans are set
+  aside, and no sitting above 1% — 6 passages of 244,625 open in lower case
   under a new speaker, each on a whole word, and every one of them is printed
-  that way, and a median 82.2% of each
+  that way, and a median 82.1% of each
   document's printed text is kept (the rest — contents pages, attendance rolls,
   appendices — is dropped by design). Three sittings are scans with OCR text and
   should be excluded from any text analysis; the parser flags them.
@@ -467,8 +467,8 @@ as its own HTML export for most of 1998–2003; both are read here.
   [105 of 115](reference/verification/blind_read_115_0418.csv) on nine
   samples that do not overlap, spread across every year of the span. Re-asking
   all thirteen rounds is what makes them a check rather than a record: of the
-  6,819 records, 6,516 still resolve to the person the round named and 303
-  cannot be re-asked — 264 quote words the page prints under more than one
+  6,819 records, 6,515 still resolve to the person the round named and 304
+  cannot be re-asked — 265 quote words the page prints under more than one
   name, so the record cannot say which turn the reader meant; 33 are passages
   a repair has since moved out of speech; five quote a passage too damaged to
   locate; one has no words recorded — and none resolves to anybody else.
@@ -499,7 +499,7 @@ as its own HTML export for most of 1998–2003; both are read here.
   changes hands during a sitting and the page does not say who holds it, so
   any name would be a guess; the sitting's own cover page names two or more
   of the officers who may take the chair (a vice-presidency or the
-  provisional presidency) in 369 of the 665 files whose cover names any. They are marked as
+  provisional presidency) in 397 of the 665 files whose cover names any. They are marked as
   office-known-person-unstated. Another 0.9% is correctly out of scope —
   parties and witnesses at the impeachment trials, deputies, ministers of
   the national executive, foreign heads of state. **Genuine lookup failures
@@ -510,7 +510,7 @@ as its own HTML export for most of 1998–2003; both are read here.
   office's outgoing and incoming holder are both in window.
 - The era that was missing now resolves as well as the rest: **0.063% of the
   HTML era's speech blocks are unresolved — unmatched or ambiguous — against
-  0.065% of the PDF era's** (54 of 85,757 and 104 of 158,927), where it stood
+  0.065% of the PDF era's** (54 of 85,698 and 104 of 158,927), where it stood
   at 3.4% when the resolution first ran over it. Getting there took the sittings' own cover
   pages, which had never been read for 1998–2003 — they name the chamber's
   secretaries, whom the labels cite by surname alone, and they name which
