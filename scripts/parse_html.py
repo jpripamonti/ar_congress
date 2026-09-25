@@ -30,7 +30,8 @@ from html.parser import HTMLParser
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from parse import SPEAKER_RE, classify_event, strip_label_residue, write_blocks  # noqa: E402
+from parse import (DOC_FOLLOWS_RE, SIGNOFF_RE, SPEAKER_RE, classify_event,  # noqa: E402
+                   split_embedded_notes, strip_label_residue, write_blocks)
 from provenance import decode_html  # noqa: E402
 from session_kind import convened_as_for, quorum_failed_for, session_kind_for  # noqa: E402
 
@@ -179,6 +180,8 @@ class TranscriptHTML(HTMLParser):
         self._link = 0
         self._link_chars = 0
         self._chars = 0
+        self.small = 0
+        self._small_chars = 0
 
     # -- paragraph handling -------------------------------------------------
     def _flush(self):
@@ -195,8 +198,11 @@ class TranscriptHTML(HTMLParser):
             "after_rule": self.rules_seen > 0,
             # A paragraph that is only a link is navigation, not speech.
             "link_only": self._chars > 0 and self._link_chars >= self._chars,
+            # set in a smaller type, as the chamber printed the text of an
+            # insertion: <FONT SIZE=-1>
+            "small": self._chars > 0 and self._small_chars >= 0.6 * self._chars,
         })
-        self._link_chars = self._chars = 0
+        self._link_chars = self._chars = self._small_chars = 0
 
     def handle_starttag(self, tag, attrs):
         tag = tag.lower()
@@ -212,9 +218,12 @@ class TranscriptHTML(HTMLParser):
         style = " ".join(v or "" for k, v in attrs if k.lower() == "style")
         bold = int(tag in BOLD_TAGS or bool(CSS_BOLD_RE.search(style)))
         italic = int(tag in ITALIC_TAGS or bool(CSS_ITALIC_RE.search(style)))
+        size = " ".join(v or "" for k, v in attrs if k.lower() == "size").strip()
+        small = int(tag == "font" and size in ("-1", "-2", "1", "2"))
         self.bold += bold
         self.italic += italic
-        self._stack.append((tag, bold, italic))
+        self.small += small
+        self._stack.append((tag, bold, italic, small))
         # Centring belongs to the paragraph this tag OPENS, and is cleared at
         # the next flush rather than at a closing tag: these files use <p> as a
         # separator and never close it, so a depth counter set here would stay
@@ -244,9 +253,10 @@ class TranscriptHTML(HTMLParser):
         # unclosed, so an unmatched close is ignored rather than trusted.
         for i in range(len(self._stack) - 1, -1, -1):
             if self._stack[i][0] == tag:
-                _, bold, italic = self._stack.pop(i)
+                _, bold, italic, small = self._stack.pop(i)
                 self.bold = max(0, self.bold - bold)
                 self.italic = max(0, self.italic - italic)
+                self.small = max(0, self.small - small)
                 break
 
         if tag == "center":
@@ -284,6 +294,8 @@ class TranscriptHTML(HTMLParser):
         self._chars += len(text.strip())
         if self._link:
             self._link_chars += len(text.strip())
+        if self.small:
+            self._small_chars += len(text.strip())
 
     def close(self):
         super().close()
@@ -573,6 +585,67 @@ def unweld(para):
     return head, tail
 
 
+# A note that says a text is read out: what follows is the text, read by the
+# Secretariat, not the words of whoever spoke before the note.
+VOCATIVE_RE = re.compile(r"\s*Se[ñn]or[a]?\s+president[ae]\b", re.IGNORECASE)
+READ_OUT_RE = re.compile(r"^[\W_]*(?:Se\s+lee|Lee)\b", re.IGNORECASE)
+
+
+def speech_then_note(para):
+    """A sentence in roman and the note that follows it, as two parts.
+
+    "En primer lugar anuncio que el Estado argentino suspenderá el pago de
+    la deuda externa. (Aplausos prolongados…)" (22 December 2001) is one
+    paragraph: the words are roman and only the note is italic. Read whole,
+    it was an applause note and the announcement nobody's. Only where the
+    roman part is a finished sentence and the italic part opens with the
+    note's bracket; a book title in italics after "Libro " is neither.
+    """
+    runs = [r for r in para["runs"] if r["text"].strip()]
+    lead = ""
+    for i, run in enumerate(runs):
+        if run["style"] in ("italic", "bold-italic"):
+            break
+        lead += run["text"]
+    else:
+        return None
+    rest = "".join(r["text"] for r in runs[i:])
+    if lead.rstrip().endswith("("):
+        lead, rest = lead.rstrip()[:-1], "(" + rest
+    lead = re.sub(r"\s+", " ", lead).strip()
+    rest = re.sub(r"\s+", " ", rest).strip()
+    if (not rest.startswith("(") or re.match(r"[-–—(]", lead)
+            or len(re.findall(r"\w+", lead)) < 2
+            or not re.search(r"(?:[.!?…]|\.\.\.)$", lead)):
+        return None
+    return lead, rest
+
+
+def note_then_document(para):
+    """A note that a text follows, and the text, printed as one paragraph.
+
+    "-- *El texto del plan de labor parlamentaria es el siguiente:*Plan de
+    labor parlamentaria para la sesión…" (15 August 2001): the italic note
+    and the roman work plan share a paragraph, so the plan was read as the
+    chair's words.
+    """
+    runs = [r for r in para["runs"] if r["text"].strip()]
+    note = ""
+    for i, run in enumerate(runs):
+        if run["style"] in ("italic", "bold-italic"):
+            note += run["text"]
+            if DOC_FOLLOWS_RE.search(note):
+                rest = re.sub(r"\s+", " ", "".join(r["text"] for r in runs[i + 1:])).strip()
+                if re.search(r"\w", rest):
+                    return re.sub(r"\s+", " ", note).strip(), rest
+                return None
+        elif re.search(r"\w", run["text"]):
+            return None
+        else:
+            note += run["text"]
+    return None
+
+
 def classify(paragraphs):
     """Turn paragraphs into pipeline blocks, and collect the chapter titles."""
     blocks = []
@@ -594,10 +667,14 @@ def classify(paragraphs):
         paragraphs.extend(split_embedded_labels(para))
     stats["embedded_labels_split"] = len(paragraphs) - len(split)
 
-    for para in paragraphs:
+    after_note = False
+    inserted_by = None    # who asked for the text being inserted
+    inserted_small = False
+    for n, para in enumerate(paragraphs):
         text = paragraph_text(para)
         if not text:
             continue
+        follows_note, after_note = after_note, False
 
         # -- furniture, by the container it sits in -------------------------
         if para["multicol"] or para["listitem"] or not para["after_rule"]:
@@ -635,6 +712,7 @@ def classify(paragraphs):
         label = split_label(para) if para["center"] else None
         if label is not None and re.search(r"\w", label[1]):
             speaker, speech = label
+            inserted_by = None
             turn += 1
             blocks.append({
                 "type": "speech", "speaker": speaker, "turn_id": turn,
@@ -642,6 +720,7 @@ def classify(paragraphs):
             })
             continue
         if para["center"]:
+            inserted_by = None
             if CHAPTER_NUM_RE.match(text):
                 pending_number = text
                 blocks.append({"type": "heading", "text": text})
@@ -670,8 +749,56 @@ def classify(paragraphs):
             })
             continue
 
+        # -- the stenographers' director signing off ---------------------------
+        # "Rubén A. Marino" over "Director del Cuerpo de Taquígrafos": his
+        # name is page matter, not the last speaker going on after the time
+        # note.
+        later = next((paragraph_text(q) for q in paragraphs[n + 1:]
+                      if re.search(r"\w", paragraph_text(q))), "")
+        if len(text.split()) <= 5 and SIGNOFF_RE.match(later):
+            blocks.append({"type": "furniture", "text": text})
+            speaker = None
+            continue
+
+        parts = note_then_document(para)
+        if parts is not None:
+            note, document = parts
+            blocks.append({
+                "type": "event", "event_type": classify_event(LEADING_DASH_RE.sub("", note)),
+                "text": note, "capítulo": chapter, "font_style": "italic",
+            })
+            blocks.append({"type": "other", "text": document, "capítulo": chapter})
+            inserted_by, inserted_small = speaker, False
+            speaker = None
+            continue
+
+        # -- a sentence and the note after it, printed as one paragraph --------
+        parts = speech_then_note(para) if italic_share(para) >= 0.6 else None
+        if parts is not None:
+            said, note = parts
+            if speaker is not None:
+                blocks.append({
+                    "type": "speech", "speaker": speaker, "turn_id": turn,
+                    "text": said, "capítulo": chapter, "font_style": "normal",
+                })
+            else:
+                blocks.append({"type": "other", "text": said, "capítulo": chapter})
+            blocks.append({
+                "type": "event", "event_type": classify_event(note),
+                "text": note, "capítulo": chapter, "font_style": "italic",
+            })
+            stats["speech_then_note_split"] = stats.get("speech_then_note_split", 0) + 1
+            after_note = True
+            continue
+
         # -- a stenographer's note --------------------------------------------
-        # Set in italics, and it ends the turn it interrupts.
+        # Set in italics. The speaker goes on after it, as on the PDF side:
+        # "-- Ocupa la Presidencia el señor presidente provisional…" falls in
+        # the middle of Cafiero's speech (26 April 2000), and the 789 words
+        # after it are still his. Two kinds of note do end the turn: one that
+        # introduces a text printed into the record ("El texto de la
+        # inserción solicitada es el siguiente:"), and one that says a text is
+        # read out ("Se lee el expediente.").
         # A paragraph in italics is a note when it reads as one: it opens with
         # the note's dash or bracket, or says what notes say (a vote, applause,
         # the time). Otherwise it is words set in italics — a passage the
@@ -679,8 +806,12 @@ def classify(paragraphs):
         # Diez quoting the US Treasury secretary (5 March 2002), Avelín's song
         # titles (4 November 1998). Read as notes, they ended the turn and the
         # rest of the speech went to nobody.
+        # Italics straight after a note carry the note on: the delegations
+        # the note says came in, the senators it says voted (10 December
+        # 1999, 11 September 2002).
         if italic_share(para) >= 0.6 and (
-                re.match(r"\s*(?:[-–—(\[_]|\.\.)", text)
+                follows_note
+                or re.match(r"\s*(?:[-–—(\[_]|\.\.)", text)
                 or NOTE_OPENING_RE.match(text) or text.rstrip().endswith(")")
                 or classify_event(LEADING_DASH_RE.sub("", text)) != "unspecified"
                 or speaker is None):
@@ -689,8 +820,42 @@ def classify(paragraphs):
                 "event_type": classify_event(LEADING_DASH_RE.sub("", text)),
                 "text": text, "capítulo": chapter, "font_style": "italic",
             })
-            speaker = None
+            if DOC_FOLLOWS_RE.search(text) or READ_OUT_RE.match(text):
+                inserted_by, inserted_small = speaker, False
+                speaker = None
+            after_note = True
             continue
+
+        # a note printed in roman straight after another note: "-- La
+        # votación resulta afirmativa." then "-- El artículo 7° es de
+        # forma." (14 March 2002)
+        if follows_note and re.match(r"\s*-{1,2}\s*[A-ZÁÉÍÓÚÑ]", text):
+            blocks.append({
+                "type": "event",
+                "event_type": classify_event(LEADING_DASH_RE.sub("", text)),
+                "text": text, "capítulo": chapter, "font_style": "normal",
+            })
+            after_note = True
+            continue
+
+        # a lone full stop after a note is the note's own
+        if follows_note and not re.search(r"\w", text):
+            blocks.append({"type": "furniture", "text": text})
+            continue
+
+        # -- the speaker back after a text inserted in small type ---------------
+        # Melgarejo's insertion (24 November 1999) is set in a smaller type,
+        # and he goes on in the body type, unlabelled: "Señor presidente:
+        # quisiera terminar ahora con mi discurso." Only where the inserted
+        # text was small and this paragraph is not, and turns to the chair:
+        # an insertion can change type size halfway through (Berhongaray's,
+        # 2 June 1999).
+        if speaker is None and inserted_by is not None:
+            if para["small"]:
+                inserted_small = True
+            elif inserted_small and VOCATIVE_RE.match(text):
+                speaker, inserted_by = inserted_by, None
+                stats["resumed_after_insertion"] = stats.get("resumed_after_insertion", 0) + 1
 
         # -- the same speaker carrying on -------------------------------------
         if speaker is not None:
@@ -725,6 +890,10 @@ def process_html(path):
     paragraphs = read_paragraphs(Path(path))
     blocks, chapters, stats = classify(paragraphs)
     blocks = consolidate(blocks)
+    blocks, _ = split_embedded_notes(blocks)
+    for block in blocks:
+        if block.get("type") == "other":
+            block.pop("font_style", None)   # as every other HTML row nobody spoke
     blocks, _ = strip_label_residue(blocks)
     # counted as written: blocks_to_frame drops a block with no visible text
     blocks = [b for b in blocks if (b.get("text") or "").strip()]

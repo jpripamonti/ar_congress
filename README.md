@@ -33,8 +33,8 @@ as its own HTML export for most of 1998–2003; both are read here.
   170 sittings. Read it from
   the raw file: the parser drops the masthead as page apparatus, so parsed text
   puts every PDF at "not provisional" when 261 of 605 are.
-- Corpus parsed: 244,662 speaker-attributed speech blocks and 69,206 typed
-  stenographer events in 440,347 rows over 817 sittings, as per-session Parquet
+- Corpus parsed: 244,684 speaker-attributed speech blocks and 69,297 typed
+  stenographer events in 440,443 rows over 817 sittings, as per-session Parquet
   under `data/processed/senado/`. 25.3 million words of attributed speech, of
   which the HTML side contributes 5.9 million. The PDF side is parser 0.5.8 and
   the HTML side `scripts/parse_html.py` at 0.5.11-html; the two share the speaker
@@ -44,9 +44,10 @@ as its own HTML export for most of 1998–2003; both are read here.
   November 2001 joined the corpus in 0.4.38, when the front-matter cut learned
   to recognise an opening whose dash the file had set in roman with the page
   number before it. Text that
-  cannot be attributed to a speaker is 1.48% of the corpus's rows, and in the HTML era
-  83% of those words stand inside a run of inserted matter — speeches handed in
-  for the record and never delivered, and the bills read into it.
+  cannot be attributed to a speaker is 1.45% of the corpus's rows, and in the HTML era
+  92% of those words stand in a run the page opens with a note ending "…es el
+  siguiente:" — speeches handed in for the record and never delivered, and the
+  bills read into it.
 - **The portal serves one sitting twice, and the document says which one it
   is.** 29 October 2003 is listed as reunión 27 and as reunión 28, and both
   URLs return byte-identical files. The document's own masthead reads "28°
@@ -313,10 +314,10 @@ as its own HTML export for most of 1998–2003; both are read here.
   (`scripts/audit_parse.py`): outside the two scans no turn carries a second
   speaker's label (8 do inside them), no label
   is absorbed by the section title above it, no page apparatus leaks into speech
-  outside the three scans, no text is written out twice, 153,480 blocks are
+  outside the three scans, no text is written out twice, 153,470 blocks are
   probed for being in the file they came from and 81 are not located (0.053%),
-  69 of them in the two scans — 12 of 153,219 (0.008%) once the scans are set
-  aside, and no sitting above 1% — 7 passages of 244,662 open in lower case
+  69 of them in the two scans — 12 of 153,209 (0.008%) once the scans are set
+  aside, and no sitting above 1% — 7 passages of 244,684 open in lower case
   under a new speaker, each on a whole word, and every one of them is printed
   that way, and a median 82.2% of each
   document's printed text is kept (the rest — contents pages, attendance rolls,
@@ -502,14 +503,14 @@ as its own HTML export for most of 1998–2003; both are read here.
   office-known-person-unstated. Another 0.9% is correctly out of scope —
   parties and witnesses at the impeachment trials, deputies, ministers of
   the national executive, foreign heads of state. **Genuine lookup failures
-  are 0.1%** (157 blocks, unmatched or ambiguous): names misspelt or damaged by OCR,
+  are 0.1%** (158 blocks, unmatched or ambiguous): names misspelt or damaged by OCR,
   senators-elect, deputies at joint assemblies, outside speakers named by
   surname alone, four senators named Martínez and three named González
   whom nothing on the page separates, and the preparatory sittings where an
   office's outgoing and incoming holder are both in window.
-- The era that was missing now resolves as well as the rest: **0.062% of the
+- The era that was missing now resolves as well as the rest: **0.063% of the
   HTML era's speech blocks are unresolved — unmatched or ambiguous — against
-  0.065% of the PDF era's** (53 of 85,750 and 104 of 158,912), where it stood
+  0.065% of the PDF era's** (54 of 85,757 and 104 of 158,927), where it stood
   at 3.4% when the resolution first ran over it. Getting there took the sittings' own cover
   pages, which had never been read for 1998–2003 — they name the chamber's
   secretaries, whom the labels cite by surname alone, and they name which
@@ -599,7 +600,7 @@ below and the tables behind them.
   sitting that attests it, and those readings are marked `anachronistic`. What
   they get wrong is the NAME; this panel reads the FAMILY, and the notebook
   compares each mis-dated reading against the same senator's nearest attested
-  one: **1.0% of them land in a different family** (153 of 15,462 passages). Dropping them instead would
+  one: **1.0% of them land in a different family** (153 of 15,463 passages). Dropping them instead would
   cost 40% of the evidence in 2018–2019, and not at random — the readings the
   Senate back-labels are overwhelmingly peronist, so the cure would bias the
   panel against the family it mislabels.

@@ -453,6 +453,8 @@ STATS_COLUMNS = [
     "roman_notes_filed",
     "label_residue_stripped",
     "sentence_notes_rejoined",
+    "embedded_notes_split",
+    "labelled_words_spoken",
     "split_words_rejoined",
     "labels_rejoined",
     "label_spillover_split",
@@ -1702,6 +1704,88 @@ def split_welded_notes(blocks):
     return out, split
 
 
+# A note printed in roman inside a speech row: "…se va a votar. — Se
+# practica la votación." It opens with the note's dash after a finished
+# sentence (or after a gap the layout left), and runs to its own stop.
+EMBEDDED_NOTE_RE = re.compile(
+    r"(?:(?<=[.!?:…)\]»”\"])\s+|(?<=\S)\s{2,})"
+    r"((?:[─—–]|--)\s*[A-ZÁÉÍÓÚÑ][^─—–]{0,250}?(?:\.\.\.|[.:)…]))(?=\s|$)")
+# How a note opens. The subtype patterns search the whole text, and a bill's
+# article read out ("-- Toda elección se hará por votación nominal…") would
+# pass them; a note is known by its first words.
+EMBEDDED_NOTE_KIND_RE = re.compile(
+    r"^(?:Así se hace|Se\s+(?:lee|practica|práctica|vota|llama|continúa|reanuda)\b"
+    r"|La votación\b|En particular\b|Asentimiento\b|El resultado de la votación"
+    r"|(?:A|Son|Es)\s+la[s]?\s+\d|Luego de\b|Va\s?rios señores|Varias señoras"
+    r"|Murmullos|Manifestaciones|Aplausos|Risas|Contenido no inteligible"
+    r"|Ocupa(?:n)? la Presidencia|Puest[oa]s de pie"
+    r"|(?:El|La)\s+señor[a]?\s+senador[a]?\s[^.]{0,60}?\b(?:exhibe|muestra|realiza))")
+
+
+def split_embedded_notes(blocks):
+    """Take a note the page prints in roman out of the speech it sits in.
+
+    Where the typesetter set a note in the body face, the grouping pass reads
+    it as more of the speech around it: "Si no se hace uso de la palabra, se
+    va a votar. — Se practica la votación." went out as the chair's words in
+    some 120 rows of 2001-2024. The note becomes an event row of its own and
+    the speech around it stays with the speaker. Only a note that reads as
+    one — a vote, a time, a pause, voices, a stage direction, "Así se hace",
+    "Se lee…" — known by how it opens, and never an article of a bill read
+    out, which opens with the same dash ("Artículo 1°. – Créase…").
+
+    A note that says a text follows ("— El texto es el siguiente:", "–Los
+    órdenes del día en consideración son los siguientes:") ends the turn as
+    the italic one does: the list printed after it is nobody's speech.
+    """
+    out, split, cut_turn = [], 0, None
+    for b in blocks:
+        if b.get("type") != "speech":
+            out.append(b)
+            continue
+        if (cut_turn is not None and b.get("turn_id") == cut_turn
+                and not chair_resumes(b.get("speaker"), b["text"])):
+            row = dict(b, type="other", turn_id=None)
+            row.pop("speaker", None)
+            out.append(row)
+            continue
+        cut_turn = None
+        text, pieces, pos, cut = b["text"], [], 0, False
+        for m in EMBEDDED_NOTE_RE.finditer(text):
+            note = m.group(1).strip()
+            body = re.sub(r"^(?:[─—–]|--)\s*", "", note)
+            follows = bool(DOC_FOLLOWS_RE.search(note))
+            if not follows and not (EMBEDDED_NOTE_KIND_RE.match(body)
+                                    and len(body.split()) <= 30):
+                continue
+            pieces.append(("speech", text[pos:m.start(1)]))
+            pieces.append(("event", note))
+            pos = m.end(1)
+            if follows:
+                cut = True
+                break
+        if not pieces:
+            out.append(b)
+            continue
+        pieces.append(("other" if cut else "speech", text[pos:]))
+        for kind, piece in pieces:
+            if not re.search(r"\w", piece):
+                continue
+            row = dict(b, text=piece.strip())
+            if kind == "event":
+                row.update(type="event", turn_id=None, event_type=classify_event(
+                    re.sub(r"^(?:[─—–]|--)\s*", "", piece.strip())), font_style="normal")
+                row.pop("speaker", None)
+            elif kind == "other":
+                row.update(type="other", turn_id=None)
+                row.pop("speaker", None)
+            out.append(row)
+        split += sum(1 for kind, _ in pieces if kind == "event")
+        if cut:
+            cut_turn = b.get("turn_id")
+    return out, split
+
+
 def classify_blocks(blocks, body_size):
     """Assign preliminary types: furniture, event (+subtype), inline.
 
@@ -2559,6 +2643,21 @@ def _split_honorific(label):
     return None, label.strip()
 
 
+# What only the chair says, opening a paragraph: where the chair goes on
+# unlabelled after the list a note introduced — "En consideración en general
+# el conjunto de los proyectos de declaración." (15 August 2012) — the words
+# are the chair's again, not the list's.
+CHAIR_RESUME_RE = re.compile(
+    r"^\s*(?:En consideración\b|Si no se hace uso de la palabra|Se van? a votar\b"
+    r"|Quedan? (?:aprobad|sancionad|levantada)|Aprobad[oa]s?\.|Como no hay más)")
+
+
+def chair_resumes(held, text):
+    """Whether the chair, cut off by a list, takes the paragraph back."""
+    return bool(held and re.search(r"president", held, re.IGNORECASE)
+                and CHAIR_RESUME_RE.match(text))
+
+
 def identify_speakers(blocks, body_size):
     """Attribute speech to speakers; gate labels on ^Sr./Sra. patterns.
 
@@ -2573,6 +2672,7 @@ def identify_speakers(blocks, body_size):
     speech = 0
     noted = 0
     just_labelled = False   # the block before this one was a printed label
+    held = None        # the chair, while a list printed after a note runs
     paren_labels = {}  # "(Name)" seen inside a full label -> that full label
     i = 0
     while i < len(blocks):
@@ -2581,6 +2681,8 @@ def identify_speakers(blocks, body_size):
         opened = just_labelled
         just_labelled = False
         t = b["text"].strip()
+        if current:
+            held = None
         if b.get("type") in ("furniture", "event", "inline"):
             if b["type"] == "inline" and opened and current:
                 # italics straight after a printed label are that speaker's
@@ -2599,11 +2701,14 @@ def identify_speakers(blocks, body_size):
             # read: a bill, the work plan "sobre las bancas", a list of titles.
             # What follows is nobody's speech until a label is printed again.
             # Carrying the turn over it had put 685 passages, 300,036 words
-            # of 2001-2019, in the mouth of whoever spoke before the note —
-            # the HTML half has always ended the turn at a note.
-            if (b["type"] == "event" and not opened
-                    and DOC_FOLLOWS_RE.search(t)):
-                current = None
+            # of 2001-2019, in the mouth of whoever spoke before the note; the
+            # HTML half ends the turn at the same notes.
+            # The note can arrive filed as page matter, its dash and its words
+            # split onto two rows ("–" / "Los proyectos en consideración…
+            # son los siguientes:", 15 August 2012); it still ends the turn.
+            if (b["type"] in ("event", "furniture") and not opened
+                    and len(t) < 300 and DOC_FOLLOWS_RE.search(t)):
+                held, current = current, None
             if b["type"] == "event" and opened and current:
                 b["speaker"] = current
                 b["turn_id"] = turn_id
@@ -2715,6 +2820,8 @@ def identify_speakers(blocks, body_size):
                 annotated.append(b)
             continue
         if b["font_style"] == "normal" and is_body(b["size"], body_size):
+            if not current and chair_resumes(held, t):
+                current, held = held, None
             if current:
                 if turn_id != open_turn:
                     # the ". —" that closes the label is printed in its own
@@ -3146,6 +3253,38 @@ def process_pdf(pdf_path):
     # last, so that every pass above still sees a note as one block
     blocks, welded = split_welded_notes(blocks)
     stats["welded_notes_split"] = welded
+    # not in the scans, whose character recognition garbles the dashes and
+    # the words a note is known by
+    if stats.get("scanned_page_share", 0) < 0.5:
+        blocks, embedded = split_embedded_notes(blocks)
+        stats["embedded_notes_split"] = embedded
+
+    # Words in italics straight after a label are the labelled speaker's,
+    # not a note about them, unless they read as a note: bracketed, "(Lee:)",
+    # or announcing a text. Michetti's "Okay", said in English and so set in
+    # italics, was a note under her label 37 times, and the speech after it
+    # opened on ", va a hacer una aclaración"; so were Pampuro's "Aprobado."
+    # and the secretary reading out a letter (5 December 2007).
+    k, spoken = 0, 0
+    while k < len(blocks):
+        b = blocks[k]
+        body = re.sub(r"^[\s\-–—−─]+", "", b["text"])
+        if (b.get("type") == "event" and b.get("speaker")
+                and re.match(r"[¡¿\"“«\w]", body) and not re.match(r"Lee\b", body)
+                and not DOC_FOLLOWS_RE.search(body)):
+            b.update(type="speech", text=body.strip())
+            b.pop("event_type", None)
+            spoken += 1
+            nxt = blocks[k + 1] if k + 1 < len(blocks) else None
+            if (nxt is not None and nxt.get("type") == "speech"
+                    and nxt.get("speaker") == b["speaker"]
+                    and nxt.get("turn_id") == b.get("turn_id")):
+                b["text"] = rejoin(b["text"], nxt["text"].lstrip())
+                b["pages"] = sorted(set(b.get("pages") or []) | set(nxt.get("pages") or []))
+                b["font_style"] = nxt.get("font_style", b.get("font_style"))
+                del blocks[k + 1]
+        k += 1
+    stats["labelled_words_spoken"] = spoken
 
     # A note the typesetter set in roman, dash and all, right under another
     # note: "— El resultado de la votación surge del Acta Nº 8" then "— El

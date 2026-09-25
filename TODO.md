@@ -3056,7 +3056,36 @@ signatures, all read by eye). PDF parser 0.5.8, HTML 0.5.11-html.
       checksums, no personal path, the loading example gives 440,347 rows and
       244,662 speech passages, an offline caucus rebuild leaves every
       checksum intact.
-- [ ] A last Opus review of the final bundle, then DOI and tag v0.5.8.
+- [x] A last Opus review of the final bundle (three agents: attribution,
+      figures, bundle). The figures and bundle findings were fixed in
+      0254168. Of the eleven attribution findings, the four systematic ones
+      are fixed, each measured by a full reparse against the build before:
+  - HTML: the speaker goes on after a note, as on the PDF side, unless the
+    note introduces a text or says one is read out (Cafiero 2000, 789 words);
+    a roman sentence and its italic note in one paragraph are split
+    (Rodríguez Saá's default announcement, 2001, and the nine paragraphs
+    after it); a speaker resumes in body type after an insertion set small
+    (Melgarejo 1999); the director's name over the signature is page matter
+    (90 sittings); a note welded to the work plan it introduces is cut
+    from it (2001).
+  - PDF and HTML: about 120 notes printed in roman inside a speech are
+    notes of their own; a note that announces a list ends the turn there,
+    including one split onto two page-matter rows (15 August 2012) or set in
+    roman mid-row (16 November 2022); the chair taking the floor back after
+    such a list is the chair again (20 April 2005). Scans are left alone.
+  - 48 italic words under a label are speech, not labelled notes (37 of
+    them Michetti's "Okay"); 40 labelled notes remain, 29 of them "(Lee:)".
+  - Left as known issues: a bold word mid-paragraph read as a heading
+    (Perceval 2006, six such cases spoken), italic titles in a sentence filed
+    as notes (about 22), a "Dr." label (2003), the chair after a list where
+    the note came under the secretary (2008-11-20), tiny page-matter rows
+    inside turns.
+  - Build: 440,443 rows, 244,684 speech passages, 6,392 unattributed
+    (1.45%); speakers table unchanged; gold 310/310 and 82/82, HTML 195/195,
+    108/108, blind reads none reattributed, audit 13 things to look at.
+    Bundle rebuilt and verified on a clean extraction: 1,250 files, 95 MB
+    packed, sha256 6815859c…; checksums, no personal path, loading example.
+- [ ] DOI and tag v0.5.8.
 - [ ] **For the owner**: make the GitHub repository public, reserve the
       version DOI on Zenodo (New version on the published record); then the
       DOI goes into `CITATION.cff`, `docs/DEPOSIT_README.md`, `README.md`,

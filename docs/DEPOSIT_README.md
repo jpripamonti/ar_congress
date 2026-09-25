@@ -14,11 +14,11 @@ HTML export and are read by `scripts/parse_html.py`, at 0.5.11-html.
 | | |
 | --- | --- |
 | Sittings | 818 held, 817 parsed |
-| Passages | 440,347 rows |
-| Speech | 244,662 passages, 25.30 million words |
-| Stenographer's notes, typed | 69,206 |
+| Passages | 440,443 rows |
+| Speech | 244,684 passages, 25.30 million words |
+| Stenographer's notes, typed | 69,297 |
 | All rows together | 29.63 million words, the rest being headings and page matter kept only for tracing (`type == "furniture"`) |
-| Passages the parser could not attribute | 6,514 (1.48%), most of them matter inserted into the record without being spoken |
+| Passages the parser could not attribute | 6,392 (1.45%), most of them matter inserted into the record without being spoken |
 | (sitting, label) pairs | 23,922, of which 22,708 resolve to a person |
 
 Coverage is complete from 2002 onward: every sitting the portal lists for those
@@ -206,10 +206,10 @@ reproduce these numbers.
   outside the scans (8 inside them), no
   document yielding more text than it prints (0 of 817), and every one of
   14,443 labels of the HTML era's commonest shape — a bold run that begins at
-  the heading above — attributed to its own speaker. 153,480 passages were
+  the heading above — attributed to its own speaker. 153,470 passages were
   probed against the source and 81 could not be located (0.053%), 69 of them
-  in the two scans; with the scans set aside it is 12 of 153,219 (0.008%), no
-  sitting above 1%. 7 passages of 244,662 open in lower case under a new
+  in the two scans; with the scans set aside it is 12 of 153,209 (0.008%), no
+  sitting above 1%. 7 passages of 244,684 open in lower case under a new
   speaker, each on a whole word, and every one is printed that way.
 - **6,819 turns read blind** across thirteen rounds, each by a language model
   reading the rendered page (for the HTML era, the source file) and never
@@ -249,8 +249,9 @@ reproduce these numbers.
   `2001-11-21_r72`, `2001-11-29_r74`, and the 1997 tribunal, which yields
   nothing at all. Their text is unreliable; `parse_stats.csv` flags them
   (`scanned_page_share`), and they should be excluded from text analysis.
-- **6,514 passages carry no speaker, and most of them were never spoken.** In
-  the HTML era 83% of those words stand inside a run of inserted matter —
+- **6,392 passages carry no speaker, and most of them were never spoken.** In
+  the HTML era 92% of those words stand in a run the page opens with a note
+  ending "…es el siguiente:" —
   speeches handed in for the record and never delivered, and the bills read
   into it. In the PDF era 89% of those words stand in a run the page opens
   with a note ending "…es el siguiente:" or "…son los siguientes:" — bills,
@@ -263,7 +264,7 @@ reproduce these numbers.
   microphone, "(Lee)" over a document), or as a document or list that is
   nobody's. Whether such a label opens a turn is a question of definition,
   left open rather than decided silently.
-- **112 speech passages carry a label that resolves to nobody** (0.05%), and 45
+- **113 speech passages carry a label that resolves to nobody** (0.05%), and 45
   one that fits more than one senator; the label is kept either way.
 - **The 1998–1999 caucus has gaps.** No roster of the chamber's caucuses
   survives for those years, so they are rebuilt from the chair's own calls,
