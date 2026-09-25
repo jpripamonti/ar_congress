@@ -8,7 +8,7 @@ printed, the person that label resolves to, and the caucus that person sat with
 on the day.
 
 Version 0.5.8 — the version number is the PDF parser's, because the parser is
-what determines the content. The sittings of 1998–2003 come from the chamber's
+what determines the content. Most sittings of 1998–2003 come from the chamber's
 HTML export and are read by `scripts/parse_html.py`, at 0.5.11-html.
 
 | | |
@@ -19,7 +19,7 @@ HTML export and are read by `scripts/parse_html.py`, at 0.5.11-html.
 | Stenographer's notes, typed | 69,290 |
 | All rows together | 29.63 million words, the rest being headings and page matter kept only for tracing (`type == "furniture"`) |
 | Passages the parser could not attribute | 6,399 (1.45%), most of them matter inserted into the record without being spoken |
-| Resolved (sitting, label) pairs | 23,911 |
+| (sitting, label) pairs | 23,911, of which 22,697 resolve to a person |
 
 Coverage is complete from 2002 onward: every sitting the portal lists for those
 years is here. Before that it is partial, because the portal lists the sittings
@@ -52,7 +52,7 @@ data/raw/senado/fichas_archivadas/       Internet Archive captures of senators' 
 reference/senado/                        rosters, roll-call caucus readings, hand-dated caucuses
 reference/gold/                          72 PDF pages annotated for scoring
 reference/gold_html/                     24 HTML stretches annotated for scoring, each read twice
-raw_data_manifest.csv                    every source file: sha256, source URL, format, size, download time
+raw_data_manifest.csv                    every source file: sha256, source URL, format, size, provisional or not
 scripts/                                 the pipeline that produced all of it
 pyproject.toml, uv.lock                  the exact environment it was produced in
 docs/DATA_DICTIONARY.md                  what every column holds and what not to assume about it
@@ -73,15 +73,13 @@ the archive URL it came from.
 
 ```python
 import pandas as pd
-from pathlib import Path
 
-blocks = Path("data/processed/senado/blocks")
-corpus = pd.concat([pd.read_parquet(p) for p in sorted(blocks.glob("*.parquet"))],
-                   ignore_index=True)
+corpus = pd.read_parquet("data/processed/senado/blocks")  # the whole folder
 speakers = pd.read_parquet("data/processed/senado/speakers.parquet")
 
 speech = corpus[corpus["type"] == "speech"]
-named = speech.merge(speakers, on=["session_id", "speaker_raw"], how="left")
+named = speech.merge(speakers.drop(columns="session_date"),
+                     on=["session_id", "speaker_raw"], how="left")
 ```
 
 Read [docs/DATA_DICTIONARY.md](docs/DATA_DICTIONARY.md) before drawing anything
@@ -148,6 +146,17 @@ published figures for those can be checked before downloading anything. The
 parsers, `extract_authorities.py`, `check_gold.py`, `eval_gold_html.py` and
 the source checks of `audit_parse.py` need the sources.
 
+The audit is a list of things to look at, not a pass or fail: it exits with
+status 1 whenever it lists anything, and on this build it lists 13 — among
+them the seven turns that open in lower case, the few labels printed with a
+stray parenthesis and the two sittings whose opening note gives the wrong
+year, each of them printed that way on the page. The checks marked "must be
+0" are the ones that must be 0, and they are. Re-running any step rewrites
+the timestamp in `parse_stats.csv` and the evaluation files it writes
+(`gold_eval.csv`, `gold_html_eval.csv`, `audit_source.csv`), so
+`CHECKSUMS.sha256` stops matching those files after a rebuild; it is for
+checking the download, not the rebuild.
+
 The other scripts in `scripts/` built the reference tables that ship in
 `reference/senado/` — `fetch_roster.py`, `fetch_blocs.py`,
 `fetch_archived_blocs.py`, `fetch_archived_profiles.py`,
@@ -166,12 +175,19 @@ reproduce these numbers.
 ## How far it has been checked
 
 - **72 PDF pages annotated from the page images**, spanning 1998–2024, and
-  shipped in `reference/gold/`. The annotator was a language model (Claude)
-  reading each rendered page against a written brief, never shown the
-  parser's answer; no person has checked these annotations. 36 of the pages
-  were read twice, in two separate runs of the same model and brief, and the
-  two readings agree on every turn start, which shows the brief was read the
-  same way twice, not that the reading is right. Scored against them: boundary and attribution F1 = 1.000, 310 of 310 turns,
+  shipped in `reference/gold/` — the annotations for all 72, and the
+  rendered image of 41 of them in `reference/gold/pages/`; the other 31 are
+  checked against their PDFs, which `download.py --from-manifest` fetches.
+  Every annotation was made by a language model (Claude) reading the
+  rendered page, and no person has checked them. How independent of the
+  parser they are differs by batch: the first 24 pages were annotated in the
+  sessions that were building the parser, and nothing records whether its
+  output was in view; the next 12 were read from the rendered page rather
+  than from the parser's output; the 36 added in September 2026 were read
+  against a written brief without the parser's answer, twice, in two separate
+  runs of the same model, and the two readings agree on every turn start —
+  which shows the brief was read the same way twice, not that the reading is
+  right. Scored against them: boundary and attribution F1 = 1.000, 310 of 310 turns,
   the same on the printed label alone and on the label carried with the turn's
   opening words. Stenographer's notes: precision and recall 1.000, 82 of 82.
   Read the interval, not the point: a perfect 310 still puts the 95% interval
@@ -182,7 +198,8 @@ reproduce these numbers.
   the same way: the same model, twice, from the same brief. The two readings
   agree on all 195 turn starts, and both score 195 of 195, notes included.
 - **Every parsed sitting audited against its own source file**: no page apparatus inside a speech
-  turn outside the three scans, no turn carrying a second speaker's label, no
+  turn outside the three scans, no turn carrying a second speaker's label
+  outside the scans (8 inside them), no
   document yielding more text than it prints (0 of 817), and every one of
   14,443 labels of the HTML era's commonest shape — a bold run that begins at
   the heading above — attributed to its own speaker. 153,631 passages were
@@ -195,11 +212,14 @@ reproduce these numbers.
   re-asked of this build: 6,518 still resolve to the
   person the round recorded and none resolves to anybody else. 301 cannot be
   re-asked — 264 quote words the page prints under two different names, 31 are
-  passages a repair has since taken out of speech, 5 quote too little to find,
+  passages a repair has since taken out of speech, 5 quote too damaged to locate,
   and 1 has no words recorded.
   Those records are not in this deposit; the count is what they produced.
 - **29 turns checked by a person against the page images**, one a year from
-  1998 to 2026: all 29 agree with the parser.
+  1998 to 2026: all 29 agree with the parser. The person saw each page with
+  the passage marked and the parser's answer beside it, and took about four
+  minutes for the 29, so this is a check that the answer is plausible on the
+  page, not a blind reading. The record of it stays in the repository.
 - **Caucus**: 98.7% of senators' passages, in the chair or on the floor,
   carry one — 87.8% confirmed,
   9.4% marked anachronistic because the Senate's own record names a caucus
@@ -208,11 +228,17 @@ reproduce these numbers.
   official count per caucus. Those are kept and marked, never corrected or
   dropped. The chamber publishes a count of senators per caucus for each
   renewal; set beside it on 1 March of 1999, 2000, 2002 and 2004, the corpus
-  differs by one senator in seven caucus counts, and
-  `scripts/check_bloc_counts.py` lists who is behind each.
+  differs by one senator in seven caucus counts. `scripts/check_bloc_counts.py`
+  lists the caucus's senators where the corpus has one too many and names
+  nobody where it has one too few; the 2002 shortfall is a senator missing
+  from the roster, not a caucus wrongly given.
 
 ## What it gets wrong
 
+- **309 of the 819 source files, mostly 2002–2015, are the Senate's
+  provisional record**, the uncorrected version it publishes first; 170 more
+  do not say. The corpus reads whichever version the portal served, and
+  `provisional` in `raw_data_manifest.csv` says which each file is.
 - **Three sittings are scans read by character recognition**:
   `2001-11-21_r72`, `2001-11-29_r74`, and the 1997 tribunal, which yields
   nothing at all. Their text is unreliable; `parse_stats.csv` flags them
@@ -273,7 +299,8 @@ Three kinds of material are in here, under different terms.
   between the user and the rights holders. Cite the chamber as publisher, with
   the sitting date and the per-sitting URL from `raw_data_manifest.csv`. The
   source files are not redistributed.
-- **The code** in `scripts/` is MIT ([LICENSE](LICENSE)).
+- **The code** in `scripts/`, and the prose of the documentation, are MIT
+  ([LICENSE](LICENSE)).
 
 [LICENSE-DATA](LICENSE-DATA) lists exactly what each part covers.
 

@@ -98,7 +98,7 @@ def fetch_dataset(name, url):
 
 
 def main():
-    ap = argparse.ArgumentParser(description="Fetch Senate roster datasets into data/reference/senado/.")
+    ap = argparse.ArgumentParser(description="Fetch Senate roster datasets into reference/senado/.")
     ap.add_argument("--delay", type=int, default=FETCH_DELAY,
                     help=f"seconds between endpoint requests (default: {FETCH_DELAY})")
     args = ap.parse_args()

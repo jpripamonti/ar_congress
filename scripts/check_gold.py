@@ -136,7 +136,8 @@ def main():
             print(f"\n{path.name}")
             for p in problems:
                 print(f"   - {p}")
-    print(f"\n{len(golds)} gold pages checked against the source PDFs, "
+    pages = len({re.sub(r"\.[AB]$", "", g.stem) for g in golds})
+    print(f"\n{len(golds)} annotation files, {pages} pages, checked against the source PDFs, "
           f"{bad} with something to look at.")
     return 1 if bad else 0
 

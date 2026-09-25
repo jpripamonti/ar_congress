@@ -501,7 +501,7 @@ def check_turn_shape(corpus, scanned):
                     j -= 1
                 if j >= 0 and g.loc[j].speaker_raw != b.speaker_raw:
                     mid_word.append((sid, b.speaker_raw, s[:60]))
-    for name, group in (("a turn opening mid-word under a new speaker", mid_word),
+    for name, group in (("a turn opening in lower case under a new speaker", mid_word),
                         ("a turn of three characters or fewer", scrap),
                         ("a turn ending on a dash or comma", dangling)):
         print(f"   {len(group):6}  {name}")

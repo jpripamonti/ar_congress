@@ -18,6 +18,7 @@ works in the repository, and it showed.
 """
 
 import argparse
+import csv
 import hashlib
 import re
 import shutil
@@ -69,6 +70,31 @@ PARTS = [
 LEFT_OUT = [
     "reference/senado/senadores_actuales.json",
 ]
+
+# Internet Archive captures that no shipped table was read from: the senators'
+# pages captured in 1997, which carry office phones, marital status and
+# children and give no caucus the corpus uses, and one roster capture that
+# lists names without caucuses. They stay in the repository; the bundle
+# carries only the captures a row of bloque_por_ficha.csv or
+# bloque_por_foto.csv cites, which is all an offline re-run reads.
+CITED_CAPTURES = [
+    ("data/raw/senado/fichas_archivadas", "reference/senado/bloque_por_ficha.csv", "capture_url"),
+    ("data/raw/senado/bloques_archivados", "reference/senado/bloque_por_foto.csv", "snapshot_url"),
+]
+
+
+def unused_captures(out_dir):
+    unused = []
+    for folder, table, column in CITED_CAPTURES:
+        with open(out_dir / table, encoding="utf-8", newline="") as fh:
+            cited = {re.search(r"/web/(\d+)", row[column]).group(1)
+                     for row in csv.DictReader(fh)}
+        for path in sorted((out_dir / folder).iterdir()):
+            stamp = re.search(r"\d{14}", path.name)
+            if stamp is None or stamp.group(0) not in cited:
+                unused.append(path.relative_to(out_dir))
+    return unused
+
 
 # The pipeline, script by script, so that adding one to the repository is a
 # decision about the release rather than an accident of a glob. Left out:
@@ -175,6 +201,8 @@ def main():
     for script in SCRIPTS:
         copy_part(REPO_ROOT / "scripts" / script, out_dir / "scripts")
     for rel in LEFT_OUT:
+        (out_dir / rel).unlink()
+    for rel in unused_captures(out_dir):
         (out_dir / rel).unlink()
 
     broken = broken_links(out_dir)

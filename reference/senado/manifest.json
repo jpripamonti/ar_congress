@@ -6,7 +6,8 @@
             "fetched_at_utc": "2026-07-21T20:47:55+00:00",
             "sha256": "a1418865386a6fda232cb28963456099deffeee7032eebe24cc50efb759dd916",
             "size_bytes": 58729,
-            "row_count": 72
+            "row_count": 72,
+            "note": "Kept in the repository and not shipped in the release bundle: no step reads it, and it carries each serving senator's office e-mail, phone extension and social-media links."
         },
         "senadores_historico.json": {
             "file": "senadores_historico.json",
@@ -75,10 +76,10 @@
         "authorities_manual.csv": {
             "file": "authorities_manual.csv",
             "assembled_at_utc": "2026-07-21T20:51:30+00:00",
-            "sha256": "296d856045571058ae3f3ebbddda9e7c5ccf1c950150e64318275b9df2105e56",
-            "size_bytes": 8811,
-            "row_count": 28,
-            "note": "Senate authorities 2020-2024 (presidencia, presidencia provisional, vicepresidencias, secretarias, prosecretarias) plus national-executive officers observed as speakers. No open-data endpoint exists for authorities; compiled from the designation/ratification passages of the held stenographic transcripts (source_url per row) and senado.gob.ar/autoridades."
+            "sha256": "70889408ae7b0a596736b176601736053d199a7edca74653981a96413dd9afa0",
+            "size_bytes": 15744,
+            "row_count": 47,
+            "note": "Senate authorities and national-executive officers whose terms fall between 1995 and 2026 (presidencia, presidencia provisional, vicepresidencias, secretarias, prosecretarias); the executive officers are those observed as speakers. No open-data endpoint exists for authorities; compiled from the designation/ratification passages of the held stenographic transcripts (source_url per row) and senado.gob.ar/autoridades."
         }
     },
     "reuse_terms": {

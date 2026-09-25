@@ -313,7 +313,10 @@ the session date and the per-session source URL from the manifest.
 
 ## Gold evaluation set
 
-[reference/gold/](reference/gold/) holds 36 page annotations covering
+[reference/gold/](reference/gold/) now holds 72 annotated pages, 1998–2024;
+36 more, all before 2016 and each read twice, were added in September 2026
+(TODO.md, Phase 36; the data dictionary gives the current figures). What
+follows describes the first 36, covering
 2003–2024. They are stratified by kind of sitting — eight kinds — but
 back-loaded in time: 24 of the 36 are 2020 or later, and the 125 turns come
 from only 24 documents, so the 95% interval on recall runs from 0.956 to

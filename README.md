@@ -65,7 +65,7 @@ as its own HTML export for most of 1998–2003; both are read here.
   to +6.5% in every year from 2003 to 2009, under 0.1% elsewhere). Every word
   count in the analysis was that much low. It also makes those years' section
   numbering readable for the first time: the sittings carrying the section each
-  turn belongs to went from 443 to 530, and stand at 538 today.
+  turn belongs to went from 443 to 530 of the 559 files then held.
 - **Punctuation belonging to the editorial matter no longer counts as speech.**
   A stenographer's note is printed "— Se vota.", but in many files that opening
   dash is stored at the end of the line above, so the turn before it came out
@@ -310,7 +310,8 @@ as its own HTML export for most of 1998–2003; both are read here.
   in full under `reference/gold/retired/` with the reason: it was drawn from
   a committee meeting the file reproduces behind the sitting, which the
   corpus no longer attributes to that sitting. **On all 817 sessions that parse, in both formats**
-  (`scripts/audit_parse.py`): no turn carries a second speaker's label, no label
+  (`scripts/audit_parse.py`): outside the two scans no turn carries a second
+  speaker's label (8 do inside them), no label
   is absorbed by the section title above it, no page apparatus leaks into speech
   outside the three scans, no text is written out twice, 153,631 blocks are
   probed for being in the file they came from and 80 are not located (0.052%),
@@ -468,8 +469,8 @@ as its own HTML export for most of 1998–2003; both are read here.
   6,819 records, 6,518 still resolve to the person the round named and 301
   cannot be re-asked — 264 quote words the page prints under more than one
   name, so the record cannot say which turn the reader meant; 31 are passages
-  a repair has since moved out of speech; five quote too little of a passage to
-  find it; one has no words recorded — and none resolves to anybody else.
+  a repair has since moved out of speech; five quote a passage too damaged to
+  locate; one has no words recorded — and none resolves to anybody else.
   **Twenty-four of the 6,819 disagreed at the time of reading, and exactly two
   of those were defects of the parser** — both found in the HTML era, both
   fixed. Every case left over from the
@@ -494,8 +495,8 @@ as its own HTML export for most of 1998–2003; both are read here.
   about 2016. **These are deliberately left without a person.** The chair
   changes hands during a sitting and the page does not say who holds it, so
   any name would be a guess; the sitting's own cover page names two or more
-  presiding officers in 522 of the 802 sittings whose cover page says who
-  presided at all (`scripts/count_presiding.py`). They are marked as
+  of the officers who may take the chair in 413 of the 691 files whose cover
+  the authorities table records them for. They are marked as
   office-known-person-unstated. Another 0.9% is correctly out of scope —
   parties and witnesses at the impeachment trials, deputies, ministers of
   the national executive, foreign heads of state. **Genuine lookup failures
@@ -557,7 +558,7 @@ as its own HTML export for most of 1998–2003; both are read here.
 
 ## Results
 
-Computed on the whole corpus — 818 sittings, 1998–2026 — by
+Computed on the whole corpus — 817 sittings, 1998–2026 — by
 [notebooks/analysis.ipynb](notebooks/analysis.ipynb), which prints the figures
 below and the tables behind them.
 
@@ -576,12 +577,14 @@ below and the tables behind them.
 
 - **What moved in 2019 is mostly the labels, and the caucus data shows it
   rather than merely warning about it.** By ticket, the radical/Cambiemos/JxC
-  family holds 9–34% of floor words to 2018 and 25–39% from 2019, while
-  provincial and other alliances go the other way, 9–46% down to 13–25% — a
-  chamber that looks realigned at a stroke. Group the identical speech by the
-  caucus each senator sat in and the step disappears: radical/Cambiemos/JxC
-  sits at 23–33% before 2019 and 23–34% after, provincial and other alliances
-  at 9–27% and 10–21%. Senators did not change sides in 2019; the tickets they
+  family holds 9–34% of floor words to 2018 and 25–39% from 2019 to 2025,
+  while provincial and other alliances go the other way, 9–46% down to 13–24%
+  — a chamber that looks realigned at a stroke. Group the identical speech by
+  the caucus each senator sat in and the step disappears: radical/Cambiemos/JxC
+  sits at 23–33% before 2019 and 23–34% from 2019 to 2025, provincial and
+  other alliances at 9–27% and 10–21%. (2026, nine months in, stands apart:
+  it is the year La Libertad Avanza arrives, and the radical family falls to
+  8% by caucus.) Senators did not change sides in 2019; the tickets they
   had been elected on consolidated into two national coalitions. La Libertad
   Avanza is the one real arrival, from nothing to 24% of floor words by caucus
   in 2026.
@@ -594,7 +597,7 @@ below and the tables behind them.
   sitting that attests it, and those readings are marked `anachronistic`. What
   they get wrong is the NAME; this panel reads the FAMILY, and the notebook
   compares each mis-dated reading against the same senator's nearest attested
-  one: **1.4% of them land in a different family**. Dropping them instead would
+  one: **1.0% of them land in a different family** (153 of 15,503 passages). Dropping them instead would
   cost 40% of the evidence in 2018–2019, and not at random — the readings the
   Senate back-labels are overwhelmingly peronist, so the cure would bias the
   panel against the family it mislabels.
@@ -611,14 +614,14 @@ below and the tables behind them.
 
 - The chamber has been getting steadily more disorderly since about 2013.
   Recorded incidents per 10,000 floor words ran near 1 through the 2000s,
-  peaked at 12.3 in 2023 and have eased since, to 9.4 in 2024 and 6.8 in 2025
+  peaked at 13.2 in 2023 and have eased since, to 10.3 in 2024 and 7.0 in 2025
   — roughly a tenfold rise and a partial retreat, beginning well before the
   remote sittings of 2020. The 1998–2003 holdings extend the quiet baseline
   back four years without disturbing it. This is a measurement only possible
   because stenographer events are preserved and typed rather than deleted.
-- Recorded votes per word fell sevenfold and then held: 28–41 per 10,000 floor
-  words from 2002 to 2005, falling through 2006–2009, and between 3 and 11
-  every year from 2010 on. The fall happens inside the PDF era, so it is not an
+- Recorded votes per word fell and then held: 36–68 per 10,000 floor words
+  from 2002 to 2005, falling through 2006–2009, and between 3 and 12 every
+  year from 2010 on. The fall happens inside the PDF era, so it is not an
   artefact of the two formats. Read it as procedural volume rather than
   temperature — the chamber came to spend far more words per recorded vote.
 
@@ -687,7 +690,7 @@ caucus — the Alianza was a coalition of two caucuses that sat apart.
   text, coverage, scans. `--sample N` also writes a review sheet of N turns
   to be checked by eye against the printed page.
 - `reference/verification/` — the thirteen blind reads: what the parser said,
-  what an independent reader saw on the page, and whether they agree. 6,819
+  what a language model reading the page blind saw there, and whether they agree. 6,819
   passages in all — nine rounds on the PDF era (50, 300, 500, 998, 500 and
   three of 1,000, then 115) and four on the HTML era (60, 300, 498 and 498).
 - `reference/` — versioned reference data: roster snapshots, authorities
@@ -703,9 +706,13 @@ uv run scripts/parse.py --help
 uv run scripts/download.py --dry-run   # compare local holdings vs. the live listing
 ```
 
-The pipeline runs in this order: `download.py` → `parse.py` →
-`extract_authorities.py` → `resolve_speakers.py`, then `eval_gold.py` and
-`check_gold.py` to verify.
+The pipeline runs in this order: `download.py` → `parse.py` and
+`parse_html.py` → `extract_authorities.py` → the caucus chain
+(`build_bloc_observations.py`, `deduce_bloc_from_counts.py`,
+`build_bloc_observations.py` again) → `resolve_speakers.py` →
+`check_bloc_counts.py`, then the checks. The full sequence, with what each
+step needs, is in the rebuild section of
+[docs/DEPOSIT_README.md](docs/DEPOSIT_README.md).
 
 On a new machine, re-create the working-data symlink first (see DATA.md).
 

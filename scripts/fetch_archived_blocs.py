@@ -261,10 +261,17 @@ def main():
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     except (FileNotFoundError, json.JSONDecodeError):
         manifest = {"datasets": {}}
+    # An offline re-run that reproduces the table fetched nothing: it keeps
+    # the time the captures were fetched, so a rebuild leaves the shipped
+    # manifest, and its checksum, as they were.
+    previous = manifest["datasets"].get(OUT.name, {})
+    digest = hashlib.sha256(raw).hexdigest()
+    fetched = (previous["fetched_at_utc"] if args.offline and previous.get("sha256") == digest
+               else datetime.now(timezone.utc).isoformat(timespec="seconds"))
     manifest["datasets"][OUT.name] = {
         "file": OUT.name,
         "source_url": "https://web.archive.org/web/*/" + SOURCES[0],
-        "fetched_at_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "fetched_at_utc": fetched,
         "sha256": hashlib.sha256(raw).hexdigest(),
         "size_bytes": len(raw),
         "row_count": len(all_rows),

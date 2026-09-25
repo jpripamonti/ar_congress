@@ -668,6 +668,8 @@ def process_html(path):
     paragraphs = read_paragraphs(Path(path))
     blocks, chapters, stats = classify(paragraphs)
     blocks = consolidate(blocks)
+    # counted as written: blocks_to_frame drops a block with no visible text
+    blocks = [b for b in blocks if (b.get("text") or "").strip()]
     counts = {}
     for block in blocks:
         counts[block.get("type", "other")] = counts.get(block.get("type", "other"), 0) + 1
