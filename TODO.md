@@ -3105,8 +3105,12 @@ signatures, all read by eye). PDF parser 0.5.8, HTML 0.5.11-html.
       and the chair's label of 11 June 2003 kept as printed. Build: 440,445
       rows, 244,624 speech passages, 69,290 notes, 6,461 unattributed
       (1.47%); gold unchanged; blind reads none reattributed; audit 13 to look
-      at. Bundle: 1,251 files, 95 MB, sha256 c3c660c2…; the third agent re-checked
+      at. Bundle: 1,251 files, 95 MB, sha256 5280c663…; the third agent re-checked
       the build and found only a stale word in a comment, since fixed.
+- [x] A review of the whole repository and its history before making it
+      public (Opus agent): no secrets, no private personal data, no source
+      files ever committed. Fixed: LICENSE-DATA now excludes the Senate's
+      list of sitting senators too; DATA.md no longer describes one machine.
 - [ ] **For the owner**: make the GitHub repository public (the bundle links
       to it and cites it as evidence), then tag v0.5.8, upload the bundle and
       its .sha256 to the Zenodo draft, and publish.

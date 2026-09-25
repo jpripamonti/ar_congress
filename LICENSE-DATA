@@ -26,7 +26,8 @@ That covers:
 - `reference/senado/`: the tables this project compiled — the caucus
   observations and the caucus lives dated by hand, the authorities observed
   on the cover pages, the mappings of sitting labels. `senadores_historico.json`
-  is excluded: it is a copy of the Senate's open data.
+  and, in the repository only, `senadores_actuales.json` are excluded: they
+  are copies of the Senate's open data.
 - `reference/gold/` and `reference/gold_html/`: the annotations (the `.json`
   files, the stretch list and the briefs). The page images in
   `reference/gold/pages/` and the fragments of the chamber's HTML in
@@ -50,7 +51,9 @@ grants no licence to them. That covers:
   `reference/gold_html/stretches/`, copied from the chamber's files so the
   annotations can be checked against what they annotate;
 - `reference/senado/senadores_historico.json`, the Senate's list of former
-  and serving senators as its open-data portal serves it;
+  and serving senators as its open-data portal serves it, and, in the
+  repository only, `reference/senado/senadores_actuales.json`, its list of
+  sitting senators with their office contacts;
 - the archived pages under `data/raw/senado/bloques_archivados/` and
   `data/raw/senado/fichas_archivadas/`: Internet Archive captures of Senate
   pages that no longer exist, the chamber's caucus roster and senators' own
