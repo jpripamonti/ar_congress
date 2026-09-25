@@ -14,12 +14,12 @@ HTML export and are read by `scripts/parse_html.py`, at 0.5.11-html.
 | | |
 | --- | --- |
 | Sittings | 818 held, 817 parsed |
-| Passages | 440,447 rows |
-| Speech | 244,805 passages, 25.36 million words |
-| Stenographer's notes, typed | 69,290 |
+| Passages | 440,347 rows |
+| Speech | 244,662 passages, 25.30 million words |
+| Stenographer's notes, typed | 69,206 |
 | All rows together | 29.63 million words, the rest being headings and page matter kept only for tracing (`type == "furniture"`) |
-| Passages the parser could not attribute | 6,399 (1.45%), most of them matter inserted into the record without being spoken |
-| (sitting, label) pairs | 23,911, of which 22,697 resolve to a person |
+| Passages the parser could not attribute | 6,514 (1.48%), most of them matter inserted into the record without being spoken |
+| (sitting, label) pairs | 23,922, of which 22,708 resolve to a person |
 
 Coverage is complete from 2002 onward: every sitting the portal lists for those
 years is here. Before that it is partial, because the portal lists the sittings
@@ -202,16 +202,16 @@ reproduce these numbers.
   outside the scans (8 inside them), no
   document yielding more text than it prints (0 of 817), and every one of
   14,443 labels of the HTML era's commonest shape — a bold run that begins at
-  the heading above — attributed to its own speaker. 153,631 passages were
-  probed against the source and 80 could not be located (0.052%), 68 of them
-  in the two scans; with the scans set aside it is 12 of 153,377 (0.008%), no
-  sitting above 1%. 7 passages of 244,805 open in lower case under a new
+  the heading above — attributed to its own speaker. 153,480 passages were
+  probed against the source and 81 could not be located (0.053%), 69 of them
+  in the two scans; with the scans set aside it is 12 of 153,219 (0.008%), no
+  sitting above 1%. 7 passages of 244,662 open in lower case under a new
   speaker, each on a whole word, and every one is printed that way.
 - **6,819 turns read blind** across thirteen rounds, each by a language model
   reading the rendered page and never shown the parser's answer, and
-  re-asked of this build: 6,518 still resolve to the
-  person the round recorded and none resolves to anybody else. 301 cannot be
-  re-asked — 264 quote words the page prints under two different names, 31 are
+  re-asked of this build: 6,516 still resolve to the
+  person the round recorded and none resolves to anybody else. 303 cannot be
+  re-asked — 264 quote words the page prints under two different names, 33 are
   passages a repair has since taken out of speech, 5 quote too damaged to locate,
   and 1 has no words recorded.
   Those records are not in this deposit; the count is what they produced.
@@ -243,12 +243,12 @@ reproduce these numbers.
   `2001-11-21_r72`, `2001-11-29_r74`, and the 1997 tribunal, which yields
   nothing at all. Their text is unreliable; `parse_stats.csv` flags them
   (`scanned_page_share`), and they should be excluded from text analysis.
-- **6,399 passages carry no speaker, and most of them were never spoken.** In
+- **6,514 passages carry no speaker, and most of them were never spoken.** In
   the HTML era 83% of those words stand inside a run of inserted matter —
   speeches handed in for the record and never delivered, and the bills read
-  into it. In the PDF era 87% of those words stand in a run the page opens
-  with "— El texto es el siguiente:" or "…son los siguientes:" — bills, work
-  plans, lists of titles.
+  into it. In the PDF era 89% of those words stand in a run the page opens
+  with a note ending "…es el siguiente:" or "…son los siguientes:" — bills,
+  work plans, lists of titles.
 - **19 printed speaker labels still open a turn that leaves no row.** 6 are in
   the November 2001 scan, and 3 are the secretary's label of 16 June 1999
   printed over an Orden del Día with nothing of his own after it. The other
@@ -257,7 +257,7 @@ reproduce these numbers.
   microphone, "(Lee)" over a document), or as a document or list that is
   nobody's. Whether such a label opens a turn is a question of definition,
   left open rather than decided silently.
-- **111 speech passages carry a label that resolves to nobody** (0.05%), and 45
+- **112 speech passages carry a label that resolves to nobody** (0.05%), and 45
   one that fits more than one senator; the label is kept either way.
 - **The 1998–1999 caucus has gaps.** No roster of the chamber's caucuses
   survives for those years, so they are rebuilt from the chair's own calls,
@@ -266,7 +266,7 @@ reproduce these numbers.
   the rest fall in 2014 (578), 2005 (437), 2006 (248) and 2015 (219).
 - **Roughly a fifth of each document is dropped on purpose** — contents pages,
   attendance rolls, appendices, inserted documents that were never spoken.
-  The median sitting keeps 82.6% of its printed text.
+  The median sitting keeps 82.2% of its printed text.
 - **The text is what the page prints, not what was said.** A stenographic
   record is edited, and senators correct their own words afterwards.
 

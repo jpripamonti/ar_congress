@@ -3050,7 +3050,12 @@ signatures, all read by eye). PDF parser 0.5.8, HTML 0.5.11-html.
     rebuild no longer restamps the manifest.
   - Checks on the build: gold 310/310 and 82/82, HTML 195/195, 108/108,
     blind reads none reattributed, audit 13 things to look at.
-- [ ] Figures recomputed on the final build; bundle rebuilt and verified.
+- [x] Figures recomputed on the final build (the Opus figures agent again,
+      headline figures recomputed independently); bundle rebuilt and verified
+      on a clean extraction: 1,250 files, 96 MB packed, sha256 75564da1…;
+      checksums, no personal path, the loading example gives 440,347 rows and
+      244,662 speech passages, an offline caucus rebuild leaves every
+      checksum intact.
 - [ ] A last Opus review of the final bundle, then DOI and tag v0.5.8.
 - [ ] **For the owner**: make the GitHub repository public, reserve the
       version DOI on Zenodo (New version on the published record); then the

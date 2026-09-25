@@ -203,7 +203,7 @@ the author, not something the pipeline should do on its own.
 
 The bundle is a few hundred files of Parquet plus the reference tables, the
 archived pages and the documentation — small enough that it needs no special
-handling. 0.4.37 came out at 662 files and 68 MB packed; 0.5.8 at 1,468 files, 129 MB
+handling. 0.4.37 came out at 662 files and 68 MB packed; 0.5.8 at 1,250 files, 129 MB
 unpacked and 96 MB packed.
 
 Build it from the repository root, after the checks above have passed:
